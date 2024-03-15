@@ -12,10 +12,28 @@ export const userRouter = new Hono<{
 
 userRouter.post("/signup", async (c) => {
   const body = await c.req.json();
+
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
   try {
+    const email = await prisma.user.findUnique({
+      where: {
+        email: body.email,
+      },
+    });
+
+    if (email) {
+      return c.json({ status: 409, message: "email is already used" });
+    }
+    const username = await prisma.user.findUnique({
+      where: {
+        username: body.username,
+      },
+    });
+    if (username) {
+      return c.json({ status: 411, message: "userame is already taken" });
+    }
     const user = await prisma.user.create({
       data: {
         name: body.name,
@@ -27,7 +45,7 @@ userRouter.post("/signup", async (c) => {
     });
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
     console.log(user);
-    return c.text(jwt);
+    return c.json({ status: 200, message: jwt });
   } catch (e) {
     console.log(e);
     c.status(403);
@@ -35,7 +53,7 @@ userRouter.post("/signup", async (c) => {
   }
 });
 
-userRouter.post("/signin", async (c) => {
+userRouter.post("/login", async (c) => {
   const body = await c.req.json();
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -49,13 +67,15 @@ userRouter.post("/signin", async (c) => {
     });
 
     if (!user) {
-      c.status(403);
-      return c.json({ message: "user not found or authentication error" });
+      return c.json({
+        status: 403,
+        message: "user not found or authentication error",
+      });
     }
     c.status(200);
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
     console.log(user);
-    return c.text(jwt);
+    return c.json({ status: 200, message: jwt });
   } catch (e) {
     console.log(e);
   }

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const SignupAuth = () => {
-  const api = "http://localhost:3000/user/signup";
+  const navigate = useNavigate();
+  const api = "http://localhost:8787/api/server/v1/user/signup";
 
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -44,7 +45,9 @@ export const SignupAuth = () => {
     }, 5000);
   }
   function succes() {
+    setName("");
     setUsername("");
+    setEmail("");
     setGender("");
     setPassword("");
     setSucPopup(true);
@@ -52,16 +55,15 @@ export const SignupAuth = () => {
       setSucPopup(false);
     }, 10000);
   }
+
   async function signup() {
-    if (!email) {
-      setpopText("Please verify with your VIT student email first!");
+    if (name.length < 3) {
+      setpopText("Name length should be mininmum 3 characters!");
       popupFn();
       return;
     }
-    if (!email.endsWith("@vitstudent.ac.in")) {
-      setpopText(
-        "Please logout and verify your valid VIT student email with google!"
-      );
+    if (name.length > 40) {
+      setpopText("Name length should be maximum 40 characters!");
       popupFn();
       return;
     }
@@ -76,45 +78,54 @@ export const SignupAuth = () => {
       return;
     }
 
+    if (!email.endsWith("@vitstudent.ac.in")) {
+      setpopText("Please enter your VIT student email!");
+      popupFn();
+      return;
+    }
+    if (gender == "") {
+      setpopText("Please select your gender!");
+      popupFn();
+      return;
+    }
     if (password.length < 6) {
       setpopText("Password length should be minimum 6!");
       popupFn();
       return;
     }
-    if (gender == null) {
-      setpopText("Please select your gender 🙎‍♂️🙍‍♀️");
-      popupFn();
-      return;
-    }
-    const userdata = { username, email, gender, password };
+
+    const userdata = { name, username, email, gender, password };
     try {
-      axios.post(api, userdata).then((res) => {
-        if (res.data.status === 200) {
+      axios.post(api, userdata).then((response) => {
+        if (response.data.status === 200) {
+          const jwt = response.data.message;
+          localStorage.setItem("token", jwt);
+          navigate("/home");
           succes();
-        } else if (res.data.status === 101) {
+        } else if (response.data.status === 409) {
           setpopText("This email is already used 😢");
           popupFn();
-        } else if (res.data.status === 102) {
+        } else if (response.data.status === 411) {
           setpopText("Username is already taken 😢");
           popupFn();
         }
       });
     } catch (error) {
       console.log(error);
-      alert("Network error, try again later");
+      setpopText("Network error, try again later");
+      popupFn();
     }
-    console.log(username, password, email, gender);
   }
 
   return (
     <>
       {popup && (
-        <div className="absolute top-5 right-5">
+        <div className="absolute top-5 left-5">
           <motion.div
-            initial={{ opacity: 0, x: 80 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <div className="rounded-lg bg-white border border-indigo-300 shadow-sm p-5 ">
               {popText ? (
@@ -134,17 +145,18 @@ export const SignupAuth = () => {
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 1 }}
           >
-            <div className="rounded-lg bg-white border border-indigo-300 shadow-sm p-20 text-center text-lg">
+            <div className="rounded-lg bg-white border border-indigo-300 shadow-sm p-4 lg:p-12 text-center text-lg">
               Congratulations! Your registration is complete 🎉.
-              <br /> Please go to Undate app and login using your credentials.
+              <br />
+              Now you can login with your credentials.
             </div>
           </motion.div>
         </div>
       )}
 
       <div className="h-screen w-full  bg-white flex justify-center items-center">
-        <div className="w-[80%] lg:w-[50%] grid gap-y-2">
-          <div className="text-gray-700 font-light text-[2rem] text-center my-4">
+        <div className="w-[80%] lg:w-[60%] grid gap-y-2">
+          <div className="text-gray-700 font-semibold text-[2rem] text-center my-4">
             Create an undate account
           </div>
 
@@ -184,10 +196,12 @@ export const SignupAuth = () => {
           <div>
             <p className="font-semibold m-1 text-gray-700">Gender</p>{" "}
             <select
-              className="h-10 w-full rounded-lg px-4 text-gray-400 bg-white border border-gray-300"
+              className="h-10 w-full rounded-lg px-4 text-gray-600 bg-white border border-gray-300 appearance-none"
               onChange={(e) => setGender(e.target.value)}
             >
-              <option value="">Select Gender</option>
+              <option value="" className="text-gray-400">
+                Select Gender
+              </option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
@@ -205,18 +219,16 @@ export const SignupAuth = () => {
             />
           </div>
           <button
-            onClick={() => {
-              console.log(name, username, email, password);
-            }}
+            onClick={signup}
             className="my-4 w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
           >
             Register
           </button>
           <div className="text-center text-md font-light text-gray-800">
-            Already have an account?{" "}
+            Already have an account?
             <Link
               to="/login"
-              className="font-semibold text-gray-700 underline underline-offset-2"
+              className="font-semibold text-gray-700 underline underline-offset-2 mx-1"
             >
               Login
             </Link>
