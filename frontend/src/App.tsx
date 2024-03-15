@@ -1,22 +1,20 @@
-import { useState } from "react";
-const App = () => {
-  const [count, setCount] = useState("");
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Signup } from "./pages/Signup";
+import { Login } from "./pages/Login";
+import { Home } from "./pages/Home";
+
+function App() {
   return (
     <>
-      <div className="h-screen bg-white">
-        <div className="w-full px-10 py-2 bg-white flex justify-between items-center border-b border-gray-300">
-          <div className="text-black text-2xl">undate</div>
-          <div>
-            <input
-              placeholder="search for friends"
-              className="w-[40vw] h-10 px-4 bg-gray-50 border border-gray-300 rounded-full"
-            />
-          </div>
-          <div className="h-8 w-8 bg-black rounded-full"></div>
-        </div>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
-};
+}
 
 export default App;
