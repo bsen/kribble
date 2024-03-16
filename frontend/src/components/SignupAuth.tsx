@@ -155,8 +155,8 @@ export const SignupAuth = () => {
       )}
 
       <div className="h-screen w-full  bg-white flex justify-center items-center">
-        <div className="w-[80%] lg:w-[60%] grid gap-y-2">
-          <div className="text-gray-700 font-semibold text-[2rem] text-center my-4">
+        <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
+          <div className="text-gray-800 font-mono text-[1.5rem] text-center my-4">
             Create an undate account
           </div>
 

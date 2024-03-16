@@ -8,19 +8,20 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  name     String
-  email    String   @unique
-  username String   @unique
-  gender   String
-  password String
-  posts    Post[]
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  username  String   @unique
+  gender    String
+  password  String
+  bio       String?
+  posts     Post[]   @relation("UserPosts")
 }
 
 model Post {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   image     String?
   content   String
-  creator   User     @relation(fields: [creatorId], references: [id])
+  creator   User?   @relation("UserPosts", fields: [creatorId], references: [id])
   creatorId String
 }

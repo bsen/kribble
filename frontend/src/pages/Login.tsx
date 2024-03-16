@@ -12,8 +12,13 @@ export const Login = () => {
   });
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
-      <Quote />
+      <div className="max-md:hidden">
+        <Quote />
+      </div>
       <LoginAuth />
+      <div className="md:hidden">
+        <Quote />
+      </div>
     </div>
   );
 };

@@ -68,7 +68,7 @@ export const LoginAuth = () => {
       )}
       <div className="h-screen w-full  bg-white flex justify-center items-center">
         <div className="w-[80%] lg:w-[50%] grid gap-y-2">
-          <div className="text-gray-800 text-center font-mono text-[3rem]">
+          <div className="text-gray-800 text-center font-mono text-[2rem]">
             undate
           </div>
 
@@ -107,7 +107,7 @@ export const LoginAuth = () => {
               to="/signup"
               className="font-semibold text-gray-700 underline underline-offset-2 mx-1"
             >
-              Login
+              Sign up
             </Link>
           </div>
         </div>
