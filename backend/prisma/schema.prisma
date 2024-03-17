@@ -15,6 +15,7 @@ model User {
   gender    String
   password  String
   bio       String?
+  image     String?
   posts     Post[]   @relation("UserPosts")
 }
 
