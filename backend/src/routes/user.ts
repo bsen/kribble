@@ -149,7 +149,6 @@ userRouter.post("/post", async (c) => {
   }).$extends(withAccelerate());
 
   const token = body.token;
-  console.log(token);
   const userId = await verify(token, c.env.JWT_SECRET);
   try {
     const post = await prisma.post.create({
@@ -168,4 +167,11 @@ userRouter.post("/post", async (c) => {
     console.error(error);
     return c.json({ status: 500, message: "Internal server error" });
   }
+});
+
+userRouter.post("/uploadimage", async (c) => {
+  const body = await c.req.json();
+  const image = body.imageUri;
+  console.log(image);
+  c.status(404);
 });

@@ -218,21 +218,21 @@ export const Profilepage: React.FC = () => {
               >
                 <div className="flex gap-2 items-start">
                   <div>
-                    {image ? (
-                      <img
-                        src={image}
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full"
-                      />
-                    ) : (
-                      <img
-                        src={"src/assets/chicken.png"}
-                        alt="Profile"
-                        className="w-8 h-8 border border-indigo-500 rounded-full"
-                      />
-                    )}
-                  </div>
-                  <div>
+                    <div>
+                      {image ? (
+                        <img
+                          src={image}
+                          alt="Profile"
+                          className="w-8 h-8 rounded-full"
+                        />
+                      ) : (
+                        <img
+                          src={"src/assets/chicken.png"}
+                          alt="Profile"
+                          className="w-8 h-8 border border-indigo-500 rounded-full"
+                        />
+                      )}
+                    </div>
                     <div className="flex gap-2 items-center">
                       <p className="text-gray-800 font-semibold">
                         {userData.name}
@@ -248,7 +248,7 @@ export const Profilepage: React.FC = () => {
               </div>
             ))
         ) : (
-          <p>No posts found.</p>
+          <p className="text-center font-mono my-5">No posts found.</p>
         )}
       </div>
     </div>

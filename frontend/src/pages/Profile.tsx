@@ -6,7 +6,7 @@ export const Profile = () => {
   return (
     <div className="flex justify-between bg-gray-50">
       <Sidebar />
-      <div className="h-screen w-[50vw] overflow-y-auto no-scrollbar">
+      <div className="h-screen w-[50vw] overflow-y-auto no-scrollbar bg-white">
         <div>
           <Profilepage />
         </div>
