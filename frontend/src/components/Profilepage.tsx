@@ -14,7 +14,7 @@ export const Profilepage: React.FC = () => {
     image: string;
     posts: {
       id: string;
-      content: string /* add other properties if exist */;
+      content: string;
     }[];
   }>({
     id: "",
@@ -85,7 +85,6 @@ export const Profilepage: React.FC = () => {
       reader.readAsDataURL(file);
     }
   };
-
   const savePhoto = async () => {
     const username = userData.username;
 
@@ -113,6 +112,7 @@ export const Profilepage: React.FC = () => {
   }, []);
   useEffect(() => {}, [userData.posts, userData.bio]);
 
+  console.log(image);
   return (
     <div className="border-l border-r border-gray-200 bg-white">
       <div className="p-10 border-b border-gray-200">
@@ -126,7 +126,9 @@ export const Profilepage: React.FC = () => {
               />
             ) : (
               <img
-                src={"src/assets/chicken.png"}
+                src={
+                  "https://imagedelivery.net/cV-2jw5Z4EJcAnIlwLPzWw/437d240e-a22b-4f28-856a-242c4119dd00/public"
+                }
                 alt="Profile"
                 className="w-20 h-20 rounded-full border border-greay-50"
               />

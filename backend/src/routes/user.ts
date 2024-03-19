@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
-import { use } from "hono/jsx";
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -143,11 +142,12 @@ userRouter.post("/bioupdate", async (c) => {
 
 userRouter.post("/post", async (c) => {
   const body = await c.req.json();
-
+  const formData = await c.req.formData();
+  const file = formData.get("image");
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-
+  console.log(file);
   const token = body.token;
   const userId = await verify(token, c.env.JWT_SECRET);
   try {
@@ -169,9 +169,34 @@ userRouter.post("/post", async (c) => {
   }
 });
 
-userRouter.post("/uploadimage", async (c) => {
-  const body = await c.req.json();
-  const image = body.imageUri;
-  console.log(image);
-  c.status(404);
+const accountId = "35c5d12b3a2b0aaa7a3bf9a1c579fed5";
+const apiToken = "L0efpQDU91oUs9S9D1FsPRoejzx98kfRxnuyN3CM";
+const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/images/v1`;
+
+userRouter.post("/image", async (c) => {
+  try {
+    const formData = await c.req.formData();
+    const file = formData.get("image");
+    if (!file) {
+      return c.json({ status: 400, message: "No image provided" }, 400);
+    }
+    const data = new FormData();
+    const blob = new Blob([file]);
+    data.append("file", blob, "cloudflare_image");
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+      },
+      body: data,
+    });
+
+    console.log(await response.json());
+
+    return c.json({ status: 200 });
+  } catch (e) {
+    console.log(e);
+    return c.json({ status: 404 });
+  }
 });

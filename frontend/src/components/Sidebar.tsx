@@ -14,6 +14,7 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const [postCreate, setPostCreate] = useState(false);
   const [post, setPost] = useState("");
+  const [postImage, setPostImage] = useState<File | null>(null);
 
   const token = localStorage.getItem("token");
 
@@ -37,6 +38,19 @@ export const Sidebar = () => {
       console.error("Error creating post:", error);
     }
   }
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    setPostImage(file);
+  };
+
+  async function sendImage() {
+    const file = postImage;
+    const formdata = new FormData();
+    formdata.append("image", file ? file : "");
+    const res = await axios.post(`${api}/image`, formdata);
+    console.log(postImage);
+    console.log(res.data.status);
+  }
 
   return (
     <>
@@ -52,7 +66,7 @@ export const Sidebar = () => {
               <CloseIcon className="absolute -top-2 rounded-full text-gray-100 bg-gray-800 -left-2" />
             </button>
             <div className="h-full flex flex-col justify-between gap-4">
-              {/* {postImage ? (
+              {postImage ? (
                 <div className="flex justify-center items-center w-full">
                   <img
                     src={typeof postImage === "string" ? postImage : ""}
@@ -60,21 +74,22 @@ export const Sidebar = () => {
                     className="h-[50%] w-[60%] rounded-lg"
                   />
                 </div>
-              ) : ( */}
-              <div className="px-5">
-                <label htmlFor="image-upload" className="cursor-pointer ">
-                  <div className="h-full p-5 bg-white rounded-lg border border-dashed border-gray-400 flex items-center justify-center">
-                    <AddPhotoAlternateIcon className="text-gray-700" />
-                  </div>
-                </label>
-                <input
-                  id="image-upload"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                />
-              </div>
-              {/* )} */}
+              ) : (
+                <div className="px-5">
+                  <label htmlFor="image-upload" className="cursor-pointer ">
+                    <div className="h-full p-5 bg-white rounded-lg border border-dashed border-gray-400 flex items-center justify-center">
+                      <AddPhotoAlternateIcon className="text-gray-700" />
+                    </div>
+                  </label>
+                  <input
+                    onChange={handleImageChange}
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
+              )}
 
               <div className="text-end flex flex-col p-5">
                 <textarea
@@ -89,7 +104,7 @@ export const Sidebar = () => {
                   }}
                 />
                 <button
-                  onClick={createPost}
+                  onClick={sendImage}
                   className="bg-gray-800 my-2 hover:bg-gray-900 text-white border border-gray-300 px-6 py-2 rounded-lg"
                 >
                   post
