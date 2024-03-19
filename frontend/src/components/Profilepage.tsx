@@ -15,6 +15,7 @@ export const Profilepage: React.FC = () => {
     posts: {
       id: string;
       content: string;
+      image: string;
     }[];
   }>({
     id: "",
@@ -243,7 +244,7 @@ export const Profilepage: React.FC = () => {
                         @{userData.username}
                       </p>
                     </div>
-
+                    <img src={post.image} className="h-auto w-[20vw]" />
                     <p className="text-gray-700 my-1">{post.content}</p>
                   </div>
                 </div>

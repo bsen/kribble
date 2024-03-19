@@ -15,20 +15,30 @@ export const Sidebar = () => {
   const [postCreate, setPostCreate] = useState(false);
   const [post, setPost] = useState("");
   const [postImage, setPostImage] = useState<File | null>(null);
-
   const token = localStorage.getItem("token");
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    setPostImage(file);
+  };
+
   async function createPost() {
-    console.log(post);
     if (post.length < 10) {
       alert("post has to be minimum 10 characters");
       return;
     }
+    if (postImage == null) {
+      alert("set a picture");
+      return;
+    }
+
+    const file = postImage;
+    const formdata = new FormData();
+    formdata.append("image", file ? file : "");
+    formdata.append("post", post ? post : "");
+    formdata.append("token", token ? token : "");
     try {
-      const response = await axios.post(`${api}/post`, {
-        post,
-        token,
-      });
+      const response = await axios.post(`${api}/post`, formdata);
       console.log(response.data.message);
       if (response.data.status === 200) {
         alert("post created");
@@ -37,19 +47,6 @@ export const Sidebar = () => {
     } catch (error) {
       console.error("Error creating post:", error);
     }
-  }
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    setPostImage(file);
-  };
-
-  async function sendImage() {
-    const file = postImage;
-    const formdata = new FormData();
-    formdata.append("image", file ? file : "");
-    const res = await axios.post(`${api}/image`, formdata);
-    console.log(postImage);
-    console.log(res.data.status);
   }
 
   return (
@@ -104,7 +101,7 @@ export const Sidebar = () => {
                   }}
                 />
                 <button
-                  onClick={sendImage}
+                  onClick={createPost}
                   className="bg-gray-800 my-2 hover:bg-gray-900 text-white border border-gray-300 px-6 py-2 rounded-lg"
                 >
                   post

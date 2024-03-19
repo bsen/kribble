@@ -3,6 +3,10 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
 
+const accountId = "35c5d12b3a2b0aaa7a3bf9a1c579fed5";
+const apiToken = "L0efpQDU91oUs9S9D1FsPRoejzx98kfRxnuyN3CM";
+const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/images/v1`;
+
 export const userRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -141,49 +145,25 @@ userRouter.post("/bioupdate", async (c) => {
 });
 
 userRouter.post("/post", async (c) => {
-  const body = await c.req.json();
   const formData = await c.req.formData();
   const file = formData.get("image");
+  const post = formData.get("post");
+  const token = formData.get("token");
+  console.log(post, token);
+  if (typeof post !== "string" || typeof token !== "string") {
+    return c.json({ status: 400, message: "Invalid post or token" });
+  }
+  if (!file) {
+    return c.json({ status: 400, message: "No image provided" }, 400);
+  }
+  const data = new FormData();
+  const blob = new Blob([file]);
+  data.append("file", blob, "cloudflare_image");
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-  console.log(file);
-  const token = body.token;
   const userId = await verify(token, c.env.JWT_SECRET);
   try {
-    const post = await prisma.post.create({
-      data: {
-        content: body.post,
-        creator: { connect: { id: userId.id } },
-      },
-    });
-
-    if (!post) {
-      return c.json({ status: 403, message: "failed to create new post" });
-    }
-
-    return c.json({ status: 200, message: "post created successfully" });
-  } catch (error) {
-    console.error(error);
-    return c.json({ status: 500, message: "Internal server error" });
-  }
-});
-
-const accountId = "35c5d12b3a2b0aaa7a3bf9a1c579fed5";
-const apiToken = "L0efpQDU91oUs9S9D1FsPRoejzx98kfRxnuyN3CM";
-const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/images/v1`;
-
-userRouter.post("/image", async (c) => {
-  try {
-    const formData = await c.req.formData();
-    const file = formData.get("image");
-    if (!file) {
-      return c.json({ status: 400, message: "No image provided" }, 400);
-    }
-    const data = new FormData();
-    const blob = new Blob([file]);
-    data.append("file", blob, "cloudflare_image");
-
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -191,8 +171,31 @@ userRouter.post("/image", async (c) => {
       },
       body: data,
     });
+    const imgUrl = (await response.json()) as {
+      result: { variants: string[] };
+    };
+    if (
+      imgUrl.result &&
+      imgUrl.result.variants &&
+      imgUrl.result.variants.length > 0
+    ) {
+      const variantUrl = imgUrl.result.variants[0];
+      console.log(variantUrl);
+      const success = await prisma.post.create({
+        data: {
+          content: post,
+          creator: { connect: { id: userId.id } },
+          image: variantUrl,
+        },
+      });
 
-    console.log(await response.json());
+      if (!success) {
+        return c.json({ status: 403, message: "failed to create new post" });
+      }
+      console.log(success);
+    } else {
+      console.error("No variants found in the response.");
+    }
 
     return c.json({ status: 200 });
   } catch (e) {
