@@ -3,7 +3,7 @@ import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 
 export const Profilepage: React.FC = () => {
-  const api = "http://localhost:8787/api/server/v1/user";
+  const api = "https://backend.undate-server.workers.dev/api/server/v1/user";
   const [userData, setUserData] = useState<{
     id: string;
     name: string;

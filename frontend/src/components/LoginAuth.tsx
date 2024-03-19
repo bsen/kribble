@@ -5,7 +5,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export const LoginAuth = () => {
-  const api = "http://localhost:8787/api/server/v1/user/login";
+  const api =
+    "https://backend.undate-server.workers.dev/api/server/v1/user/login";
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

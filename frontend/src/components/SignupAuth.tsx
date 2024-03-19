@@ -6,7 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const SignupAuth = () => {
   const navigate = useNavigate();
-  const api = "http://localhost:8787/api/server/v1/user/signup";
+  const api =
+    "https://backend.undate-server.workers.dev/api/server/v1/user/signup";
 
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");

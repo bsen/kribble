@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Sidebar = () => {
-  const api = "http://localhost:8787/api/server/v1/user";
+  const api = "https://backend.undate-server.workers.dev/api/server/v1/user";
   const location = useLocation();
   const navigate = useNavigate();
   const [postCreate, setPostCreate] = useState(false);
