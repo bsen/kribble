@@ -6,6 +6,11 @@ DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsI
 
 JWT_SECRET = "undate@jwtkey#0a9b8c7d6e5f4g3h2i1j#sign"
 
+CLOUDFLARE_IMGAES_ACCOUNT_ID = "35c5d12b3a2b0aaa7a3bf9a1c579fed5"
+CLOUDFLARE_IMGAES_API_TOKEN = "L0efpQDU91oUs9S9D1FsPRoejzx98kfRxnuyN3CM"
+CLOUDFLARE_IMGAES_POST_URL = "https://api.cloudflare.com/client/v4/accounts/35c5d12b3a2b0aaa7a3bf9a1c579fed5/images/v1"
+
+
 # MY_VARIABLE = "production_value"
 
 # [[kv_namespaces]]

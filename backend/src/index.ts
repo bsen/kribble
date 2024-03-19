@@ -9,6 +9,9 @@ const app = new Hono<{
     JWT_SECRET: string;
   };
 }>();
+app.get("/", (c) => {
+  return c.text("Hono server is live!");
+});
 app.use("/*", cors());
 app.route("/api/server/v1/user", userRouter);
 app.route("/api/server/v1/user", postRouter);

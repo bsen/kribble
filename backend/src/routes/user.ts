@@ -3,14 +3,13 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
 
-const accountId = "35c5d12b3a2b0aaa7a3bf9a1c579fed5";
-const apiToken = "L0efpQDU91oUs9S9D1FsPRoejzx98kfRxnuyN3CM";
-const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/images/v1`;
-
 export const userRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
+    CLOUDFLARE_IMGAES_ACCOUNT_ID: string;
+    CLOUDFLARE_IMGAES_API_TOKEN: string;
+    CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
 
@@ -164,10 +163,10 @@ userRouter.post("/post", async (c) => {
   }).$extends(withAccelerate());
   const userId = await verify(token, c.env.JWT_SECRET);
   try {
-    const response = await fetch(url, {
+    const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiToken}`,
+        Authorization: `Bearer ${c.env.CLOUDFLARE_IMGAES_API_TOKEN}`,
       },
       body: data,
     });
@@ -201,5 +200,33 @@ userRouter.post("/post", async (c) => {
   } catch (e) {
     console.log(e);
     return c.json({ status: 404 });
+  }
+});
+
+userRouter.post("/all-posts", async (c) => {
+  const body = await c.req.json();
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const token = body.token;
+  try {
+    const userId = await verify(token, c.env.JWT_SECRET);
+    if (!userId) {
+      console.log("user not authenticated");
+      return c.json({ status: 400, message: "user not authenticated" });
+    }
+
+    const allPosts = await prisma.post.findMany({});
+    if (!allPosts) {
+      console.log("posts not found");
+      return c.json({
+        status: 400,
+        message: "req failedd, posts not found",
+      });
+    }
+
+    return c.json({ status: 200, message: allPosts });
+  } catch (error) {
+    console.log(error);
   }
 });

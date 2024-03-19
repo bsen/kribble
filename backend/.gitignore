@@ -5,6 +5,7 @@ dist
 
 # Change them to your taste:
 package-lock.json
+wrangler.toml
 yarn.lock
 pnpm-lock.yaml
 bun.lockb
