@@ -203,7 +203,7 @@ userRouter.post("/post", async (c) => {
   }
 });
 
-userRouter.post("/all-posts", async (c) => {
+userRouter.post("/bulkposts", async (c) => {
   const body = await c.req.json();
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,

@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { BACKEND_URL } from "../config";
 
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export const LoginAuth = () => {
-  const api =
-    "https://backend.undate-server.workers.dev/api/server/v1/user/login";
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,17 +30,19 @@ export const LoginAuth = () => {
     }
     try {
       const data = { email, password };
-      axios.post(api, data).then((response) => {
-        if (response.data.status == 200) {
-          const jwt = response.data.message;
-          localStorage.setItem("token", jwt);
-          navigate("/home");
-        }
-        if (response.data.status == 403) {
-          setpopText("Email or Password is invalid");
-          popupFn();
-        }
-      });
+      axios
+        .post(`${BACKEND_URL}/api/server/v1/user/login`, data)
+        .then((response) => {
+          if (response.data.status == 200) {
+            const jwt = response.data.message;
+            localStorage.setItem("token", jwt);
+            navigate("/home");
+          }
+          if (response.data.status == 403) {
+            setpopText("Email or Password is invalid");
+            popupFn();
+          }
+        });
     } catch (error) {
       console.log(error);
     }

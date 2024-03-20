@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
+import { BACKEND_URL } from "../config";
 
 export const Profilepage: React.FC = () => {
-  const api = "https://backend.undate-server.workers.dev/api/server/v1/user";
   const [userData, setUserData] = useState<{
     id: string;
     name: string;
@@ -38,7 +38,10 @@ export const Profilepage: React.FC = () => {
 
   async function getData() {
     try {
-      const res = await axios.post(`${api}/userdata`, { token });
+      const res = await axios.post(
+        `${BACKEND_URL}/api/server/v1/user/userdata`,
+        { token }
+      );
       const { id, name, email, username, gender, bio, posts } =
         res.data.message;
 
@@ -63,7 +66,10 @@ export const Profilepage: React.FC = () => {
       return;
     }
     try {
-      const res = await axios.post(`${api}/bioupdate`, { token, bio });
+      const res = await axios.post(
+        `${BACKEND_URL}/api/server/v1/user/bioupdate`,
+        { token, bio }
+      );
       console.log(res.data.status, res.data.message);
       if (res.data.status == 200) {
         setIsBioEditing(false);
@@ -89,7 +95,7 @@ export const Profilepage: React.FC = () => {
   const savePhoto = async () => {
     const username = userData.username;
 
-    const res = await axios.post(`${api}`, { username, image });
+    const res = await axios.post(`${BACKEND_URL}`, { username, image });
     if (res.data.status === 200) {
       alert("Image updated");
     } else if (res.data.status === 403) {
@@ -115,8 +121,8 @@ export const Profilepage: React.FC = () => {
 
   console.log(image);
   return (
-    <div className="border-l border-r border-gray-200 bg-white">
-      <div className="p-10 border-b border-gray-200">
+    <div className="bg-black">
+      <div className="p-10 border-b border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex">
             {image ? (
@@ -131,12 +137,12 @@ export const Profilepage: React.FC = () => {
                   "https://imagedelivery.net/cV-2jw5Z4EJcAnIlwLPzWw/437d240e-a22b-4f28-856a-242c4119dd00/public"
                 }
                 alt="Profile"
-                className="w-20 h-20 rounded-full border border-greay-50"
+                className="w-20 h-20 rounded-full border border-greay-500"
               />
             )}
             <div>
               <label htmlFor="image-upload" className="cursor-pointer ">
-                <EditIcon sx={{ fontSize: 20 }} className="text-gray-700 " />
+                <EditIcon sx={{ fontSize: 20 }} className="text-gray-500 " />
               </label>
               <input
                 id="image-upload"
@@ -151,10 +157,12 @@ export const Profilepage: React.FC = () => {
         <div className="my-2">
           <div className="flex justify-between">
             <div>
-              <h2 className="text-lg text-gray-700 font-semibold">
+              <h2 className="text-lg text-gray-200 font-semibold">
                 {userData.name}
               </h2>
-              <h2 className="text-base font-light">@{userData.username}</h2>
+              <h2 className="text-base font-light text-gray-400">
+                @{userData.username}
+              </h2>
             </div>
             <div>
               {image ? (
@@ -176,7 +184,7 @@ export const Profilepage: React.FC = () => {
                 <div className="flex items-center">
                   <button
                     onClick={() => setIsBioEditing(!isBioEditing)}
-                    className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-1 rounded-lg "
+                    className="bg-black hover:bg-gray-900 border border-gray-600 text-white px-4 py-1 rounded-lg "
                   >
                     {isBioEditing ? "Cancel" : "Edit bio"}
                   </button>
@@ -191,18 +199,18 @@ export const Profilepage: React.FC = () => {
                 defaultValue={userData.bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Enter your bio"
-                className="w-full p-2 border border-gray-300 rounded-lg"
+                className="w-full p-2  rounded-lg"
               />
               <button
                 onClick={bioUpdate}
-                className="bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-300 px-4 py-1 rounded-lg"
+                className="bg-white hover:bg-gray-50 text-gray-600 border border-gray-300 px-4 py-1 rounded-lg"
               >
                 update
               </button>
             </div>
           )}
           {!isBioEditing && (
-            <div className="text-gray-600 mt-2">
+            <div className="text-gray-200 mt-2">
               {userData.bio ? <p>{userData.bio}</p> : <p>Write your bio</p>}
             </div>
           )}
@@ -215,38 +223,36 @@ export const Profilepage: React.FC = () => {
             .slice()
             .reverse()
             .map((post, index) => (
-              <div
-                key={index}
-                className="bg-white  py-2 px-4  border-b border-gray-300 hover:bg-gray-50"
-              >
-                <div className="flex gap-2 items-start">
-                  <div>
-                    <div>
-                      {image ? (
-                        <img
-                          src={image}
-                          alt="Profile"
-                          className="w-8 h-8 rounded-full"
-                        />
-                      ) : (
-                        <img
-                          src={"src/assets/chicken.png"}
-                          alt="Profile"
-                          className="w-8 h-8 border border-indigo-500 rounded-full"
-                        />
-                      )}
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <p className="text-gray-800 font-semibold">
-                        {userData.name}
-                      </p>
-                      <p className="text-gray-700 text-sm">
-                        @{userData.username}
-                      </p>
-                    </div>
-                    <img src={post.image} className="h-auto w-[20vw]" />
-                    <p className="text-gray-700 my-1">{post.content}</p>
+              <div key={index} className="p-4  border-b border-gray-700">
+                <div className="flex gap-2 items-center">
+                  {image ? (
+                    <img
+                      src={image}
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full"
+                    />
+                  ) : (
+                    <img
+                      src={"src/assets/chicken.png"}
+                      alt="Profile"
+                      className="w-10 h-10 border border-gray-700 rounded-full"
+                    />
+                  )}
+                  <div className="flex gap-2 items-center">
+                    <p className="text-gray-200 font-semibold">
+                      {userData.name}
+                    </p>
+                    <p className="text-gray-400 text-sm">
+                      @{userData.username}
+                    </p>
                   </div>
+                </div>
+                <div className="w-ful py-4 flex flex-col items-start justify-center">
+                  <img
+                    src={post.image}
+                    className="h-auto max-w-[60%] rounded-lg"
+                  />
+                  <p className="text-gray-200 my-2">{post.content}</p>
                 </div>
               </div>
             ))

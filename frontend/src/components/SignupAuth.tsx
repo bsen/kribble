@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-
+import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export const SignupAuth = () => {
   const navigate = useNavigate();
-  const api =
-    "https://backend.undate-server.workers.dev/api/server/v1/user/signup";
-
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -97,20 +94,22 @@ export const SignupAuth = () => {
 
     const userdata = { name, username, email, gender, password };
     try {
-      axios.post(api, userdata).then((response) => {
-        if (response.data.status === 200) {
-          const jwt = response.data.message;
-          localStorage.setItem("token", jwt);
-          navigate("/home");
-          succes();
-        } else if (response.data.status === 409) {
-          setpopText("This email is already used 😢");
-          popupFn();
-        } else if (response.data.status === 411) {
-          setpopText("Username is already taken 😢");
-          popupFn();
-        }
-      });
+      axios
+        .post(`${BACKEND_URL}/api/server/v1/user/signup`, userdata)
+        .then((response) => {
+          if (response.data.status === 200) {
+            const jwt = response.data.message;
+            localStorage.setItem("token", jwt);
+            navigate("/home");
+            succes();
+          } else if (response.data.status === 409) {
+            setpopText("This email is already used 😢");
+            popupFn();
+          } else if (response.data.status === 411) {
+            setpopText("Username is already taken 😢");
+            popupFn();
+          }
+        });
     } catch (error) {
       console.log(error);
       setpopText("Network error, try again later");

@@ -7,9 +7,9 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 export const Sidebar = () => {
-  const api = "https://backend.undate-server.workers.dev/api/server/v1/user";
   const location = useLocation();
   const navigate = useNavigate();
   const [postCreate, setPostCreate] = useState(false);
@@ -38,7 +38,10 @@ export const Sidebar = () => {
     formdata.append("post", post ? post : "");
     formdata.append("token", token ? token : "");
     try {
-      const response = await axios.post(`${api}/post`, formdata);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/user/post`,
+        formdata
+      );
       console.log(response.data.message);
       if (response.data.status === 200) {
         alert("post created");
@@ -52,7 +55,7 @@ export const Sidebar = () => {
   return (
     <>
       {postCreate ? (
-        <div className="h-screen w-full absolute bg-black/50">
+        <div className="h-screen w-full absolute bg-black/60">
           <div className="h-auto w-[30vw] absolute rounded-lg bg-gray-50 shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
             <button
               onClick={() => {
@@ -91,7 +94,7 @@ export const Sidebar = () => {
               <div className="text-end flex flex-col p-5">
                 <textarea
                   rows={4}
-                  className=" border border-gray-200 resize-none focus:outline-none p-2 text-gray-600 rounded-lg"
+                  className=" border border-gray-200 resize-none focus:outline-none p-2 text-gray-700 rounded-lg"
                   placeholder="write your thoughts..."
                   wrap="soft"
                   minLength={10}
@@ -113,9 +116,9 @@ export const Sidebar = () => {
       ) : (
         ""
       )}
-      <div className="h-screen bg-white border-r border-gray-200 w-[20%] p-4 flex flex-col justify-between">
+      <div className="h-screen bg-black w-[40%] px-10 flex flex-col justify-between">
         <div className="h-max w-full">
-          <div className="w-full text-3xl font-mono text-gray-700 pb-4 text-center border-b border-gray-300">
+          <div className="w-full text-3xl font-mono text-gray-200 p-4 text-center border-b border-gray-700">
             undate
           </div>
           <button
@@ -127,22 +130,22 @@ export const Sidebar = () => {
             <div
               className={`p-2 mt-5 flex items-center justify-center gap-2 rounded-md ${
                 location.pathname === "/home"
-                  ? "bg-indigo-50"
-                  : "border border-gray-200"
+                  ? "bg-white"
+                  : "border border-gray-700"
               }`}
             >
               <HomeIcon
                 className={`${
                   location.pathname === "/home"
-                    ? "text-indigo-500"
-                    : "text-gray-600"
+                    ? "text-indigo-800"
+                    : "text-gray-200"
                 }`}
               />
               <p
                 className={`text-base ${
                   location.pathname === "/home"
-                    ? "text-indigo-500"
-                    : "text-gray-600"
+                    ? "text-indigo-800"
+                    : "text-gray-200"
                 }`}
               >
                 Home
@@ -158,22 +161,22 @@ export const Sidebar = () => {
             <div
               className={`p-2 mt-5 flex items-center justify-center gap-2 rounded-md ${
                 location.pathname === "/profile"
-                  ? "bg-indigo-50"
-                  : "border border-gray-200"
+                  ? "bg-white"
+                  : "border border-gray-700"
               }`}
             >
               <PersonIcon
                 className={`${
                   location.pathname === "/profile"
-                    ? "text-indigo-500"
-                    : "text-gray-600"
+                    ? "text-indigo-800"
+                    : "text-gray-200"
                 }`}
               />
               <p
                 className={`text-base ${
                   location.pathname === "/profile"
-                    ? "text-indigo-500"
-                    : "text-gray-600"
+                    ? "text-indigo-800"
+                    : "text-gray-200"
                 }`}
               >
                 Profile
@@ -188,17 +191,17 @@ export const Sidebar = () => {
           >
             <div
               className={`p-2 mt-5 flex items-center justify-center gap-2 rounded-md ${
-                postCreate ? "bg-indigo-50" : "border border-gray-200"
+                postCreate ? "bg-white" : "border border-gray-700"
               }`}
             >
               <PostAddIcon
                 className={`${
-                  postCreate ? "text-indigo-500" : "text-gray-600"
+                  postCreate ? "text-indigo-800" : "text-gray-200"
                 }`}
               />
               <p
                 className={`text-base ${
-                  postCreate ? "text-indigo-500" : "text-gray-600"
+                  postCreate ? "text-indigo-800" : "text-gray-200"
                 }`}
               >
                 Post
@@ -216,11 +219,11 @@ export const Sidebar = () => {
         >
           <div
             className={
-              "p-2 mt-5 flex items-center justify-center gap-2 rounded-md  border border-gray-200"
+              "p-2 my-6 flex items-center justify-center gap-2 rounded-md  border border-gray-700"
             }
           >
-            <ExitToAppIcon className={"text-gray-600"} />
-            <p className={"text-base text-gray-600"}>Logout</p>
+            <ExitToAppIcon className={"text-gray-200"} />
+            <p className={"text-base text-gray-200"}>Logout</p>
           </div>
         </button>
       </div>

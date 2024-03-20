@@ -4,12 +4,10 @@ import { Suggetions } from "../components/Suggetions";
 
 export const Profile = () => {
   return (
-    <div className="flex justify-between bg-gray-50">
+    <div className="flex justify-between bg-black">
       <Sidebar />
-      <div className="h-screen w-[50vw] overflow-y-auto no-scrollbar bg-white">
-        <div>
-          <Profilepage />
-        </div>
+      <div className="h-screen w-[80%] border-l border-r border-gray-700 overflow-y-auto no-scrollbar">
+        <Profilepage />
       </div>
       <Suggetions />
     </div>
