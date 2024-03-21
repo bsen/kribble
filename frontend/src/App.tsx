@@ -8,10 +8,7 @@ interface ProtectedRouteProps {
   element: React.ReactNode;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  element,
-  ...rest
-}) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const token = localStorage.getItem("token");
   return token ? element : <Navigate to="/login" replace />;
 };
