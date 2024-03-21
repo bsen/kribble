@@ -8,18 +8,30 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { reload } from "firebase/auth";
 
 export const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [postCreate, setPostCreate] = useState(false);
   const [post, setPost] = useState("");
+  const [logoutState, setLogoutState] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
   const [postImage, setPostImage] = useState<File | null>(null);
   const token = localStorage.getItem("token");
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     setPostImage(file);
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
 
   async function createPost() {
@@ -54,31 +66,62 @@ export const Sidebar = () => {
 
   return (
     <>
+      {logoutState ? (
+        <div className="h-screen w-full absolute bg-black/80 flex justify-center items-center">
+          <div className="text-white text-xl font-mono">
+            Do you really want to logout?
+            <div className="flex justify-evenly my-5">
+              <button
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  navigate("/login");
+                }}
+                className="text-gray-400 px-4 py-1 border border-gray-400 rounded-lg font-thin"
+              >
+                YES
+              </button>
+              <button
+                onClick={() => {
+                  setLogoutState(false);
+                }}
+                className="text-indigo-300 px-5 py-1 border border-indigo-300 rounded-lg font-thin"
+              >
+                NO
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+
       {postCreate ? (
-        <div className="h-screen w-full absolute bg-black/60">
-          <div className="h-auto w-[30vw] absolute rounded-lg bg-gray-50 shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
+        <div className="h-screen w-full absolute bg-black/70">
+          <div className="h-auto w-[30vw] absolute rounded-lg bg-white shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
             <button
               onClick={() => {
                 setPost("");
+                setPostImage(null);
+                setPreviewImage("");
                 setPostCreate(false);
               }}
             >
-              <CloseIcon className="absolute -top-2 rounded-full text-gray-100 bg-gray-800 -left-2" />
+              <CloseIcon className="absolute -top-5 -left-5 text-white" />
             </button>
-            <div className="h-full flex flex-col justify-between gap-4">
+            <div className="h-full flex flex-col justify-between">
               {postImage ? (
                 <div className="flex justify-center items-center w-full">
                   <img
-                    src={typeof postImage === "string" ? postImage : ""}
+                    src={previewImage ? previewImage : ""}
                     alt="Profile"
-                    className="h-[50%] w-[60%] rounded-lg"
+                    className="max-h-[40vh] max-w-[80%] rounded-lg"
                   />
                 </div>
               ) : (
                 <div className="px-5">
                   <label htmlFor="image-upload" className="cursor-pointer ">
                     <div className="h-full p-5 bg-white rounded-lg border border-dashed border-gray-400 flex items-center justify-center">
-                      <AddPhotoAlternateIcon className="text-gray-700" />
+                      <AddPhotoAlternateIcon className="text-grayBack" />
                     </div>
                   </label>
                   <input
@@ -94,7 +137,7 @@ export const Sidebar = () => {
               <div className="text-end flex flex-col p-5">
                 <textarea
                   rows={4}
-                  className=" border border-gray-200 resize-none focus:outline-none p-2 text-gray-700 rounded-lg"
+                  className=" border border-gray-300 resize-none focus:outline-none p-2 text-gray-700 rounded-lg"
                   placeholder="write your thoughts..."
                   wrap="soft"
                   minLength={10}
@@ -105,7 +148,7 @@ export const Sidebar = () => {
                 />
                 <button
                   onClick={createPost}
-                  className="bg-gray-800 my-2 hover:bg-gray-900 text-white border border-gray-300 px-6 py-2 rounded-lg"
+                  className="bg-grayBack my-4 hover:bg-gray-900 text-white border border-gray-300 px-6 py-2 rounded-lg"
                 >
                   post
                 </button>
@@ -116,9 +159,9 @@ export const Sidebar = () => {
       ) : (
         ""
       )}
-      <div className="h-screen bg-black w-[40%] px-10 flex flex-col justify-between">
+      <div className="h-screen bg-black w-[30%] px-10 flex flex-col justify-between">
         <div className="h-max w-full">
-          <div className="w-full text-3xl font-mono text-gray-200 p-4 text-center border-b border-gray-700">
+          <div className="w-full text-3xl font-mono text-gray-200 p-4 text-center border-b border-gray-600">
             undate
           </div>
           <button
@@ -128,24 +171,22 @@ export const Sidebar = () => {
             }}
           >
             <div
-              className={`p-2 mt-5 flex items-center justify-center gap-2 rounded-md ${
-                location.pathname === "/home"
-                  ? "bg-white"
-                  : "border border-gray-700"
-              }`}
+              className={
+                "p-2 mt-5 flex items-center justify-center gap-2 rounded-md "
+              }
             >
               <HomeIcon
                 className={`${
                   location.pathname === "/home"
-                    ? "text-indigo-800"
-                    : "text-gray-200"
+                    ? "text-indigo-500"
+                    : "text-logos"
                 }`}
               />
               <p
                 className={`text-base ${
                   location.pathname === "/home"
-                    ? "text-indigo-800"
-                    : "text-gray-200"
+                    ? "text-indigo-500"
+                    : "text-logos"
                 }`}
               >
                 Home
@@ -159,24 +200,22 @@ export const Sidebar = () => {
             }}
           >
             <div
-              className={`p-2 mt-5 flex items-center justify-center gap-2 rounded-md ${
-                location.pathname === "/profile"
-                  ? "bg-white"
-                  : "border border-gray-700"
-              }`}
+              className={
+                "p-2 mt-5 flex items-center justify-center gap-2 rounded-md "
+              }
             >
               <PersonIcon
                 className={`${
                   location.pathname === "/profile"
-                    ? "text-indigo-800"
-                    : "text-gray-200"
+                    ? "text-indigo-500"
+                    : "text-logos"
                 }`}
               />
               <p
                 className={`text-base ${
                   location.pathname === "/profile"
-                    ? "text-indigo-800"
-                    : "text-gray-200"
+                    ? "text-indigo-500"
+                    : "text-logos"
                 }`}
               >
                 Profile
@@ -184,46 +223,35 @@ export const Sidebar = () => {
             </div>
           </button>
           <button
-            className="w-full"
+            className="w-full flex justify-center"
             onClick={() => {
               setPostCreate(true);
             }}
           >
             <div
-              className={`p-2 mt-5 flex items-center justify-center gap-2 rounded-md ${
-                postCreate ? "bg-white" : "border border-gray-700"
-              }`}
+              className={
+                "p-2 mt-5 flex items-center justify-center gap-2 rounded-md bg-gray-200 w-[50%]"
+              }
             >
-              <PostAddIcon
-                className={`${
-                  postCreate ? "text-indigo-800" : "text-gray-200"
-                }`}
-              />
-              <p
-                className={`text-base ${
-                  postCreate ? "text-indigo-800" : "text-gray-200"
-                }`}
-              >
-                Post
-              </p>
+              <PostAddIcon className={"text-indigo-800"} />
+              <p className={"text-base text-indigo-800"}>Post</p>
             </div>
           </button>
         </div>
 
         <button
-          className="w-full"
           onClick={() => {
-            localStorage.removeItem("token");
-            navigate("/login");
+            setLogoutState(true);
           }}
+          className="w-full"
         >
           <div
             className={
-              "p-2 my-6 flex items-center justify-center gap-2 rounded-md  border border-gray-700"
+              "p-2 my-6 flex items-center justify-center gap-2 rounded-md"
             }
           >
-            <ExitToAppIcon className={"text-gray-200"} />
-            <p className={"text-base text-gray-200"}>Logout</p>
+            <ExitToAppIcon className={"text-logos"} />
+            <p className={"text-base text-logos"}>Logout</p>
           </div>
         </button>
       </div>

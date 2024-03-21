@@ -103,6 +103,7 @@ userRouter.post("/userdata", async (c) => {
         username: true,
         gender: true,
         bio: true,
+        image: true,
         posts: true,
       },
     });
@@ -157,7 +158,7 @@ userRouter.post("/post", async (c) => {
   }
   const data = new FormData();
   const blob = new Blob([file]);
-  data.append("file", blob, "cloudflare_image");
+  data.append("file", blob, "user_post_cloudflare_images");
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -228,5 +229,63 @@ userRouter.post("/bulkposts", async (c) => {
     return c.json({ status: 200, message: allPosts });
   } catch (error) {
     console.log(error);
+  }
+});
+
+userRouter.post("/profile-picture-update", async (c) => {
+  const formData = await c.req.formData();
+  const file = formData.get("image");
+  const token = formData.get("token");
+
+  if (typeof token !== "string") {
+    return c.json({ status: 400, message: "Invalid post or token" });
+  }
+  if (!file) {
+    return c.json({ status: 400, message: "No image provided" }, 400);
+  }
+  const data = new FormData();
+  const blob = new Blob([file]);
+  data.append("file", blob, "user_profile_picture_cloudflare_image");
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const userId = await verify(token, c.env.JWT_SECRET);
+  console.log(file, userId);
+  try {
+    const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${c.env.CLOUDFLARE_IMGAES_API_TOKEN}`,
+      },
+      body: data,
+    });
+    const imgUrl = (await response.json()) as {
+      result: { variants: string[] };
+    };
+    if (
+      imgUrl.result &&
+      imgUrl.result.variants &&
+      imgUrl.result.variants.length > 0
+    ) {
+      const variantUrl = imgUrl.result.variants[0];
+      const success = await prisma.user.update({
+        where: { id: userId.id },
+        data: {
+          image: variantUrl,
+        },
+      });
+
+      if (!success) {
+        return c.json({ status: 403, message: "failed to create new post" });
+      }
+      console.log(success);
+    } else {
+      console.error("No variants found in the response.");
+    }
+
+    return c.json({ status: 200 });
+  } catch (e) {
+    console.log(e);
+    return c.json({ status: 404 });
   }
 });

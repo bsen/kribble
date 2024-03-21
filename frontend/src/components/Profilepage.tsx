@@ -29,11 +29,10 @@ export const Profilepage: React.FC = () => {
   });
 
   const [bio, setBio] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
 
-  const [image, setImage] = useState("");
+  const [profileImg, setProfileImg] = useState<File | null>(null);
   const [isBioEditing, setIsBioEditing] = useState(false);
-
-  const maxBioLength = 100;
   const token = localStorage.getItem("token");
 
   async function getData() {
@@ -42,9 +41,9 @@ export const Profilepage: React.FC = () => {
         `${BACKEND_URL}/api/server/v1/user/userdata`,
         { token }
       );
-      const { id, name, email, username, gender, bio, posts } =
+      const { id, name, email, username, gender, bio, image, posts } =
         res.data.message;
-
+      console.log(res.data.message);
       setUserData({
         id,
         name,
@@ -81,33 +80,40 @@ export const Profilepage: React.FC = () => {
   }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files ? event.target.files[0] : null;
+    setProfileImg(file);
     if (file) {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        setImage(reader.result as string);
+        setPreviewImage(reader.result as string);
       };
 
       reader.readAsDataURL(file);
     }
   };
+
   const savePhoto = async () => {
-    const username = userData.username;
+    const file = profileImg;
+    const formdata = new FormData();
+    formdata.append("image", file ? file : "");
+    formdata.append("token", token ? token : "");
 
-    const res = await axios.post(`${BACKEND_URL}`, { username, image });
+    const res = await axios.post(
+      `${BACKEND_URL}/api/server/v1/user/profile-picture-update`,
+      formdata
+    );
     if (res.data.status === 200) {
-      alert("Image updated");
-    } else if (res.data.status === 403) {
-      alert("Server error, try again later");
+      setPreviewImage("");
+      setProfileImg(null);
+      return alert("Image updated");
     } else {
-      alert("Server error, try again later");
+      return alert("Server error, try again later");
     }
-    setImage("");
   };
-
   const cancelSave = () => {
-    setImage("");
+    setProfileImg(null);
+    setPreviewImage("");
   };
 
   useEffect(() => {
@@ -119,23 +125,20 @@ export const Profilepage: React.FC = () => {
   }, []);
   useEffect(() => {}, [userData.posts, userData.bio]);
 
-  console.log(image);
   return (
     <div className="bg-black">
-      <div className="p-10 border-b border-gray-700">
+      <div className="p-10 border-t border-b border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex">
-            {image ? (
+            {profileImg ? (
               <img
-                src={image}
+                src={previewImage}
                 alt="Profile"
                 className="w-20 h-20 rounded-full mr-4"
               />
             ) : (
               <img
-                src={
-                  "https://imagedelivery.net/cV-2jw5Z4EJcAnIlwLPzWw/437d240e-a22b-4f28-856a-242c4119dd00/public"
-                }
+                src={userData.image ? userData.image : "src/assets/chicken.png"}
                 alt="Profile"
                 className="w-20 h-20 rounded-full border border-greay-500"
               />
@@ -153,6 +156,21 @@ export const Profilepage: React.FC = () => {
               />
             </div>
           </div>
+
+          <div className="text-gray-200 flex  w-full justify-evenly">
+            <div className="flex flex-col items-center">
+              <div>{userData.posts.length}</div>
+              <div>posts</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div>0</div>
+              <div>followers</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div>0</div>
+              <div>followings</div>
+            </div>
+          </div>
         </div>
         <div className="my-2">
           <div className="flex justify-between">
@@ -165,11 +183,11 @@ export const Profilepage: React.FC = () => {
               </h2>
             </div>
             <div>
-              {image ? (
+              {previewImage ? (
                 <div className="flex items-center">
                   <button
                     onClick={savePhoto}
-                    className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-1 rounded-lg mr-2"
+                    className="bg-grayBack border border-gray-700 hover:bg-gray-900 text-white px-4 py-1 rounded-lg mr-2"
                   >
                     Save
                   </button>
@@ -184,7 +202,7 @@ export const Profilepage: React.FC = () => {
                 <div className="flex items-center">
                   <button
                     onClick={() => setIsBioEditing(!isBioEditing)}
-                    className="bg-black hover:bg-gray-900 border border-gray-600 text-white px-4 py-1 rounded-lg "
+                    className=" hover:bg-black border border-gray-600 text-white px-4 py-1 rounded-lg "
                   >
                     {isBioEditing ? "Cancel" : "Edit bio"}
                   </button>
@@ -195,7 +213,7 @@ export const Profilepage: React.FC = () => {
           {isBioEditing && (
             <div className="flex items-center w-full gap-4 my-2">
               <input
-                maxLength={maxBioLength}
+                maxLength={200}
                 defaultValue={userData.bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Enter your bio"
@@ -223,11 +241,11 @@ export const Profilepage: React.FC = () => {
             .slice()
             .reverse()
             .map((post, index) => (
-              <div key={index} className="p-4  border-b border-gray-700">
+              <div key={index} className="py-4 p-10  border-b border-gray-700">
                 <div className="flex gap-2 items-center">
-                  {image ? (
+                  {userData.image ? (
                     <img
-                      src={image}
+                      src={userData.image}
                       alt="Profile"
                       className="w-8 h-8 rounded-full"
                     />
@@ -250,14 +268,16 @@ export const Profilepage: React.FC = () => {
                 <div className="w-ful py-4 flex flex-col items-start justify-center">
                   <img
                     src={post.image}
-                    className="h-auto max-w-[60%] rounded-lg"
+                    className="h-auto max-w-[50%] rounded-lg"
                   />
                   <p className="text-gray-200 my-2">{post.content}</p>
                 </div>
               </div>
             ))
         ) : (
-          <p className="text-center font-mono my-5">No posts found.</p>
+          <p className="text-center font-mono my-5 text-white">
+            No posts found.
+          </p>
         )}
       </div>
     </div>
