@@ -217,12 +217,24 @@ userRouter.post("/bulkposts", async (c) => {
       return c.json({ status: 400, message: "user not authenticated" });
     }
 
-    const allPosts = await prisma.post.findMany({});
+    const allPosts = await prisma.post.findMany({
+      include: {
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+
     if (!allPosts) {
       console.log("posts not found");
       return c.json({
         status: 400,
-        message: "req failedd, posts not found",
+        message: "req failed, posts not found",
       });
     }
 

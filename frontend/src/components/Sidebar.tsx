@@ -8,7 +8,6 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-import { reload } from "firebase/auth";
 
 export const Sidebar = () => {
   const location = useLocation();
@@ -121,7 +120,7 @@ export const Sidebar = () => {
                 <div className="px-5">
                   <label htmlFor="image-upload" className="cursor-pointer ">
                     <div className="h-full p-5 bg-white rounded-lg border border-dashed border-gray-400 flex items-center justify-center">
-                      <AddPhotoAlternateIcon className="text-grayBack" />
+                      <AddPhotoAlternateIcon className="text-black" />
                     </div>
                   </label>
                   <input
@@ -148,7 +147,7 @@ export const Sidebar = () => {
                 />
                 <button
                   onClick={createPost}
-                  className="bg-grayBack my-4 hover:bg-gray-900 text-white border border-gray-300 px-6 py-2 rounded-lg"
+                  className="bg-black my-4  hover:bg-gray-900 text-white border border-gray-300 px-6 py-2 rounded-lg"
                 >
                   post
                 </button>
@@ -161,7 +160,7 @@ export const Sidebar = () => {
       )}
       <div className="h-screen bg-black w-[30%] px-10 flex flex-col justify-between">
         <div className="h-max w-full">
-          <div className="w-full text-3xl font-mono text-gray-200 p-4 text-center border-b border-gray-600">
+          <div className="w-full text-3xl font-mono text-gray-200 p-4 text-center border-b border-bordercolor">
             undate
           </div>
           <button

@@ -127,7 +127,7 @@ export const Profilepage: React.FC = () => {
 
   return (
     <div className="bg-black">
-      <div className="p-10 border-t border-b border-gray-700">
+      <div className="p-10 border-b border-bordercolor">
         <div className="flex items-center justify-between">
           <div className="flex">
             {profileImg ? (
@@ -187,7 +187,7 @@ export const Profilepage: React.FC = () => {
                 <div className="flex items-center">
                   <button
                     onClick={savePhoto}
-                    className="bg-grayBack border border-gray-700 hover:bg-gray-900 text-white px-4 py-1 rounded-lg mr-2"
+                    className="bg-black border border-bordercolor hover:bg-gray-900 text-white px-4 py-1 rounded-lg mr-2"
                   >
                     Save
                   </button>
@@ -241,7 +241,10 @@ export const Profilepage: React.FC = () => {
             .slice()
             .reverse()
             .map((post, index) => (
-              <div key={index} className="py-4 p-10  border-b border-gray-700">
+              <div
+                key={index}
+                className="py-4 p-10  border-b border-bordercolor"
+              >
                 <div className="flex gap-2 items-center">
                   {userData.image ? (
                     <img
@@ -253,7 +256,7 @@ export const Profilepage: React.FC = () => {
                     <img
                       src={"src/assets/chicken.png"}
                       alt="Profile"
-                      className="w-10 h-10 border border-gray-700 rounded-full"
+                      className="w-10 h-10 border border-bordercolor rounded-full"
                     />
                   )}
                   <div className="flex gap-2 items-center">
