@@ -56,7 +56,7 @@ export const HomeComponent = () => {
                     className="w-8 h-8 rounded-full"
                   />
                   <div className="flex gap-3">
-                    <p className="text-gray-200 text-sm">{post.creator.name}</p>
+                    <p className="text-white text-sm">{post.creator.name}</p>
                     <p className="text-gray-400 text-sm">
                       @{post.creator.username}
                     </p>
@@ -67,7 +67,7 @@ export const HomeComponent = () => {
                     src={post.image}
                     className="h-auto max-w-[50%] rounded-lg"
                   />
-                  <p className="text-gray-200 my-2">{post.content}</p>
+                  <p className="text-white my-2">{post.content}</p>
                 </div>
               </div>
             ))

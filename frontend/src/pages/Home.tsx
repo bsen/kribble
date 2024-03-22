@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { HomeComponent } from "../components/HomeComponent";
-import { Suggetions } from "../components/Suggetions";
+import { Vitmatch } from "../components/Vitmatch";
 
 export const Home = () => {
   return (
@@ -9,7 +9,7 @@ export const Home = () => {
       <div className="h-screen w-[80%] border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
         <HomeComponent />
       </div>
-      <Suggetions />
+      <Vitmatch />
     </div>
   );
 };

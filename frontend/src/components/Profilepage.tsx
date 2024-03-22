@@ -134,18 +134,18 @@ export const Profilepage: React.FC = () => {
               <img
                 src={previewImage}
                 alt="Profile"
-                className="w-20 h-20 rounded-full mr-4"
+                className="w-20 h-20 rounded-full border border-bordercolor"
               />
             ) : (
               <img
-                src={userData.image ? userData.image : "src/assets/chicken.png"}
+                src={userData.image ? userData.image : "src/assets/user.png"}
                 alt="Profile"
-                className="w-20 h-20 rounded-full border border-greay-500"
+                className="w-20 h-20 rounded-full border border-bordercolor"
               />
             )}
             <div>
               <label htmlFor="image-upload" className="cursor-pointer ">
-                <EditIcon sx={{ fontSize: 20 }} className="text-gray-500 " />
+                <EditIcon sx={{ fontSize: 20 }} className="text-gray-400" />
               </label>
               <input
                 id="image-upload"
@@ -157,25 +157,27 @@ export const Profilepage: React.FC = () => {
             </div>
           </div>
 
-          <div className="text-gray-200 flex  w-full justify-evenly">
-            <div className="flex flex-col items-center">
-              <div>{userData.posts.length}</div>
-              <div>posts</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div>0</div>
-              <div>followers</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div>0</div>
-              <div>followings</div>
+          <div className="text-white flex  w-full justify-evenly ">
+            <div className="text-white flex justify-evenly gap-10 ">
+              <div className="flex flex-col items-center">
+                <div>{userData.posts.length}</div>
+                <div>Posts</div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div>0</div>
+                <div>Followers</div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div>0</div>
+                <div>Following</div>
+              </div>
             </div>
           </div>
         </div>
         <div className="my-2">
           <div className="flex justify-between">
             <div>
-              <h2 className="text-lg text-gray-200 font-semibold">
+              <h2 className="text-lg text-white font-semibold">
                 {userData.name}
               </h2>
               <h2 className="text-base font-light text-gray-400">
@@ -184,16 +186,16 @@ export const Profilepage: React.FC = () => {
             </div>
             <div>
               {previewImage ? (
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={savePhoto}
-                    className="bg-black border border-bordercolor hover:bg-gray-900 text-white px-4 py-1 rounded-lg mr-2"
+                    className="bg-gray-50 hover:bg-gray-100 text-gray-600 px-4 py-1 rounded-lg"
                   >
                     Save
                   </button>
                   <button
                     onClick={cancelSave}
-                    className="bg-gray-50 hover:bg-gray-100 text-gray-600 px-4 py-1 border border-gray-300 rounded-lg"
+                    className="bg-black border border-bordercolor hover:bg-gray-900 text-white px-4 py-1 rounded-lg"
                   >
                     Cancel
                   </button>
@@ -228,7 +230,7 @@ export const Profilepage: React.FC = () => {
             </div>
           )}
           {!isBioEditing && (
-            <div className="text-gray-200 mt-2">
+            <div className="text-white mt-2">
               {userData.bio ? <p>{userData.bio}</p> : <p>Write your bio</p>}
             </div>
           )}
@@ -260,9 +262,7 @@ export const Profilepage: React.FC = () => {
                     />
                   )}
                   <div className="flex gap-2 items-center">
-                    <p className="text-gray-200 font-semibold">
-                      {userData.name}
-                    </p>
+                    <p className="text-white font-semibold">{userData.name}</p>
                     <p className="text-gray-400 text-sm">
                       @{userData.username}
                     </p>
@@ -273,7 +273,7 @@ export const Profilepage: React.FC = () => {
                     src={post.image}
                     className="h-auto max-w-[50%] rounded-lg"
                   />
-                  <p className="text-gray-200 my-2">{post.content}</p>
+                  <p className="text-white my-2">{post.content}</p>
                 </div>
               </div>
             ))
