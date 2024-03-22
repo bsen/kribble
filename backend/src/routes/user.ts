@@ -301,3 +301,64 @@ userRouter.post("/profile-picture-update", async (c) => {
     return c.json({ status: 404 });
   }
 });
+
+userRouter.post("/follow-person", async (c) => {
+  const body = await c.req.json();
+  const token = body.token;
+  const followingUsername = body.followingUsername;
+
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const userId = await verify(token, c.env.JWT_SECRET);
+
+  try {
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    const followingUser = await prisma.user.findUnique({
+      where: {
+        username: followingUsername,
+      },
+    });
+
+    if (!followingUser) {
+      return c.json({ status: 404, error: "User not found" });
+    }
+
+    const isFollowing = await prisma.following.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId: currentUser!.id,
+          followingId: followingUser.id,
+        },
+      },
+    });
+    if (!isFollowing) {
+      await prisma.following.create({
+        data: {
+          followerId: currentUser!.id,
+          followingId: followingUser.id,
+        },
+      });
+      return c.json({ status: 200, message: "User followed successfully" });
+    } else {
+      await prisma.following.delete({
+        where: {
+          followerId_followingId: {
+            followerId: currentUser!.id,
+            followingId: followingUser.id,
+          },
+        },
+      });
+      return c.json({ status: 200, message: "User unfollowed successfully" });
+    }
+  } catch (error) {
+    console.error(error);
+    return c.json({ status: 500, error: "Something went wrong" });
+  }
+});

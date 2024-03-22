@@ -8,21 +8,32 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
-  email     String   @unique
-  username  String   @unique
+  email     String     @unique
+  username  String     @unique
   gender    String
   password  String
   bio       String?
   image     String?
-  posts     Post[]   @relation("UserPosts")
+  posts     Post[]     @relation("UserPosts")
+  following Following[] @relation("FollowingRelation")
+  followers Following[] @relation("FollowerRelation")
 }
 
 model Post {
-  id        String  @id @default(uuid())
+  id        String @id @default(uuid())
   image     String?
   content   String
-  creator   User?   @relation("UserPosts", fields: [creatorId], references: [id])
+  creator   User   @relation("UserPosts", fields: [creatorId], references: [id])
   creatorId String
+}
+
+model Following {
+  follower    User @relation("FollowerRelation", fields: [followerId], references: [id])
+  followerId  String
+  following   User @relation("FollowingRelation", fields: [followingId], references: [id])
+  followingId String
+
+  @@id([followerId, followingId])
 }
