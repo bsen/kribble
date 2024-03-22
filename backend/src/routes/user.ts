@@ -312,14 +312,14 @@ userRouter.post("/follow-person", async (c) => {
   }).$extends(withAccelerate());
 
   const userId = await verify(token, c.env.JWT_SECRET);
+  console.log(followingUsername, userId);
 
   try {
     const currentUser = await prisma.user.findUnique({
       where: {
-        id: userId,
+        id: userId.id,
       },
     });
-
     const followingUser = await prisma.user.findUnique({
       where: {
         username: followingUsername,
@@ -329,7 +329,6 @@ userRouter.post("/follow-person", async (c) => {
     if (!followingUser) {
       return c.json({ status: 404, error: "User not found" });
     }
-
     const isFollowing = await prisma.following.findUnique({
       where: {
         followerId_followingId: {
