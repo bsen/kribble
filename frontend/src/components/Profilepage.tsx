@@ -43,7 +43,8 @@ export const Profilepage: React.FC = () => {
       );
       const { id, name, email, username, gender, bio, image, posts } =
         res.data.message;
-      console.log(res.data.message);
+      localStorage.setItem("userFromLocalStorage", username);
+
       setUserData({
         id,
         name,
@@ -115,7 +116,6 @@ export const Profilepage: React.FC = () => {
     setProfileImg(null);
     setPreviewImage("");
   };
-
   useEffect(() => {
     try {
       getData();
@@ -177,10 +177,8 @@ export const Profilepage: React.FC = () => {
         <div className="my-2">
           <div className="flex justify-between">
             <div>
-              <h2 className="text-lg text-white font-semibold">
-                {userData.name}
-              </h2>
-              <h2 className="text-base font-light text-gray-400">
+              <h2 className="text-lg text-white">{userData.name}</h2>
+              <h2 className="text-base text-gray-400 font-light">
                 @{userData.username}
               </h2>
             </div>
@@ -189,13 +187,13 @@ export const Profilepage: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={savePhoto}
-                    className="bg-gray-50 hover:bg-gray-100 text-gray-600 px-4 py-1 rounded-lg"
+                    className="bg-gray-50 hover:bg-gray-100 text-gray-600 px-4 py-1 rounded-lg font-light"
                   >
                     Save
                   </button>
                   <button
                     onClick={cancelSave}
-                    className="bg-black border border-bordercolor hover:bg-gray-900 text-white px-4 py-1 rounded-lg"
+                    className="bg-black border border-bordercolor hover:bg-gray-900 text-white px-4 py-1 rounded-lg font-light"
                   >
                     Cancel
                   </button>
@@ -204,7 +202,7 @@ export const Profilepage: React.FC = () => {
                 <div className="flex items-center">
                   <button
                     onClick={() => setIsBioEditing(!isBioEditing)}
-                    className=" hover:bg-black border border-gray-600 text-white px-4 py-1 rounded-lg "
+                    className="font-light hover:bg-black border border-gray-600 text-white px-4 py-1 rounded-lg "
                   >
                     {isBioEditing ? "Cancel" : "Edit bio"}
                   </button>
@@ -223,14 +221,14 @@ export const Profilepage: React.FC = () => {
               />
               <button
                 onClick={bioUpdate}
-                className="bg-white hover:bg-gray-50 text-gray-600 border border-gray-300 px-4 py-1 rounded-lg"
+                className="bg-white hover:bg-gray-50 font-light text-gray-600 border border-gray-300 px-4 py-1 rounded-lg"
               >
                 update
               </button>
             </div>
           )}
           {!isBioEditing && (
-            <div className="text-white mt-2">
+            <div className="text-white my-2 font-light">
               {userData.bio ? <p>{userData.bio}</p> : <p>Write your bio</p>}
             </div>
           )}
@@ -262,7 +260,7 @@ export const Profilepage: React.FC = () => {
                     />
                   )}
                   <div className="flex gap-2 items-center">
-                    <p className="text-white font-semibold">{userData.name}</p>
+                    <p className="text-white">{userData.name}</p>
                     <p className="text-gray-400 text-sm">
                       @{userData.username}
                     </p>
@@ -273,7 +271,7 @@ export const Profilepage: React.FC = () => {
                     src={post.image}
                     className="h-auto max-w-[50%] rounded-lg"
                   />
-                  <p className="text-white my-2">{post.content}</p>
+                  <p className="text-white my-2 font-light">{post.content}</p>
                 </div>
               </div>
             ))

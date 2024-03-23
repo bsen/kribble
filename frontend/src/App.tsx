@@ -3,7 +3,7 @@ import { Signup } from "./pages/Signup";
 import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
-
+import { OtherUserProfile } from "./pages/OtherUserProfile";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -18,7 +18,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
@@ -26,6 +26,10 @@ function App() {
           <Route
             path="/profile"
             element={<ProtectedRoute element={<Profile />} />}
+          />
+          <Route
+            path="/user/:username"
+            element={<ProtectedRoute element={<OtherUserProfile />} />}
           />
         </Routes>
       </BrowserRouter>
