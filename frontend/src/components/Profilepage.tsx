@@ -47,7 +47,6 @@ export const Profilepage: React.FC = () => {
       );
       const { id, name, email, username, gender, bio, image, posts } =
         res.data.message;
-      localStorage.setItem("userFromLocalStorage", username);
 
       setUserData({
         id,

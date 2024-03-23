@@ -212,11 +212,11 @@ userRouter.post("/bulkposts", async (c) => {
   const token = body.token;
   try {
     const userId = await verify(token, c.env.JWT_SECRET);
-    if (!userId) {
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
       console.log("user not authenticated");
       return c.json({ status: 400, message: "user not authenticated" });
     }
-
     const allPosts = await prisma.post.findMany({
       include: {
         creator: {
@@ -238,7 +238,7 @@ userRouter.post("/bulkposts", async (c) => {
       });
     }
 
-    return c.json({ status: 200, message: allPosts });
+    return c.json({ status: 200, message: allPosts, user: userData.username });
   } catch (error) {
     console.log(error);
   }
@@ -364,7 +364,7 @@ userRouter.post("/follow-person", async (c) => {
 
 userRouter.post("/get_third_person_data", async (c) => {
   const body = await c.req.json();
-  const username = body.username;
+  const otherUser = body.otherUser;
   const token = body.token;
   const userId = await verify(token, c.env.JWT_SECRET);
   const prisma = new PrismaClient({
@@ -373,7 +373,7 @@ userRouter.post("/get_third_person_data", async (c) => {
   try {
     const data = await prisma.user.findUnique({
       where: {
-        username: username,
+        username: otherUser,
       },
       select: {
         id: true,

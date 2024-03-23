@@ -28,7 +28,7 @@ function App() {
             element={<ProtectedRoute element={<Profile />} />}
           />
           <Route
-            path="/user/:username"
+            path="/user/:otherUser"
             element={<ProtectedRoute element={<OtherUserProfile />} />}
           />
         </Routes>

@@ -26,11 +26,12 @@ export const HomeComponent = () => {
 
   async function getAllPosts() {
     setLoadingState(true);
-    const res = await axios.post(
+    const response = await axios.post(
       `${BACKEND_URL}/api/server/v1/user/bulkposts`,
       { token }
     );
-    setPostData({ posts: res.data.message });
+    setPostData({ posts: response.data.message });
+    localStorage.setItem("storageUser", response.data.user);
     setLoadingState(false);
   }
 

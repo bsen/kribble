@@ -71,6 +71,15 @@ export const Sidebar = () => {
     }
   }
 
+  async function logout() {
+    setLoadingState(true);
+    localStorage.removeItem("token");
+    localStorage.removeItem("storageUser");
+
+    setLoadingState(false);
+    navigate("/login");
+  }
+
   return (
     <>
       {loadingState ? (
@@ -87,10 +96,7 @@ export const Sidebar = () => {
             Do you really want to logout?
             <div className="flex justify-evenly my-5">
               <button
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  navigate("/login");
-                }}
+                onClick={logout}
                 className="text-gray-400 px-4 py-1 border border-gray-400 rounded-lg font-thin"
               >
                 YES

@@ -6,11 +6,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { BACKEND_URL } from "../config";
 
 export const OtherUsersProfilePage = () => {
-  const mainUser = localStorage.getItem("userFromLocalStorage");
+  const storageUser = localStorage.getItem("storageUser");
   const token = localStorage.getItem("token");
   const [following, setFollowing] = useState();
   const [loadingState, setLoadingState] = useState(false);
-  const { username } = useParams();
+  const { otherUser } = useParams();
   const navigate = useNavigate();
   const [userData, setUserData] = useState<{
     id: string;
@@ -40,7 +40,7 @@ export const OtherUsersProfilePage = () => {
       setLoadingState(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/get_third_person_data`,
-        { username, token }
+        { otherUser, token }
       );
       setUserData(response.data.message);
       setFollowing(response.data.following);
@@ -52,7 +52,7 @@ export const OtherUsersProfilePage = () => {
   async function followUser() {
     setLoadingState(true);
     try {
-      const details = { username, token };
+      const details = { otherUser, token };
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/follow-person`,
         details
@@ -67,13 +67,13 @@ export const OtherUsersProfilePage = () => {
 
   useEffect(() => {
     fetchUserData();
-  }, [username]);
+  }, [otherUser]);
 
   useEffect(() => {
-    if (mainUser == username) {
+    if (storageUser == otherUser) {
       navigate("/profile");
     }
-  }, [navigate, username]);
+  }, [navigate, otherUser]);
 
   if (Object.keys(userData).length === 0) {
     return <div>Loading...</div>;
