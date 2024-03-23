@@ -3,6 +3,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import CloseIcon from "@mui/icons-material/Close";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -12,6 +14,8 @@ import { BACKEND_URL } from "../config";
 export const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [loadingState, setLoadingState] = useState(false);
+
   const [postCreate, setPostCreate] = useState(false);
   const [post, setPost] = useState("");
   const [logoutState, setLogoutState] = useState(false);
@@ -42,7 +46,8 @@ export const Sidebar = () => {
       alert("set a picture");
       return;
     }
-
+    setPostCreate(false);
+    setLoadingState(true);
     const file = postImage;
     const formdata = new FormData();
     formdata.append("image", file ? file : "");
@@ -53,11 +58,14 @@ export const Sidebar = () => {
         `${BACKEND_URL}/api/server/v1/user/post`,
         formdata
       );
-      console.log(response.data.message);
+
       if (response.data.status === 200) {
         alert("post created");
-        setPostCreate(false);
+      } else {
+        alert("network error");
       }
+
+      setLoadingState(false);
     } catch (error) {
       console.error("Error creating post:", error);
     }
@@ -65,6 +73,14 @@ export const Sidebar = () => {
 
   return (
     <>
+      {loadingState ? (
+        <div className="h-screen w-full absolute bg-black/70 flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      ) : (
+        ""
+      )}
+
       {logoutState ? (
         <div className="h-screen w-full absolute bg-black/80 flex justify-center items-center">
           <div className="text-white text-xl font-mono">
