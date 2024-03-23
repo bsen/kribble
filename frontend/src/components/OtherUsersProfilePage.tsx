@@ -1,10 +1,12 @@
-// pages/UserProfilePage.js
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 
 export const OtherUsersProfilePage = () => {
+  const mainUser = localStorage.getItem("userFromLocalStorage");
+  const token = localStorage.getItem("token");
+  const [following, setFollowing] = useState();
   const { username } = useParams();
   const navigate = useNavigate();
   const [userData, setUserData] = useState<{
@@ -30,25 +32,39 @@ export const OtherUsersProfilePage = () => {
     image: "",
     posts: [],
   });
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.post(
-          `${BACKEND_URL}/api/server/v1/user/get_third_person_data`,
-          { username }
-        );
-        setUserData(response.data.message);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8787/api/server/v1/user/get_third_person_data`,
+        { username, token }
+      );
+      setUserData(response.data.message);
+      setFollowing(response.data.following);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  async function followUser() {
+    const details = { username, token };
+    try {
+      const response = await axios.post(
+        "http://localhost:8787/api/server/v1/user/follow-person",
+        details
+      );
+      if (response.data.status == 200) {
+        fetchUserData();
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  useEffect(() => {
     fetchUserData();
   }, [username]);
-  console.log(userData.posts);
+
   useEffect(() => {
-    const user = localStorage.getItem("userFromLocalStorage");
-    if (user == username) {
+    if (mainUser == username) {
       navigate("/profile");
     }
   }, [navigate, username]);
@@ -90,13 +106,17 @@ export const OtherUsersProfilePage = () => {
               <h2 className="text-lg text-white font-semibold">
                 {userData.name}
               </h2>
+
               <h2 className="text-base font-light text-gray-400">
                 @{userData.username}
               </h2>
             </div>
             <div>
-              <button className="bg-white hover:bg-gray-50 font-light text-gray-600 border border-gray-300 px-4 py-1 rounded-lg">
-                Follow
+              <button
+                onClick={followUser}
+                className="bg-white hover:bg-gray-50 font-light text-gray-600 border border-gray-300 px-4 py-1 rounded-lg"
+              >
+                <div>{following ? <p>Unfollow</p> : <p>Follow</p>}</div>
               </button>
             </div>
           </div>

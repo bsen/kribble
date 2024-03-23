@@ -305,7 +305,7 @@ userRouter.post("/profile-picture-update", async (c) => {
 userRouter.post("/follow-person", async (c) => {
   const body = await c.req.json();
   const token = body.token;
-  const followingUsername = body.followingUsername;
+  const followingUsername = body.username;
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -365,7 +365,8 @@ userRouter.post("/follow-person", async (c) => {
 userRouter.post("/get_third_person_data", async (c) => {
   const body = await c.req.json();
   const username = body.username;
-  console.log(username);
+  const token = body.token;
+  const userId = await verify(token, c.env.JWT_SECRET);
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -389,7 +390,16 @@ userRouter.post("/get_third_person_data", async (c) => {
       return c.json({ status: 404, message: "user not found" });
     }
 
-    return c.json({ status: 200, message: data });
+    const checkFollowStatus = await prisma.following.findFirst({
+      where: {
+        followerId: userId.id,
+        followingId: data.id,
+      },
+    });
+    if (!checkFollowStatus) {
+      return c.json({ status: 200, message: data, following: false });
+    }
+    return c.json({ status: 200, message: data, following: true });
   } catch (error) {
     console.log(error);
   }
