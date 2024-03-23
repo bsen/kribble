@@ -361,3 +361,36 @@ userRouter.post("/follow-person", async (c) => {
     return c.json({ status: 500, error: "Something went wrong" });
   }
 });
+
+userRouter.post("/get_third_person_data", async (c) => {
+  const body = await c.req.json();
+  const username = body.username;
+  console.log(username);
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  try {
+    const data = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        gender: true,
+        bio: true,
+        image: true,
+        posts: true,
+      },
+    });
+
+    if (!data) {
+      return c.json({ status: 404, message: "user not found" });
+    }
+
+    return c.json({ status: 200, message: data });
+  } catch (error) {
+    console.log(error);
+  }
+});
