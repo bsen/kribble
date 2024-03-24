@@ -153,7 +153,7 @@ export const Profilepage: React.FC = () => {
                 />
               ) : (
                 <img
-                  src={userData.image ? userData.image : "src/assets/user.png"}
+                  src={userData.image ? userData.image : "/user.png"}
                   alt="Profile"
                   className="w-20 h-20 rounded-full border border-bordercolor"
                 />

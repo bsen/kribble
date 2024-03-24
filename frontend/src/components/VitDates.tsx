@@ -6,7 +6,7 @@ import { BACKEND_URL } from "../config";
 
 import { useState } from "react";
 
-export const Vitmatch = () => {
+export const VitDates = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
 
@@ -90,7 +90,7 @@ export const Vitmatch = () => {
         <div className="h-screen bg-black flex flex-col justify-between">
           <div className="w-full flex justify-center">
             <div className="text-3xl bg-black  text-white font-mono w-[80%] text-center py-5 border-b border-bordercolor">
-              Vit Match
+              VitDates
             </div>
           </div>
           {matchingState ? (
@@ -141,16 +141,20 @@ export const Vitmatch = () => {
           ) : (
             <div>
               <div className="w-full flex justify-center items-center">
-                <img
-                  src="https://imagedelivery.net/cV-2jw5Z4EJcAnIlwLPzWw/2ce483df-43ad-4e37-444d-409aae925f00/public"
-                  className=" h-12 w-12"
-                />
+                <img src="/love.png" className=" h-12 w-12" />
               </div>
 
-              <div className="text-center font-extralight px-6 my-5  text-lg font-sans text-gray-200">
-                Now find dates in your campus, start matching with undate
+              <div className="text-center font-extralight px-6 my-3  text-lg font-sans text-gray-200">
+                Find dates in your campus, start matching with undate
               </div>
-              <div className="w-full flex justify-center">
+              <div className="text-center font-extralight px-6 my-3 text-xs font-sans text-gray-200">
+                1. Your profile picture will be used for matching.
+                <br /> 2. Your bio will be shown in the matching.
+                <br /> 3. Once get a match it will be updated in match dates
+                section.
+              </div>
+
+              <div className="w-full flex justify-center my-10">
                 <div className="text-white bg-bordercolor rounded-lg text-2xl py-1 px-3 font-mono  border border-dashed border-white">
                   <button onClick={getMatchPeoples}>start matching</button>
                 </div>

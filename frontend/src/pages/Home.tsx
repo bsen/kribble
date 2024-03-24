@@ -1,7 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { HomeComponent } from "../components/HomeComponent";
-import { Vitmatch } from "../components/Vitmatch";
-
+import { VitDates } from "../components/VitDates";
 export const Home = () => {
   return (
     <div className="flex justify-between bg-black">
@@ -11,7 +10,7 @@ export const Home = () => {
       </div>
 
       <div className="w-[50%]">
-        <Vitmatch />
+        <VitDates />
       </div>
     </div>
   );

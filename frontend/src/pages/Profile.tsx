@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { Profilepage } from "../components/Profilepage";
-import { Vitmatch } from "../components/Vitmatch";
+import { VitDates } from "../components/VitDates";
 
 export const Profile = () => {
   return (
@@ -11,7 +11,7 @@ export const Profile = () => {
       </div>
 
       <div className="w-[50%]">
-        <Vitmatch />
+        <VitDates />
       </div>
     </div>
   );
