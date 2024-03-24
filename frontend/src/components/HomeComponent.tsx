@@ -42,60 +42,61 @@ export const HomeComponent = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen w-full absolute bg-black/70 flex justify-center items-center">
+        <div className="h-screen bg-black/70 flex justify-center items-center">
           <CircularProgress />
         </div>
       ) : (
-        ""
-      )}
-      <div className="h-screen w-[80%] border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
-        <div className="">
-          {postData.posts.length > 0 ? (
-            postData.posts
-              .slice()
-              .reverse()
-              .map((post, index) => (
-                <div
-                  key={index}
-                  className="py-4 p-10  border-b border-bordercolor"
-                >
-                  <Link to={`/user/${post.creator.username}`}>
-                    <div className="flex gap-2 items-center">
+        <div className="h-screen">
+          <div className="">
+            {postData.posts.length > 0 ? (
+              postData.posts
+                .slice()
+                .reverse()
+                .map((post, index) => (
+                  <div
+                    key={index}
+                    className="py-4 p-10  border-b border-bordercolor"
+                  >
+                    <Link to={`/user/${post.creator.username}`}>
+                      <div className="flex gap-2 items-center">
+                        <img
+                          src={
+                            post.creator.image
+                              ? post.creator.image
+                              : "src/assets/user.png"
+                          }
+                          alt="Profile"
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <div className="flex gap-2">
+                          <p className="text-white text-sm">
+                            {post.creator.name}
+                          </p>
+                          <p className="text-gray-400 text-sm">
+                            @{post.creator.username}
+                          </p>
+                        </div>
+                      </div>{" "}
+                    </Link>
+                    <div className="w-ful py-4 flex flex-col items-start justify-center">
                       <img
-                        src={
-                          post.creator.image
-                            ? post.creator.image
-                            : "src/assets/user.png"
-                        }
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full"
+                        src={post.image}
+                        className="h-auto max-w-[50%] rounded-lg"
                       />
-                      <div className="flex gap-2">
-                        <p className="text-white text-sm">
-                          {post.creator.name}
-                        </p>
-                        <p className="text-gray-400 text-sm">
-                          @{post.creator.username}
-                        </p>
-                      </div>
-                    </div>{" "}
-                  </Link>
-                  <div className="w-ful py-4 flex flex-col items-start justify-center">
-                    <img
-                      src={post.image}
-                      className="h-auto max-w-[50%] rounded-lg"
-                    />
-                    <p className="text-white my-2 font-light">{post.content}</p>
+                      <p className="text-white my-2 font-light">
+                        {post.content}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))
-          ) : (
-            <p className="text-center font-mono my-5 text-white">
-              No posts found.
-            </p>
-          )}
+                ))
+            ) : (
+              <p className="text-center font-mono my-5 text-white">
+                No posts found.
+              </p>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
