@@ -138,11 +138,11 @@ export const Profilepage: React.FC = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen  bg-black/70 flex justify-center items-center">
+        <div className="h-screen bg-black border-l border-r border-bordercolor flex justify-center items-center">
           <CircularProgress />
         </div>
       ) : (
-        <div className="h-screen">
+        <div className="h-screen border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
           <div className="p-10 border-b border-bordercolor">
             <div className="flex justify-between items-center">
               {profileImg ? (

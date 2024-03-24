@@ -6,7 +6,7 @@ export const Home = () => {
   return (
     <div className="flex justify-between bg-black">
       <Sidebar />
-      <div className="w-[80%] border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
+      <div className="w-[80%]">
         <HomeComponent />
       </div>
 
