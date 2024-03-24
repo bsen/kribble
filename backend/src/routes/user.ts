@@ -510,7 +510,7 @@ userRouter.post("/match_people", async (c) => {
   const otherPersonsId = body.otherPersonsId;
 
   const userId = await verify(token, c.env.JWT_SECRET);
-  console.log(otherPersonsId, userId.id);
+
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -523,15 +523,6 @@ userRouter.post("/match_people", async (c) => {
     });
     if (checkAlreadyMatch) {
       console.log("user already shown interest in");
-      const userdd = await prisma.user.findFirst({
-        where: {
-          id: userId.id,
-        },
-        select: {
-          interestedIn: true,
-        },
-      });
-      console.log(userdd);
 
       return c.json({
         status: 400,
@@ -544,9 +535,11 @@ userRouter.post("/match_people", async (c) => {
         interestedInId: otherPersonsId,
       },
     });
+    if (!matchSuccess) {
+      return c.json({ status: 404, message: "network error" });
+    }
+    return c.json({ status: 200 });
   } catch (error) {
     console.log(error);
   }
-
-  return c.json({ status: 200 });
 });

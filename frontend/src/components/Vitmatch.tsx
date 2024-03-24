@@ -1,10 +1,15 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import { BACKEND_URL } from "../config";
+
+import { useState } from "react";
 
 export const Vitmatch = () => {
   const token = localStorage.getItem("token");
+  const [loadingState, setLoadingState] = useState(false);
+
   const [matchingState, setMatchingState] = useState(false);
   const [matchUserData, setMatchUserData] = useState<{
     id: string;
@@ -21,9 +26,10 @@ export const Vitmatch = () => {
   });
 
   async function getMatchPeoples() {
+    setLoadingState(true);
     try {
       const response = await axios.post(
-        "http://localhost:8787/api/server/v1/user/send-people-for-match",
+        `${BACKEND_URL}/api/server/v1/user/send-people-for-match`,
         { token }
       );
 
@@ -40,8 +46,11 @@ export const Vitmatch = () => {
           bio,
         });
         setMatchingState(true);
+        setLoadingState(false);
       } else {
-        console.log("No matched user found");
+        setMatchingState(false);
+        setLoadingState(false);
+        alert("No user found for matching!");
       }
     } catch (e) {
       console.log(e);
@@ -49,13 +58,23 @@ export const Vitmatch = () => {
   }
   async function match() {
     const otherPersonsId = matchUserData.id;
+    setLoadingState(true);
     try {
       const response = await axios.post(
-        "http://localhost:8787/api/server/v1/user/match_people",
+        `${BACKEND_URL}/api/server/v1/user/match_people`,
         { token, otherPersonsId }
       );
-
-      console.log(response.data.message);
+      setLoadingState(false);
+      getMatchPeoples();
+      if (response.data.status == 400) {
+        return alert("You already have liked thier profile");
+      }
+      if (response.data.status == 404) {
+        return alert("Try again, failed for network error");
+      }
+      if (response.data.status == 200) {
+        return alert("You liked their profile");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -63,6 +82,14 @@ export const Vitmatch = () => {
 
   return (
     <>
+      {loadingState ? (
+        <div className="h-screen w-full absolute bg-black/70 flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className="h-screen w-[50%] bg-black flex flex-col justify-between">
         <div className="w-full flex justify-center">
           <div className="text-3xl bg-black  text-white font-mono w-[80%] text-center py-5 border-b border-bordercolor">
@@ -75,12 +102,12 @@ export const Vitmatch = () => {
               src={matchUserData.image}
               className="rounded-xl max-h-[40vh] max-w-[80%]"
             />
-            <div className="my-4 w-[80%]">
-              <div className="flex gap-2">
-                <p className="font-light text-base text-gray-200">
+            <div className="my-4 w-[80%]  flex flex-col justify-center items-center">
+              <div className="flex gap-2 ">
+                <p className="font-semibold text-base text-gray-200">
                   {matchUserData.name}
                 </p>
-                <p className=" font-light text-base text-gray-200">
+                <p className=" font-light text-base text-gray-400">
                   @{matchUserData.username}
                 </p>
               </div>
