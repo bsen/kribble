@@ -41,12 +41,12 @@ export const Profilepage: React.FC = () => {
   async function getData() {
     setLoadingState(true);
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/userdata`,
         { token }
       );
       const { id, name, email, username, gender, bio, image, posts } =
-        res.data.message;
+        response.data.message;
 
       setUserData({
         id,
@@ -71,12 +71,12 @@ export const Profilepage: React.FC = () => {
     }
     setLoadingState(true);
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/bioupdate`,
         { token, bio }
       );
 
-      if (res.data.status == 200) {
+      if (response.data.status == 200) {
         setIsBioEditing(false);
         getData();
         alert("Bio updated successfully");
@@ -107,13 +107,13 @@ export const Profilepage: React.FC = () => {
     formdata.append("image", file ? file : "");
     formdata.append("token", token ? token : "");
     setLoadingState(true);
-    const res = await axios.post(
+    const response = await axios.post(
       `${BACKEND_URL}/api/server/v1/user/profile-picture-update`,
       formdata
     );
     setLoadingState(false);
 
-    if (res.data.status === 200) {
+    if (response.data.status === 200) {
       setPreviewImage("");
       setProfileImg(null);
       getData();

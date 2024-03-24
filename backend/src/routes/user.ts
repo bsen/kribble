@@ -404,3 +404,149 @@ userRouter.post("/get_third_person_data", async (c) => {
     console.log(error);
   }
 });
+
+userRouter.post("/send-people-for-match", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const userData = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+    });
+
+    if (!userData) {
+      return c.json({ status: 404, message: "User not found" });
+    }
+
+    const userInterests = await prisma.matching.findMany({
+      where: {
+        personId: userId.id,
+      },
+      select: {
+        interestedInId: true,
+      },
+    });
+
+    const interestedUserIds = userInterests.map(
+      (interest) => interest.interestedInId
+    );
+
+    let matchedUser = null;
+    if (userData.gender === "female") {
+      const totalMaleUsers = await prisma.user.count({
+        where: {
+          gender: "male",
+          id: {
+            notIn: interestedUserIds,
+          },
+        },
+      });
+      const randomOffset = Math.floor(Math.random() * totalMaleUsers);
+      matchedUser = await prisma.user.findMany({
+        where: {
+          gender: "male",
+          id: {
+            notIn: interestedUserIds,
+            not: userId.id,
+          },
+        },
+        take: 1,
+        skip: randomOffset,
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          bio: true,
+          image: true,
+        },
+      });
+    } else if (userData.gender === "male") {
+      const totalFemaleUsers = await prisma.user.count({
+        where: {
+          gender: "female",
+          id: {
+            notIn: interestedUserIds,
+          },
+        },
+      });
+      const randomOffset = Math.floor(Math.random() * totalFemaleUsers);
+      matchedUser = await prisma.user.findMany({
+        where: {
+          gender: "female",
+          id: {
+            notIn: interestedUserIds,
+            not: userId.id,
+          },
+        },
+        take: 1,
+        skip: randomOffset,
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          bio: true,
+          image: true,
+        },
+      });
+    }
+
+    return c.json({ status: 200, message: matchedUser });
+  } catch (error) {
+    console.error("Error:", error);
+    return c.json({ status: 500, message: "Internal Server Error" });
+  }
+});
+
+userRouter.post("/match_people", async (c) => {
+  const body = await c.req.json();
+  const token = body.token;
+  const otherPersonsId = body.otherPersonsId;
+
+  const userId = await verify(token, c.env.JWT_SECRET);
+  console.log(otherPersonsId, userId.id);
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  try {
+    const checkAlreadyMatch = await prisma.matching.findFirst({
+      where: {
+        personId: userId.id,
+        interestedInId: otherPersonsId,
+      },
+    });
+    if (checkAlreadyMatch) {
+      console.log("user already shown interest in");
+      const userdd = await prisma.user.findFirst({
+        where: {
+          id: userId.id,
+        },
+        select: {
+          interestedIn: true,
+        },
+      });
+      console.log(userdd);
+
+      return c.json({
+        status: 400,
+        message: "user already have shown interest",
+      });
+    }
+    const matchSuccess = await prisma.matching.create({
+      data: {
+        personId: userId.id,
+        interestedInId: otherPersonsId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
+  return c.json({ status: 200 });
+});

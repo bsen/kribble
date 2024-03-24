@@ -8,25 +8,30 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  name      String
-  email     String     @unique
-  username  String     @unique
-  gender    String
-  password  String
-  bio       String?
-  image     String?
-  posts     Post[]     @relation("UserPosts")
-  following Following[] @relation("FollowingRelation")
-  followers Following[] @relation("FollowerRelation")
+  id            String     @id @default(uuid())
+  name          String
+  email         String     @unique
+  username      String     @unique
+  gender        String
+  password      String
+  bio           String?
+  image         String?
+  createdAt     DateTime   @default(now())
+  posts         Post[]     @relation("UserPosts")
+  following     Following[] @relation("FollowingRelation")
+  followers     Following[] @relation("FollowerRelation")
+  interestedIn  Matching[] @relation("PersonMatchingRelation")
+  interestedBy  Matching[] @relation("InterestedInMatchingRelation")
 }
 
+
 model Post {
-  id        String @id @default(uuid())
+  id        String   @id @default(uuid())
   image     String?
   content   String
-  creator   User   @relation("UserPosts", fields: [creatorId], references: [id])
+  creator   User     @relation("UserPosts", fields: [creatorId], references: [id])
   creatorId String
+  createdAt DateTime @default(now())
 }
 
 model Following {
@@ -36,4 +41,14 @@ model Following {
   followingId String
 
   @@id([followerId, followingId])
+}
+model Matching {
+  id              String   @id @default(uuid())
+  person          User     @relation("PersonMatchingRelation", fields: [personId], references: [id])
+  personId        String
+  interestedIn    User     @relation("InterestedInMatchingRelation", fields: [interestedInId], references: [id])
+  interestedInId  String
+  createdAt       DateTime @default(now())
+
+  @@unique([personId, interestedInId])
 }
