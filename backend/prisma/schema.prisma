@@ -22,6 +22,7 @@ model User {
   followers     Following[] @relation("FollowerRelation")
   interestedIn  Matching[] @relation("PersonMatchingRelation")
   interestedBy  Matching[] @relation("InterestedInMatchingRelation")
+  matchedUsers  String[]   
 }
 
 

@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
+import { rawCssString } from "hono/css";
+import { useDeferredValue } from "hono/jsx";
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -47,7 +49,6 @@ userRouter.post("/signup", async (c) => {
       },
     });
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-    console.log(user);
     return c.json({ status: 200, message: jwt });
   } catch (e) {
     console.log(e);
@@ -77,7 +78,6 @@ userRouter.post("/login", async (c) => {
     }
     c.status(200);
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-    console.log(user);
     return c.json({ status: 200, message: jwt });
   } catch (e) {
     console.log(e);
@@ -105,6 +105,7 @@ userRouter.post("/userdata", async (c) => {
         bio: true,
         image: true,
         posts: true,
+        matchedUsers: true,
       },
     });
 
@@ -149,7 +150,7 @@ userRouter.post("/post", async (c) => {
   const file = formData.get("image");
   const post = formData.get("post");
   const token = formData.get("token");
-  console.log(post, token);
+
   if (typeof post !== "string" || typeof token !== "string") {
     return c.json({ status: 400, message: "Invalid post or token" });
   }
@@ -180,7 +181,7 @@ userRouter.post("/post", async (c) => {
       imgUrl.result.variants.length > 0
     ) {
       const variantUrl = imgUrl.result.variants[0];
-      console.log(variantUrl);
+
       const success = await prisma.post.create({
         data: {
           content: post,
@@ -192,7 +193,6 @@ userRouter.post("/post", async (c) => {
       if (!success) {
         return c.json({ status: 403, message: "failed to create new post" });
       }
-      console.log(success);
     } else {
       console.error("No variants found in the response.");
     }
@@ -262,7 +262,6 @@ userRouter.post("/profile-picture-update", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
   const userId = await verify(token, c.env.JWT_SECRET);
-  console.log(file, userId);
   try {
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
@@ -290,7 +289,6 @@ userRouter.post("/profile-picture-update", async (c) => {
       if (!success) {
         return c.json({ status: 403, message: "failed to create new post" });
       }
-      console.log(success);
     } else {
       console.error("No variants found in the response.");
     }
@@ -312,7 +310,6 @@ userRouter.post("/follow-person", async (c) => {
   }).$extends(withAccelerate());
 
   const userId = await verify(token, c.env.JWT_SECRET);
-  console.log(followingUsername, userId);
 
   try {
     const currentUser = await prisma.user.findUnique({
@@ -515,27 +512,47 @@ userRouter.post("/match_people", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
   try {
-    const checkAlreadyMatch = await prisma.matching.findFirst({
+    const alreadyLiked = await prisma.matching.findFirst({
       where: {
         personId: userId.id,
         interestedInId: otherPersonsId,
       },
     });
-    if (checkAlreadyMatch) {
-      console.log("user already shown interest in");
-
+    if (alreadyLiked) {
       return c.json({
         status: 400,
-        message: "user already have shown interest",
+        message: "user already have shown interest in this person",
       });
     }
-    const matchSuccess = await prisma.matching.create({
+    const checkDateMatch = await prisma.matching.findFirst({
+      where: {
+        personId: otherPersonsId,
+        interestedInId: userId.id,
+      },
+    });
+    if (checkDateMatch) {
+      await prisma.user.update({
+        where: { id: userId.id },
+        data: {
+          matchedUsers: { push: otherPersonsId },
+        },
+      });
+
+      await prisma.user.update({
+        where: { id: otherPersonsId },
+        data: {
+          matchedUsers: { push: userId.id },
+        },
+      });
+    }
+
+    const createMatch = await prisma.matching.create({
       data: {
         personId: userId.id,
         interestedInId: otherPersonsId,
       },
     });
-    if (!matchSuccess) {
+    if (!createMatch) {
       return c.json({ status: 404, message: "network error" });
     }
     return c.json({ status: 200 });
