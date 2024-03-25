@@ -103,9 +103,10 @@ userRouter.post("/userdata", async (c) => {
         username: true,
         gender: true,
         bio: true,
+        followers: true,
+        following: true,
         image: true,
         posts: true,
-        matchedUsers: true,
       },
     });
 
@@ -303,8 +304,7 @@ userRouter.post("/profile-picture-update", async (c) => {
 userRouter.post("/follow-person", async (c) => {
   const body = await c.req.json();
   const token = body.token;
-  const followingUsername = body.username;
-
+  const otherUserName = body.otherUser;
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -317,20 +317,20 @@ userRouter.post("/follow-person", async (c) => {
         id: userId.id,
       },
     });
-    const followingUser = await prisma.user.findUnique({
+    const otherUser = await prisma.user.findUnique({
       where: {
-        username: followingUsername,
+        username: otherUserName,
       },
     });
 
-    if (!followingUser) {
+    if (!otherUser) {
       return c.json({ status: 404, error: "User not found" });
     }
     const isFollowing = await prisma.following.findUnique({
       where: {
         followerId_followingId: {
           followerId: currentUser!.id,
-          followingId: followingUser.id,
+          followingId: otherUser.id,
         },
       },
     });
@@ -338,7 +338,7 @@ userRouter.post("/follow-person", async (c) => {
       await prisma.following.create({
         data: {
           followerId: currentUser!.id,
-          followingId: followingUser.id,
+          followingId: otherUser.id,
         },
       });
       return c.json({ status: 200, message: "User followed successfully" });
@@ -347,7 +347,7 @@ userRouter.post("/follow-person", async (c) => {
         where: {
           followerId_followingId: {
             followerId: currentUser!.id,
-            followingId: followingUser.id,
+            followingId: otherUser.id,
           },
         },
       });
@@ -380,6 +380,8 @@ userRouter.post("/get_third_person_data", async (c) => {
         bio: true,
         image: true,
         posts: true,
+        followers: true,
+        following: true,
       },
     });
 

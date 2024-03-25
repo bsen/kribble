@@ -18,8 +18,8 @@ model User {
   image         String?
   createdAt     DateTime   @default(now())
   posts         Post[]     @relation("UserPosts")
-  following     Following[] @relation("FollowingRelation")
-  followers     Following[] @relation("FollowerRelation")
+  following     Following[] @relation("FollowerRelation")
+  followers     Following[] @relation("FollowingRelation")
   interestedIn  Matching[] @relation("PersonMatchingRelation")
   interestedBy  Matching[] @relation("InterestedInMatchingRelation")
   matchedUsers  String[]   

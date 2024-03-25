@@ -37,14 +37,7 @@ export const VitDates = () => {
         Array.isArray(response.data.message) &&
         response.data.message.length > 0
       ) {
-        const { username, name, bio, image, id } = response.data.message[0];
-        setMatchUserData({
-          username,
-          name,
-          id,
-          image,
-          bio,
-        });
+        setMatchUserData(response.data.message[0]);
         setMatchingState(true);
         setLoadingState(false);
       } else {
@@ -83,7 +76,7 @@ export const VitDates = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen bg-black/70 flex justify-center items-center">
+        <div className="h-screen bg-black border-l border-bordercolor flex justify-center items-center">
           <CircularProgress />
         </div>
       ) : (
@@ -93,6 +86,7 @@ export const VitDates = () => {
               Vit Dates
             </div>
           </div>
+
           {matchingState ? (
             <div className="w-full flex flex-col items-center justify-center ">
               <div className="w-[80%]">
@@ -110,7 +104,7 @@ export const VitDates = () => {
                 />
 
                 <p className="font-light text-sm text-gray-200 m-2 w-full">
-                  {matchUserData.bio.slice(0, 50)}...
+                  {matchUserData.bio}
                 </p>
               </div>
 

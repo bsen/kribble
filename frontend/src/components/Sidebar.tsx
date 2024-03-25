@@ -162,7 +162,7 @@ export const Sidebar = () => {
                   placeholder="write your thoughts..."
                   wrap="soft"
                   minLength={10}
-                  maxLength={200}
+                  maxLength={250}
                   onChange={(e) => {
                     setPost(e.target.value);
                   }}

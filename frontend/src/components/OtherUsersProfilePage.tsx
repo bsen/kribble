@@ -8,11 +8,11 @@ import { BACKEND_URL } from "../config";
 export const OtherUsersProfilePage = () => {
   const storageUser = localStorage.getItem("storageUser");
   const token = localStorage.getItem("token");
-  const [following, setFollowing] = useState();
+  const [followingState, setFollowingState] = useState();
   const [loadingState, setLoadingState] = useState(false);
   const { otherUser } = useParams();
   const navigate = useNavigate();
-  const [userData, setUserData] = useState<{
+  const [otherUSerData, setOtherUSerData] = useState<{
     id: string;
     name: string;
     username: string;
@@ -20,6 +20,14 @@ export const OtherUsersProfilePage = () => {
     gender: string;
     bio: string;
     image: string;
+    followers: {
+      followerId: string;
+      followingId: string;
+    }[];
+    following: {
+      followerId: string;
+      followingId: string;
+    }[];
     posts: {
       id: string;
       content: string;
@@ -33,17 +41,19 @@ export const OtherUsersProfilePage = () => {
     gender: "",
     bio: "",
     image: "",
+    followers: [],
+    following: [],
     posts: [],
   });
-  const fetchUserData = async () => {
+  const fetchotherUSerData = async () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/get_third_person_data`,
         { otherUser, token }
       );
-      setUserData(response.data.message);
-      setFollowing(response.data.following);
+      setOtherUSerData(response.data.message);
+      setFollowingState(response.data.following);
       setLoadingState(false);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -58,15 +68,16 @@ export const OtherUsersProfilePage = () => {
         details
       );
       if (response.data.status == 200) {
-        fetchUserData();
+        await fetchotherUSerData();
       }
+      setLoadingState(false);
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    fetchUserData();
+    fetchotherUSerData();
   }, [otherUser]);
 
   useEffect(() => {
@@ -75,7 +86,7 @@ export const OtherUsersProfilePage = () => {
     }
   }, [navigate, otherUser]);
 
-  if (Object.keys(userData).length === 0) {
+  if (Object.keys(otherUSerData).length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -90,7 +101,7 @@ export const OtherUsersProfilePage = () => {
           <div className="p-10 border-b border-bordercolor">
             <div className="flex items-center justify-between">
               <img
-                src={userData.image ? userData.image : "src/assets/user.png"}
+                src={otherUSerData.image ? otherUSerData.image : "/user.png"}
                 alt="Profile"
                 className="h-20 w-20 rounded-full border border-bordercolor"
               />
@@ -98,15 +109,15 @@ export const OtherUsersProfilePage = () => {
               <div className="text-white flex w-full justify-evenly ">
                 <div className="text-white flex justify-evenly gap-10 ">
                   <div className="flex flex-col items-center">
-                    <div>{userData.posts.length}</div>
+                    <div>{otherUSerData.posts.length}</div>
                     <div>Posts</div>
                   </div>
                   <div className="flex flex-col items-center">
-                    <div>0</div>
+                    <div>{otherUSerData.followers.length}</div>
                     <div>Followers</div>
                   </div>
                   <div className="flex flex-col items-center">
-                    <div>0</div>
+                    <div>{otherUSerData.following.length}</div>
                     <div>Following</div>
                   </div>
                 </div>
@@ -116,11 +127,11 @@ export const OtherUsersProfilePage = () => {
               <div className="flex justify-between">
                 <div>
                   <h2 className="text-lg text-white font-semibold">
-                    {userData.name}
+                    {otherUSerData.name}
                   </h2>
 
                   <h2 className="text-base font-light text-gray-400">
-                    @{userData.username}
+                    @{otherUSerData.username}
                   </h2>
                 </div>
                 <div>
@@ -128,18 +139,24 @@ export const OtherUsersProfilePage = () => {
                     onClick={followUser}
                     className="bg-white hover:bg-gray-50 font-light text-gray-600 border border-gray-300 px-4 py-1 rounded-lg"
                   >
-                    <div>{following ? <p>Unfollow</p> : <p>Follow</p>}</div>
+                    <div>
+                      {followingState ? <p>Unfollow</p> : <p>Follow</p>}
+                    </div>
                   </button>
                 </div>
               </div>
               <div className="text-white mt-2">
-                {userData.bio ? <p>{userData.bio}</p> : <p>Write your bio</p>}
+                {otherUSerData.bio ? (
+                  <p>{otherUSerData.bio}</p>
+                ) : (
+                  <p>Write your bio</p>
+                )}
               </div>
             </div>
           </div>
           <div className="">
-            {userData.posts.length > 0 ? (
-              userData.posts
+            {otherUSerData.posts.length > 0 ? (
+              otherUSerData.posts
                 .slice()
                 .reverse()
                 .map((post, index) => (
@@ -149,17 +166,21 @@ export const OtherUsersProfilePage = () => {
                   >
                     <div className="flex gap-2 items-center">
                       <img
-                        src={userData.image ? userData.image : "/user.png"}
+                        src={
+                          otherUSerData.image
+                            ? otherUSerData.image
+                            : "/user.png"
+                        }
                         alt="Profile"
                         className="w-10 h-10 border border-bordercolor rounded-full"
                       />
 
                       <div className="flex gap-2 items-center">
                         <p className="text-white font-semibold">
-                          {userData.name}
+                          {otherUSerData.name}
                         </p>
                         <p className="text-gray-400 text-sm">
-                          @{userData.username}
+                          @{otherUSerData.username}
                         </p>
                       </div>
                     </div>

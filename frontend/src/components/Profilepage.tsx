@@ -45,19 +45,8 @@ export const Profilepage: React.FC = () => {
         `${BACKEND_URL}/api/server/v1/user/userdata`,
         { token }
       );
-      const { id, name, email, username, gender, bio, image, posts } =
-        response.data.message;
-
-      setUserData({
-        id,
-        name,
-        username,
-        email,
-        gender,
-        bio,
-        image,
-        posts,
-      });
+      console.log(response.data.message);
+      setUserData(response.data.message);
       setLoadingState(false);
     } catch (error) {
       console.log(error);
@@ -145,30 +134,32 @@ export const Profilepage: React.FC = () => {
         <div className="h-screen border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
           <div className="p-10 border-b border-bordercolor">
             <div className="flex justify-between items-center">
-              {profileImg ? (
-                <img
-                  src={previewImage}
-                  alt="Profile"
-                  className="w-20 h-20 rounded-full border border-bordercolor"
-                />
-              ) : (
-                <img
-                  src={userData.image ? userData.image : "/user.png"}
-                  alt="Profile"
-                  className="w-20 h-20 rounded-full border border-bordercolor"
-                />
-              )}
-              <div className="h-20">
-                <label htmlFor="image-upload" className="cursor-pointer ">
-                  <EditIcon sx={{ fontSize: 20 }} className="text-gray-400" />
-                </label>
-                <input
-                  id="image-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
+              <div className=" flex w-[25%]">
+                {profileImg ? (
+                  <img
+                    src={previewImage}
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full border border-bordercolor"
+                  />
+                ) : (
+                  <img
+                    src={userData.image ? userData.image : "/user.png"}
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full border border-bordercolor"
+                  />
+                )}
+                <div>
+                  <label htmlFor="image-upload" className="cursor-pointer ">
+                    <EditIcon sx={{ fontSize: 20 }} className="text-gray-400" />
+                  </label>
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                </div>
               </div>
 
               <div className="text-white flex  w-full justify-evenly ">
@@ -227,7 +218,7 @@ export const Profilepage: React.FC = () => {
               {isBioEditing && (
                 <div className="flex items-center w-full gap-4 my-2">
                   <input
-                    maxLength={150}
+                    maxLength={120}
                     defaultValue={userData.bio}
                     onChange={(e) => setBio(e.target.value)}
                     placeholder="Enter your bio"
