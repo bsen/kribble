@@ -180,7 +180,7 @@ export const Sidebar = () => {
       ) : (
         ""
       )}
-      <div className="h-screen bg-black w-[30%] px-10 flex flex-col justify-between">
+      <div className="h-screen bg-black border-r  border-bordercolor px-10 flex flex-col justify-between">
         <div className="h-max w-full">
           <div className="w-full text-3xl font-mono text-gray-200 p-4 text-center border-b border-bordercolor">
             undate

@@ -4,12 +4,17 @@ import { VitDates } from "../components/VitDates";
 import { OtherUsersProfilePage } from "../components/OtherUsersProfilePage";
 export const OtherUserProfile = () => {
   return (
-    <div className="flex justify-between bg-black">
-      <Sidebar />
-      <div className="h-screen w-[80%] border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
+    <div className="flex  bg-neutral-950 justify-between">
+      <div className="w-[25%]">
+        <Sidebar />
+      </div>
+      <div className="w-[40%]">
         <OtherUsersProfilePage />
       </div>
-      <VitDates />
+
+      <div className="w-[25%]">
+        <VitDates />
+      </div>
     </div>
   );
 };

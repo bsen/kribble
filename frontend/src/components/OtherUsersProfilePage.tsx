@@ -82,11 +82,11 @@ export const OtherUsersProfilePage = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen flex justify-center items-center bg-black">
+        <div className="h-screen flex justify-center items-center">
           <CircularProgress />
         </div>
       ) : (
-        <div className="bg-black">
+        <div className="h-screen border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
           <div className="p-10 border-b border-bordercolor">
             <div className="flex items-center justify-between">
               <img
@@ -148,19 +148,12 @@ export const OtherUsersProfilePage = () => {
                     className="py-4 p-10 border-b border-bordercolor"
                   >
                     <div className="flex gap-2 items-center">
-                      {userData.image ? (
-                        <img
-                          src={userData.image}
-                          alt="Profile"
-                          className="w-8 h-8 rounded-full"
-                        />
-                      ) : (
-                        <img
-                          src={"src/assets/chicken.png"}
-                          alt="Profile"
-                          className="w-10 h-10 border border-bordercolor rounded-full"
-                        />
-                      )}
+                      <img
+                        src={userData.image ? userData.image : "/user.png"}
+                        alt="Profile"
+                        className="w-10 h-10 border border-bordercolor rounded-full"
+                      />
+
                       <div className="flex gap-2 items-center">
                         <p className="text-white font-semibold">
                           {userData.name}
@@ -173,7 +166,7 @@ export const OtherUsersProfilePage = () => {
                     <div className="w-full py-4 flex flex-col items-start justify-center">
                       <img
                         src={post.image}
-                        className="h-auto max-w-[50%] rounded-lg"
+                        className="h-auto w-[70%] rounded-lg"
                       />
                       <p className="text-white my-2">{post.content}</p>
                     </div>

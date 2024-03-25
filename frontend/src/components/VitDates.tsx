@@ -87,29 +87,30 @@ export const VitDates = () => {
           <CircularProgress />
         </div>
       ) : (
-        <div className="h-screen bg-black flex flex-col justify-between">
+        <div className="h-screen bg-black border-l border-bordercolor flex flex-col justify-between">
           <div className="w-full flex justify-center">
-            <div className="text-3xl bg-black  text-white font-mono w-[80%] text-center py-5 border-b border-bordercolor">
-              VitDates
+            <div className="text-3xl  text-white font-mono w-[80%] text-center py-5 border-b border-bordercolor">
+              Vit Dates
             </div>
           </div>
           {matchingState ? (
             <div className="w-full flex flex-col items-center justify-center ">
-              <img
-                src={matchUserData.image}
-                className="rounded-xl max-h-[40vh] max-w-[80%]"
-              />
-              <div className="my-4 w-[80%]  flex flex-col justify-center items-center">
-                <div className="flex gap-2 ">
-                  <p className="font-semibold text-base text-gray-200">
+              <div className="w-[80%]">
+                <div className="flex gap-2 m-2 items-center">
+                  <p className="text-white text-lg font-light font-mono">
                     {matchUserData.name}
                   </p>
-                  <p className=" font-light text-base text-gray-400">
+                  <p className="text-gray-400 text-sm font-light ">
                     @{matchUserData.username}
                   </p>
                 </div>
-                <p className=" font-light text-sm text-gray-200">
-                  {matchUserData.bio}
+                <img
+                  src={matchUserData.image ? matchUserData.image : "user.png"}
+                  className="rounded-xl w-[100%]"
+                />
+
+                <p className="font-light text-sm text-gray-200 m-2 w-full">
+                  {matchUserData.bio.slice(0, 50)}...
                 </p>
               </div>
 
@@ -117,7 +118,7 @@ export const VitDates = () => {
                 <div>
                   <button
                     onClick={getMatchPeoples}
-                    className="bg-white border font-mono font-light border-bordercolor hover:bg-black text-indigo-500 text-xl px-4 py-1 rounded-lg"
+                    className="bg-white border font-mono font-light border-bordercolor text-indigo-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-900"
                   >
                     <div className="flex items-center justify-evenly">
                       <div>Pass</div>
@@ -128,7 +129,7 @@ export const VitDates = () => {
                 <div>
                   <button
                     onClick={match}
-                    className="bg-white border font-mono font-light border-bordercolor hover:bg-black text-pink-500 text-xl px-4 py-1 rounded-lg"
+                    className="bg-white border font-mono font-light border-bordercolor text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-900"
                   >
                     <div className="flex items-center justify-evenly">
                       <div>Date</div>
@@ -155,7 +156,7 @@ export const VitDates = () => {
               </div>
 
               <div className="w-full flex justify-center my-10">
-                <div className="text-white bg-bordercolor rounded-lg text-2xl py-1 px-3 font-mono  border border-dashed border-white">
+                <div className="text-white bg-black rounded-lg text-xl py-1 px-3 font-mono  border border-bordercolor active:bg-neutral-900">
                   <button onClick={getMatchPeoples}>start matching</button>
                 </div>
               </div>

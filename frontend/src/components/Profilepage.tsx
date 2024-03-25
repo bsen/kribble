@@ -138,7 +138,7 @@ export const Profilepage: React.FC = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen bg-black border-l border-r border-bordercolor flex justify-center items-center">
+        <div className="h-screen flex justify-center items-center">
           <CircularProgress />
         </div>
       ) : (
@@ -260,19 +260,12 @@ export const Profilepage: React.FC = () => {
                     className="py-4 p-10  border-b border-bordercolor"
                   >
                     <div className="flex gap-2 items-center">
-                      {userData.image ? (
-                        <img
-                          src={userData.image}
-                          alt="Profile"
-                          className="w-8 h-8 rounded-full"
-                        />
-                      ) : (
-                        <img
-                          src={"src/assets/chicken.png"}
-                          alt="Profile"
-                          className="w-10 h-10 border border-bordercolor rounded-full"
-                        />
-                      )}
+                      <img
+                        src={userData.image ? userData.image : "user.png"}
+                        alt="Profile"
+                        className="w-10 h-10 border border-bordercolor rounded-full"
+                      />
+
                       <div className="flex gap-2 items-center">
                         <p className="text-white">{userData.name}</p>
                         <p className="text-gray-400 text-sm">
@@ -283,7 +276,7 @@ export const Profilepage: React.FC = () => {
                     <div className="w-ful py-4 flex flex-col items-start justify-center">
                       <img
                         src={post.image}
-                        className="h-auto max-w-[50%] rounded-lg"
+                        className="h-auto w-[70%] rounded-lg"
                       />
                       <p className="text-white my-2 font-light">
                         {post.content}
