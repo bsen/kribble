@@ -150,7 +150,10 @@ export const Profilepage: React.FC = () => {
                 )}
                 <div>
                   <label htmlFor="image-upload" className="cursor-pointer ">
-                    <EditIcon sx={{ fontSize: 20 }} className="text-gray-400" />
+                    <EditIcon
+                      sx={{ fontSize: 20 }}
+                      className="text-neutral-400"
+                    />
                   </label>
                   <input
                     id="image-upload"
@@ -183,7 +186,7 @@ export const Profilepage: React.FC = () => {
               <div className="flex justify-between">
                 <div>
                   <h2 className="text-lg text-white">{userData.name}</h2>
-                  <h2 className="text-base text-gray-400 font-light">
+                  <h2 className="text-base text-neutral-400 font-light">
                     @{userData.username}
                   </h2>
                 </div>
@@ -192,13 +195,13 @@ export const Profilepage: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={savePhoto}
-                        className="bg-gray-50 hover:bg-gray-100 text-gray-600 px-4 py-1 rounded-lg font-light"
+                        className="bg-neutral-50 hover:bg-neutral-100 text-neutral-600 px-4 py-1 rounded-lg font-light"
                       >
                         Save
                       </button>
                       <button
                         onClick={cancelSave}
-                        className="bg-black border border-bordercolor hover:bg-gray-900 text-white px-4 py-1 rounded-lg font-light"
+                        className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light"
                       >
                         Cancel
                       </button>
@@ -207,7 +210,7 @@ export const Profilepage: React.FC = () => {
                     <div className="flex items-center">
                       <button
                         onClick={() => setIsBioEditing(!isBioEditing)}
-                        className="font-light hover:bg-black border border-gray-600 text-white px-4 py-1 rounded-lg "
+                        className="font-light hover:bg-black border border-neutral-600 text-white px-4 py-1 rounded-lg "
                       >
                         {isBioEditing ? "Cancel" : "Edit bio"}
                       </button>
@@ -226,7 +229,7 @@ export const Profilepage: React.FC = () => {
                   />
                   <button
                     onClick={bioUpdate}
-                    className="bg-white hover:bg-gray-50 font-light text-gray-600 border border-gray-300 px-4 py-1 rounded-lg"
+                    className="bg-white hover:bg-neutral-50 font-light text-neutral-600 border border-neutral-300 px-4 py-1 rounded-lg"
                   >
                     update
                   </button>
@@ -259,7 +262,7 @@ export const Profilepage: React.FC = () => {
 
                       <div className="flex gap-2 items-center">
                         <p className="text-white">{userData.name}</p>
-                        <p className="text-gray-400 text-sm">
+                        <p className="text-neutral-400 text-sm">
                           @{userData.username}
                         </p>
                       </div>

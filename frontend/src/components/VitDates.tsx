@@ -94,7 +94,7 @@ export const VitDates = () => {
                   <p className="text-white text-lg font-light font-mono">
                     {matchUserData.name}
                   </p>
-                  <p className="text-gray-400 text-sm font-light ">
+                  <p className="text-neutral-400 text-sm font-light ">
                     @{matchUserData.username}
                   </p>
                 </div>
@@ -103,7 +103,7 @@ export const VitDates = () => {
                   className="rounded-xl w-[100%]"
                 />
 
-                <p className="font-light text-sm text-gray-200 m-2 w-full">
+                <p className="font-light text-sm text-neutral-200 m-2 w-full">
                   {matchUserData.bio}
                 </p>
               </div>
@@ -139,13 +139,14 @@ export const VitDates = () => {
                 <img src="/love.png" className=" h-12 w-12" />
               </div>
 
-              <div className="text-center font-extralight px-6 my-3  text-lg font-sans text-gray-200">
+              <div className="text-center font-extralight px-6 my-3  text-lg font-sans text-neutral-200">
                 Find dates in your campus, start matching with undate
               </div>
-              <div className="text-center font-extralight px-6 my-3 text-xs font-sans text-gray-200">
+              <div className="text-center font-extralight px-6 my-3 text-xs font-sans text-neutral-200">
                 1. Your profile picture will be used for matching.
                 <br /> 2. Your bio will be shown in the matching.
-                <br /> 3. Once get a match it will be updated in match dates
+                <br /> 3. Your matches will be updated on
+                <span className="text-pink-500"> Matches </span>
                 section.
               </div>
 
@@ -156,10 +157,11 @@ export const VitDates = () => {
               </div>
             </div>
           )}
-
-          <p className="my-4 text-center font-mono font-thin text-xs text-bordercolor">
-            © 2024 undate Ltd / biswarup sen production
-          </p>
+          <div>
+            <p className="my-4 text-center font-mono font-thin text-xs text-bordercolor">
+              © 2024 undate Ltd / biswarup sen production
+            </p>
+          </div>
         </div>
       )}
     </>

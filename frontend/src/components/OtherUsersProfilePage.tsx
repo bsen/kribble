@@ -130,14 +130,14 @@ export const OtherUsersProfilePage = () => {
                     {otherUSerData.name}
                   </h2>
 
-                  <h2 className="text-base font-light text-gray-400">
+                  <h2 className="text-base font-light text-neutral-400">
                     @{otherUSerData.username}
                   </h2>
                 </div>
                 <div>
                   <button
                     onClick={followUser}
-                    className="bg-white hover:bg-gray-50 font-light text-gray-600 border border-gray-300 px-4 py-1 rounded-lg"
+                    className="bg-white hover:bg-neutral-50 font-light text-neutral-600 border border-neutral-300 px-4 py-1 rounded-lg"
                   >
                     <div>
                       {followingState ? <p>Unfollow</p> : <p>Follow</p>}
@@ -179,7 +179,7 @@ export const OtherUsersProfilePage = () => {
                         <p className="text-white font-semibold">
                           {otherUSerData.name}
                         </p>
-                        <p className="text-gray-400 text-sm">
+                        <p className="text-neutral-400 text-sm">
                           @{otherUSerData.username}
                         </p>
                       </div>

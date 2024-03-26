@@ -69,7 +69,7 @@ export const HomeComponent = () => {
                         <p className="text-white text-sm">
                           {post.creator.name}
                         </p>
-                        <p className="text-gray-400 text-sm">
+                        <p className="text-neutral-400 text-sm">
                           @{post.creator.username}
                         </p>
                       </div>

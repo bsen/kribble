@@ -4,6 +4,7 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
 import { rawCssString } from "hono/css";
 import { useDeferredValue } from "hono/jsx";
+import { PrismaClientRustPanicError } from "@prisma/client/runtime/library";
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -560,5 +561,48 @@ userRouter.post("/match_people", async (c) => {
     return c.json({ status: 200 });
   } catch (error) {
     console.log(error);
+  }
+});
+
+userRouter.post("/date-matches", async (c) => {
+  const body = await c.req.json();
+  const token = body.token;
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const userId = await verify(token, c.env.JWT_SECRET);
+  const findDates = await prisma.user.findUnique({
+    where: {
+      id: userId.id,
+    },
+    select: {
+      matchedUsers: true,
+    },
+  });
+  if (!findDates) {
+    return c.json({ status: 404, message: "user not found or auth error" });
+  }
+
+  try {
+    const userPromises = findDates.matchedUsers.map(async (userId) => {
+      const userDetails = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          name: true,
+          username: true,
+          image: true,
+        },
+      });
+      return userDetails;
+    });
+
+    const userMatchData = await Promise.all(userPromises);
+
+    return c.json({ status: 200, message: userMatchData });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    return c.json({ status: 500, message: "Internal Server Error" });
   }
 });
