@@ -3,9 +3,12 @@ import { motion } from "framer-motion";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const SignupAuth = () => {
   const navigate = useNavigate();
+  const [loadingState, setLoadingState] = useState(false);
+
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -91,12 +94,13 @@ export const SignupAuth = () => {
       popupFn();
       return;
     }
-
+    setLoadingState(true);
     const userdata = { name, username, email, gender, password };
     try {
       axios
         .post(`${BACKEND_URL}/api/server/v1/user/signup`, userdata)
         .then((response) => {
+          setLoadingState(false);
           if (response.data.status === 200) {
             const jwt = response.data.message;
             localStorage.setItem("token", jwt);
@@ -119,122 +123,130 @@ export const SignupAuth = () => {
 
   return (
     <>
-      {popup && (
-        <div className="absolute top-5 left-5">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="rounded-lg bg-white border border-indigo-300 shadow-sm p-5 ">
-              {popText ? (
-                <div>{popText}</div>
-              ) : (
-                <div>hi, This is just a alert 👋</div>
-              )}
+      {loadingState ? (
+        <div className="h-screen bg-black/60 flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      ) : (
+        <div>
+          {popup && (
+            <div className="absolute top-5 left-5">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="rounded-lg bg-white border border-bordercolor shadow-sm px-5 py-2 ">
+                  {popText ? (
+                    <div>{popText}</div>
+                  ) : (
+                    <div>hi, This is just a alert 👋</div>
+                  )}
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
+          )}
+          {sucPopup && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <motion.div
+                initial={{ opacity: 0, x: 80 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 1 }}
+              >
+                <div className="rounded-lg bg-white border border-indigo-300 shadow-sm p-4 lg:p-12 text-center text-lg">
+                  Congratulations! Your registration is complete 🎉.
+                  <br />
+                  Now you can login with your credentials.
+                </div>
+              </motion.div>
+            </div>
+          )}
+
+          <div className="h-screen w-full  bg-white flex justify-center items-center">
+            <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
+              <div className="text-neutral-800 font-mono text-[1.5rem] text-center my-4">
+                Create an undate account
+              </div>
+
+              <div>
+                <p className="font-semibold m-1 text-neutral-700">Name</p>
+                <input
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
+                  placeholder="Enter your name"
+                />
+              </div>
+              <div>
+                <p className="font-semibold m-1 text-neutral-700">Username</p>{" "}
+                <input
+                  value={username}
+                  onChange={(e) => {
+                    handleUsernameChange(e.target.value);
+                  }}
+                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
+                  placeholder="Enter your username"
+                />
+              </div>
+              <div>
+                <p className="font-semibold m-1 text-neutral-700">Email</p>
+                <input
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
+                  placeholder="example@vitstudent.ac.in"
+                />
+              </div>
+              <div>
+                <p className="font-semibold m-1 text-neutral-700">Gender</p>{" "}
+                <select
+                  className="h-10 w-full rounded-lg px-4 text-neutral-600 bg-white border border-neutral-300 appearance-none"
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="" className="text-neutral-400">
+                    Select Gender
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+
+              <div>
+                <p className="font-semibold m-1 text-neutral-700">Password</p>
+                <input
+                  value={password}
+                  onChange={(e) => {
+                    handlePasswordChnage(e.target.value);
+                  }}
+                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
+                  placeholder="Enter password"
+                />
+              </div>
+              <button
+                onClick={signup}
+                className="my-4 w-full text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-700"
+              >
+                Register
+              </button>
+              <div className="text-center text-md font-light text-neutral-800">
+                Already have an account?
+                <Link
+                  to="/login"
+                  className="font-semibold text-neutral-700 underline underline-offset-2 mx-1"
+                >
+                  Login
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       )}
-      {sucPopup && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <motion.div
-            initial={{ opacity: 0, x: 80 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 1 }}
-          >
-            <div className="rounded-lg bg-white border border-indigo-300 shadow-sm p-4 lg:p-12 text-center text-lg">
-              Congratulations! Your registration is complete 🎉.
-              <br />
-              Now you can login with your credentials.
-            </div>
-          </motion.div>
-        </div>
-      )}
-
-      <div className="h-screen w-full  bg-white flex justify-center items-center">
-        <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
-          <div className="text-neutral-800 font-mono text-[1.5rem] text-center my-4">
-            Create an undate account
-          </div>
-
-          <div>
-            <p className="font-semibold m-1 text-neutral-700">Name</p>
-            <input
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
-              placeholder="Enter your name"
-            />
-          </div>
-          <div>
-            <p className="font-semibold m-1 text-neutral-700">Username</p>{" "}
-            <input
-              value={username}
-              onChange={(e) => {
-                handleUsernameChange(e.target.value);
-              }}
-              className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
-              placeholder="Enter your username"
-            />
-          </div>
-          <div>
-            <p className="font-semibold m-1 text-neutral-700">Email</p>
-            <input
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
-              placeholder="example@vitstudent.ac.in"
-            />
-          </div>
-          <div>
-            <p className="font-semibold m-1 text-neutral-700">Gender</p>{" "}
-            <select
-              className="h-10 w-full rounded-lg px-4 text-neutral-600 bg-white border border-neutral-300 appearance-none"
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <option value="" className="text-neutral-400">
-                Select Gender
-              </option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-
-          <div>
-            <p className="font-semibold m-1 text-neutral-700">Password</p>
-            <input
-              value={password}
-              onChange={(e) => {
-                handlePasswordChnage(e.target.value);
-              }}
-              className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
-              placeholder="Enter password"
-            />
-          </div>
-          <button
-            onClick={signup}
-            className="my-4 w-full text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-700"
-          >
-            Register
-          </button>
-          <div className="text-center text-md font-light text-neutral-800">
-            Already have an account?
-            <Link
-              to="/login"
-              className="font-semibold text-neutral-700 underline underline-offset-2 mx-1"
-            >
-              Login
-            </Link>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

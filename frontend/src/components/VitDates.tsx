@@ -75,95 +75,97 @@ export const VitDates = () => {
 
   return (
     <>
-      {loadingState ? (
-        <div className="h-screen bg-black border-l border-bordercolor flex justify-center items-center">
-          <CircularProgress />
-        </div>
-      ) : (
-        <div className="h-screen bg-black border-l border-bordercolor flex flex-col justify-between">
-          <div className="w-full flex justify-center">
-            <div className="text-3xl  text-white font-mono w-[80%] text-center py-5 border-b border-bordercolor">
-              Vit Dates
-            </div>
+      <div className="h-screen bg-black border-l border-bordercolor flex flex-col justify-between">
+        <div className="w-full flex justify-center">
+          <div className="text-2xl  text-white font-mono w-[70%] text-center py-4 border-b border-bordercolor">
+            Vit Dates
           </div>
+        </div>
 
-          {matchingState ? (
-            <div className="w-full flex flex-col items-center justify-center ">
-              <div className="w-[80%]">
-                <div className="flex gap-2 m-2 items-center">
-                  <p className="text-white text-lg font-light font-mono">
-                    {matchUserData.name}
-                  </p>
-                  <p className="text-neutral-400 text-sm font-light ">
-                    @{matchUserData.username}
-                  </p>
-                </div>
-                <img
-                  src={matchUserData.image ? matchUserData.image : "user.png"}
-                  className="rounded-xl w-[100%]"
-                />
-
-                <p className="font-light text-sm text-neutral-200 m-2 w-full">
-                  {matchUserData.bio}
-                </p>
-              </div>
-
-              <div className="flex py-2 justify-evenly w-full">
-                <div>
-                  <button
-                    onClick={getMatchPeoples}
-                    className="bg-white border font-mono font-light border-bordercolor text-indigo-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-900"
-                  >
-                    <div className="flex items-center justify-evenly">
-                      <div>Pass</div>
-                      <CloseIcon className="text-inidgo-500" />
-                    </div>
-                  </button>
-                </div>
-                <div>
-                  <button
-                    onClick={match}
-                    className="bg-white border font-mono font-light border-bordercolor text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-900"
-                  >
-                    <div className="flex items-center justify-evenly">
-                      <div>Date</div>
-                      <FavoriteIcon className="text-pink-500" />
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div className="w-full flex justify-center items-center">
-                <img src="/love.png" className=" h-12 w-12" />
-              </div>
-
-              <div className="text-center font-extralight px-6 my-3  text-lg font-sans text-neutral-200">
-                Find dates in your campus, start matching with undate
-              </div>
-              <div className="text-center font-extralight px-6 my-3 text-xs font-sans text-neutral-200">
-                1. Your profile picture will be used for matching.
-                <br /> 2. Your bio will be shown in the matching.
-                <br /> 3. Your matches will be updated on
-                <span className="text-pink-500"> Matches </span>
-                section.
-              </div>
-
-              <div className="w-full flex justify-center my-10">
-                <div className="text-white bg-blue-600 rounded-lg text-xl py-1 px-3 font-mono  active:bg-blue-700">
-                  <button onClick={getMatchPeoples}>start matching</button>
-                </div>
-              </div>
-            </div>
-          )}
+        {loadingState ? (
+          <div className="h-full flex justify-center items-center">
+            <CircularProgress />
+          </div>
+        ) : (
           <div>
-            <p className="my-4 text-center font-mono font-thin text-xs text-bordercolor">
-              © 2024 undate Ltd / biswarup sen production
-            </p>
+            {matchingState ? (
+              <div className="w-full flex flex-col items-center justify-center ">
+                <div className="w-[80%]">
+                  <div className="flex gap-2 m-2 items-center">
+                    <p className="text-white text-lg font-light font-mono">
+                      {matchUserData.name}
+                    </p>
+                    <p className="text-neutral-400 text-sm font-light ">
+                      @{matchUserData.username}
+                    </p>
+                  </div>
+                  <img
+                    src={matchUserData.image ? matchUserData.image : "user.png"}
+                    className="rounded-xl w-[100%]"
+                  />
+
+                  <p className="font-light text-sm text-neutral-200 m-2 w-full">
+                    {matchUserData.bio}
+                  </p>
+                </div>
+
+                <div className="flex py-2 justify-evenly w-full">
+                  <div>
+                    <button
+                      onClick={getMatchPeoples}
+                      className="bg-white border font-mono font-light border-bordercolor text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                    >
+                      <div className="flex items-center justify-evenly">
+                        <div>Pass</div>
+                        <CloseIcon className="text-blue-500" />
+                      </div>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      onClick={match}
+                      className="bg-white border font-mono font-light border-bordercolor text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                    >
+                      <div className="flex items-center justify-evenly">
+                        <div>Date</div>
+                        <FavoriteIcon className="text-pink-500" />
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="w-full flex justify-center items-center">
+                  <img src="/love.png" className=" h-12 w-12" />
+                </div>
+
+                <div className="text-center font-extralight px-6 my-3  text-lg font-sans text-neutral-200">
+                  Find dates in your campus, start matching with undate
+                </div>
+                <div className="text-center font-extralight px-6 my-3 text-xs font-sans text-neutral-200">
+                  1. Your profile picture will be used for matching.
+                  <br /> 2. Your bio will be shown in the matching.
+                  <br /> 3. Your matches will be updated on
+                  <span className="text-pink-500"> Matches </span>
+                  section.
+                </div>
+
+                <div className="w-full flex justify-center my-10">
+                  <div className="text-white bg-blue-600 rounded-lg text-xl py-2 px-4 font-mono  active:bg-blue-700">
+                    <button onClick={getMatchPeoples}>start matching</button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
+        )}
+        <div>
+          <p className="my-4 text-center font-thin text-xs text-bordercolor font-mono">
+            © 2024 undate Ltd <br /> a biswarup sen production
+          </p>
         </div>
-      )}
+      </div>
     </>
   );
 };

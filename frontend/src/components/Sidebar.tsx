@@ -205,9 +205,10 @@ export const Sidebar = () => {
       )}
       <div className="h-screen bg-black border-r  border-bordercolor px-10 flex flex-col justify-between">
         <div className="h-max w-full">
-          <div className="w-full text-3xl font-mono text-neutral-200 p-4 text-center border-b border-bordercolor">
-            undate
+          <div className="flex justify-center border-b border-bordercolor">
+            <img src="/undate.png" className="w-[50%] py-4" />
           </div>
+
           <button
             className="w-full"
             onClick={() => {
@@ -216,7 +217,7 @@ export const Sidebar = () => {
           >
             <div
               className={
-                "p-2 mt-5 flex items-center justify-center gap-2 rounded-md "
+                "p-2 mt-3 flex items-center justify-center gap-2 rounded-md "
               }
             >
               <HomeIcon
@@ -241,7 +242,7 @@ export const Sidebar = () => {
           >
             <div
               className={
-                "p-2 mt-5 flex items-center justify-center gap-2 rounded-md "
+                "p-2 mt-3 flex items-center justify-center gap-2 rounded-md "
               }
             >
               <PersonIcon
@@ -271,7 +272,7 @@ export const Sidebar = () => {
           >
             <div
               className={
-                "p-2 mt-5 flex items-center justify-center gap-2 rounded-md bg-neutral-900 border border-neutral-800 w-[50%]"
+                "p-2 mt-3 flex items-center justify-center gap-2 rounded-md bg-black border border-neutral-800 w-[40%]"
               }
             >
               <PostAddIcon className={"text-blue-500"} />

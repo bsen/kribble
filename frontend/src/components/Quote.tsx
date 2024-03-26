@@ -1,9 +1,9 @@
 export const Quote = () => {
   return (
     <div className="h-screen w-full flex items-center justify-center bg-neutral-950 ">
-      <div className="grid gap-y-10">
-        <div className="w-full flex justify-center items-center gap-10">
-          <img src="/poki.gif" className="h-32" />
+      <div className="grid gap-3">
+        <div className="w-full flex justify-center items-center">
+          <img src="/undate.png" className="h-20" />
         </div>
         <div className="px-2">
           <div className=" text-neutral-100 text-3xl font-light font-mono ">
