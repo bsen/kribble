@@ -63,7 +63,7 @@ export const HomeComponent = () => {
                           post.creator.image ? post.creator.image : "/user.png"
                         }
                         alt="Profile"
-                        className="w-10 h-10 rounded-full"
+                        className="w-10 h-10 rounded-full border border-neutral-800"
                       />
                       <div className="flex gap-2">
                         <p className="text-white text-sm">
@@ -73,7 +73,7 @@ export const HomeComponent = () => {
                           @{post.creator.username}
                         </p>
                       </div>
-                    </div>{" "}
+                    </div>
                   </Link>
                   <div className="w-ful py-4 flex flex-col items-start justify-center">
                     <img

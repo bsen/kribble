@@ -15,6 +15,14 @@ export const Profilepage: React.FC = () => {
     gender: string;
     bio: string;
     image: string;
+    followers: {
+      followerId: string;
+      followingId: string;
+    }[];
+    following: {
+      followerId: string;
+      followingId: string;
+    }[];
     posts: {
       id: string;
       content: string;
@@ -28,6 +36,8 @@ export const Profilepage: React.FC = () => {
     gender: "",
     bio: "",
     image: "",
+    followers: [],
+    following: [],
     posts: [],
   });
 
@@ -139,13 +149,13 @@ export const Profilepage: React.FC = () => {
                   <img
                     src={previewImage}
                     alt="Profile"
-                    className="w-20 h-20 rounded-full border border-bordercolor"
+                    className="w-20 h-20 rounded-full border border-neutral-800"
                   />
                 ) : (
                   <img
                     src={userData.image ? userData.image : "/user.png"}
                     alt="Profile"
-                    className="w-20 h-20 rounded-full border border-bordercolor"
+                    className="w-20 h-20 rounded-full border border-neutral-800"
                   />
                 )}
                 <div>
@@ -172,17 +182,17 @@ export const Profilepage: React.FC = () => {
                     <div>Posts</div>
                   </div>
                   <div className="flex flex-col items-center">
-                    <div>0</div>
+                    <div>{userData.followers.length}</div>
                     <div>Followers</div>
                   </div>
                   <div className="flex flex-col items-center">
-                    <div>0</div>
+                    <div>{userData.following.length}</div>
                     <div>Following</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="my-2">
+            <div className="my-2 px-2">
               <div className="flex justify-between">
                 <div>
                   <h2 className="text-lg text-white">{userData.name}</h2>
@@ -195,7 +205,7 @@ export const Profilepage: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={savePhoto}
-                        className="bg-neutral-50 hover:bg-neutral-100 text-neutral-600 px-4 py-1 rounded-lg font-light"
+                        className="bg-blue-500  text-white px-4 py-1 rounded-lg font-light"
                       >
                         Save
                       </button>
@@ -210,7 +220,7 @@ export const Profilepage: React.FC = () => {
                     <div className="flex items-center">
                       <button
                         onClick={() => setIsBioEditing(!isBioEditing)}
-                        className="font-light hover:bg-black border border-neutral-600 text-white px-4 py-1 rounded-lg "
+                        className="bg-blue-600 font-light text-white px-4 py-1 rounded-lg"
                       >
                         {isBioEditing ? "Cancel" : "Edit bio"}
                       </button>
@@ -229,7 +239,7 @@ export const Profilepage: React.FC = () => {
                   />
                   <button
                     onClick={bioUpdate}
-                    className="bg-white hover:bg-neutral-50 font-light text-neutral-600 border border-neutral-300 px-4 py-1 rounded-lg"
+                    className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light"
                   >
                     update
                   </button>
@@ -257,7 +267,7 @@ export const Profilepage: React.FC = () => {
                       <img
                         src={userData.image ? userData.image : "user.png"}
                         alt="Profile"
-                        className="w-10 h-10 border border-bordercolor rounded-full"
+                        className="w-10 h-10 border border-neutral-800 rounded-full"
                       />
 
                       <div className="flex gap-2 items-center">

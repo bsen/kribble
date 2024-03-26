@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { Link } from "react-router-dom";
 
 export const Sidebar = () => {
   const location = useLocation();
@@ -270,16 +271,16 @@ export const Sidebar = () => {
           >
             <div
               className={
-                "p-2 mt-5 flex items-center justify-center gap-2 rounded-md bg-neutral-200 w-[50%]"
+                "p-2 mt-5 flex items-center justify-center gap-2 rounded-md bg-neutral-900 border border-neutral-800 w-[50%]"
               }
             >
-              <PostAddIcon className={"text-indigo-800"} />
-              <p className={"text-base text-indigo-800"}>Post</p>
+              <PostAddIcon className={"text-blue-500"} />
+              <p className={"text-base text-blue-500"}>Post</p>
             </div>
           </button>
         </div>
 
-        <div className="flex flex-col  items-center overflow-y-auto  h-full bg-neutral-900 mt-8 rounded-xl">
+        <div className="flex flex-col  items-center overflow-y-auto  h-full bg-neutral-900 mt-8 rounded-xl  border border-neutral-800">
           <div
             className={
               "p-2 w-[60%] flex  items-center justify-center gap-2 border-b border-bordercolor"
@@ -293,20 +294,21 @@ export const Sidebar = () => {
               .slice()
               .reverse()
               .map((user, index) => (
-                <div
-                  key={index}
-                  className="flex w-[80%] bg-black p-2 items-center justify-center rounded-md my-4 gap-2 border border-neutral-800"
-                >
-                  <img
-                    src={user.image ? user.image : "/user.png"}
-                    alt="Profile"
-                    className="h-10 w-10 rounded-full"
-                  />
-                  <p className="text-lg text-white">{user.name}</p>
-                  <p className="text-sm text-neutral-300 font-light">
-                    @{user.username}
-                  </p>
-                </div>
+                <Link to={`/user/${user.username}`} className="w-[80%]">
+                  <div
+                    key={index}
+                    className="flex  bg-black/65 px-4 py-2 items-center justify-start rounded-xl mt-4 gap-3 border border-neutral-800"
+                  >
+                    <img
+                      src={user.image ? user.image : "/user.png"}
+                      alt="Profile"
+                      className="h-8 w-8 rounded-full border border-neutral-700"
+                    />
+                    <p className="text-base font-light text-white">
+                      {user.name}
+                    </p>
+                  </div>
+                </Link>
               ))
           ) : (
             <p className="text-center font-mono my-2 text-white">

@@ -137,7 +137,7 @@ export const OtherUsersProfilePage = () => {
                 <div>
                   <button
                     onClick={followUser}
-                    className="bg-white hover:bg-neutral-50 font-light text-neutral-600 border border-neutral-300 px-4 py-1 rounded-lg"
+                    className="bg-neutral-800 hover:bg-neutral-950 font-light text-neutral-100 border border-neutral-700 px-4 py-1 rounded-lg"
                   >
                     <div>
                       {followingState ? <p>Unfollow</p> : <p>Follow</p>}

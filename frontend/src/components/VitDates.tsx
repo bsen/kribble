@@ -151,7 +151,7 @@ export const VitDates = () => {
               </div>
 
               <div className="w-full flex justify-center my-10">
-                <div className="text-white bg-black rounded-lg text-xl py-1 px-3 font-mono  border border-bordercolor active:bg-neutral-900">
+                <div className="text-white bg-blue-600 rounded-lg text-xl py-1 px-3 font-mono  active:bg-blue-700">
                   <button onClick={getMatchPeoples}>start matching</button>
                 </div>
               </div>
