@@ -166,12 +166,12 @@ export const SignupAuth = () => {
 
           <div className="h-screen w-full  bg-white flex justify-center items-center">
             <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
-              <div className="text-neutral-800 font-mono text-[1.5rem] text-center my-4">
+              <div className="text-neutral-800 font-ubuntu text-[1.5rem] text-center my-4">
                 Create an undate account
               </div>
 
               <div>
-                <p className="font-semibold m-1 text-neutral-700">Name</p>
+                <div className="font-semibold m-1 text-neutral-700">Name</div>
                 <input
                   value={name}
                   onChange={(e) => {
@@ -182,7 +182,9 @@ export const SignupAuth = () => {
                 />
               </div>
               <div>
-                <p className="font-semibold m-1 text-neutral-700">Username</p>{" "}
+                <div className="font-semibold m-1 text-neutral-700">
+                  Username
+                </div>{" "}
                 <input
                   value={username}
                   onChange={(e) => {
@@ -193,7 +195,7 @@ export const SignupAuth = () => {
                 />
               </div>
               <div>
-                <p className="font-semibold m-1 text-neutral-700">Email</p>
+                <div className="font-semibold m-1 text-neutral-700">Email</div>
                 <input
                   value={email}
                   onChange={(e) => {
@@ -204,7 +206,7 @@ export const SignupAuth = () => {
                 />
               </div>
               <div>
-                <p className="font-semibold m-1 text-neutral-700">Gender</p>{" "}
+                <div className="font-semibold m-1 text-neutral-700">Gender</div>{" "}
                 <select
                   className="h-10 w-full rounded-lg px-4 text-neutral-600 bg-white border border-neutral-300 appearance-none"
                   onChange={(e) => setGender(e.target.value)}
@@ -218,7 +220,9 @@ export const SignupAuth = () => {
               </div>
 
               <div>
-                <p className="font-semibold m-1 text-neutral-700">Password</p>
+                <div className="font-semibold m-1 text-neutral-700">
+                  Password
+                </div>
                 <input
                   value={password}
                   onChange={(e) => {

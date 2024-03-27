@@ -8,6 +8,9 @@ export default {
         logos: "rgba(255, 255, 255, 0.6)",
         background: "rgba(18, 21, 23, 1,0.5)",
       },
+      fontFamily: {
+        ubuntu: ["ubuntu", "ubuntu"],
+      },
     },
   },
 

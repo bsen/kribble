@@ -140,16 +140,16 @@ export const OtherUsersProfilePage = () => {
                     className="bg-blue-600 active:bg-blue-700 font-light text-white px-4 py-1 rounded-lg"
                   >
                     <div>
-                      {followingState ? <p>Unfollow</p> : <p>Follow</p>}
+                      {followingState ? <div>Unfollow</div> : <div>Follow</div>}
                     </div>
                   </button>
                 </div>
               </div>
               <div className="text-white mt-2">
                 {otherUSerData.bio ? (
-                  <p>{otherUSerData.bio}</p>
+                  <div>{otherUSerData.bio}</div>
                 ) : (
-                  <p>Write your bio</p>
+                  <div>Write your bio</div>
                 )}
               </div>
             </div>
@@ -176,12 +176,12 @@ export const OtherUsersProfilePage = () => {
                       />
 
                       <div className="flex gap-2 items-center">
-                        <p className="text-white font-semibold">
+                        <div className="text-white font-semibold">
                           {otherUSerData.name}
-                        </p>
-                        <p className="text-neutral-400 text-sm">
+                        </div>
+                        <div className="text-neutral-400 text-sm">
                           @{otherUSerData.username}
-                        </p>
+                        </div>
                       </div>
                     </div>
                     <div className="w-full py-4 flex flex-col items-start justify-center">
@@ -189,14 +189,14 @@ export const OtherUsersProfilePage = () => {
                         src={post.image}
                         className="h-auto w-[70%] rounded-lg"
                       />
-                      <p className="text-white my-2">{post.content}</p>
+                      <div className="text-white my-2">{post.content}</div>
                     </div>
                   </div>
                 ))
             ) : (
-              <p className="text-center font-mono my-5 text-white">
+              <div className="text-center font-ubuntu my-5 text-white">
                 No posts found.
-              </p>
+              </div>
             )}
           </div>
         </div>

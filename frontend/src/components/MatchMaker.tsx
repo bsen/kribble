@@ -84,7 +84,7 @@ export const MatchMaker = () => {
     <>
       <div className="h-screen bg-black border-l border-bordercolor flex flex-col justify-between">
         <div className="w-full flex justify-center">
-          <div className="text-2xl  text-white font-mono w-[70%] text-center py-4 border-b border-bordercolor">
+          <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-bordercolor">
             Match Maker
           </div>
         </div>
@@ -99,28 +99,28 @@ export const MatchMaker = () => {
               <div className="w-full flex flex-col items-center justify-center ">
                 <div className="w-[80%]">
                   <div className="flex gap-2 m-2 items-center">
-                    <p className="text-white text-lg font-light font-mono">
+                    <div className="text-white text-lg font-light font-ubuntu">
                       {matchUserData.name}
-                    </p>
-                    <p className="text-neutral-400 text-sm font-light ">
+                    </div>
+                    <div className="text-neutral-400 text-sm font-light ">
                       @{matchUserData.username}
-                    </p>
+                    </div>
                   </div>
                   <img
                     src={matchUserData.image ? matchUserData.image : "user.png"}
                     className="rounded-xl w-[100%]"
                   />
 
-                  <p className="font-light text-sm text-neutral-200 m-2 w-full">
+                  <div className="font-light text-sm text-neutral-200 m-2 w-full">
                     {matchUserData.bio}
-                  </p>
+                  </div>
                 </div>
 
                 <div className="flex py-2 justify-evenly w-full">
                   <div>
                     <button
                       onClick={searchPeople}
-                      className="bg-white border font-mono font-light border-bordercolor text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                      className="bg-white border font-ubuntu font-light border-bordercolor text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                     >
                       <div className="flex items-center justify-evenly">
                         <div>Pass</div>
@@ -131,7 +131,7 @@ export const MatchMaker = () => {
                   <div>
                     <button
                       onClick={match}
-                      className="bg-white border font-mono font-light border-bordercolor text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                      className="bg-white border font-ubuntu font-light border-bordercolor text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                     >
                       <div className="flex items-center justify-evenly">
                         <div>Date</div>
@@ -190,7 +190,7 @@ export const MatchMaker = () => {
                 <div className="w-full flex justify-center">
                   <div>
                     <button
-                      className="text-white bg-blue-600 rounded-lg text-xl py-2 px-4 font-mono  active:bg-blue-700"
+                      className="text-white bg-blue-600 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-700"
                       onClick={searchPeople}
                     >
                       start matching
@@ -202,9 +202,9 @@ export const MatchMaker = () => {
           </div>
         )}
         <div>
-          <p className="my-4 text-center font-thin text-xs text-bordercolor font-mono">
+          <div className="my-4 text-center font-thin text-xs text-bordercolor font-ubuntu">
             © 2024 company Ltd
-          </p>
+          </div>
         </div>
       </div>
     </>

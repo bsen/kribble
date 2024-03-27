@@ -13,8 +13,8 @@ export const Signup = () => {
   }, []);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
-      <SignupAuth />
       <Quote />
+      <SignupAuth />
     </div>
   );
 };

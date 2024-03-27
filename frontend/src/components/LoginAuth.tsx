@@ -81,12 +81,12 @@ export const LoginAuth = () => {
           )}
           <div className="h-screen w-full  bg-white flex justify-center items-center">
             <div className="w-[80%] lg:w-[50%] grid gap-y-2">
-              <div className="text-neutral-800 text-center font-mono text-[2rem]">
+              <div className="text-neutral-800 text-center font-ubuntu text-[2rem]">
                 Login
               </div>
 
               <div>
-                <p className="font-semibold m-1 text-neutral-700">Email</p>
+                <div className="font-semibold m-1 text-neutral-700">Email</div>
                 <input
                   value={email}
                   onChange={(e) => {
@@ -98,7 +98,9 @@ export const LoginAuth = () => {
               </div>
 
               <div>
-                <p className="font-semibold m-1 text-neutral-700">Password</p>
+                <div className="font-semibold m-1 text-neutral-700">
+                  Password
+                </div>
                 <input
                   value={password}
                   onChange={(e) => {

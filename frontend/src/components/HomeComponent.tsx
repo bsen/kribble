@@ -66,12 +66,12 @@ export const HomeComponent = () => {
                         className="w-10 h-10 rounded-full border border-neutral-800"
                       />
                       <div className="flex gap-2">
-                        <p className="text-white text-sm">
+                        <div className="text-white text-sm">
                           {post.creator.name}
-                        </p>
-                        <p className="text-neutral-400 text-sm">
+                        </div>
+                        <div className="text-neutral-400 text-sm">
                           @{post.creator.username}
-                        </p>
+                        </div>
                       </div>
                     </div>
                   </Link>
@@ -80,14 +80,16 @@ export const HomeComponent = () => {
                       src={post.image}
                       className="h-auto w-[70%] rounded-lg"
                     />
-                    <p className="text-white my-2 font-light">{post.content}</p>
+                    <div className="text-white my-2 font-light">
+                      {post.content}
+                    </div>
                   </div>
                 </div>
               ))
           ) : (
-            <p className="text-center font-mono my-5 text-white">
+            <div className="text-center font-ubuntu my-5 text-white">
               No posts found.
-            </p>
+            </div>
           )}
         </div>
       )}

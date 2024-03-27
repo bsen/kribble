@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { BACKEND_URL } from "../config";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const Profilepage: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
@@ -41,6 +42,7 @@ export const Profilepage: React.FC = () => {
   });
 
   const [bio, setBio] = useState("");
+  const [imageUpdateState, setImageUpdateState] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [postDeletionState, setPostDeletionState] = useState(false);
   const [deletingPost, setDeletingPost] = useState("");
@@ -147,6 +149,26 @@ export const Profilepage: React.FC = () => {
     }
   }
 
+  async function removeDp() {
+    try {
+      setLoadingState(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/user/remove-dp`,
+        {
+          token,
+        }
+      );
+      setImageUpdateState(false);
+      setLoadingState(false);
+      if (response.data.status == 200) {
+        alert("profile photo deleted successfuly");
+        getData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     try {
       getData();
@@ -166,7 +188,7 @@ export const Profilepage: React.FC = () => {
         <>
           {postDeletionState ? (
             <div className="bg-neutral-950 w-full h-screen flex items-center justify-center">
-              <div className="text-white text-lg font-mono">
+              <div className="text-white text-lg font-ubuntu">
                 Do you really want to delete this post?
                 <div className="flex justify-evenly my-5">
                   <button
@@ -205,19 +227,16 @@ export const Profilepage: React.FC = () => {
                       />
                     )}
                     <div>
-                      <label htmlFor="image-upload" className="cursor-pointer ">
+                      <button
+                        onClick={() => {
+                          setImageUpdateState(true);
+                        }}
+                      >
                         <EditIcon
                           sx={{ fontSize: 20 }}
                           className="text-neutral-400"
                         />
-                      </label>
-                      <input
-                        id="image-upload"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
+                      </button>
                     </div>
                   </div>
 
@@ -263,13 +282,72 @@ export const Profilepage: React.FC = () => {
                           </button>
                         </div>
                       ) : (
-                        <div className="flex items-center">
-                          <button
-                            onClick={() => setIsBioEditing(!isBioEditing)}
-                            className="bg-blue-600 font-light text-white px-4 py-1 rounded-lg"
-                          >
-                            {isBioEditing ? "Cancel" : "Edit bio"}
-                          </button>
+                        <div>
+                          {imageUpdateState ? (
+                            <div>
+                              <div className="flex items-center gap-2 ">
+                                <button onClick={removeDp}>
+                                  <DeleteIcon
+                                    sx={{ fontSize: 25 }}
+                                    className="text-neutral-600"
+                                  />
+                                </button>
+
+                                <div>
+                                  <button className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light">
+                                    <label
+                                      htmlFor="image-upload"
+                                      className="cursor-pointer "
+                                    >
+                                      update
+                                    </label>
+                                    <input
+                                      id="image-upload"
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={handleImageUpload}
+                                      className="hidden"
+                                    />
+                                  </button>
+                                </div>
+                                <button
+                                  onClick={() => {
+                                    setImageUpdateState(false);
+                                  }}
+                                  className=" text-white"
+                                >
+                                  <CloseIcon sx={{ fontSize: 28 }} />
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <div className="flex items-center gap-2">
+                                {isBioEditing && (
+                                  <button
+                                    onClick={bioUpdate}
+                                    className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light"
+                                  >
+                                    update
+                                  </button>
+                                )}
+                                <button
+                                  onClick={() => setIsBioEditing(!isBioEditing)}
+                                >
+                                  {isBioEditing ? (
+                                    <CloseIcon
+                                      className="text-neutral-300"
+                                      sx={{ fontSize: 30 }}
+                                    />
+                                  ) : (
+                                    <div className="bg-blue-600 font-light text-white px-4 py-1 rounded-lg">
+                                      Edit bio
+                                    </div>
+                                  )}
+                                </button>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -283,20 +361,14 @@ export const Profilepage: React.FC = () => {
                         placeholder="Enter your bio"
                         className="w-full p-2  rounded-lg"
                       />
-                      <button
-                        onClick={bioUpdate}
-                        className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light"
-                      >
-                        update
-                      </button>
                     </div>
                   )}
                   {!isBioEditing && (
                     <div className="text-white my-2 font-light">
                       {userData.bio ? (
-                        <p>{userData.bio}</p>
+                        <div>{userData.bio}</div>
                       ) : (
-                        <p>Write your bio</p>
+                        <div>Write your bio</div>
                       )}
                     </div>
                   )}
@@ -322,10 +394,10 @@ export const Profilepage: React.FC = () => {
                             />
 
                             <div className="flex gap-2 items-center">
-                              <p className="text-white">{userData.name}</p>
-                              <p className="text-neutral-400 text-sm">
+                              <div className="text-white">{userData.name}</div>
+                              <div className="text-neutral-400 text-sm">
                                 @{userData.username}
-                              </p>
+                              </div>
                             </div>
                           </div>
                           <div>
@@ -347,16 +419,16 @@ export const Profilepage: React.FC = () => {
                             src={post.image}
                             className="h-auto w-[70%] rounded-lg"
                           />
-                          <p className="text-white my-2 font-light">
+                          <div className="text-white my-2 font-light">
                             {post.content}
-                          </p>
+                          </div>
                         </div>
                       </div>
                     ))
                 ) : (
-                  <p className="text-center font-mono my-5 text-white">
+                  <div className="text-center font-ubuntu my-5 text-white">
                     No posts found.
-                  </p>
+                  </div>
                 )}
               </div>
             </div>
