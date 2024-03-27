@@ -27,7 +27,7 @@ export const HomeComponent = () => {
   async function getAllPosts() {
     setLoadingState(true);
     const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/user/bulkposts`,
+      `${BACKEND_URL}/api/server/v1/post/paginated-allposts`,
       { token }
     );
     setPostData({ posts: response.data.message });

@@ -98,7 +98,7 @@ export const SignupAuth = () => {
     const userdata = { name, username, email, gender, password };
     try {
       axios
-        .post(`${BACKEND_URL}/api/server/v1/user/signup`, userdata)
+        .post(`${BACKEND_URL}/api/server/v1/auth/signup`, userdata)
         .then((response) => {
           setLoadingState(false);
           if (response.data.status === 200) {

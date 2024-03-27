@@ -35,7 +35,7 @@ export const LoginAuth = () => {
       setLoadingState(true);
       const data = { email, password };
       axios
-        .post(`${BACKEND_URL}/api/server/v1/user/login`, data)
+        .post(`${BACKEND_URL}/api/server/v1/auth/login`, data)
         .then((response) => {
           setLoadingState(false);
           if (response.data.status == 200) {
