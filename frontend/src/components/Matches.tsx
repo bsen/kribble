@@ -6,7 +6,7 @@ import { BACKEND_URL } from "../config";
 
 import { useState } from "react";
 
-export const VitDates = () => {
+export const Matches = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
 
@@ -29,7 +29,7 @@ export const VitDates = () => {
     setLoadingState(true);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/send-people-for-match`,
+        `${BACKEND_URL}/api/server/v1/matches/users-for-match`,
         { token }
       );
 
@@ -54,7 +54,7 @@ export const VitDates = () => {
     setLoadingState(true);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/match_people`,
+        `${BACKEND_URL}/api/server/v1/matches/matchpeople`,
         { token, otherPersonsId }
       );
       setLoadingState(false);

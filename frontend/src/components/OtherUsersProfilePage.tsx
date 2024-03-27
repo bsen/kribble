@@ -49,7 +49,7 @@ export const OtherUsersProfilePage = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/get_third_person_data`,
+        `${BACKEND_URL}/api/server/v1/user/otheruser-data`,
         { otherUser, token }
       );
       setOtherUSerData(response.data.message);
@@ -64,7 +64,7 @@ export const OtherUsersProfilePage = () => {
     try {
       const details = { otherUser, token };
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/follow-person`,
+        `${BACKEND_URL}/api/server/v1/user/follow-unfollow`,
         details
       );
       if (response.data.status == 200) {

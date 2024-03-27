@@ -62,7 +62,7 @@ export const Sidebar = () => {
     formdata.append("token", token ? token : "");
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/post`,
+        `${BACKEND_URL}/api/server/v1/post/create-post`,
         formdata
       );
 
@@ -81,7 +81,7 @@ export const Sidebar = () => {
   async function getMatchesDetails() {
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/date-matches`,
+        `${BACKEND_URL}/api/server/v1/user/matched-dates`,
         { token }
       );
       if (response.data.status == 200) {

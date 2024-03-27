@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { Profilepage } from "../components/Profilepage";
-import { VitDates } from "../components/VitDates";
+import { Matches } from "../components/Matches";
 
 export const Profile = () => {
   return (
@@ -13,7 +13,7 @@ export const Profile = () => {
       </div>
 
       <div className="w-[25%]">
-        <VitDates />
+        <Matches />
       </div>
     </div>
   );
