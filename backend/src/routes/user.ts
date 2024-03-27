@@ -189,6 +189,33 @@ userRouter.post("/follow-unfollow", async (c) => {
   }
 });
 
+userRouter.post("/delete-profile-photo", async (c) => {
+  const body = await c.req.json();
+  const token = body.token;
+  const userId = await verify(token, c.env.JWT_SECRET);
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const deletePhoto = await prisma.user.update({
+    where: {
+      id: userId.id,
+    },
+    data: {
+      image: null,
+    },
+  });
+
+  if (!deletePhoto) {
+    return c.json({
+      status: 400,
+      message: "profile photo deletion failed, network error",
+    });
+  }
+
+  return c.json({ status: 200, message: "profile photo deletion successful" });
+});
+
 userRouter.post("/otheruser-data", async (c) => {
   const body = await c.req.json();
   const otherUser = body.otherUser;
