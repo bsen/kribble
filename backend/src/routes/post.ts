@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
+import { errorMonitor } from "form-data";
 
 export const postRouter = new Hono<{
   Bindings: {
@@ -14,12 +15,13 @@ export const postRouter = new Hono<{
 }>();
 
 postRouter.post("/paginated-allposts", async (c) => {
-  const body = await c.req.json();
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const token = body.token;
   try {
+    const body = await c.req.json();
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const token = body.token;
+
     const userId = await verify(token, c.env.JWT_SECRET);
     const userData = await prisma.user.findUnique({ where: { id: userId.id } });
     if (!userData) {
@@ -50,29 +52,31 @@ postRouter.post("/paginated-allposts", async (c) => {
     return c.json({ status: 200, message: allPosts, user: userData.username });
   } catch (error) {
     console.log(error);
+    return c.json({ status: 404 });
   }
 });
 
 postRouter.post("/create-post", async (c) => {
-  const formData = await c.req.formData();
-  const file = formData.get("image");
-  const post = formData.get("post");
-  const token = formData.get("token");
-
-  if (typeof post !== "string" || typeof token !== "string") {
-    return c.json({ status: 400, message: "Invalid post or token" });
-  }
-  if (!file) {
-    return c.json({ status: 400, message: "No image provided" }, 400);
-  }
-  const data = new FormData();
-  const blob = new Blob([file]);
-  data.append("file", blob, "user_post_cloudflare_images");
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const userId = await verify(token, c.env.JWT_SECRET);
   try {
+    const formData = await c.req.formData();
+    const file = formData.get("image");
+    const post = formData.get("post");
+    const token = formData.get("token");
+
+    if (typeof post !== "string" || typeof token !== "string") {
+      return c.json({ status: 400, message: "Invalid post or token" });
+    }
+    if (!file) {
+      return c.json({ status: 400, message: "No image provided" }, 400);
+    }
+    const data = new FormData();
+    const blob = new Blob([file]);
+    data.append("file", blob, "user_post_cloudflare_images");
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
       headers: {
@@ -106,38 +110,43 @@ postRouter.post("/create-post", async (c) => {
     }
 
     return c.json({ status: 200 });
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     return c.json({ status: 404 });
   }
 });
 
 postRouter.post("/delete-post", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const postId = body.postId;
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const postId = body.postId;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
 
-  const userId = await verify(token, c.env.JWT_SECRET);
-  const checkUser = await prisma.user.findUnique({
-    where: {
-      id: userId.id,
-    },
-  });
-  if (!checkUser) {
-    return c.json({ status: 400, message: "user not authenticated" });
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const checkUser = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+    });
+    if (!checkUser) {
+      return c.json({ status: 400, message: "user not authenticated" });
+    }
+    const deletepost = await prisma.post.delete({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (!deletepost) {
+      return c.json({ status: 404, message: "post deletion failed" });
+    }
+
+    return c.json({ status: 200, message: "post deleted successfuly" });
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 404 });
   }
-  const deletepost = await prisma.post.delete({
-    where: {
-      id: postId,
-    },
-  });
-
-  if (!deletepost) {
-    return c.json({ status: 404, message: "post deletion failed" });
-  }
-
-  return c.json({ status: 200, message: "post deleted successfuly" });
 });

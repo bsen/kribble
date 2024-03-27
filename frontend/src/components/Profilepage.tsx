@@ -4,7 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { BACKEND_URL } from "../config";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CloseFullscreen } from "@mui/icons-material";
+
 export const Profilepage: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
 

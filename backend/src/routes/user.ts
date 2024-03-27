@@ -14,15 +14,15 @@ export const userRouter = new Hono<{
 }>();
 
 userRouter.post("/userdata", async (c) => {
-  const body = await c.req.json();
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  const token = body.token;
-  const userId = await verify(token, c.env.JWT_SECRET);
-
   try {
+    const body = await c.req.json();
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+
     const user = await prisma.user.findFirst({
       where: { id: userId.id },
       select: {
@@ -44,21 +44,22 @@ userRouter.post("/userdata", async (c) => {
     }
 
     return c.json({ status: 200, message: user });
-  } catch (e) {
-    return c.text("error while fetching data");
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 500, message: "error while fetching data" });
   }
 });
 
 userRouter.post("/bioupdate", async (c) => {
-  const body = await c.req.json();
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  const token = body.token;
-  const userId = await verify(token, c.env.JWT_SECRET);
-
   try {
+    const body = await c.req.json();
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+
     const user = await prisma.user.update({
       where: { id: userId.id },
       data: { bio: body.bio },
@@ -69,31 +70,32 @@ userRouter.post("/bioupdate", async (c) => {
     }
 
     return c.json({ status: 200, message: "bio updated successfully" });
-  } catch (e) {
-    console.log(e);
-    return c.text("error while updating bio");
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 500, message: "error while fetching data" });
   }
 });
 
 userRouter.post("/profile-picture-update", async (c) => {
-  const formData = await c.req.formData();
-  const file = formData.get("image");
-  const token = formData.get("token");
-
-  if (typeof token !== "string") {
-    return c.json({ status: 400, message: "Invalid post or token" });
-  }
-  if (!file) {
-    return c.json({ status: 400, message: "No image provided" }, 400);
-  }
-  const data = new FormData();
-  const blob = new Blob([file]);
-  data.append("file", blob, "profile-image");
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const userId = await verify(token, c.env.JWT_SECRET);
   try {
+    const formData = await c.req.formData();
+    const file = formData.get("image");
+    const token = formData.get("token");
+
+    if (typeof token !== "string") {
+      return c.json({ status: 400, message: "Invalid post or token" });
+    }
+    if (!file) {
+      return c.json({ status: 400, message: "No image provided" }, 400);
+    }
+    const data = new FormData();
+    const blob = new Blob([file]);
+    data.append("file", blob, "profile-image");
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
       headers: {
@@ -125,23 +127,23 @@ userRouter.post("/profile-picture-update", async (c) => {
     }
 
     return c.json({ status: 200 });
-  } catch (e) {
-    console.log(e);
-    return c.json({ status: 404 });
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 500, message: "profile photo update failed" });
   }
 });
 
 userRouter.post("/follow-unfollow", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const otherUserName = body.otherUser;
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  const userId = await verify(token, c.env.JWT_SECRET);
-
   try {
+    const body = await c.req.json();
+    const token = body.token;
+    const otherUserName = body.otherUser;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const userId = await verify(token, c.env.JWT_SECRET);
+
     const currentUser = await prisma.user.findUnique({
       where: {
         id: userId.id,
@@ -190,41 +192,50 @@ userRouter.post("/follow-unfollow", async (c) => {
 });
 
 userRouter.post("/delete-profile-photo", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const userId = await verify(token, c.env.JWT_SECRET);
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
 
-  const deletePhoto = await prisma.user.update({
-    where: {
-      id: userId.id,
-    },
-    data: {
-      image: null,
-    },
-  });
-
-  if (!deletePhoto) {
-    return c.json({
-      status: 400,
-      message: "profile photo deletion failed, network error",
+    const deletePhoto = await prisma.user.update({
+      where: {
+        id: userId.id,
+      },
+      data: {
+        image: null,
+      },
     });
-  }
 
-  return c.json({ status: 200, message: "profile photo deletion successful" });
+    if (!deletePhoto) {
+      return c.json({
+        status: 400,
+        message: "profile photo deletion failed, network error",
+      });
+    }
+
+    return c.json({
+      status: 200,
+      message: "profile photo deletion successful",
+    });
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 500, error: "Something went wrong" });
+  }
 });
 
 userRouter.post("/otheruser-data", async (c) => {
-  const body = await c.req.json();
-  const otherUser = body.otherUser;
-  const token = body.token;
-  const userId = await verify(token, c.env.JWT_SECRET);
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
   try {
+    const body = await c.req.json();
+    const otherUser = body.otherUser;
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
     const data = await prisma.user.findUnique({
       where: {
         username: otherUser,
@@ -258,29 +269,30 @@ userRouter.post("/otheruser-data", async (c) => {
     return c.json({ status: 200, message: data, following: true });
   } catch (error) {
     console.log(error);
+    return c.json({ status: 500, error: "Something went wrong" });
   }
 });
 
 userRouter.post("/matched-dates", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const userId = await verify(token, c.env.JWT_SECRET);
-  const findDates = await prisma.user.findUnique({
-    where: {
-      id: userId.id,
-    },
-    select: {
-      matchedUsers: true,
-    },
-  });
-  if (!findDates) {
-    return c.json({ status: 404, message: "user not found or auth error" });
-  }
-
   try {
+    const body = await c.req.json();
+    const token = body.token;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findDates = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+      select: {
+        matchedUsers: true,
+      },
+    });
+    if (!findDates) {
+      return c.json({ status: 404, message: "user not found or auth error" });
+    }
+
     const userPromises = findDates.matchedUsers.map(async (userId) => {
       const userDetails = await prisma.user.findUnique({
         where: {

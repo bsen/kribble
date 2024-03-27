@@ -14,12 +14,13 @@ export const authRouter = new Hono<{
 }>();
 
 authRouter.post("/signup", async (c) => {
-  const body = await c.req.json();
-
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
   try {
+    const body = await c.req.json();
+
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
     const email = await prisma.user.findUnique({
       where: {
         email: body.email,
@@ -48,19 +49,20 @@ authRouter.post("/signup", async (c) => {
     });
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.json({ status: 200, message: jwt });
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     c.status(403);
-    return c.json({ message: "user signup failed" });
+    return c.json({ status: 500, message: "user signup failed" });
   }
 });
 
 authRouter.post("/login", async (c) => {
-  const body = await c.req.json();
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
   try {
+    const body = await c.req.json();
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
     const user = await prisma.user.findFirst({
       where: {
         email: body.email,
@@ -77,7 +79,8 @@ authRouter.post("/login", async (c) => {
     c.status(200);
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.json({ status: 200, message: jwt });
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 500, message: "user signup failed" });
   }
 });

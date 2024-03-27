@@ -2,6 +2,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
+import MaleIcon from "@mui/icons-material/Male";
+import FemaleIcon from "@mui/icons-material/Female";
 import { BACKEND_URL } from "../config";
 
 import { useState } from "react";
@@ -9,7 +11,7 @@ import { useState } from "react";
 export const MatchMaker = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
-
+  const [selectGender, setSelectGender] = useState("");
   const [matchingState, setMatchingState] = useState(false);
   const [matchUserData, setMatchUserData] = useState<{
     id: string;
@@ -25,12 +27,17 @@ export const MatchMaker = () => {
     image: "",
   });
 
-  async function getMatchPeoples() {
+  async function searchPeople() {
+    const gender = selectGender;
+    if (gender == "") {
+      console.log(gender);
+      return alert("please select a gender for matching");
+    }
     setLoadingState(true);
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/matches/users-for-match`,
-        { token }
+        { token, gender }
       );
 
       if (
@@ -58,7 +65,7 @@ export const MatchMaker = () => {
         { token, otherPersonsId }
       );
       setLoadingState(false);
-      getMatchPeoples();
+      searchPeople();
       if (response.data.status == 400) {
         return alert("You already have liked thier profile");
       }
@@ -112,7 +119,7 @@ export const MatchMaker = () => {
                 <div className="flex py-2 justify-evenly w-full">
                   <div>
                     <button
-                      onClick={getMatchPeoples}
+                      onClick={searchPeople}
                       className="bg-white border font-mono font-light border-bordercolor text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                     >
                       <div className="flex items-center justify-evenly">
@@ -136,24 +143,58 @@ export const MatchMaker = () => {
               </div>
             ) : (
               <div>
-                <div className="w-full flex justify-center items-center">
-                  <img src="/love.png" className=" h-12 w-12" />
-                </div>
-
-                <div className="text-center font-extralight px-6 my-3  text-lg font-sans text-neutral-200">
-                  Find dates in your campus, start matching with undate
-                </div>
-                <div className="text-center font-extralight px-6 my-3 text-xs font-sans text-neutral-200">
+                <div className="text-center font-extralight px-6 mb-10 text-xs font-sans text-neutral-200">
+                  <div className="w-full flex justify-center items-center">
+                    <img src="/love.png" className=" h-12 w-12" />
+                  </div>
+                  <div className="text-center font-extralight px-6 my-3  text-lg font-sans text-neutral-200">
+                    Find dates in your campus, start matching with undate
+                  </div>
                   1. Your profile picture will be used for matching.
                   <br /> 2. Your bio will be shown in the matching.
                   <br /> 3. Your matches will be updated on
                   <span className="text-pink-500"> Matches </span>
                   section.
                 </div>
-
-                <div className="w-full flex justify-center my-10">
-                  <div className="text-white bg-blue-600 rounded-lg text-xl py-2 px-4 font-mono  active:bg-blue-700">
-                    <button onClick={getMatchPeoples}>start matching</button>
+                <div className="text-white text-center font-thin text-sm">
+                  Select the gender you want to match with
+                </div>
+                <div className="flex justify-center gap-5 my-5">
+                  <button
+                    onClick={() => {
+                      setSelectGender("male");
+                    }}
+                    className={`bg-neutral-900  p-1   rounded-full
+                    ${
+                      selectGender == "male"
+                        ? "text-blue-500 border border-blue-500"
+                        : "text-blue-900 border border-blue-900"
+                    }`}
+                  >
+                    <MaleIcon sx={{ fontSize: 35 }} />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectGender("female");
+                    }}
+                    className={`bg-neutral-900  p-1 rounded-full
+                    ${
+                      selectGender == "female"
+                        ? "text-pink-500 border border-pink-500"
+                        : "text-pink-900 border border-pink-900"
+                    }`}
+                  >
+                    <FemaleIcon sx={{ fontSize: 35 }} />
+                  </button>
+                </div>
+                <div className="w-full flex justify-center">
+                  <div>
+                    <button
+                      className="text-white bg-blue-600 rounded-lg text-xl py-2 px-4 font-mono  active:bg-blue-700"
+                      onClick={searchPeople}
+                    >
+                      start matching
+                    </button>
                   </div>
                 </div>
               </div>
