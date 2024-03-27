@@ -2,9 +2,6 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
-import { rawCssString } from "hono/css";
-import { useDeferredValue } from "hono/jsx";
-import { PrismaClientRustPanicError } from "@prisma/client/runtime/library";
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -15,75 +12,6 @@ export const userRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-
-userRouter.post("/signup", async (c) => {
-  const body = await c.req.json();
-
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  try {
-    const email = await prisma.user.findUnique({
-      where: {
-        email: body.email,
-      },
-    });
-
-    if (email) {
-      return c.json({ status: 409, message: "email is already used" });
-    }
-    const username = await prisma.user.findUnique({
-      where: {
-        username: body.username,
-      },
-    });
-    if (username) {
-      return c.json({ status: 411, message: "userame is already taken" });
-    }
-    const user = await prisma.user.create({
-      data: {
-        name: body.name,
-        username: body.username,
-        email: body.email,
-        gender: body.gender,
-        password: body.password,
-      },
-    });
-    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-    return c.json({ status: 200, message: jwt });
-  } catch (e) {
-    console.log(e);
-    c.status(403);
-    return c.json({ message: "user signup failed" });
-  }
-});
-
-userRouter.post("/login", async (c) => {
-  const body = await c.req.json();
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  try {
-    const user = await prisma.user.findFirst({
-      where: {
-        email: body.email,
-        password: body.password,
-      },
-    });
-
-    if (!user) {
-      return c.json({
-        status: 403,
-        message: "user not found or authentication error",
-      });
-    }
-    c.status(200);
-    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-    return c.json({ status: 200, message: jwt });
-  } catch (e) {
-    console.log(e);
-  }
-});
 
 userRouter.post("/userdata", async (c) => {
   const body = await c.req.json();
@@ -147,105 +75,6 @@ userRouter.post("/bioupdate", async (c) => {
   }
 });
 
-userRouter.post("/post", async (c) => {
-  const formData = await c.req.formData();
-  const file = formData.get("image");
-  const post = formData.get("post");
-  const token = formData.get("token");
-
-  if (typeof post !== "string" || typeof token !== "string") {
-    return c.json({ status: 400, message: "Invalid post or token" });
-  }
-  if (!file) {
-    return c.json({ status: 400, message: "No image provided" }, 400);
-  }
-  const data = new FormData();
-  const blob = new Blob([file]);
-  data.append("file", blob, "user_post_cloudflare_images");
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const userId = await verify(token, c.env.JWT_SECRET);
-  try {
-    const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${c.env.CLOUDFLARE_IMGAES_API_TOKEN}`,
-      },
-      body: data,
-    });
-    const imgUrl = (await response.json()) as {
-      result: { variants: string[] };
-    };
-    if (
-      imgUrl.result &&
-      imgUrl.result.variants &&
-      imgUrl.result.variants.length > 0
-    ) {
-      const variantUrl = imgUrl.result.variants[0];
-
-      const success = await prisma.post.create({
-        data: {
-          content: post,
-          creator: { connect: { id: userId.id } },
-          image: variantUrl,
-        },
-      });
-
-      if (!success) {
-        return c.json({ status: 403, message: "failed to create new post" });
-      }
-    } else {
-      console.error("No variants found in the response.");
-    }
-
-    return c.json({ status: 200 });
-  } catch (e) {
-    console.log(e);
-    return c.json({ status: 404 });
-  }
-});
-
-userRouter.post("/bulkposts", async (c) => {
-  const body = await c.req.json();
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const token = body.token;
-  try {
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
-    if (!userData) {
-      console.log("user not authenticated");
-      return c.json({ status: 400, message: "user not authenticated" });
-    }
-    const allPosts = await prisma.post.findMany({
-      include: {
-        creator: {
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            image: true,
-          },
-        },
-      },
-    });
-
-    if (!allPosts) {
-      console.log("posts not found");
-      return c.json({
-        status: 400,
-        message: "req failed, posts not found",
-      });
-    }
-
-    return c.json({ status: 200, message: allPosts, user: userData.username });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 userRouter.post("/profile-picture-update", async (c) => {
   const formData = await c.req.formData();
   const file = formData.get("image");
@@ -259,7 +88,7 @@ userRouter.post("/profile-picture-update", async (c) => {
   }
   const data = new FormData();
   const blob = new Blob([file]);
-  data.append("file", blob, "user_profile_picture_cloudflare_image");
+  data.append("file", blob, "profile-image");
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -302,7 +131,7 @@ userRouter.post("/profile-picture-update", async (c) => {
   }
 });
 
-userRouter.post("/follow-person", async (c) => {
+userRouter.post("/follow-unfollow", async (c) => {
   const body = await c.req.json();
   const token = body.token;
   const otherUserName = body.otherUser;
@@ -360,7 +189,7 @@ userRouter.post("/follow-person", async (c) => {
   }
 });
 
-userRouter.post("/get_third_person_data", async (c) => {
+userRouter.post("/otheruser-data", async (c) => {
   const body = await c.req.json();
   const otherUser = body.otherUser;
   const token = body.token;
@@ -405,166 +234,7 @@ userRouter.post("/get_third_person_data", async (c) => {
   }
 });
 
-userRouter.post("/send-people-for-match", async (c) => {
-  try {
-    const body = await c.req.json();
-    const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
-
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-
-    const userData = await prisma.user.findUnique({
-      where: {
-        id: userId.id,
-      },
-    });
-
-    if (!userData) {
-      return c.json({ status: 404, message: "User not found" });
-    }
-
-    const userInterests = await prisma.matching.findMany({
-      where: {
-        personId: userId.id,
-      },
-      select: {
-        interestedInId: true,
-      },
-    });
-
-    const interestedUserIds = userInterests.map(
-      (interest) => interest.interestedInId
-    );
-
-    let matchedUser = null;
-    if (userData.gender === "female") {
-      const totalMaleUsers = await prisma.user.count({
-        where: {
-          gender: "male",
-          id: {
-            notIn: interestedUserIds,
-          },
-        },
-      });
-      const randomOffset = Math.floor(Math.random() * totalMaleUsers);
-      matchedUser = await prisma.user.findMany({
-        where: {
-          gender: "male",
-          id: {
-            notIn: interestedUserIds,
-            not: userId.id,
-          },
-        },
-        take: 1,
-        skip: randomOffset,
-        select: {
-          id: true,
-          username: true,
-          name: true,
-          bio: true,
-          image: true,
-        },
-      });
-    } else if (userData.gender === "male") {
-      const totalFemaleUsers = await prisma.user.count({
-        where: {
-          gender: "female",
-          id: {
-            notIn: interestedUserIds,
-          },
-        },
-      });
-      const randomOffset = Math.floor(Math.random() * totalFemaleUsers);
-      matchedUser = await prisma.user.findMany({
-        where: {
-          gender: "female",
-          id: {
-            notIn: interestedUserIds,
-            not: userId.id,
-          },
-        },
-        take: 1,
-        skip: randomOffset,
-        select: {
-          id: true,
-          username: true,
-          name: true,
-          bio: true,
-          image: true,
-        },
-      });
-    }
-
-    return c.json({ status: 200, message: matchedUser });
-  } catch (error) {
-    console.error("Error:", error);
-    return c.json({ status: 500, message: "Internal Server Error" });
-  }
-});
-
-userRouter.post("/match_people", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const otherPersonsId = body.otherPersonsId;
-
-  const userId = await verify(token, c.env.JWT_SECRET);
-
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  try {
-    const alreadyLiked = await prisma.matching.findFirst({
-      where: {
-        personId: userId.id,
-        interestedInId: otherPersonsId,
-      },
-    });
-    if (alreadyLiked) {
-      return c.json({
-        status: 400,
-        message: "user already have shown interest in this person",
-      });
-    }
-    const checkDateMatch = await prisma.matching.findFirst({
-      where: {
-        personId: otherPersonsId,
-        interestedInId: userId.id,
-      },
-    });
-    if (checkDateMatch) {
-      await prisma.user.update({
-        where: { id: userId.id },
-        data: {
-          matchedUsers: { push: otherPersonsId },
-        },
-      });
-
-      await prisma.user.update({
-        where: { id: otherPersonsId },
-        data: {
-          matchedUsers: { push: userId.id },
-        },
-      });
-    }
-
-    const createMatch = await prisma.matching.create({
-      data: {
-        personId: userId.id,
-        interestedInId: otherPersonsId,
-      },
-    });
-    if (!createMatch) {
-      return c.json({ status: 404, message: "network error" });
-    }
-    return c.json({ status: 200 });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-userRouter.post("/date-matches", async (c) => {
+userRouter.post("/matched-dates", async (c) => {
   const body = await c.req.json();
   const token = body.token;
   const prisma = new PrismaClient({

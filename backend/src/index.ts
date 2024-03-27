@@ -1,6 +1,8 @@
 import { Hono } from "hono";
 import { userRouter } from "./routes/user";
 import { postRouter } from "./routes/post";
+import { authRouter } from "./routes/auth";
+import { matchesRouter } from "./routes/matches";
 import { cors } from "hono/cors";
 
 const app = new Hono<{
@@ -14,6 +16,8 @@ app.get("/", (c) => {
 });
 app.use("/*", cors());
 app.route("/api/server/v1/user", userRouter);
-app.route("/api/server/v1/user", postRouter);
+app.route("/api/server/v1/post", postRouter);
+app.route("/api/server/v1/auth", authRouter);
+app.route("/api/server/v1/matches", matchesRouter);
 
 export default app;
