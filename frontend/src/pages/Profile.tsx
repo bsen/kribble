@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { Profilepage } from "../components/Profilepage";
-import { Matches } from "../components/Matches";
+import { MatchMaker } from "../components/MatchMaker";
 
 export const Profile = () => {
   return (
@@ -13,7 +13,7 @@ export const Profile = () => {
       </div>
 
       <div className="w-[25%]">
-        <Matches />
+        <MatchMaker />
       </div>
     </div>
   );

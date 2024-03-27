@@ -114,13 +114,13 @@ export const Sidebar = () => {
       )}
 
       {logoutState ? (
-        <div className="h-screen w-full absolute bg-black/80 flex justify-center items-center">
+        <div className="h-screen w-full absolute bg-black/90 flex justify-center items-center">
           <div className="text-white text-xl font-mono">
             Do you really want to logout?
             <div className="flex justify-evenly my-5">
               <button
                 onClick={logout}
-                className="text-neutral-400 px-4 py-1 border border-neutral-400 rounded-lg font-thin"
+                className="text-blue-500 px-4 py-1 border border-blue-500 rounded-lg font-thin"
               >
                 YES
               </button>
@@ -128,7 +128,7 @@ export const Sidebar = () => {
                 onClick={() => {
                   setLogoutState(false);
                 }}
-                className="text-indigo-300 px-5 py-1 border border-indigo-300 rounded-lg font-thin"
+                className="text-blue-500 px-5 py-1 border border-blue-500 rounded-lg font-thin"
               >
                 NO
               </button>
@@ -205,8 +205,10 @@ export const Sidebar = () => {
       )}
       <div className="h-screen bg-black border-r  border-bordercolor px-10 flex flex-col justify-between">
         <div className="h-max w-full">
-          <div className="flex justify-center border-b border-bordercolor">
-            <img src="/undate.png" className="w-[50%] py-4" />
+          <div className="flex justify-center border-b border-bordercolor pb-2">
+            <p className="text-[2.5vw] text-white font-mono font-thin">
+              skoopi
+            </p>
           </div>
 
           <button

@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { HomeComponent } from "../components/HomeComponent";
-import { Matches } from "../components/Matches";
+import { MatchMaker } from "../components/MatchMaker";
 export const Home = () => {
   return (
     <div className="flex  bg-neutral-950 justify-between">
@@ -12,7 +12,7 @@ export const Home = () => {
       </div>
 
       <div className="w-[25%]">
-        <Matches />
+        <MatchMaker />
       </div>
     </div>
   );

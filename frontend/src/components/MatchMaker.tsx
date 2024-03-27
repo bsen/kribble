@@ -6,7 +6,7 @@ import { BACKEND_URL } from "../config";
 
 import { useState } from "react";
 
-export const Matches = () => {
+export const MatchMaker = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
 
@@ -78,7 +78,7 @@ export const Matches = () => {
       <div className="h-screen bg-black border-l border-bordercolor flex flex-col justify-between">
         <div className="w-full flex justify-center">
           <div className="text-2xl  text-white font-mono w-[70%] text-center py-4 border-b border-bordercolor">
-            Vit Dates
+            Match Maker
           </div>
         </div>
 
@@ -162,7 +162,7 @@ export const Matches = () => {
         )}
         <div>
           <p className="my-4 text-center font-thin text-xs text-bordercolor font-mono">
-            © 2024 undate Ltd <br /> a biswarup sen production
+            © 2024 company Ltd
           </p>
         </div>
       </div>
