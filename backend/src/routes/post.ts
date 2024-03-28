@@ -3,6 +3,8 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
 import { errorMonitor } from "form-data";
+import { BalancedPool, RetryHandler } from "undici";
+import { jsx } from "hono/jsx";
 
 export const postRouter = new Hono<{
   Bindings: {
@@ -56,7 +58,7 @@ postRouter.post("/paginated-allposts", async (c) => {
   }
 });
 
-postRouter.post("/create-post", async (c) => {
+postRouter.post("/create-full-post", async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get("image");
@@ -113,6 +115,32 @@ postRouter.post("/create-post", async (c) => {
   } catch (error) {
     console.log(error);
     return c.json({ status: 404 });
+  }
+});
+
+postRouter.post("/create-text-post", async (c) => {
+  try {
+    const body = await c.req.json();
+    const post = body.post;
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const createPost = await prisma.post.create({
+      data: {
+        content: post,
+        creator: { connect: { id: userId.id } },
+      },
+    });
+
+    if (!createPost) {
+      return c.json({ status: 400, message: "post creation failed" });
+    }
+    return c.json({ status: 200, message: "post created successfully" });
+  } catch (error) {
+    return c.json({ status: 500, message: "network error" });
   }
 });
 

@@ -191,7 +191,7 @@ userRouter.post("/follow-unfollow", async (c) => {
   }
 });
 
-userRouter.post("/delete-profile-photo", async (c) => {
+userRouter.post("/remove-dp", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
