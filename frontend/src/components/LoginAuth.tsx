@@ -56,7 +56,7 @@ export const LoginAuth = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen bg-black/60 flex justify-center items-center">
+        <div className="h-screen bg-black flex justify-center items-center">
           <CircularProgress />
         </div>
       ) : (

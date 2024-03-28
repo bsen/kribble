@@ -133,7 +133,7 @@ export const Sidebar = () => {
             <div className="flex justify-evenly my-5">
               <button
                 onClick={logout}
-                className="text-blue-500 px-4 py-1 border border-blue-500 rounded-lg font-thin"
+                className="text-neutral-300 px-4 py-1 border border-neutral-300 rounded-lg font-thin"
               >
                 YES
               </button>
@@ -141,7 +141,7 @@ export const Sidebar = () => {
                 onClick={() => {
                   setLogoutState(false);
                 }}
-                className="text-blue-500 px-5 py-1 border border-blue-500 rounded-lg font-thin"
+                className="text-neutral-300 px-5 py-1 border border-neutral-300 rounded-lg font-thin"
               >
                 NO
               </button>
@@ -220,7 +220,7 @@ export const Sidebar = () => {
       <div className="h-screen bg-black border-r  border-bordercolor px-10 flex flex-col justify-between">
         <div className="h-max w-full">
           <div className="flex justify-center border-b border-bordercolor pb-2">
-            <p className="text-[2.5vw] text-white font-ubuntu">redaze</p>
+            <p className="text-[2.5vw] text-white font-ubuntu">kribble</p>
           </div>
 
           <button

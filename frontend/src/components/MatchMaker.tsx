@@ -6,7 +6,7 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { BACKEND_URL } from "../config";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const MatchMaker = () => {
   const token = localStorage.getItem("token");
@@ -79,6 +79,7 @@ export const MatchMaker = () => {
       console.log(error);
     }
   }
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -143,12 +144,12 @@ export const MatchMaker = () => {
               </div>
             ) : (
               <div>
-                <div className="text-center font-extralight px-6 mb-10 text-xs font-sans text-neutral-200">
+                <div className="text-center font-light font-ubuntu px-6 mb-10 text-xs  text-neutral-400">
                   <div className="w-full flex justify-center items-center">
                     <img src="/love.png" className=" h-12 w-12" />
                   </div>
-                  <div className="text-center font-extralight px-6 my-3  text-lg font-sans text-neutral-200">
-                    Find dates in your campus, start matching with undate
+                  <div className="text-center font-semibold font-ubuntu px-6 my-3  text-lg text-neutral-400">
+                    start matching with kribble
                   </div>
                   1. Your profile picture will be used for matching.
                   <br /> 2. Your bio will be shown in the matching.
@@ -156,7 +157,7 @@ export const MatchMaker = () => {
                   <span className="text-pink-500"> Matches </span>
                   section.
                 </div>
-                <div className="text-white text-center font-thin text-sm">
+                <div className="text-center font-semibold font-ubuntu text-sm text-neutral-400">
                   Select the gender you want to match with
                 </div>
                 <div className="flex justify-center gap-5 my-5">
@@ -190,7 +191,7 @@ export const MatchMaker = () => {
                 <div className="w-full flex justify-center">
                   <div>
                     <button
-                      className="text-white bg-blue-600 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-700"
+                      className="text-neutral-300 bg-blue-800 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-700"
                       onClick={searchPeople}
                     >
                       start matching
@@ -202,8 +203,8 @@ export const MatchMaker = () => {
           </div>
         )}
         <div>
-          <div className="my-4 text-center font-thin text-xs text-bordercolor font-ubuntu">
-            © 2024 company Ltd
+          <div className="my-4 text-center font-thin text-xs text-neutral-500 font-ubuntu">
+            © 2024 kribble Ltd
           </div>
         </div>
       </div>

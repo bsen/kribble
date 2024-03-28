@@ -193,7 +193,7 @@ export const Profilepage: React.FC = () => {
                 <div className="flex justify-evenly my-5">
                   <button
                     onClick={deletePost}
-                    className="text-blue-500 px-4 py-1 border border-blue-500 rounded-lg font-thin"
+                    className="text-neutral-300 px-4 py-1 border border-neutral-300 rounded-lg font-thin"
                   >
                     YES
                   </button>
@@ -201,7 +201,7 @@ export const Profilepage: React.FC = () => {
                     onClick={() => {
                       setPostDeletionState(false);
                     }}
-                    className="text-blue-500 px-5 py-1 border border-blue-500 rounded-lg font-thin"
+                    className="text-neutral-300 px-5 py-1 border border-neutral-300 rounded-lg font-thin"
                   >
                     NO
                   </button>
@@ -270,7 +270,7 @@ export const Profilepage: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={savePhoto}
-                            className="bg-blue-500  text-white px-4 py-1 rounded-lg font-light"
+                            className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
                           >
                             Save
                           </button>
@@ -294,7 +294,7 @@ export const Profilepage: React.FC = () => {
                                 </button>
 
                                 <div>
-                                  <button className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light">
+                                  <button className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu">
                                     <label
                                       htmlFor="image-upload"
                                       className="cursor-pointer "
@@ -314,9 +314,9 @@ export const Profilepage: React.FC = () => {
                                   onClick={() => {
                                     setImageUpdateState(false);
                                   }}
-                                  className=" text-white"
+                                  className="text-neutral-400"
                                 >
-                                  <CloseIcon sx={{ fontSize: 28 }} />
+                                  <CloseIcon sx={{ fontSize: 30 }} />
                                 </button>
                               </div>
                             </div>
@@ -326,7 +326,7 @@ export const Profilepage: React.FC = () => {
                                 {isBioEditing && (
                                   <button
                                     onClick={bioUpdate}
-                                    className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light"
+                                    className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
                                   >
                                     update
                                   </button>
@@ -336,12 +336,12 @@ export const Profilepage: React.FC = () => {
                                 >
                                   {isBioEditing ? (
                                     <CloseIcon
-                                      className="text-neutral-300"
+                                      className="text-neutral-400"
                                       sx={{ fontSize: 30 }}
                                     />
                                   ) : (
-                                    <div className="bg-blue-600 font-light text-white px-4 py-1 rounded-lg">
-                                      Edit bio
+                                    <div className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu">
+                                      edit bio
                                     </div>
                                   )}
                                 </button>

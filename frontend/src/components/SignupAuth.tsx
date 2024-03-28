@@ -63,7 +63,7 @@ export const SignupAuth = () => {
       popupFn();
       return;
     }
-    if (name.length > 40) {
+    if (name.length > 20) {
       setpopText("Name length should be maximum 40 characters!");
       popupFn();
       return;
@@ -124,7 +124,7 @@ export const SignupAuth = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen bg-black/60 flex justify-center items-center">
+        <div className="h-screen bg-black flex justify-center items-center">
           <CircularProgress />
         </div>
       ) : (
