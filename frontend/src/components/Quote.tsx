@@ -1,7 +1,7 @@
 import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
 export const Quote = () => {
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-black px-[10vw]">
+    <div className="h-screen w-full flex items-center justify-center bg-black px-[10vw] lg:px-[5vw]">
       <div className="grid">
         <div className="w-full flex items-center">
           <div className="text-white text-[5rem] font-ubuntu">kribble</div>

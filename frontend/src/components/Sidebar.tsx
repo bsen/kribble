@@ -286,7 +286,7 @@ export const Sidebar = () => {
           >
             <div
               className={
-                "p-2 mt-3 flex items-center justify-center gap-2 rounded-md bg-black border border-neutral-800 w-[40%]"
+                "py-2 px-4 mt-3 flex items-center justify-center gap-2 rounded-md bg-black border border-neutral-800"
               }
             >
               <PostAddIcon className={"text-blue-500"} />
