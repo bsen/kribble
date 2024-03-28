@@ -1,6 +1,6 @@
 export const Quote = () => {
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-neutral-950 ">
+    <div className="h-screen w-full flex items-center justify-center bg-black">
       <div className="grid">
         <div className="w-full flex items-center">
           <div className="text-white text-[6vw] mx-2 font-ubuntu">redaze</div>

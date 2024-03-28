@@ -50,11 +50,24 @@ export const Sidebar = () => {
       return;
     }
     if (postImage == null) {
-      alert("set a picture");
-      return;
+      setPostCreate(false);
+      setLoadingState(true);
+      try {
+        const response = await axios.post(
+          `${BACKEND_URL}/api/server/v1/post/create-text-post`,
+          { post }
+        );
+        if (response.data.status == 200) {
+          alert("post created successfully");
+        }
+        setLoadingState(false);
+        return;
+      } catch (error) {
+        console.log(error);
+      }
     }
-    setPostCreate(false);
     setLoadingState(true);
+    setPostCreate(false);
     const file = postImage;
     const formdata = new FormData();
     formdata.append("image", file ? file : "");
@@ -62,7 +75,7 @@ export const Sidebar = () => {
     formdata.append("token", token ? token : "");
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/create-post`,
+        `${BACKEND_URL}/api/server/v1/post/create-full-post`,
         formdata
       );
 
@@ -164,8 +177,9 @@ export const Sidebar = () => {
               ) : (
                 <div className="px-5">
                   <label htmlFor="image-upload" className="cursor-pointer ">
-                    <div className="h-full p-5 bg-white rounded-lg border border-dashed border-neutral-400 flex items-center justify-center">
-                      <AddPhotoAlternateIcon className="text-black" />
+                    <div className="h-full p-5 gap-2 bg-white rounded-lg border border-dashed border-neutral-300 flex items-center justify-center">
+                      <div className="text-neutral-700">add picture</div>
+                      <AddPhotoAlternateIcon className="text-neutral-700" />
                     </div>
                   </label>
                   <input
@@ -206,9 +220,7 @@ export const Sidebar = () => {
       <div className="h-screen bg-black border-r  border-bordercolor px-10 flex flex-col justify-between">
         <div className="h-max w-full">
           <div className="flex justify-center border-b border-bordercolor pb-2">
-            <p className="text-[2.5vw] text-white font-mono font-thin">
-              skoopi
-            </p>
+            <p className="text-[2.5vw] text-white font-ubuntu">redaze</p>
           </div>
 
           <button
