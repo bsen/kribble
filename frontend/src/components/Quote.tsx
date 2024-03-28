@@ -1,11 +1,12 @@
+import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
 export const Quote = () => {
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-black">
+    <div className="h-screen w-full flex items-center justify-center bg-black px-[10vw]">
       <div className="grid">
         <div className="w-full flex items-center">
-          <div className="text-white text-[6vw] mx-2 font-ubuntu">redaze</div>
+          <div className="text-white text-[5rem] font-ubuntu">kribble</div>
         </div>
-        <div className="px-2">
+        <div>
           <div className=" text-neutral-100 text-3xl font-light font-ubuntu ">
             Tired of generic feeds? 🤔
           </div>
@@ -13,6 +14,18 @@ export const Quote = () => {
             Join the exclusive social media platform built just for VIT
             students.
           </div>
+        </div>
+        <div className="lg:hidden text-left">
+          <button
+            onClick={() => {
+              scroll(0, 1000);
+            }}
+          >
+            <ArrowDownwardRoundedIcon
+              className="text-white border my-5 border-neutral-600 rounded-full"
+              sx={{ fontSize: 50 }}
+            />
+          </button>
         </div>
       </div>
     </div>

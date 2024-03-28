@@ -167,7 +167,7 @@ export const SignupAuth = () => {
           <div className="h-screen w-full  bg-white flex justify-center items-center">
             <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
               <div className="text-neutral-800 font-ubuntu text-[1.5rem] text-center my-4">
-                Create an undate account
+                Create an account
               </div>
 
               <div>
