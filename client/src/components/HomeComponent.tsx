@@ -3,7 +3,7 @@ import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { ButtonsSidebar } from "../components/ButtonsSidebar";
+import { ButtonsSidebar } from "./ButtonsSidebar";
 
 export const HomeComponent = () => {
   const token = localStorage.getItem("token");
