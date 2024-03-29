@@ -4,6 +4,7 @@ import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
 import { OtherUserProfile } from "./pages/OtherUserProfile";
+import { Post } from "./pages/Post";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -27,6 +28,7 @@ function App() {
             path="/profile"
             element={<ProtectedRoute element={<Profile />} />}
           />
+          <Route path="/post" element={<ProtectedRoute element={<Post />} />} />
           <Route
             path="/user/:otherUser"
             element={<ProtectedRoute element={<OtherUserProfile />} />}

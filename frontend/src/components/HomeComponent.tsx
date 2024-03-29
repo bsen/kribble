@@ -2,9 +2,6 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import HomeIcon from "@mui/icons-material/Home";
-import PersonIcon from "@mui/icons-material/Person";
-import PostAddIcon from "@mui/icons-material/PostAdd";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -52,7 +49,7 @@ export const HomeComponent = () => {
         </div>
       ) : (
         <>
-          <div className="h-12 md:hidden fixed w-full flex items-center justify-center bg-black  border-b border-bordercolor text-2xl text-white font-ubuntu">
+          <div className="h-12 md:hidden fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">
             kribble
           </div>
           <div className="md:h-screen max-md:my-12 bg-black border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
@@ -102,41 +99,6 @@ export const HomeComponent = () => {
                 No posts found.
               </div>
             )}
-          </div>
-          <div className="flex md:hidden bottom-0 fixed h-12 bg-black justify-evenly w-full items-center border border-bordercolor">
-            <PostAddIcon className="text-logos" />
-            <div>
-              <button
-                className="w-full"
-                onClick={() => {
-                  navigate("/home");
-                }}
-              >
-                <HomeIcon
-                  className={`${
-                    location.pathname === "/home"
-                      ? "text-blue-500"
-                      : "text-logos"
-                  }`}
-                />
-              </button>
-            </div>
-            <div>
-              <button
-                className="w-full"
-                onClick={() => {
-                  navigate("/profile");
-                }}
-              >
-                <PersonIcon
-                  className={`${
-                    location.pathname === "/profile"
-                      ? "text-blue-500"
-                      : "text-logos"
-                  }`}
-                />
-              </button>
-            </div>
           </div>
         </>
       )}
