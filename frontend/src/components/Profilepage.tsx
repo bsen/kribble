@@ -5,7 +5,7 @@ import { BACKEND_URL } from "../config";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { ButtonsSidebar } from "./ButtonsSidebar";
 export const Profilepage: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
 
@@ -209,39 +209,42 @@ export const Profilepage: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="h-screen border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
-              <div className="p-10 border-b border-bordercolor">
-                <div className="flex justify-between items-center">
-                  <div className=" flex w-[25%]">
-                    {profileImg ? (
-                      <img
-                        src={previewImage}
-                        alt="Profile"
-                        className="w-20 h-20 rounded-full border border-neutral-800"
-                      />
-                    ) : (
-                      <img
-                        src={userData.image ? userData.image : "/user.png"}
-                        alt="Profile"
-                        className="w-20 h-20 rounded-full border border-neutral-800"
-                      />
-                    )}
-                    <div>
-                      <button
-                        onClick={() => {
-                          setImageUpdateState(true);
-                        }}
-                      >
-                        <EditIcon
-                          sx={{ fontSize: 20 }}
-                          className="text-neutral-400"
+            <div>
+              <div className="h-14 md:hidden top-0 fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">
+                kribble
+              </div>
+              <div className="md:h-screen max-md:my-14 border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
+                <div className="p-10 border-b border-bordercolor">
+                  <div className="flex justify-between items-center">
+                    <div className=" flex w-[25%]">
+                      {profileImg ? (
+                        <img
+                          src={previewImage}
+                          alt="Profile"
+                          className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-neutral-800"
                         />
-                      </button>
+                      ) : (
+                        <img
+                          src={userData.image ? userData.image : "/user.png"}
+                          alt="Profile"
+                          className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-neutral-800"
+                        />
+                      )}
+                      <div>
+                        <button
+                          onClick={() => {
+                            setImageUpdateState(true);
+                          }}
+                        >
+                          <EditIcon
+                            sx={{ fontSize: 20 }}
+                            className="text-neutral-400"
+                          />
+                        </button>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="text-white flex  w-full justify-evenly ">
-                    <div className="text-white flex justify-evenly gap-10 ">
+                    <div className="text-white flex  w-full justify-evenly">
                       <div className="flex flex-col items-center">
                         <div>{userData.posts.length}</div>
                         <div>Posts</div>
@@ -256,183 +259,194 @@ export const Profilepage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="my-2 px-2">
-                  <div className="flex justify-between">
-                    <div>
-                      <h2 className="text-lg text-white">{userData.name}</h2>
-                      <h2 className="text-base text-neutral-400 font-light">
-                        @{userData.username}
-                      </h2>
-                    </div>
-                    <div>
-                      {previewImage ? (
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={savePhoto}
-                            className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
-                          >
-                            Save
-                          </button>
-                          <button
-                            onClick={cancelSave}
-                            className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : (
-                        <div>
-                          {imageUpdateState ? (
-                            <div>
-                              <div className="flex items-center gap-2 ">
-                                <button onClick={removeDp}>
-                                  <DeleteIcon
-                                    sx={{ fontSize: 25 }}
-                                    className="text-neutral-600"
-                                  />
-                                </button>
-
-                                <div>
-                                  <button className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu">
-                                    <label
-                                      htmlFor="image-upload"
-                                      className="cursor-pointer "
-                                    >
-                                      update
-                                    </label>
-                                    <input
-                                      id="image-upload"
-                                      type="file"
-                                      accept="image/*"
-                                      onChange={handleImageUpload}
-                                      className="hidden"
-                                    />
-                                  </button>
-                                </div>
-                                <button
-                                  onClick={() => {
-                                    setImageUpdateState(false);
-                                  }}
-                                  className="text-neutral-400"
-                                >
-                                  <CloseIcon sx={{ fontSize: 30 }} />
-                                </button>
-                              </div>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="flex items-center gap-2">
-                                {isBioEditing && (
-                                  <button
-                                    onClick={bioUpdate}
-                                    className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
-                                  >
-                                    update
-                                  </button>
-                                )}
-                                <button
-                                  onClick={() => setIsBioEditing(!isBioEditing)}
-                                >
-                                  {isBioEditing ? (
-                                    <CloseIcon
-                                      className="text-neutral-400"
-                                      sx={{ fontSize: 30 }}
-                                    />
-                                  ) : (
-                                    <div className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu">
-                                      edit bio
-                                    </div>
-                                  )}
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  {isBioEditing && (
-                    <div className="flex items-center w-full gap-4 my-2">
-                      <input
-                        maxLength={120}
-                        defaultValue={userData.bio}
-                        onChange={(e) => setBio(e.target.value)}
-                        placeholder="Enter your bio"
-                        className="w-full p-2  rounded-lg"
-                      />
-                    </div>
-                  )}
-                  {!isBioEditing && (
-                    <div className="text-white my-2 font-light">
-                      {userData.bio ? (
-                        <div>{userData.bio}</div>
-                      ) : (
-                        <div>Write your bio</div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                {userData.posts.length > 0 ? (
-                  userData.posts
-                    .slice()
-                    .reverse()
-                    .map((post, index) => (
-                      <div
-                        key={index}
-                        className="py-4 p-10  border-b border-bordercolor"
-                      >
-                        <div className="flex items-center justify-between">
+                  <div className="my-2 px-2">
+                    <div className="flex justify-between">
+                      <div>
+                        <h2 className="text-lg text-white">{userData.name}</h2>
+                        <h2 className="text-base text-neutral-400 font-light">
+                          @{userData.username}
+                        </h2>
+                      </div>
+                      <div>
+                        {previewImage ? (
                           <div className="flex items-center gap-2">
-                            <img
-                              src={userData.image ? userData.image : "user.png"}
-                              alt="Profile"
-                              className="w-10 h-10 border border-neutral-800 rounded-full"
-                            />
-
-                            <div className="flex gap-2 items-center">
-                              <div className="text-white">{userData.name}</div>
-                              <div className="text-neutral-400 text-sm">
-                                @{userData.username}
-                              </div>
-                            </div>
-                          </div>
-                          <div>
                             <button
-                              onClick={() => {
-                                setPostDeletionState(true);
-                                setDeletingPost(post.id);
-                              }}
+                              onClick={savePhoto}
+                              className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
                             >
-                              <DeleteIcon
-                                sx={{ fontSize: 20 }}
-                                className="text-neutral-600"
-                              />
+                              Save
+                            </button>
+                            <button
+                              onClick={cancelSave}
+                              className="bg-black border border-bordercolor hover:bg-neutral-900 text-white px-4 py-1 rounded-lg font-light"
+                            >
+                              Cancel
                             </button>
                           </div>
-                        </div>
-                        <div className="w-ful py-4 flex flex-col items-start justify-center">
-                          <img
-                            src={post.image}
-                            className="h-auto w-[70%] rounded-lg"
-                          />
-                          <div className="text-white my-2 font-light">
-                            {post.content}
+                        ) : (
+                          <div>
+                            {imageUpdateState ? (
+                              <div>
+                                <div className="flex items-center gap-2 ">
+                                  <button onClick={removeDp}>
+                                    <DeleteIcon
+                                      sx={{ fontSize: 25 }}
+                                      className="text-neutral-600"
+                                    />
+                                  </button>
+
+                                  <div>
+                                    <button className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu">
+                                      <label
+                                        htmlFor="image-upload"
+                                        className="cursor-pointer "
+                                      >
+                                        update
+                                      </label>
+                                      <input
+                                        id="image-upload"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageUpload}
+                                        className="hidden"
+                                      />
+                                    </button>
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      setImageUpdateState(false);
+                                    }}
+                                    className="text-neutral-400"
+                                  >
+                                    <CloseIcon sx={{ fontSize: 30 }} />
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  {isBioEditing && (
+                                    <button
+                                      onClick={bioUpdate}
+                                      className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
+                                    >
+                                      update
+                                    </button>
+                                  )}
+                                  <button
+                                    onClick={() =>
+                                      setIsBioEditing(!isBioEditing)
+                                    }
+                                  >
+                                    {isBioEditing ? (
+                                      <CloseIcon
+                                        className="text-neutral-400"
+                                        sx={{ fontSize: 30 }}
+                                      />
+                                    ) : (
+                                      <div className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu">
+                                        edit bio
+                                      </div>
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {isBioEditing && (
+                      <div className="flex items-center w-full gap-4 my-2">
+                        <input
+                          maxLength={120}
+                          defaultValue={userData.bio}
+                          onChange={(e) => setBio(e.target.value)}
+                          placeholder="Enter your bio"
+                          className="w-full p-2  rounded-lg"
+                        />
+                      </div>
+                    )}
+                    {!isBioEditing && (
+                      <div className="text-white my-2 font-light">
+                        {userData.bio ? (
+                          <div>{userData.bio}</div>
+                        ) : (
+                          <div>Write your bio</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  {userData.posts.length > 0 ? (
+                    userData.posts
+                      .slice()
+                      .reverse()
+                      .map((post, index) => (
+                        <div
+                          key={index}
+                          className="py-4 p-10  border-b border-bordercolor"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <img
+                                src={
+                                  userData.image ? userData.image : "user.png"
+                                }
+                                alt="Profile"
+                                className="w-10 h-10 border border-neutral-800 rounded-full"
+                              />
+
+                              <div className="flex gap-2 items-center">
+                                <div className="text-white">
+                                  {userData.name}
+                                </div>
+                                <div className="text-neutral-400 text-sm">
+                                  @{userData.username}
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <button
+                                onClick={() => {
+                                  setPostDeletionState(true);
+                                  setDeletingPost(post.id);
+                                }}
+                              >
+                                <DeleteIcon
+                                  sx={{ fontSize: 20 }}
+                                  className="text-neutral-600"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                          <div className="w-ful py-4 flex flex-col items-start justify-center">
+                            <img
+                              src={post.image}
+                              className="h-auto w-[70%] rounded-lg"
+                            />
+                            <div className="text-white my-2 font-light">
+                              {post.content}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))
-                ) : (
-                  <div className="text-center font-ubuntu my-5 text-white">
-                    No posts found.
-                  </div>
-                )}
+                      ))
+                  ) : (
+                    <div className="text-center font-ubuntu my-5 text-white">
+                      No posts found.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
+          <div className="md:hidden bg-neutral-950 bottom-0 fixed w-full border-l border-r border-t border-bordercolor">
+            <div className="h-14">
+              <ButtonsSidebar />
+            </div>
+          </div>
         </>
       )}
     </>

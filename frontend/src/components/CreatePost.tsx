@@ -69,8 +69,8 @@ export const CreatePost = () => {
 
   return (
     <>
-      <div className="h-screen w-full absolute bg-neutral-900">
-        <div className="h-auto w-[30vw] absolute rounded-lg bg-white shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
+      <div className="h-screen w-full absolute bg-neutral-950">
+        <div className="h-[50vh] w-[80%] md:w-[35vw] absolute rounded-lg bg-white shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
           <button
             onClick={() => {
               setPost("");
@@ -91,7 +91,7 @@ export const CreatePost = () => {
                 />
               </div>
             ) : (
-              <div className="px-5">
+              <div className="px-5 h-full">
                 <label htmlFor="image-upload" className="cursor-pointer ">
                   <div className="h-full p-5 gap-2 bg-white rounded-lg border border-dashed border-neutral-300 flex items-center justify-center">
                     <div className="text-neutral-700">add picture</div>
@@ -111,7 +111,7 @@ export const CreatePost = () => {
             <div className="text-end flex flex-col p-5">
               <textarea
                 rows={4}
-                className=" border border-neutral-300 resize-none focus:outline-none p-2 text-neutral-700 rounded-lg"
+                className=" border border-neutral-200 resize-none focus:outline-none p-2 text-neutral-700 rounded-lg"
                 placeholder="write your thoughts..."
                 wrap="soft"
                 minLength={10}

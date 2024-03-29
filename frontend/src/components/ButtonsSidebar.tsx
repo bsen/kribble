@@ -9,8 +9,8 @@ export const ButtonsSidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-max w-full  flex flex-col justify-center items-center">
-      <div>
+    <div className="h-max w-full  flex  justify-center items-center bg-black">
+      <div className="max-md:flex  max-md:w-full justify-evenly">
         <div>
           <button
             onClick={() => {
@@ -24,7 +24,7 @@ export const ButtonsSidebar = () => {
                 }`}
               />
               <p
-                className={`text-base ${
+                className={`text-base max-md:hidden ${
                   location.pathname === "/home" ? "text-blue-500" : "text-logos"
                 }`}
               >
@@ -48,7 +48,7 @@ export const ButtonsSidebar = () => {
                 }`}
               />
               <p
-                className={`text-base ${
+                className={`text-base max-md:hidden ${
                   location.pathname === "/profile"
                     ? "text-blue-500"
                     : "text-logos"
@@ -68,7 +68,7 @@ export const ButtonsSidebar = () => {
           >
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <VideoChatIcon className={"text-logos"} />
-              <p className={"text-base text-logos"}>Video Chat</p>
+              <p className={"text-base text-logos max-md:hidden"}>Video Chat</p>
             </div>
           </button>
         </div>
@@ -81,7 +81,7 @@ export const ButtonsSidebar = () => {
           >
             <div className={"mt-4 flex items-center  gap-2"}>
               <PostAddIcon className={"text-logos"} />
-              <p className={"text-base text-logos"}>Post</p>
+              <p className={"text-base text-logos max-md:hidden"}>Post</p>
             </div>
           </button>
         </div>
