@@ -1,12 +1,12 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-import CircularProgress from "@mui/material/CircularProgress";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { BACKEND_URL } from "../config";
 
 import { useEffect, useState } from "react";
+import { LoadinPage } from "./LoadinPage";
 
 export const MatchMakerPage = () => {
   const token = localStorage.getItem("token");
@@ -91,9 +91,7 @@ export const MatchMakerPage = () => {
         </div>
 
         {loadingState ? (
-          <div className="h-full flex justify-center items-center">
-            <CircularProgress />
-          </div>
+          <LoadinPage />
         ) : (
           <div>
             {matchingState ? (

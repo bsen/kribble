@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
+import { LoadinPage } from "./LoadinPage";
 
 export const SignupAuth = () => {
   const navigate = useNavigate();
@@ -124,9 +124,7 @@ export const SignupAuth = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen bg-black flex justify-center items-center">
-          <CircularProgress />
-        </div>
+        <LoadinPage />
       ) : (
         <div>
           {popup && (

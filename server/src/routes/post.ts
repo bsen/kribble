@@ -138,6 +138,7 @@ postRouter.post("/create-text-post", async (c) => {
     if (!createPost) {
       return c.json({ status: 400, message: "post creation failed" });
     }
+
     return c.json({ status: 200, message: "post created successfully" });
   } catch (error) {
     return c.json({ status: 500, message: "network error" });

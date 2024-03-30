@@ -2,8 +2,8 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
 import { ButtonsSidebar } from "./ButtonsSidebar";
+import { LoadinPage } from "./LoadinPage";
 
 export const HomeComponent = () => {
   const token = localStorage.getItem("token");
@@ -43,9 +43,7 @@ export const HomeComponent = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen flex justify-center items-center">
-          <CircularProgress />
-        </div>
+        <LoadinPage />
       ) : (
         <>
           <div>
@@ -71,7 +69,7 @@ export const HomeComponent = () => {
                                 : "/user.png"
                             }
                             alt="Profile"
-                            className="w-10 h-10 rounded-full border border-neutral-800"
+                            className="w-10 h-10 rounded-full "
                           />
                           <div className="flex gap-2">
                             <div className="text-white text-sm">

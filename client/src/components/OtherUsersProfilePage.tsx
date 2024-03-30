@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import CircularProgress from "@mui/material/CircularProgress";
-
 import { BACKEND_URL } from "../config";
+import { LoadinPage } from "./LoadinPage";
 
 export const OtherUsersProfilePage = () => {
   const storageUser = localStorage.getItem("storageUser");
@@ -93,9 +92,7 @@ export const OtherUsersProfilePage = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen flex justify-center items-center">
-          <CircularProgress />
-        </div>
+        <LoadinPage />
       ) : (
         <div className="h-screen border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
           <div className="p-10 border-b border-bordercolor">
@@ -103,7 +100,7 @@ export const OtherUsersProfilePage = () => {
               <img
                 src={otherUSerData.image ? otherUSerData.image : "/user.png"}
                 alt="Profile"
-                className="h-20 w-20 rounded-full bg-white"
+                className="h-20 w-20 rounded-full"
               />
 
               <div className="text-white flex w-full justify-evenly ">
@@ -172,7 +169,7 @@ export const OtherUsersProfilePage = () => {
                             : "/user.png"
                         }
                         alt="Profile"
-                        className="w-10 h-10 border border-bordercolor rounded-full"
+                        className="w-10 h-10 rounded-full"
                       />
 
                       <div className="flex gap-2 items-center">

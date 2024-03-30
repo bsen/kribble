@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export const QuoteKribbleTv = () => {
   const navigate = useNavigate();
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-orange-400 px-[10vw] lg:px-[5vw]">
+    <div className="h-screen w-full flex items-center justify-center bg-orange-500 px-[10vw] lg:px-[5vw]">
       <div className="grid">
         <div>
           <button
@@ -12,14 +12,14 @@ export const QuoteKribbleTv = () => {
               navigate("/home");
             }}
           >
-            <ArrowCircleLeftRoundedIcon sx={{ fontSize: 40 }} /> back
+            <ArrowCircleLeftRoundedIcon sx={{ fontSize: 50 }} /> back
           </button>{" "}
         </div>
         <div className="w-full flex items-center">
           <div className="text-white text-[5rem] font-ubuntu">Kribble Tv</div>
         </div>
         <div>
-          <div className=" text-green-300 text-3xl font-light font-ubuntu ">
+          <div className=" text-neutral-950 text-3xl font-light font-ubuntu ">
             Find strangers to your friends at Kribble Tv. 🥳
           </div>
           <div className=" text-neutral-950 text-xl font-light my-5">

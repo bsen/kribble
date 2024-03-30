@@ -47,13 +47,13 @@ export const Matches = () => {
               <Link to={`/user/${user.username}`}>
                 <div
                   key={index}
-                  className="flex bg-blue-600 w-full py-2 items-center justify-center rounded-xl mt-4 border border-neutral-800"
+                  className="flex bg-neutral-900 w-full py-1 items-center justify-center rounded-xl mt-4 border border-neutral-800"
                 >
                   <div className="flex gap-3 items-center justify-center">
                     <img
                       src={user.image ? user.image : "/user.png"}
                       alt="Profile"
-                      className="h-8 w-8 bg-white rounded-full"
+                      className="h-10 w-10 bg-white rounded-full"
                     />
                     <p className="text-base font-semibold font-ubuntu text-white">
                       {user.name}

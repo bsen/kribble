@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import { BACKEND_URL } from "../config";
-import CircularProgress from "@mui/material/CircularProgress";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import { ButtonsSidebar } from "./ButtonsSidebar";
+import { LoadinPage } from "./LoadinPage";
 export const Profilepage: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
 
@@ -86,21 +86,31 @@ export const Profilepage: React.FC = () => {
       console.log(error);
     }
   }
-
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
-    setProfileImg(file);
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-
-      reader.readAsDataURL(file);
+    if (!file) {
+      return;
     }
-  };
 
+    const maxFileSize = 10 * 1024 * 1024; // 10MB in bytes
+    if (file.size > maxFileSize) {
+      alert("File size exceeds 10MB limit");
+      return;
+    }
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Only PNG, JPG, and JPEG files are allowed");
+      return;
+    }
+
+    setProfileImg(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
   const savePhoto = async () => {
     const file = profileImg;
     const formdata = new FormData();
@@ -181,9 +191,7 @@ export const Profilepage: React.FC = () => {
   return (
     <>
       {loadingState ? (
-        <div className="h-screen flex justify-center items-center">
-          <CircularProgress />
-        </div>
+        <LoadinPage />
       ) : (
         <>
           {postDeletionState ? (
@@ -221,13 +229,13 @@ export const Profilepage: React.FC = () => {
                         <img
                           src={previewImage}
                           alt="Profile"
-                          className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-neutral-800"
+                          className="w-16 h-16 md:w-20 md:h-20 rounded-full"
                         />
                       ) : (
                         <img
                           src={userData.image ? userData.image : "/user.png"}
                           alt="Profile"
-                          className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-neutral-800"
+                          className="w-16 h-16 md:w-20 md:h-20 rounded-full"
                         />
                       )}
                       <div>
@@ -396,7 +404,7 @@ export const Profilepage: React.FC = () => {
                                   userData.image ? userData.image : "user.png"
                                 }
                                 alt="Profile"
-                                className="w-10 h-10 border border-neutral-800 rounded-full"
+                                className="w-10 h-10 rounded-full"
                               />
 
                               <div className="flex gap-2 items-center">
