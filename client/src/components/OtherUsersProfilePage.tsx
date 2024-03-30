@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { LoadinPage } from "./LoadinPage";
-
+import { ButtonsSidebar } from "./ButtonsSidebar";
 export const OtherUsersProfilePage = () => {
   const storageUser = localStorage.getItem("storageUser");
   const token = localStorage.getItem("token");
@@ -94,17 +94,20 @@ export const OtherUsersProfilePage = () => {
       {loadingState ? (
         <LoadinPage />
       ) : (
-        <div className="h-screen border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
-          <div className="p-10 border-b border-bordercolor">
-            <div className="flex items-center justify-between">
-              <img
-                src={otherUSerData.image ? otherUSerData.image : "/user.png"}
-                alt="Profile"
-                className="h-20 w-20 rounded-full"
-              />
+        <>
+          <div className="h-14 lg:hidden top-0 fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">
+            kribble
+          </div>
+          <div className="lg:h-screen max-lg:my-14 border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
+            <div className="p-10 border-b border-bordercolor">
+              <div className="flex items-center justify-between">
+                <img
+                  src={otherUSerData.image ? otherUSerData.image : "/user.png"}
+                  alt="Profile"
+                  className="w-16 h-16 lg:w-20 lg:h-20 rounded-full"
+                />
 
-              <div className="text-white flex w-full justify-evenly ">
-                <div className="text-white flex justify-evenly gap-10 ">
+                <div className="text-white flex  w-full justify-evenly">
                   <div className="flex flex-col items-center">
                     <div>{otherUSerData.posts.length}</div>
                     <div>Posts</div>
@@ -119,85 +122,94 @@ export const OtherUsersProfilePage = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="my-2">
-              <div className="flex justify-between">
-                <div>
-                  <h2 className="text-lg text-white font-semibold">
-                    {otherUSerData.name}
-                  </h2>
+              <div className="my-2">
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="text-lg text-white font-semibold">
+                      {otherUSerData.name}
+                    </h2>
 
-                  <h2 className="text-base font-light text-neutral-400">
-                    @{otherUSerData.username}
-                  </h2>
+                    <h2 className="text-base font-light text-neutral-400">
+                      @{otherUSerData.username}
+                    </h2>
+                  </div>
+                  <div>
+                    <button
+                      onClick={followUser}
+                      className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
+                    >
+                      <div>
+                        {followingState ? (
+                          <div>Unfollow</div>
+                        ) : (
+                          <div>Follow</div>
+                        )}
+                      </div>
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button
-                    onClick={followUser}
-                    className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
-                  >
-                    <div>
-                      {followingState ? <div>Unfollow</div> : <div>Follow</div>}
-                    </div>
-                  </button>
+                <div className="text-white mt-2">
+                  {otherUSerData.bio ? (
+                    <div>{otherUSerData.bio}</div>
+                  ) : (
+                    <div>I am a Kribbler</div>
+                  )}
                 </div>
               </div>
-              <div className="text-white mt-2">
-                {otherUSerData.bio ? (
-                  <div>{otherUSerData.bio}</div>
-                ) : (
-                  <div>I am a Kribbler</div>
-                )}
-              </div>
             </div>
-          </div>
-          <div className="">
-            {otherUSerData.posts.length > 0 ? (
-              otherUSerData.posts
-                .slice()
-                .reverse()
-                .map((post, index) => (
-                  <div
-                    key={index}
-                    className="py-4 p-10 border-b border-bordercolor"
-                  >
-                    <div className="flex gap-2 items-center">
-                      <img
-                        src={
-                          otherUSerData.image
-                            ? otherUSerData.image
-                            : "/user.png"
-                        }
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full"
-                      />
-
+            <div className="">
+              {otherUSerData.posts.length > 0 ? (
+                otherUSerData.posts
+                  .slice()
+                  .reverse()
+                  .map((post, index) => (
+                    <div
+                      key={index}
+                      className="py-4 p-10 border-b border-bordercolor"
+                    >
                       <div className="flex gap-2 items-center">
-                        <div className="text-white font-semibold">
-                          {otherUSerData.name}
-                        </div>
-                        <div className="text-neutral-400 text-sm">
-                          @{otherUSerData.username}
+                        <img
+                          src={
+                            otherUSerData.image
+                              ? otherUSerData.image
+                              : "/user.png"
+                          }
+                          alt="Profile"
+                          className="w-10 h-10 rounded-full"
+                        />
+
+                        <div className="flex gap-2 items-center">
+                          <div className="text-white font-semibold">
+                            {otherUSerData.name}
+                          </div>
+                          <div className="text-neutral-400 text-sm">
+                            @{otherUSerData.username}
+                          </div>
                         </div>
                       </div>
+                      <div className="w-full py-4 flex flex-col items-start justify-center">
+                        <img
+                          src={post.image}
+                          className="h-auto w-[70%] rounded-lg"
+                        />
+                        <div className="text-white my-2">{post.content}</div>
+                      </div>
                     </div>
-                    <div className="w-full py-4 flex flex-col items-start justify-center">
-                      <img
-                        src={post.image}
-                        className="h-auto w-[70%] rounded-lg"
-                      />
-                      <div className="text-white my-2">{post.content}</div>
-                    </div>
-                  </div>
-                ))
-            ) : (
-              <div className="text-center font-ubuntu my-5 text-white">
-                No posts found.
-              </div>
-            )}
+                  ))
+              ) : (
+                <div className="text-center font-ubuntu my-5 text-white">
+                  No posts found.
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       )}
+      <div className="lg:hidden bg-neutral-950 bottom-0 fixed w-full border-l border-r border-t border-bordercolor">
+        <div className="h-14">
+          <ButtonsSidebar />
+        </div>
+      </div>
     </>
   );
 };

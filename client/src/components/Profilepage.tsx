@@ -218,10 +218,10 @@ export const Profilepage: React.FC = () => {
             </div>
           ) : (
             <div>
-              <div className="h-14 md:hidden top-0 fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">
+              <div className="h-14 lg:hidden top-0 fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">
                 kribble
               </div>
-              <div className="md:h-screen max-md:my-14 border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
+              <div className="lg:h-screen max-lg:my-14 border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
                 <div className="p-10 border-b border-bordercolor">
                   <div className="flex justify-between items-center">
                     <div className=" flex w-[25%]">
@@ -229,13 +229,13 @@ export const Profilepage: React.FC = () => {
                         <img
                           src={previewImage}
                           alt="Profile"
-                          className="w-16 h-16 md:w-20 md:h-20 rounded-full"
+                          className="w-16 h-16 lg:w-20 lg:h-20 rounded-full"
                         />
                       ) : (
                         <img
                           src={userData.image ? userData.image : "/user.png"}
                           alt="Profile"
-                          className="w-16 h-16 md:w-20 md:h-20 rounded-full"
+                          className="w-16 h-16 lg:w-20 lg:h-20 rounded-full"
                         />
                       )}
                       <div>
@@ -450,7 +450,7 @@ export const Profilepage: React.FC = () => {
               </div>
             </div>
           )}
-          <div className="md:hidden bg-neutral-950 bottom-0 fixed w-full border-l border-r border-t border-bordercolor">
+          <div className="lg:hidden bg-neutral-950 bottom-0 fixed w-full border-l border-r border-t border-bordercolor">
             <div className="h-14">
               <ButtonsSidebar />
             </div>

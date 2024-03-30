@@ -2,6 +2,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import VideoChatIcon from "@mui/icons-material/VideoChat";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const ButtonsSidebar = () => {
@@ -10,7 +11,7 @@ export const ButtonsSidebar = () => {
 
   return (
     <div className="h-max w-full  flex  justify-center items-center bg-black">
-      <div className="max-md:flex  max-md:w-full justify-evenly">
+      <div className="max-lg:flex  max-lg:w-full justify-evenly">
         <div>
           <button
             onClick={() => {
@@ -24,7 +25,7 @@ export const ButtonsSidebar = () => {
                 }`}
               />
               <p
-                className={`text-base max-md:hidden ${
+                className={`text-base max-lg:hidden ${
                   location.pathname === "/home" ? "text-blue-500" : "text-white"
                 }`}
               >
@@ -48,7 +49,7 @@ export const ButtonsSidebar = () => {
                 }`}
               />
               <p
-                className={`text-base max-md:hidden ${
+                className={`text-base max-lg:hidden ${
                   location.pathname === "/profile"
                     ? "text-blue-500"
                     : "text-white"
@@ -68,7 +69,19 @@ export const ButtonsSidebar = () => {
           >
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <VideoChatIcon className={"text-white"} />
-              <p className={"text-base text-white max-md:hidden"}>Kribble.Tv</p>
+              <p className={"text-base text-white max-lg:hidden"}>Kribble.Tv</p>
+            </div>
+          </button>
+        </div>
+        <div className="lg:hidden">
+          <button
+            className="flex justify-center"
+            onClick={() => {
+              navigate("/matchmaker");
+            }}
+          >
+            <div className={"mt-4 flex items-center justify-center gap-2"}>
+              <PeopleAltRoundedIcon className={"text-pink-500"} />
             </div>
           </button>
         </div>
@@ -81,7 +94,7 @@ export const ButtonsSidebar = () => {
           >
             <div className={"mt-4 flex items-center  gap-2"}>
               <PostAddIcon className={"text-white"} />
-              <p className={"text-base text-white max-md:hidden"}>Post</p>
+              <p className={"text-base text-white max-lg:hidden"}>Post</p>
             </div>
           </button>
         </div>

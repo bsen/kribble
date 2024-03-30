@@ -1,6 +1,7 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import { ButtonsSidebar } from "./ButtonsSidebar";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { BACKEND_URL } from "../config";
@@ -152,7 +153,15 @@ export const MatchMakerPage = () => {
                   1. Your profile picture will be used for matching.
                   <br /> 2. Your bio will be shown in the matching.
                   <br /> 3. Your matches will be updated on
-                  <span className="text-pink-500"> Matches </span>
+                  <button
+                    onClick={() => {
+                      scroll(0, 1000);
+                    }}
+                  >
+                    <span className="text-pink-500 underline underline-offset-2 text-lg px-2">
+                      Matches{" "}
+                    </span>
+                  </button>
                   section.
                 </div>
                 <div className="text-center font-semibold font-ubuntu text-sm text-neutral-400">
@@ -200,10 +209,11 @@ export const MatchMakerPage = () => {
             )}
           </div>
         )}
-        <div>
-          <div className="my-4 text-center font-thin text-xs text-neutral-500 font-ubuntu">
-            © 2024 kribble Ltd
-          </div>
+        <div></div>
+      </div>
+      <div className="lg:hidden bg-neutral-950 bottom-0 fixed w-full border-l border-r border-t border-bordercolor">
+        <div className="h-14">
+          <ButtonsSidebar />
         </div>
       </div>
     </>

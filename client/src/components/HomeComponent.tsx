@@ -47,10 +47,10 @@ export const HomeComponent = () => {
       ) : (
         <>
           <div>
-            <div className="h-14 top-0 md:hidden fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">
+            <div className="h-14 top-0 lg:hidden fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">
               kribble
             </div>
-            <div className="md:h-screen max-md:my-14 bg-black border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
+            <div className="lg:h-screen max-lg:my-14 bg-black border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
               {postData.posts.length > 0 ? (
                 postData.posts
                   .slice()
@@ -69,7 +69,7 @@ export const HomeComponent = () => {
                                 : "/user.png"
                             }
                             alt="Profile"
-                            className="w-10 h-10 rounded-full "
+                            className="w-10 h-10 rounded-full"
                           />
                           <div className="flex gap-2">
                             <div className="text-white text-sm">
@@ -98,7 +98,7 @@ export const HomeComponent = () => {
                 </div>
               )}
             </div>
-            <div className="md:hidden bg-neutral-950 bottom-0 fixed w-full border-l border-r border-t border-bordercolor">
+            <div className="lg:hidden bg-neutral-950 bottom-0 fixed w-full border-l border-r border-t border-bordercolor">
               <div className="h-14">
                 <ButtonsSidebar />
               </div>
