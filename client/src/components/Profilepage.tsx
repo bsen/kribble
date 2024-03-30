@@ -222,37 +222,39 @@ export const Profilepage: React.FC = () => {
                 kribble
               </div>
               <div className="lg:h-screen max-lg:my-14 border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
-                <div className="p-10 border-b border-bordercolor">
+                <div className="p-4 lg:p-10 border-b border-bordercolor">
                   <div className="flex justify-between items-center">
                     <div className=" flex w-[25%]">
                       {profileImg ? (
-                        <img
-                          src={previewImage}
-                          alt="Profile"
-                          className="w-16 h-16 lg:w-20 lg:h-20 rounded-full"
-                        />
-                      ) : (
-                        <img
-                          src={userData.image ? userData.image : "/user.png"}
-                          alt="Profile"
-                          className="w-16 h-16 lg:w-20 lg:h-20 rounded-full"
-                        />
-                      )}
-                      <div>
-                        <button
-                          onClick={() => {
-                            setImageUpdateState(true);
-                          }}
-                        >
-                          <EditIcon
-                            sx={{ fontSize: 20 }}
-                            className="text-neutral-400"
+                        <div>
+                          <img
+                            src={previewImage}
+                            alt="Profile"
+                            className="w-16 h-16 lg:w-20 lg:h-20 rounded-full"
                           />
-                        </button>
-                      </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-start">
+                          <img
+                            src={userData.image ? userData.image : "/user.png"}
+                            alt="Profile"
+                            className="w-16 h-16 lg:w-20 lg:h-20 rounded-full"
+                          />
+                          <button
+                            onClick={() => {
+                              setImageUpdateState(true);
+                            }}
+                          >
+                            <EditIcon
+                              sx={{ fontSize: 25 }}
+                              className="text-neutral-400"
+                            />
+                          </button>
+                        </div>
+                      )}
                     </div>
 
-                    <div className="text-white flex  w-full justify-evenly">
+                    <div className="text-white flex w-[75%] justify-evenly">
                       <div className="flex flex-col items-center">
                         <div>{userData.posts.length}</div>
                         <div>Posts</div>

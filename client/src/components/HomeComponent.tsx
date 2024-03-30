@@ -20,6 +20,7 @@ export const HomeComponent = () => {
       };
       content: string;
       image: string;
+      createdAt: string;
     }[];
   }>({
     posts: [],
@@ -61,24 +62,34 @@ export const HomeComponent = () => {
                       className="py-4 p-10  border-b border-bordercolor"
                     >
                       <Link to={`/user/${post.creator.username}`}>
-                        <div className="flex gap-2 items-center">
-                          <img
-                            src={
-                              post.creator.image
-                                ? post.creator.image
-                                : "/user.png"
-                            }
-                            alt="Profile"
-                            className="w-10 h-10 rounded-full"
-                          />
-                          <div className="flex gap-2">
-                            <div className="text-white text-sm">
-                              {post.creator.name}
-                            </div>
-                            <div className="text-neutral-400 text-sm">
-                              @{post.creator.username}
+                        <div className="flex gap-2 items-center justify-between">
+                          <div className="flex justify-center items-center gap-2">
+                            <img
+                              src={
+                                post.creator.image
+                                  ? post.creator.image
+                                  : "/user.png"
+                              }
+                              alt="Profile"
+                              className="w-10 h-10 rounded-full"
+                            />
+                            <div className="flex gap-2">
+                              <div className="text-white text-sm">
+                                {post.creator.name}
+                              </div>
+                              <div className="text-neutral-400 text-sm">
+                                @{post.creator.username}
+                              </div>
                             </div>
                           </div>
+
+                          {post.createdAt ? (
+                            <div className="text-neutral-500 text-xs font-ubuntu">
+                              {post.createdAt.slice(0, 7)}
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </Link>
                       <div className="w-ful py-4 flex flex-col items-start justify-center">

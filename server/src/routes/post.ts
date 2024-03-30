@@ -38,6 +38,7 @@ postRouter.post("/paginated-allposts", async (c) => {
             username: true,
             name: true,
             image: true,
+            createdAt: true,
           },
         },
       },
