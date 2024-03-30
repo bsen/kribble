@@ -63,12 +63,12 @@ export const ButtonsSidebar = () => {
           <button
             className="flex justify-center"
             onClick={() => {
-              navigate("/videochat");
+              navigate("/kribbletv");
             }}
           >
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <VideoChatIcon className={"text-logos"} />
-              <p className={"text-base text-logos max-md:hidden"}>Video Chat</p>
+              <p className={"text-base text-logos max-md:hidden"}>Kribble.Tv</p>
             </div>
           </button>
         </div>

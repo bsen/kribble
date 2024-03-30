@@ -5,6 +5,7 @@ import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
 import { OtherUserProfile } from "./pages/OtherUserProfile";
 import { Post } from "./pages/Post";
+import { KribbleTv } from "./pages/KribbleTv";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -32,6 +33,10 @@ function App() {
           <Route
             path="/user/:otherUser"
             element={<ProtectedRoute element={<OtherUserProfile />} />}
+          />
+          <Route
+            path="/kribbletv"
+            element={<ProtectedRoute element={<KribbleTv />} />}
           />
         </Routes>
       </BrowserRouter>
