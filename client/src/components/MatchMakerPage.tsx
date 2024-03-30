@@ -8,7 +8,7 @@ import { BACKEND_URL } from "../config";
 
 import { useEffect, useState } from "react";
 
-export const MatchMaker = () => {
+export const MatchMakerPage = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [selectGender, setSelectGender] = useState("");
@@ -83,7 +83,7 @@ export const MatchMaker = () => {
 
   return (
     <>
-      <div className="h-screen bg-black border-l border-bordercolor flex flex-col justify-between">
+      <div className="h-screen bg-black border-l border-r border-bordercolor flex flex-col justify-between">
         <div className="w-full flex justify-center">
           <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-bordercolor">
             Match Maker
@@ -98,7 +98,7 @@ export const MatchMaker = () => {
           <div>
             {matchingState ? (
               <div className="w-full flex flex-col items-center justify-center ">
-                <div className="w-[80%]">
+                <div className="w-[70%]">
                   <div className="flex gap-2 m-2 items-center">
                     <div className="text-white text-lg font-light font-ubuntu">
                       {matchUserData.name}

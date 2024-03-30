@@ -1,5 +1,3 @@
-import React from "react";
-
 import { KribbleTvPage } from "../components/KribbleTvPage";
 import { QuoteKribbleTv } from "../components/QuoteKribbleTv";
 export const KribbleTv = () => {

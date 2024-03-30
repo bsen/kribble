@@ -103,7 +103,7 @@ export const OtherUsersProfilePage = () => {
               <img
                 src={otherUSerData.image ? otherUSerData.image : "/user.png"}
                 alt="Profile"
-                className="h-20 w-20 rounded-full border border-bordercolor"
+                className="h-20 w-20 rounded-full bg-white"
               />
 
               <div className="text-white flex w-full justify-evenly ">
@@ -149,7 +149,7 @@ export const OtherUsersProfilePage = () => {
                 {otherUSerData.bio ? (
                   <div>{otherUSerData.bio}</div>
                 ) : (
-                  <div>Write your bio</div>
+                  <div>I am a Kribbler</div>
                 )}
               </div>
             </div>

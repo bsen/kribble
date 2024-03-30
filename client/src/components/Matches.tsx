@@ -29,39 +29,45 @@ export const Matches = () => {
   }, []);
 
   return (
-    <div className="flex flex-col w-[80%] items-center overflow-y-auto  h-full bg-neutral-900 mt-8 rounded-xl  border border-neutral-800">
+    <div className="flex flex-col w-full items-center  bg-black h-screen">
       <div
         className={
-          "p-2 w-[60%] flex  items-center justify-center gap-2 border-b border-bordercolor"
+          "p-2 w-[70%] flex  items-center justify-center gap-2 border-b border-bordercolor"
         }
       >
         <GroupIcon className={"text-pink-500"} />
         <p className={"text-pink-500"}>Matches</p>
       </div>
-      {matchedUsers.length > 0 ? (
-        matchedUsers
-          .slice()
-          .reverse()
-          .map((user, index) => (
-            <Link to={`/user/${user.username}`} className="w-[80%]">
-              <div
-                key={index}
-                className="flex  bg-black/65 px-4 py-2 items-center justify-start rounded-xl mt-4 gap-3 border border-neutral-800"
-              >
-                <img
-                  src={user.image ? user.image : "/user.png"}
-                  alt="Profile"
-                  className="h-8 w-8 rounded-full border border-neutral-700"
-                />
-                <p className="text-base font-light text-white">{user.name}</p>
-              </div>
-            </Link>
-          ))
-      ) : (
-        <p className="text-center font-mono my-2 text-white">
-          No matches found
-        </p>
-      )}
+      <div className="w-[60%]">
+        {matchedUsers.length > 0 ? (
+          matchedUsers
+            .slice()
+            .reverse()
+            .map((user, index) => (
+              <Link to={`/user/${user.username}`}>
+                <div
+                  key={index}
+                  className="flex bg-blue-600 w-full py-2 items-center justify-center rounded-xl mt-4 border border-neutral-800"
+                >
+                  <div className="flex gap-3 items-center justify-center">
+                    <img
+                      src={user.image ? user.image : "/user.png"}
+                      alt="Profile"
+                      className="h-8 w-8 bg-white rounded-full"
+                    />
+                    <p className="text-base font-semibold font-ubuntu text-white">
+                      {user.name}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))
+        ) : (
+          <p className="text-center font-mono my-2 text-white">
+            No matches found
+          </p>
+        )}
+      </div>
     </div>
   );
 };

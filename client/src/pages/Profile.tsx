@@ -1,7 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { Profilepage } from "../components/Profilepage";
-import { MatchMaker } from "../components/MatchMaker";
-
+import { QuoteMatchMaker } from "../components/QuoteMatchMaker";
 export const Profile = () => {
   return (
     <div className="flex  bg-neutral-950 justify-between">
@@ -13,7 +12,7 @@ export const Profile = () => {
       </div>
 
       <div className="w-[25%] max-md:hidden">
-        <MatchMaker />
+        <QuoteMatchMaker />
       </div>
     </div>
   );

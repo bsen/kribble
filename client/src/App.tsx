@@ -6,6 +6,7 @@ import { Profile } from "./pages/Profile";
 import { OtherUserProfile } from "./pages/OtherUserProfile";
 import { Post } from "./pages/Post";
 import { KribbleTv } from "./pages/KribbleTv";
+import { MatchMaker } from "./pages/MatchMaker";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -37,6 +38,10 @@ function App() {
           <Route
             path="/kribbletv"
             element={<ProtectedRoute element={<KribbleTv />} />}
+          />
+          <Route
+            path="matchmaker"
+            element={<ProtectedRoute element={<MatchMaker />} />}
           />
         </Routes>
       </BrowserRouter>

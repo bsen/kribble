@@ -20,12 +20,12 @@ export const ButtonsSidebar = () => {
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <HomeIcon
                 className={`${
-                  location.pathname === "/home" ? "text-blue-500" : "text-logos"
+                  location.pathname === "/home" ? "text-blue-500" : "text-white"
                 }`}
               />
               <p
                 className={`text-base max-md:hidden ${
-                  location.pathname === "/home" ? "text-blue-500" : "text-logos"
+                  location.pathname === "/home" ? "text-blue-500" : "text-white"
                 }`}
               >
                 Home
@@ -44,14 +44,14 @@ export const ButtonsSidebar = () => {
                 className={`${
                   location.pathname === "/profile"
                     ? "text-blue-500"
-                    : "text-logos"
+                    : "text-white"
                 }`}
               />
               <p
                 className={`text-base max-md:hidden ${
                   location.pathname === "/profile"
                     ? "text-blue-500"
-                    : "text-logos"
+                    : "text-white"
                 }`}
               >
                 Profile
@@ -67,8 +67,8 @@ export const ButtonsSidebar = () => {
             }}
           >
             <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <VideoChatIcon className={"text-logos"} />
-              <p className={"text-base text-logos max-md:hidden"}>Kribble.Tv</p>
+              <VideoChatIcon className={"text-white"} />
+              <p className={"text-base text-white max-md:hidden"}>Kribble.Tv</p>
             </div>
           </button>
         </div>
@@ -80,8 +80,8 @@ export const ButtonsSidebar = () => {
             }}
           >
             <div className={"mt-4 flex items-center  gap-2"}>
-              <PostAddIcon className={"text-logos"} />
-              <p className={"text-base text-logos max-md:hidden"}>Post</p>
+              <PostAddIcon className={"text-white"} />
+              <p className={"text-base text-white max-md:hidden"}>Post</p>
             </div>
           </button>
         </div>

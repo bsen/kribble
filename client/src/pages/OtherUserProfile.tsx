@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
-import { MatchMaker } from "../components/MatchMaker";
+import { QuoteMatchMaker } from "../components/QuoteMatchMaker";
 import { OtherUsersProfilePage } from "../components/OtherUsersProfilePage";
 export const OtherUserProfile = () => {
   return (
@@ -12,7 +12,7 @@ export const OtherUserProfile = () => {
       </div>
 
       <div className="w-[25%] max-md:hidden">
-        <MatchMaker />
+        <QuoteMatchMaker />
       </div>
     </div>
   );
