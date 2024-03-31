@@ -20,12 +20,13 @@ export const ButtonsSidebar = () => {
           >
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <HomeIcon
+                sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === "/home" ? "text-blue-500" : "text-white"
                 }`}
               />
               <p
-                className={`text-base max-lg:hidden ${
+                className={`text-lg font-semibold max-lg:hidden ${
                   location.pathname === "/home" ? "text-blue-500" : "text-white"
                 }`}
               >
@@ -42,6 +43,7 @@ export const ButtonsSidebar = () => {
           >
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <PersonIcon
+                sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === "/profile"
                     ? "text-blue-500"
@@ -49,7 +51,7 @@ export const ButtonsSidebar = () => {
                 }`}
               />
               <p
-                className={`text-base max-lg:hidden ${
+                className={`text-lg font-semibold max-lg:hidden ${
                   location.pathname === "/profile"
                     ? "text-blue-500"
                     : "text-white"
@@ -60,19 +62,7 @@ export const ButtonsSidebar = () => {
             </div>
           </button>
         </div>
-        <div>
-          <button
-            className="flex justify-center"
-            onClick={() => {
-              navigate("/kribbletv");
-            }}
-          >
-            <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <VideoChatIcon className={"text-white"} />
-              <p className={"text-base text-white max-lg:hidden"}>Kribble.Tv</p>
-            </div>
-          </button>
-        </div>
+
         <div className="lg:hidden">
           <button
             className="flex justify-center"
@@ -81,7 +71,10 @@ export const ButtonsSidebar = () => {
             }}
           >
             <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <PeopleAltRoundedIcon className={"text-pink-500"} />
+              <PeopleAltRoundedIcon
+                sx={{ fontSize: 30 }}
+                className={"text-white"}
+              />
             </div>
           </button>
         </div>
@@ -93,8 +86,10 @@ export const ButtonsSidebar = () => {
             }}
           >
             <div className={"mt-4 flex items-center  gap-2"}>
-              <PostAddIcon className={"text-white"} />
-              <p className={"text-base text-white max-lg:hidden"}>Post</p>
+              <PostAddIcon sx={{ fontSize: 30 }} className={"text-white"} />
+              <p className={"text-lg font-semibold text-white max-lg:hidden"}>
+                Post
+              </p>
             </div>
           </button>
         </div>

@@ -51,7 +51,7 @@ export const HomeComponent = () => {
             <div className="h-14 top-0 lg:hidden fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">
               kribble
             </div>
-            <div className="lg:h-screen max-lg:my-14 bg-black border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
+            <div className="lg:h-screen max-lg:my-14  border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
               {postData.posts.length > 0 ? (
                 postData.posts
                   .slice()
@@ -59,11 +59,11 @@ export const HomeComponent = () => {
                   .map((post, index) => (
                     <div
                       key={index}
-                      className="py-4 p-10  border-b border-bordercolor"
+                      className="border-b border-bordercolor p-5"
                     >
-                      <Link to={`/user/${post.creator.username}`}>
-                        <div className="flex gap-2 items-center justify-between">
-                          <div className="flex justify-center items-center gap-2">
+                      <div className="flex gap-2">
+                        <div className="">
+                          <Link to={`/user/${post.creator.username}`}>
                             <img
                               src={
                                 post.creator.image
@@ -73,32 +73,35 @@ export const HomeComponent = () => {
                               alt="Profile"
                               className="w-10 h-10 rounded-full"
                             />
-                            <div className="flex gap-2">
-                              <div className="text-white text-sm">
+                          </Link>
+                        </div>
+
+                        <div className="w-[80%]">
+                          <div className="flex gap-2 items-center">
+                            <Link to={`/user/${post.creator.username}`}>
+                              <div className="text-white text-base hover:underline font-semibold">
                                 {post.creator.name}
                               </div>
-                              <div className="text-neutral-400 text-sm">
+                            </Link>
+                            <Link to={`/user/${post.creator.username}`}>
+                              <div className="text-neutral-400 hover:underline text-sm font-ubuntu">
                                 @{post.creator.username}
                               </div>
+                            </Link>
+
+                            <div className="text-neutral-400 text-sm font-ubuntu">
+                              · {post.createdAt.slice(0, 10)}
                             </div>
                           </div>
-
-                          {post.createdAt ? (
-                            <div className="text-neutral-500 text-xs font-ubuntu">
-                              {post.createdAt.slice(0, 7)}
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      </Link>
-                      <div className="w-ful py-4 flex flex-col items-start justify-center">
-                        <img
-                          src={post.image}
-                          className="h-auto w-[70%] rounded-lg"
-                        />
-                        <div className="text-white my-2 font-light">
-                          {post.content}
+                          <div className="text-white my-2 font-light">
+                            {post.content}
+                          </div>
+                          <div className="">
+                            <img
+                              src={post.image}
+                              className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-bordercolor"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
