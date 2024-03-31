@@ -16,13 +16,11 @@ export const userRouter = new Hono<{
 userRouter.post("/userdata", async (c) => {
   try {
     const body = await c.req.json();
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-
-    const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
-
     const user = await prisma.user.findFirst({
       where: { id: userId.id },
       select: {
@@ -35,7 +33,6 @@ userRouter.post("/userdata", async (c) => {
         followers: true,
         following: true,
         image: true,
-        posts: true,
       },
     });
 
@@ -49,7 +46,28 @@ userRouter.post("/userdata", async (c) => {
     return c.json({ status: 500, message: "error while fetching data" });
   }
 });
-
+userRouter.post("/userposts", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userposts = await prisma.user.findFirst({
+      where: { id: userId.id },
+      select: {
+        posts: true,
+      },
+    });
+    if (!userposts) {
+      return c.json({ status: 500, message: "error while fetching data" });
+    }
+    return c.json({ status: 500, message: userposts });
+  } catch (error) {
+    console.log(error);
+  }
+});
 userRouter.post("/bioupdate", async (c) => {
   try {
     const body = await c.req.json();

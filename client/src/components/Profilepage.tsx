@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import { ButtonsSidebar } from "./ButtonsSidebar";
 import { LoadinPage } from "./LoadinPage";
+import { Link } from "react-router-dom";
 export const Profilepage: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
 
@@ -24,11 +25,6 @@ export const Profilepage: React.FC = () => {
       followerId: string;
       followingId: string;
     }[];
-    posts: {
-      id: string;
-      content: string;
-      image: string;
-    }[];
   }>({
     id: "",
     name: "",
@@ -38,6 +34,21 @@ export const Profilepage: React.FC = () => {
     image: "",
     followers: [],
     following: [],
+  });
+  const [postData, setPostData] = useState<{
+    posts: {
+      id: string;
+      creator: {
+        id: string;
+        username: string;
+        name: string;
+        image: string | null;
+      };
+      content: string;
+      image: string;
+      createdAt: string;
+    }[];
+  }>({
     posts: [],
   });
 
@@ -62,6 +73,16 @@ export const Profilepage: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
+  }
+  async function getUserPosts() {
+    setLoadingState(true);
+    const response = await axios.post(
+      `${BACKEND_URL}/api/server/v1/user/userposts`,
+      { token }
+    );
+    setPostData({ posts: response.data.message });
+    localStorage.setItem("storageUser", response.data.user);
+    setLoadingState(false);
   }
 
   async function bioUpdate() {
@@ -182,11 +203,12 @@ export const Profilepage: React.FC = () => {
   useEffect(() => {
     try {
       getData();
+      getUserPosts();
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }, []);
-  useEffect(() => {}, [userData.posts, userData.bio]);
+  useEffect(() => {}, [userData.bio]);
 
   return (
     <>
@@ -255,10 +277,6 @@ export const Profilepage: React.FC = () => {
                     </div>
 
                     <div className="text-white flex w-[75%] justify-evenly">
-                      <div className="flex flex-col items-center">
-                        <div>{userData.posts.length}</div>
-                        <div>Posts</div>
-                      </div>
                       <div className="flex flex-col items-center">
                         <div>{userData.followers.length}</div>
                         <div>Followers</div>
@@ -388,57 +406,57 @@ export const Profilepage: React.FC = () => {
                     )}
                   </div>
                 </div>
-
-                <div>
-                  {userData.posts.length > 0 ? (
-                    userData.posts
+                <div className="lg:h-screen max-lg:my-14  border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
+                  {postData.posts.length > 0 ? (
+                    postData.posts
                       .slice()
                       .reverse()
                       .map((post, index) => (
                         <div
                           key={index}
-                          className="py-4 p-10  border-b border-bordercolor"
+                          className="border-b border-bordercolor p-5"
                         >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <img
-                                src={
-                                  userData.image ? userData.image : "user.png"
-                                }
-                                alt="Profile"
-                                className="w-10 h-10 rounded-full"
-                              />
+                          <div className="flex gap-2">
+                            <div className="">
+                              <Link to={`/user/${post.creator.username}`}>
+                                <img
+                                  src={
+                                    post.creator.image
+                                      ? post.creator.image
+                                      : "/user.png"
+                                  }
+                                  alt="Profile"
+                                  className="w-10 h-10 rounded-full"
+                                />
+                              </Link>
+                            </div>
 
+                            <div className="w-[80%]">
                               <div className="flex gap-2 items-center">
-                                <div className="text-white">
-                                  {userData.name}
-                                </div>
-                                <div className="text-neutral-400 text-sm">
-                                  @{userData.username}
+                                <Link to={`/user/${post.creator.username}`}>
+                                  <div className="text-white text-base hover:underline font-semibold">
+                                    {post.creator.name}
+                                  </div>
+                                </Link>
+                                <Link to={`/user/${post.creator.username}`}>
+                                  <div className="text-neutral-400 hover:underline text-sm font-ubuntu">
+                                    @{post.creator.username}
+                                  </div>
+                                </Link>
+
+                                <div className="text-neutral-400 text-sm font-ubuntu">
+                                  · {post.createdAt.slice(0, 10)}
                                 </div>
                               </div>
-                            </div>
-                            <div>
-                              <button
-                                onClick={() => {
-                                  setPostDeletionState(true);
-                                  setDeletingPost(post.id);
-                                }}
-                              >
-                                <DeleteIcon
-                                  sx={{ fontSize: 20 }}
-                                  className="text-neutral-600"
+                              <div className="text-white my-2 font-light">
+                                {post.content}
+                              </div>
+                              <div className="">
+                                <img
+                                  src={post.image}
+                                  className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-bordercolor"
                                 />
-                              </button>
-                            </div>
-                          </div>
-                          <div className="w-ful py-4 flex flex-col items-start justify-center">
-                            <img
-                              src={post.image}
-                              className="h-auto w-[70%] rounded-lg"
-                            />
-                            <div className="text-white my-2 font-light">
-                              {post.content}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -448,7 +466,7 @@ export const Profilepage: React.FC = () => {
                       No posts found.
                     </div>
                   )}
-                </div>
+                </div>{" "}
               </div>
             </div>
           )}
