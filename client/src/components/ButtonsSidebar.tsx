@@ -22,12 +22,16 @@ export const ButtonsSidebar = () => {
               <HomeIcon
                 sx={{ fontSize: 30 }}
                 className={`${
-                  location.pathname === "/home" ? "text-blue-500" : "text-white"
+                  location.pathname === "/home"
+                    ? "text-blue-500"
+                    : "text-neutral-200"
                 }`}
               />
               <p
-                className={`text-lg font-semibold max-lg:hidden ${
-                  location.pathname === "/home" ? "text-blue-500" : "text-white"
+                className={`text-lg font-medium max-lg:hidden ${
+                  location.pathname === "/home"
+                    ? "text-blue-500"
+                    : "text-neutral-200"
                 }`}
               >
                 Home
@@ -47,14 +51,14 @@ export const ButtonsSidebar = () => {
                 className={`${
                   location.pathname === "/profile"
                     ? "text-blue-500"
-                    : "text-white"
+                    : "text-neutral-200"
                 }`}
               />
               <p
-                className={`text-lg font-semibold max-lg:hidden ${
+                className={`text-lg font-medium max-lg:hidden ${
                   location.pathname === "/profile"
                     ? "text-blue-500"
-                    : "text-white"
+                    : "text-neutral-200"
                 }`}
               >
                 Profile
@@ -73,7 +77,7 @@ export const ButtonsSidebar = () => {
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <PeopleAltRoundedIcon
                 sx={{ fontSize: 30 }}
-                className={"text-white"}
+                className={"text-neutral-200"}
               />
             </div>
           </button>
@@ -86,8 +90,13 @@ export const ButtonsSidebar = () => {
             }}
           >
             <div className={"mt-4 flex items-center  gap-2"}>
-              <PostAddIcon sx={{ fontSize: 30 }} className={"text-white"} />
-              <p className={"text-lg font-semibold text-white max-lg:hidden"}>
+              <PostAddIcon
+                sx={{ fontSize: 30 }}
+                className={"text-neutral-200"}
+              />
+              <p
+                className={"text-lg font-medium text-neutral-200 max-lg:hidden"}
+              >
                 Post
               </p>
             </div>

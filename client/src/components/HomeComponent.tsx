@@ -62,7 +62,7 @@ export const HomeComponent = () => {
                       className="border-b border-bordercolor p-5"
                     >
                       <div className="flex gap-2">
-                        <div className="">
+                        <div>
                           <Link to={`/user/${post.creator.username}`}>
                             <img
                               src={
@@ -96,7 +96,7 @@ export const HomeComponent = () => {
                           <div className="text-white my-2 font-light">
                             {post.content}
                           </div>
-                          <div className="">
+                          <div>
                             <img
                               src={post.image}
                               className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-bordercolor"

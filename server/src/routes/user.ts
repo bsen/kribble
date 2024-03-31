@@ -54,16 +54,21 @@ userRouter.post("/userposts", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+
     const userposts = await prisma.user.findFirst({
       where: { id: userId.id },
       select: {
+        username: true,
+        name: true,
+        image: true,
         posts: true,
       },
     });
     if (!userposts) {
       return c.json({ status: 500, message: "error while fetching data" });
     }
-    return c.json({ status: 500, message: userposts });
+
+    return c.json({ status: 200, message: userposts });
   } catch (error) {
     console.log(error);
   }
