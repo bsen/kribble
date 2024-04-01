@@ -1,6 +1,5 @@
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
-import VideoChatIcon from "@mui/icons-material/VideoChat";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import { useLocation, useNavigate } from "react-router-dom";

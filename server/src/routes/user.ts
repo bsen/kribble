@@ -139,6 +139,10 @@ userRouter.post("/profile/update", async (c) => {
       const success = await prisma.user.update({
         where: { id: userId.id },
         data: {
+          name: newName,
+          bio: newBio,
+          website: newWebsite,
+          relationstatus: newRelationStatus,
           image: variantUrl,
         },
       });
@@ -230,6 +234,7 @@ userRouter.post("/otheruser-data", async (c) => {
         username: otherUser,
       },
       select: {
+        id: true,
         name: true,
         username: true,
         image: true,
