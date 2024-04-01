@@ -33,7 +33,7 @@ export const Profilepage: React.FC = () => {
     following: [],
   });
 
-  const [deletingPost, setDeletingPost] = useState("");
+  //const [deletingPost, setDeletingPost] = useState("");
   const [profileEditingState, setProfileEditingState] = useState(false);
   const token = localStorage.getItem("token");
 
@@ -51,27 +51,27 @@ export const Profilepage: React.FC = () => {
     }
   }
 
-  async function deletePost() {
-    const postId = deletingPost;
-    setLoadingState(true);
-    try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/delete-post`,
-        { token, postId }
-      );
-      setLoadingState(false);
+  // async function deletePost() {
+  //   const postId = deletingPost;
+  //   setLoadingState(true);
+  //   try {
+  //     const response = await axios.post(
+  //       `${BACKEND_URL}/api/server/v1/post/delete-post`,
+  //       { token, postId }
+  //     );
+  //     setLoadingState(false);
 
-      setDeletingPost("");
-      if (response.data.status == 200) {
-        alert("post deleted succesfull");
-        getData();
-      } else {
-        alert("post deletion failed, try again later");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  //     setDeletingPost("");
+  //     if (response.data.status == 200) {
+  //       alert("post deleted succesfull");
+  //       getData();
+  //     } else {
+  //       alert("post deletion failed, try again later");
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
   useEffect(() => {
     try {
