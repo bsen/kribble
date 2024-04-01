@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-import { LoadinPage } from "./LoadinPage";
+import { LoadingPage } from "./LoadingPage";
 import { ButtonsSidebar } from "./ButtonsSidebar";
 export const OtherUsersProfilePage = () => {
   const storageUser = localStorage.getItem("storageUser");
@@ -92,7 +92,7 @@ export const OtherUsersProfilePage = () => {
   return (
     <>
       {loadingState ? (
-        <LoadinPage />
+        <LoadingPage />
       ) : (
         <>
           <div className="h-14 lg:hidden top-0 fixed w-full flex items-center justify-center bg-black  border-b border-r border-l border-bordercolor text-2xl text-white font-ubuntu">

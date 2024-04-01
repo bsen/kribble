@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { LoadinPage } from "./LoadinPage";
+import { LoadingPage } from "./LoadingPage";
 
 export const SignupAuth = () => {
   const navigate = useNavigate();
@@ -124,7 +124,7 @@ export const SignupAuth = () => {
   return (
     <>
       {loadingState ? (
-        <LoadinPage />
+        <LoadingPage />
       ) : (
         <div>
           {popup && (

@@ -16,6 +16,8 @@ model User {
   password      String
   bio           String?
   image         String?
+  website       String?
+  relationstatus String?
   createdAt     DateTime   @default(now())
   posts         Post[]     @relation("UserPosts")
   following     Following[] @relation("FollowerRelation")

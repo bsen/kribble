@@ -7,7 +7,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import { BACKEND_URL } from "../config";
 
 import { useEffect, useState } from "react";
-import { LoadinPage } from "./LoadinPage";
+import { LoadingPage } from "./LoadingPage";
 
 export const MatchMakerPage = () => {
   const token = localStorage.getItem("token");
@@ -92,7 +92,7 @@ export const MatchMakerPage = () => {
         </div>
 
         {loadingState ? (
-          <LoadinPage />
+          <LoadingPage />
         ) : (
           <div>
             {matchingState ? (

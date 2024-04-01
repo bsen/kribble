@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config";
-export const UserProfilePosts = () => {
+export const PostsUser = () => {
   const token = localStorage.getItem("token");
   const [userPosts, setUserPosts] = useState<{
     name: string;

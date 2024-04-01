@@ -4,7 +4,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { LoadinPage } from "./LoadinPage";
+import { LoadingPage } from "./LoadingPage";
 export const CreatePost = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -96,7 +96,7 @@ export const CreatePost = () => {
   return (
     <>
       {loadingState ? (
-        <LoadinPage />
+        <LoadingPage />
       ) : (
         <div className="h-screen w-full absolute bg-neutral-950">
           <div className="w-[80%] md:w-[35vw] absolute rounded-lg bg-white shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">

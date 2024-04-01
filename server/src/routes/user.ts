@@ -24,15 +24,15 @@ userRouter.post("/userdata", async (c) => {
     const user = await prisma.user.findFirst({
       where: { id: userId.id },
       select: {
-        id: true,
         name: true,
-        email: true,
         username: true,
-        gender: true,
+        image: true,
         bio: true,
+        website: true,
+        relationstatus: true,
         followers: true,
         following: true,
-        image: true,
+        matchedUsers: true,
       },
     });
 
@@ -73,51 +73,52 @@ userRouter.post("/userposts", async (c) => {
     console.log(error);
   }
 });
-userRouter.post("/bioupdate", async (c) => {
-  try {
-    const body = await c.req.json();
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
 
-    const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
-
-    const user = await prisma.user.update({
-      where: { id: userId.id },
-      data: { bio: body.bio },
-    });
-
-    if (!user) {
-      return c.json({ status: 404, message: "user not found" });
-    }
-
-    return c.json({ status: 200, message: "bio updated successfully" });
-  } catch (error) {
-    console.log(error);
-    return c.json({ status: 500, message: "error while fetching data" });
-  }
-});
-
-userRouter.post("/profile-picture-update", async (c) => {
+userRouter.post("/profile/update", async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get("image");
     const token = formData.get("token");
-
-    if (typeof token !== "string") {
-      return c.json({ status: 400, message: "Invalid post or token" });
+    const newName = formData.get("name");
+    const newBio = formData.get("bio");
+    const newWebsite = formData.get("website");
+    const newRelationStatus = formData.get("relationstatus");
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    if (
+      typeof token !== "string" ||
+      typeof newBio !== "string" ||
+      typeof newName !== "string" ||
+      typeof newWebsite !== "string" ||
+      typeof newRelationStatus !== "string"
+    ) {
+      return c.json({ status: 400, message: "Invalid data or token" });
     }
+    const userId = await verify(token, c.env.JWT_SECRET);
+
     if (!file) {
-      return c.json({ status: 400, message: "No image provided" }, 400);
+      try {
+        const updateProfile = await prisma.user.update({
+          where: { id: userId.id },
+          data: {
+            name: newName,
+            bio: newBio,
+            website: newWebsite,
+            relationstatus: newRelationStatus,
+          },
+        });
+        if (!updateProfile) {
+          return c.json({ status: 400, message: "profile update failed" });
+        }
+        return c.json({ status: 200, mesgage: "profile updated successfuly" });
+      } catch (error) {
+        return c.json({ status: 500, message: "error" });
+      }
     }
     const data = new FormData();
     const blob = new Blob([file]);
     data.append("file", blob, "profile-image");
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const userId = await verify(token, c.env.JWT_SECRET);
 
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
@@ -214,41 +215,6 @@ userRouter.post("/follow-unfollow", async (c) => {
   }
 });
 
-userRouter.post("/remove-dp", async (c) => {
-  try {
-    const body = await c.req.json();
-    const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-
-    const deletePhoto = await prisma.user.update({
-      where: {
-        id: userId.id,
-      },
-      data: {
-        image: null,
-      },
-    });
-
-    if (!deletePhoto) {
-      return c.json({
-        status: 400,
-        message: "profile photo deletion failed, network error",
-      });
-    }
-
-    return c.json({
-      status: 200,
-      message: "profile photo deletion successful",
-    });
-  } catch (error) {
-    console.log(error);
-    return c.json({ status: 500, error: "Something went wrong" });
-  }
-});
-
 userRouter.post("/otheruser-data", async (c) => {
   try {
     const body = await c.req.json();
@@ -264,15 +230,16 @@ userRouter.post("/otheruser-data", async (c) => {
         username: otherUser,
       },
       select: {
-        id: true,
         name: true,
         username: true,
-        gender: true,
-        bio: true,
         image: true,
+        bio: true,
+        website: true,
+        relationstatus: true,
         posts: true,
         followers: true,
         following: true,
+        matchedUsers: true,
       },
     });
 
