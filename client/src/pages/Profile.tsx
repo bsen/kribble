@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
-import { Profilepage } from "../components/Profilepage";
+import { Profilepage } from "../components/ProfilePage";
 import { QuoteMatchMaker } from "../components/QuoteMatchMaker";
 export const Profile = () => {
   return (

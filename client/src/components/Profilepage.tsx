@@ -89,7 +89,7 @@ export const Profilepage: React.FC = () => {
       ) : (
         <>
           {profileEditingState ? (
-            <div className="absolute w-[40%]">
+            <div className="absolute w-full lg:w-[40%]">
               <EditProfile />
             </div>
           ) : (

@@ -1,5 +1,5 @@
-import { Quote } from "../components/Quote";
-import { LoginAuth } from "../components/LoginAuth";
+import { Quote } from "../components/Auth/Quote";
+import { LoginAuth } from "../components/Auth/LoginAuth";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 export const Login = () => {

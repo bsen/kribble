@@ -1,5 +1,5 @@
 import { PostsHome } from "./HomeComponents/PostsHome";
-export const HomeComponent = () => {
+export const HomePage = () => {
   return (
     <>
       <PostsHome />

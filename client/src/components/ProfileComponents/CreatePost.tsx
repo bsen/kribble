@@ -1,10 +1,10 @@
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { LoadingPage } from "./LoadingPage";
+import { LoadingPage } from "../LoadingPage";
 export const CreatePost = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");

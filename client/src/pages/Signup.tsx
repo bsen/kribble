@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Quote } from "../components/Quote";
-import { SignupAuth } from "../components/SignupAuth";
+import { Quote } from "../components/Auth/Quote";
+import { SignupAuth } from "../components/Auth/SignupAuth";
 import { useNavigate } from "react-router-dom";
 export const Signup = () => {
   const navigate = useNavigate();

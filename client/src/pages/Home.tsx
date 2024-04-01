@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
-import { HomeComponent } from "../components/HomeComponent";
+import { HomePage } from "../components/HomePage";
 import { QuoteMatchMaker } from "../components/QuoteMatchMaker";
 export const Home = () => {
   return (
@@ -8,7 +8,7 @@ export const Home = () => {
         <Sidebar />
       </div>
       <div className="w-full lg:w-[40%]">
-        <HomeComponent />
+        <HomePage />
       </div>
 
       <div className="w-[25%] max-lg:hidden">

@@ -27,12 +27,12 @@ function App() {
           <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
 
           <Route
-            path="/profile"
+            path="/:username"
             element={<ProtectedRoute element={<Profile />} />}
           />
           <Route path="/post" element={<ProtectedRoute element={<Post />} />} />
           <Route
-            path="/user/:otherUser"
+            path="/:otherUser"
             element={<ProtectedRoute element={<OtherUserProfile />} />}
           />
           <Route

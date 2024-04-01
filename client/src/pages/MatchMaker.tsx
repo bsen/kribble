@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
-import { Matches } from "../components/Matches";
+
 import { MatchMakerPage } from "../components/MatchMakerPage";
 export const MatchMaker = () => {
   return (
@@ -11,9 +11,7 @@ export const MatchMaker = () => {
         <MatchMakerPage />
       </div>
 
-      <div className="w-full md:w-[25%] border-l border-bordercolor flex justify-center">
-        <Matches />
-      </div>
+      <div className="w-full md:w-[25%] border-l border-bordercolor flex justify-center"></div>
     </div>
   );
 };

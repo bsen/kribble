@@ -2,11 +2,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const ButtonsSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const username = localStorage.getItem("storageUser");
 
   return (
     <div className="h-max w-full  flex  justify-center items-center bg-black">
@@ -39,31 +40,29 @@ export const ButtonsSidebar = () => {
           </button>
         </div>
         <div>
-          <button
-            onClick={() => {
-              navigate("/profile");
-            }}
-          >
-            <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <PersonIcon
-                sx={{ fontSize: 30 }}
-                className={`${
-                  location.pathname === "/profile"
-                    ? "text-blue-500"
-                    : "text-neutral-200"
-                }`}
-              />
-              <p
-                className={`text-lg font-medium max-lg:hidden ${
-                  location.pathname === "/profile"
-                    ? "text-blue-500"
-                    : "text-neutral-200"
-                }`}
-              >
-                Profile
-              </p>
-            </div>
-          </button>
+          <Link to={`/${username}`}>
+            <button>
+              <div className={"mt-4 flex items-center justify-center gap-2"}>
+                <PersonIcon
+                  sx={{ fontSize: 30 }}
+                  className={`${
+                    location.pathname === "/profile"
+                      ? "text-blue-500"
+                      : "text-neutral-200"
+                  }`}
+                />
+                <p
+                  className={`text-lg font-medium max-lg:hidden ${
+                    location.pathname === "/profile"
+                      ? "text-blue-500"
+                      : "text-neutral-200"
+                  }`}
+                >
+                  Profile
+                </p>
+              </div>
+            </button>
+          </Link>
         </div>
 
         <div className="lg:hidden">
