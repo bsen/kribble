@@ -33,7 +33,7 @@ export const Profilepage: React.FC = () => {
     following: [],
   });
 
-  //const [deletingPost, setDeletingPost] = useState("");
+  const [deletingPost, setDeletingPost] = useState("");
   const [profileEditingState, setProfileEditingState] = useState(false);
   const token = localStorage.getItem("token");
 
