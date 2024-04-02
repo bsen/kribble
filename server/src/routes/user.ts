@@ -17,13 +17,19 @@ userRouter.post("/userdata", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
+    const username = body.username;
     const userId = await verify(token, c.env.JWT_SECRET);
+    if (!userId) {
+      return c.json({ status: 404, message: "unauthorised" });
+    }
+    console.log(userId.id, username);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    const user = await prisma.user.findFirst({
-      where: { id: userId.id },
+    const person = await prisma.user.findFirst({
+      where: { username: username },
       select: {
+        id: true,
         name: true,
         username: true,
         image: true,
@@ -36,11 +42,19 @@ userRouter.post("/userdata", async (c) => {
       },
     });
 
-    if (!user) {
+    if (!person) {
       return c.json({ status: 404, message: "user not found" });
     }
-
-    return c.json({ status: 200, message: user });
+    const checkFollowStatus = await prisma.following.findFirst({
+      where: {
+        followerId: userId.id,
+        followingId: person.id,
+      },
+    });
+    if (!checkFollowStatus) {
+      return c.json({ status: 200, message: person, following: false });
+    }
+    return c.json({ status: 200, message: person, following: true });
   } catch (error) {
     console.log(error);
     return c.json({ status: 500, message: "error while fetching data" });
@@ -49,14 +63,18 @@ userRouter.post("/userdata", async (c) => {
 userRouter.post("/userposts", async (c) => {
   try {
     const body = await c.req.json();
+    const username = body.username;
     const token = body.token;
     const userId = await verify(token, c.env.JWT_SECRET);
+    if (!userId) {
+      return c.json({ status: 404, message: "unauthorised" });
+    }
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
     const userposts = await prisma.user.findFirst({
-      where: { id: userId.id },
+      where: { username: username },
       select: {
         username: true,
         name: true,
@@ -165,7 +183,7 @@ userRouter.post("/follow-unfollow", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
-    const otherUserName = body.otherUser;
+    const followingUser = body.username;
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -179,7 +197,7 @@ userRouter.post("/follow-unfollow", async (c) => {
     });
     const otherUser = await prisma.user.findUnique({
       where: {
-        username: otherUserName,
+        username: followingUser,
       },
     });
 
@@ -215,55 +233,6 @@ userRouter.post("/follow-unfollow", async (c) => {
     }
   } catch (error) {
     console.error(error);
-    return c.json({ status: 500, error: "Something went wrong" });
-  }
-});
-
-userRouter.post("/otheruser-data", async (c) => {
-  try {
-    const body = await c.req.json();
-    const otherUser = body.otherUser;
-    const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-
-    const data = await prisma.user.findUnique({
-      where: {
-        username: otherUser,
-      },
-      select: {
-        id: true,
-        name: true,
-        username: true,
-        image: true,
-        bio: true,
-        website: true,
-        relationstatus: true,
-        posts: true,
-        followers: true,
-        following: true,
-        matchedUsers: true,
-      },
-    });
-
-    if (!data) {
-      return c.json({ status: 404, message: "user not found" });
-    }
-
-    const checkFollowStatus = await prisma.following.findFirst({
-      where: {
-        followerId: userId.id,
-        followingId: data.id,
-      },
-    });
-    if (!checkFollowStatus) {
-      return c.json({ status: 200, message: data, following: false });
-    }
-    return c.json({ status: 200, message: data, following: true });
-  } catch (error) {
-    console.log(error);
     return c.json({ status: 500, error: "Something went wrong" });
   }
 });

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { LoadingPage } from "../LoadingPage";
+import { Logout } from "../Auth/Logout";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../config";
+import { LoadingPage } from "../LoadingPage";
 import axios from "axios";
 export const EditProfile = () => {
   const token = localStorage.getItem("token");
@@ -12,7 +13,7 @@ export const EditProfile = () => {
   const [website, setWebsite] = useState("");
   const [profileImg, setProfileImg] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState("");
-
+  const [logOutState, setLogOutState] = useState(false);
   const [relationstatus, setRelationStatus] = useState("");
   const [userData, setUserData] = useState<{
     name: string;
@@ -120,106 +121,121 @@ export const EditProfile = () => {
 
   return (
     <>
-      <div className="h-screen bg-black/50 text-blakc flex justify-center items-center">
-        {loadingState ? (
-          <LoadingPage />
-        ) : (
-          <div className="bg-black w-[80%]  border border-bordercolor p-4 rounded-lg flex flex-col gap-4">
-            <div className="flex justify-between items-center border-b border-bordercolor pb-4">
-              <button
-                onClick={() => {
-                  window.location.reload();
-                }}
-              >
-                <CloseIcon className="text-white" />
-              </button>
-              <button onClick={updateProfile}>
-                <div className="text-white text-sm font-ubuntu border border-neutral-500 hover:bg-neutral-800 rounded-full py-1 px-4">
-                  save
-                </div>
-              </button>
-            </div>
-            <div className="h-24 w-24 rounded-full  flex justify-center items-center">
-              <div className="absolute text-white z-50">
-                <button>
-                  <label htmlFor="image-upload" className="cursor-pointer ">
-                    <CameraAltRoundedIcon />
-                  </label>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
+      {logOutState ? (
+        <Logout />
+      ) : (
+        <div className="h-screen bg-black/50 text-blakc flex justify-center items-center">
+          {loadingState ? (
+            <LoadingPage />
+          ) : (
+            <div className="bg-black w-[90%]   border border-bordercolor p-4 rounded-lg flex flex-col gap-4">
+              <div className="flex justify-between items-center border-b border-bordercolor pb-4">
+                <button
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                >
+                  <CloseIcon className="text-white" />
+                </button>
+                <button
+                  onClick={() => {
+                    setLogOutState(true);
+                  }}
+                >
+                  <div className="text-white text-sm font-semibold font-ubuntu px-2 underline underline-offset-2">
+                    Log out
+                  </div>
                 </button>
               </div>
-              <img
-                src={
-                  previewImage
-                    ? previewImage
-                    : userData.image
-                    ? userData.image
-                    : "/user.png"
-                }
-                className="rounded-full z-10"
-              />
-            </div>
+              <div className="w-full flex justify-between items-end">
+                <div className="flex justify-center items-center">
+                  <div className="absolute text-white z-50">
+                    <button>
+                      <label htmlFor="image-upload" className="cursor-pointer ">
+                        <CameraAltRoundedIcon />
+                      </label>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                    </button>
+                  </div>
+                  <img
+                    src={
+                      previewImage
+                        ? previewImage
+                        : userData.image
+                        ? userData.image
+                        : "/user.png"
+                    }
+                    className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10"
+                  />
+                </div>
 
-            <div>
-              <div className="text-neutral-100">Name</div>
-              <input
-                maxLength={20}
-                defaultValue={userData.name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-                className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-300"
-              />
+                <button onClick={updateProfile}>
+                  <div className="text-white text-sm font-ubuntu border border-neutral-500 hover:bg-neutral-800 rounded-full py-1 px-4">
+                    save
+                  </div>
+                </button>
+              </div>
+
+              <div>
+                <div className="text-neutral-100">Name</div>
+                <input
+                  maxLength={20}
+                  defaultValue={userData.name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-300"
+                />
+              </div>
+              <div>
+                <div className="text-neutral-100">Website</div>
+                <input
+                  type="link"
+                  defaultValue={userData.website}
+                  onChange={(e) => {
+                    setWebsite(e.target.value);
+                  }}
+                  className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-300"
+                />
+              </div>
+              <div>
+                <div className="text-neutral-100">Relationship status</div>{" "}
+                <select
+                  className="h-10 w-full rounded-lg px-2 text-neutral-600 bg-white border border-neutral-300 appearance-none"
+                  onChange={(e) => setRelationStatus(e.target.value)}
+                >
+                  <option value="" className="text-neutral-400">
+                    relationship status
+                  </option>
+                  <option value="secret">secret</option>
+                  <option value="single">single</option>
+                  <option value="committed">committed</option>
+                  <option value="married">married</option>
+                </select>
+              </div>
+              <div>
+                <div className="text-neutral-100">Bio</div>
+                <textarea
+                  rows={4}
+                  className="w-full p-2  rounded-lg"
+                  defaultValue={userData.bio}
+                  wrap="soft"
+                  maxLength={160}
+                  onChange={(e) => {
+                    setBio(e.target.value);
+                  }}
+                />
+              </div>
             </div>
-            <div>
-              <div className="text-neutral-100">Website</div>
-              <input
-                type="link"
-                placeholder="your website"
-                onChange={(e) => {
-                  setWebsite(e.target.value);
-                }}
-                className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-300"
-              />
-            </div>
-            <div>
-              <div className="text-neutral-100">Relationship status</div>{" "}
-              <select
-                className="h-10 w-full rounded-lg px-2 text-neutral-600 bg-white border border-neutral-300 appearance-none"
-                onChange={(e) => setRelationStatus(e.target.value)}
-              >
-                <option value="" className="text-neutral-400">
-                  relationship status
-                </option>
-                <option value="single">single</option>
-                <option value="in a relationship">in a relationship</option>
-                <option value="engaged">engaged</option>
-                <option value="married">married</option>
-                <option value="i'm good">i'm good</option>
-              </select>
-            </div>
-            <div>
-              <div className="text-neutral-100">Bio</div>
-              <textarea
-                rows={4}
-                className="w-full p-2  rounded-lg"
-                defaultValue={userData.bio}
-                wrap="soft"
-                maxLength={200}
-                onChange={(e) => {
-                  setBio(e.target.value);
-                }}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

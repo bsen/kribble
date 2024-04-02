@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
-import { Profilepage } from "../components/Profilepage";
-import { QuoteMatchMaker } from "../components/QuoteMatchMaker";
+import { ProfileSection } from "../components/ProfileComponents/ProfileSection";
+import { QuoteMatchMaker } from "../components/MatchMaker/QuoteMatchMaker";
 export const Profile = () => {
   return (
     <div className="flex  justify-between">
@@ -8,7 +8,7 @@ export const Profile = () => {
         <Sidebar />
       </div>
       <div className="w-full lg:w-[40%]">
-        <Profilepage />
+        <ProfileSection />
       </div>
 
       <div className="w-[25%] max-lg:hidden">

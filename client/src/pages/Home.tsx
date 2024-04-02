@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
-import { HomeComponent } from "../components/HomeComponent";
-import { QuoteMatchMaker } from "../components/QuoteMatchMaker";
+import { PostsHome } from "../components/HomeComponents/PostsHome";
+import { QuoteMatchMaker } from "../components/MatchMaker/QuoteMatchMaker";
 export const Home = () => {
   return (
     <div className="flex justify-between">
@@ -8,7 +8,7 @@ export const Home = () => {
         <Sidebar />
       </div>
       <div className="w-full lg:w-[40%]">
-        <HomeComponent />
+        <PostsHome />
       </div>
 
       <div className="w-[25%] max-lg:hidden">

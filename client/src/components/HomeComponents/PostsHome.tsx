@@ -31,7 +31,7 @@ export const PostsHome = () => {
       );
       setLoadingState(false);
       setPostData({ posts: response.data.message });
-      localStorage.setItem("storageUser", response.data.user);
+      localStorage.setItem("currentUser", response.data.user);
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +55,7 @@ export const PostsHome = () => {
                 <div key={index} className="border-b border-bordercolor p-5">
                   <div className="flex gap-2">
                     <div>
-                      <Link to={`/user/${post.creator.username}`}>
+                      <Link to={`/${post.creator.username}`}>
                         <img
                           src={
                             post.creator.image
@@ -70,12 +70,12 @@ export const PostsHome = () => {
 
                     <div className="w-[80%]">
                       <div className="flex gap-2 items-center">
-                        <Link to={`/user/${post.creator.username}`}>
+                        <Link to={`/${post.creator.username}`}>
                           <div className="text-white text-base hover:underline font-semibold">
                             {post.creator.name}
                           </div>
                         </Link>
-                        <Link to={`/user/${post.creator.username}`}>
+                        <Link to={`/${post.creator.username}`}>
                           <div className="text-neutral-400 hover:underline text-sm font-ubuntu">
                             @{post.creator.username}
                           </div>

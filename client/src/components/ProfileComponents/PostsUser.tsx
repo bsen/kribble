@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config";
+import { useParams } from "react-router-dom";
 export const PostsUser = () => {
-  const token = localStorage.getItem("token");
   const [userPosts, setUserPosts] = useState<{
     name: string;
     username: string;
@@ -19,12 +19,13 @@ export const PostsUser = () => {
     image: "",
     posts: [],
   });
-
+  const { username } = useParams();
+  const token = localStorage.getItem("token");
   async function getData() {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/userposts`,
-        { token }
+        { token, username }
       );
       setUserPosts(response.data.message);
     } catch (error) {

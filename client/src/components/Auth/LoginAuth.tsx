@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { LoadingPage } from "./LoadingPage";
+import { LoadingPage } from "../LoadingPage";
 
 export const LoginAuth = () => {
   const navigate = useNavigate();
