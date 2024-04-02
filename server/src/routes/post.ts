@@ -24,8 +24,7 @@ postRouter.post("/paginated-allposts", async (c) => {
     const userId = await verify(token, c.env.JWT_SECRET);
     const userData = await prisma.user.findUnique({ where: { id: userId.id } });
     if (!userData) {
-      console.log("user not authenticated");
-      return c.json({ status: 400, message: "user not authenticated" });
+      return c.json({ status: 401, message: "Unauthorized" });
     }
     const allPosts = await prisma.post.findMany({
       include: {
@@ -42,17 +41,16 @@ postRouter.post("/paginated-allposts", async (c) => {
     });
 
     if (!allPosts) {
-      console.log("posts not found");
       return c.json({
         status: 400,
-        message: "req failed, posts not found",
+        message: "Req failed, posts not found",
       });
     }
 
     return c.json({ status: 200, message: allPosts });
   } catch (error) {
     console.log(error);
-    return c.json({ status: 404 });
+    return c.json({ status: 400 });
   }
 });
 
@@ -67,7 +65,7 @@ postRouter.post("/create-full-post", async (c) => {
       return c.json({ status: 400, message: "Invalid post or token" });
     }
     if (!file) {
-      return c.json({ status: 400, message: "No image provided" }, 400);
+      return c.json({ status: 400, message: "No image provided" });
     }
     const data = new FormData();
     const blob = new Blob([file]);
@@ -76,6 +74,11 @@ postRouter.post("/create-full-post", async (c) => {
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
     const userId = await verify(token, c.env.JWT_SECRET);
+
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
 
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
@@ -111,8 +114,7 @@ postRouter.post("/create-full-post", async (c) => {
 
     return c.json({ status: 200 });
   } catch (error) {
-    console.log(error);
-    return c.json({ status: 404 });
+    return c.json({ status: 400 });
   }
 });
 
@@ -125,6 +127,10 @@ postRouter.post("/create-text-post", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
 
     const createPost = await prisma.post.create({
       data: {
@@ -134,12 +140,12 @@ postRouter.post("/create-text-post", async (c) => {
     });
 
     if (!createPost) {
-      return c.json({ status: 400, message: "post creation failed" });
+      return c.json({ status: 403, message: "post creation failed" });
     }
 
     return c.json({ status: 200, message: "post created successfully" });
   } catch (error) {
-    return c.json({ status: 500, message: "network error" });
+    return c.json({ status: 400, message: "network error" });
   }
 });
 
@@ -153,13 +159,9 @@ postRouter.post("/delete-post", async (c) => {
     }).$extends(withAccelerate());
 
     const userId = await verify(token, c.env.JWT_SECRET);
-    const checkUser = await prisma.user.findUnique({
-      where: {
-        id: userId.id,
-      },
-    });
-    if (!checkUser) {
-      return c.json({ status: 400, message: "user not authenticated" });
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized" });
     }
     const deletepost = await prisma.post.delete({
       where: {
@@ -168,12 +170,12 @@ postRouter.post("/delete-post", async (c) => {
     });
 
     if (!deletepost) {
-      return c.json({ status: 404, message: "post deletion failed" });
+      return c.json({ status: 403, message: "post deletion failed" });
     }
 
     return c.json({ status: 200, message: "post deleted successfuly" });
   } catch (error) {
     console.log(error);
-    return c.json({ status: 404 });
+    return c.json({ status: 400 });
   }
 });

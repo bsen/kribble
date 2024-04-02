@@ -26,13 +26,12 @@ userRouter.post("/user", async (c) => {
         username: true,
       },
     });
-
     if (!person) {
-      return c.json({ status: 404, message: "user not found" });
+      return c.json({ status: 401, message: "Unauthorized" });
     }
     return c.json({ status: 200, message: person });
   } catch (error) {
-    console.log(error);
+    return c.json({ status: 400 });
   }
 });
 
@@ -42,12 +41,13 @@ userRouter.post("/userdata", async (c) => {
     const token = body.token;
     const username = body.username;
     const userId = await verify(token, c.env.JWT_SECRET);
-    if (!userId) {
-      return c.json({ status: 404, message: "unauthorised" });
-    }
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
     const person = await prisma.user.findFirst({
       where: { username: username },
       select: {
