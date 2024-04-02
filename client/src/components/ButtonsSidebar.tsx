@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 export const ButtonsSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const username = localStorage.getItem("storageUser");
+  const currentUser = localStorage.getItem("currentUser");
 
   return (
     <div className="h-max w-full  flex  justify-center items-center bg-black">
@@ -24,14 +24,14 @@ export const ButtonsSidebar = () => {
                 className={`${
                   location.pathname === "/home"
                     ? "text-blue-500"
-                    : "text-neutral-200"
+                    : "text-neutral-100"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
                   location.pathname === "/home"
                     ? "text-blue-500"
-                    : "text-neutral-200"
+                    : "text-neutral-100"
                 }`}
               >
                 Home
@@ -40,29 +40,22 @@ export const ButtonsSidebar = () => {
           </button>
         </div>
         <div>
-          <Link to={`/${username}`}>
+          {currentUser && (
             <button>
-              <div className={"mt-4 flex items-center justify-center gap-2"}>
-                <PersonIcon
-                  sx={{ fontSize: 30 }}
-                  className={`${
-                    location.pathname === "/profile"
+              <Link to={`/${currentUser}`}>
+                <div
+                  className={`mt-4 flex items-center justify-center gap-2 ${
+                    location.pathname.includes(`/${currentUser}`)
                       ? "text-blue-500"
-                      : "text-neutral-200"
-                  }`}
-                />
-                <p
-                  className={`text-lg font-medium max-lg:hidden ${
-                    location.pathname === "/profile"
-                      ? "text-blue-500"
-                      : "text-neutral-200"
+                      : "text-neutral-100"
                   }`}
                 >
-                  Profile
-                </p>
-              </div>
+                  <PersonIcon sx={{ fontSize: 30 }} />
+                  <p className="text-lg font-medium max-lg:hidden">Profile</p>
+                </div>
+              </Link>
             </button>
-          </Link>
+          )}
         </div>
 
         <div className="lg:hidden">
@@ -75,7 +68,7 @@ export const ButtonsSidebar = () => {
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <PeopleAltRoundedIcon
                 sx={{ fontSize: 30 }}
-                className={"text-neutral-200"}
+                className={"text-neutral-100"}
               />
             </div>
           </button>
@@ -90,7 +83,7 @@ export const ButtonsSidebar = () => {
             <div className={"mt-4 flex items-center  gap-2"}>
               <PostAddIcon
                 sx={{ fontSize: 30 }}
-                className={"text-neutral-200"}
+                className={"text-neutral-100"}
               />
               <p
                 className={"text-lg font-medium text-neutral-200 max-lg:hidden"}

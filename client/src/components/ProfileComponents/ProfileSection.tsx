@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
-import { PostsUser } from "./ProfileComponents/PostsUser";
-import { LoadingPage } from "./LoadingPage";
-import { EditProfile } from "./ProfileComponents/EditProfile";
-export const Profilepage: React.FC = () => {
-  const [loadingState, setLoadingState] = useState(false);
+import { BACKEND_URL } from "../../config";
+import { PostsUser } from "./PostsUser";
+import { LoadingPage } from "../LoadingPage";
+import { EditProfile } from "./EditProfile";
+import { useParams } from "react-router-dom";
 
+export const ProfileSection: React.FC = () => {
+  const [loadingState, setLoadingState] = useState(false);
   const [userData, setUserData] = useState<{
     name: string;
     username: string;
@@ -33,45 +34,24 @@ export const Profilepage: React.FC = () => {
     following: [],
   });
 
-  //const [deletingPost, setDeletingPost] = useState("");
+  const currentUser = localStorage.getItem("currentUser");
   const [profileEditingState, setProfileEditingState] = useState(false);
   const token = localStorage.getItem("token");
-
+  const { username } = useParams();
   async function getData() {
     try {
       setLoadingState(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/userdata`,
-        { token }
+        { token, username }
       );
       setUserData(response.data.message);
+      setFollowingState(response.data.following);
       setLoadingState(false);
     } catch (error) {
       console.log(error);
     }
   }
-
-  // async function deletePost() {
-  //   const postId = deletingPost;
-  //   setLoadingState(true);
-  //   try {
-  //     const response = await axios.post(
-  //       `${BACKEND_URL}/api/server/v1/post/delete-post`,
-  //       { token, postId }
-  //     );
-  //     setLoadingState(false);
-
-  //     setDeletingPost("");
-  //     if (response.data.status == 200) {
-  //       alert("post deleted succesfull");
-  //       getData();
-  //     } else {
-  //       alert("post deletion failed, try again later");
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
 
   useEffect(() => {
     try {
@@ -79,8 +59,24 @@ export const Profilepage: React.FC = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, []);
-  useEffect(() => {}, [userData.bio]);
+  }, [username]);
+  const [followingState, setFollowingState] = useState();
+
+  async function followUser() {
+    setLoadingState(true);
+    try {
+      const details = { username, token };
+      await axios.post(
+        `${BACKEND_URL}/api/server/v1/user/follow-unfollow`,
+        details
+      );
+
+      await getData();
+      setLoadingState(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -106,15 +102,32 @@ export const Profilepage: React.FC = () => {
                     className="w-16 h-16 lg:w-24 lg:h-24 rounded-full"
                   />
                 </div>
-                <button
-                  onClick={() => {
-                    setProfileEditingState(true);
-                  }}
-                >
-                  <div className="text-white text-sm font-ubuntu border border-neutral-500 hover:bg-neutral-800 rounded-full py-1 px-4">
-                    profile settings
+                {currentUser === username ? (
+                  <button
+                    onClick={() => {
+                      setProfileEditingState(true);
+                    }}
+                  >
+                    <div className="text-white text-sm font-ubuntu border border-neutral-500 hover:bg-neutral-800 rounded-full py-1 px-4">
+                      profile settings
+                    </div>
+                  </button>
+                ) : (
+                  <div>
+                    <button
+                      onClick={followUser}
+                      className="bg-blue-800 text-neutral-300 px-4 py-1 rounded-lg font-ubuntu"
+                    >
+                      <div>
+                        {followingState ? (
+                          <div>Unfollow</div>
+                        ) : (
+                          <div>Follow</div>
+                        )}
+                      </div>
+                    </button>
                   </div>
-                </button>
+                )}
               </div>
               <div className="my-2">
                 <div className="text-xl font-semibold text-white">
@@ -161,7 +174,6 @@ export const Profilepage: React.FC = () => {
             <div className="absolute h-screen  bg-black/30"></div>
             <PostsUser />
           </div>
-          {/* )} */}
         </>
       )}
     </>

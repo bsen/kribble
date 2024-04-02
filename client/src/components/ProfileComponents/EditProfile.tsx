@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { LoadingPage } from "../LoadingPage";
+import { Logout } from "../Auth/Logout";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../config";
-import { Logout } from "../Logout";
+import { LoadingPage } from "../LoadingPage";
 import axios from "axios";
 export const EditProfile = () => {
   const token = localStorage.getItem("token");
