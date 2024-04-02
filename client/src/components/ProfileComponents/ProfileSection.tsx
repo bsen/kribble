@@ -34,7 +34,23 @@ export const ProfileSection: React.FC = () => {
     following: [],
   });
 
-  const currentUser = localStorage.getItem("currentUser");
+  const [currentUser, setCurrentUser] = useState("");
+  useEffect(() => {
+    User();
+  }, []);
+  async function User() {
+    try {
+      setLoadingState(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/user/user`,
+        { token }
+      );
+      setCurrentUser(response.data.message.username);
+      setLoadingState(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const [profileEditingState, setProfileEditingState] = useState(false);
   const token = localStorage.getItem("token");
   const { username } = useParams();

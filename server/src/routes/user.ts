@@ -12,6 +12,29 @@ export const userRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
+userRouter.post("/user", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const person = await prisma.user.findFirst({
+      where: { id: userId.id },
+      select: {
+        username: true,
+      },
+    });
+
+    if (!person) {
+      return c.json({ status: 404, message: "user not found" });
+    }
+    return c.json({ status: 200, message: person });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 userRouter.post("/userdata", async (c) => {
   try {
@@ -22,7 +45,6 @@ userRouter.post("/userdata", async (c) => {
     if (!userId) {
       return c.json({ status: 404, message: "unauthorised" });
     }
-    console.log(userId.id, username);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());

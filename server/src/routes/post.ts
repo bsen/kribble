@@ -1,10 +1,7 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { decode, jwt, sign, verify } from "hono/jwt";
-import { errorMonitor } from "form-data";
-import { BalancedPool, RetryHandler } from "undici";
-import { jsx } from "hono/jsx";
+import { verify } from "hono/jwt";
 
 export const postRouter = new Hono<{
   Bindings: {
@@ -52,7 +49,7 @@ postRouter.post("/paginated-allposts", async (c) => {
       });
     }
 
-    return c.json({ status: 200, message: allPosts, user: userData.username });
+    return c.json({ status: 200, message: allPosts });
   } catch (error) {
     console.log(error);
     return c.json({ status: 404 });
