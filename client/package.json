@@ -17,12 +17,14 @@
     "axios": "^1.6.7",
     "firebase": "^10.9.0",
     "framer-motion": "^11.0.13",
+    "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-image-crop": "^11.0.5",
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "@typescript-eslint/eslint-plugin": "^7.1.1",

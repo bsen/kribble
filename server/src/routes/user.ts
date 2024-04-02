@@ -12,6 +12,28 @@ export const userRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
+userRouter.post("/user", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const person = await prisma.user.findFirst({
+      where: { id: userId.id },
+      select: {
+        username: true,
+      },
+    });
+    if (!person) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
+    return c.json({ status: 200, message: person });
+  } catch (error) {
+    return c.json({ status: 400 });
+  }
+});
 
 userRouter.post("/userdata", async (c) => {
   try {
@@ -19,13 +41,13 @@ userRouter.post("/userdata", async (c) => {
     const token = body.token;
     const username = body.username;
     const userId = await verify(token, c.env.JWT_SECRET);
-    if (!userId) {
-      return c.json({ status: 404, message: "unauthorised" });
-    }
-    console.log(userId.id, username);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
     const person = await prisma.user.findFirst({
       where: { username: username },
       select: {

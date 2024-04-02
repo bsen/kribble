@@ -7,7 +7,6 @@ export const Sidebar = () => {
           <div className="text-[2rem] text-white font-ubuntu flex w-[80%] justify-center items-center border-b border-bordercolor pb-2">
             kribble
           </div>
-
           <ButtonsSidebar />
         </div>
       </div>

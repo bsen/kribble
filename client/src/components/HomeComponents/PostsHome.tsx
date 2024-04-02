@@ -31,7 +31,6 @@ export const PostsHome = () => {
       );
       setLoadingState(false);
       setPostData({ posts: response.data.message });
-      localStorage.setItem("currentUser", response.data.user);
     } catch (error) {
       console.log(error);
     }
