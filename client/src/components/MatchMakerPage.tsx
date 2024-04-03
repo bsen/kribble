@@ -152,17 +152,9 @@ export const MatchMakerPage = () => {
                   </div>
                   1. Your profile picture will be used for matching.
                   <br /> 2. Your bio will be shown in the matching.
-                  <br /> 3. Your matches will be updated on
-                  <button
-                    onClick={() => {
-                      scroll(0, 1000);
-                    }}
-                  >
-                    <span className="text-pink-500 underline underline-offset-2 text-lg px-2">
-                      Matches{" "}
-                    </span>
-                  </button>
-                  section.
+                  <br /> 3. You can see your
+                  <span className="text-pink-500"> Matches </span>
+                  on your profile.
                 </div>
                 <div className="text-center font-semibold font-ubuntu text-sm text-neutral-400">
                   Select the gender you want to match with

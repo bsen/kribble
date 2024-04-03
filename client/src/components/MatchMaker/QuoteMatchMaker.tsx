@@ -20,9 +20,9 @@ export const QuoteMatchMaker = () => {
             </div>
             1. Your profile picture will be used for matching.
             <br /> 2. Your bio will be shown in the matching.
-            <br /> 3. Your matches will be updated on
+            <br /> 3. You can see your
             <span className="text-pink-500"> Matches </span>
-            section.
+            on your profile.
           </div>
           <div className="w-full flex justify-center">
             <div>

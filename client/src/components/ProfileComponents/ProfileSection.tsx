@@ -5,7 +5,7 @@ import { PostsUser } from "./PostsUser";
 import { LoadingPage } from "../LoadingPage";
 import { EditProfile } from "./EditProfile";
 import { useParams } from "react-router-dom";
-
+import { Matches } from "../MatchMaker/Matches";
 export const ProfileSection: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
   const [userData, setUserData] = useState<{
@@ -94,6 +94,8 @@ export const ProfileSection: React.FC = () => {
     }
   }
 
+  const [comp, setComp] = useState(true);
+
   return (
     <>
       {loadingState ? (
@@ -109,7 +111,7 @@ export const ProfileSection: React.FC = () => {
           )}
 
           <div className="h-screen border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
-            <div className="p-5 border-b border-bordercolor">
+            <div className="px-5 py-2 border-b border-bordercolor">
               <div className="flex justify-between items-center">
                 <div>
                   <img
@@ -185,10 +187,39 @@ export const ProfileSection: React.FC = () => {
                     <div className="text-neutral-400">Following</div>
                   </div>
                 </div>
+                <div className="flex gap-5">
+                  <button
+                    onClick={() => {
+                      setComp(true);
+                    }}
+                  >
+                    <div className="text-blue-500 text-base font-ubuntu font-semibold underline underline-offset-2">
+                      Posts
+                    </div>
+                  </button>
+                  {currentUser === username ? (
+                    <button
+                      onClick={() => {
+                        setComp(false);
+                      }}
+                    >
+                      <div className="text-pink-500 text-base font-ubuntu font-semibold underline underline-offset-2">
+                        Matches
+                      </div>
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
-            <div className="absolute h-screen  bg-black/30"></div>
-            <PostsUser />
+            {comp ? (
+              <PostsUser />
+            ) : (
+              <div>
+                {currentUser === username ? <Matches /> : "" + setComp(true)}
+              </div>
+            )}
           </div>
         </>
       )}
