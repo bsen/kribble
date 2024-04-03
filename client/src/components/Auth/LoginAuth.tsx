@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,45 +7,35 @@ import { LoadingPage } from "../LoadingPage";
 export const LoginAuth = () => {
   const navigate = useNavigate();
   const [loadingState, setLoadingState] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [popup, setPopup] = useState(false);
-  const [popText, setpopText] = useState("");
-  function popupFn() {
-    setPopup(true);
-    setTimeout(() => {
-      setPopup(false);
-    }, 5000);
-  }
+  const [popup, setPopup] = useState("");
+
   async function login() {
-    if (!email.endsWith("@vitstudent.ac.in")) {
-      setpopText("Please enter your VIT student email!");
-      popupFn();
+    if (!email) {
+      setPopup("Please enter your email");
       return;
     }
-    if (password.length == 0) {
-      setpopText("Enter your password!");
-      popupFn();
+    if (!password) {
+      setPopup("Please enter your password");
+
       return;
     }
     try {
       setLoadingState(true);
       const data = { email, password };
-      axios
-        .post(`${BACKEND_URL}/api/server/v1/auth/login`, data)
-        .then((response) => {
-          setLoadingState(false);
-          if (response.data.status == 200) {
-            const jwt = response.data.message;
-            localStorage.setItem("token", jwt);
-            navigate("/home");
-          }
-          if (response.data.status == 403) {
-            setpopText("Email or Password is invalid");
-            popupFn();
-          }
-        });
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/auth/login`,
+        data
+      );
+      setLoadingState(false);
+      if (response.data.status == 200) {
+        const jwt = response.data.token;
+        localStorage.setItem("token", jwt);
+        navigate("/home");
+        return;
+      }
+      setPopup(response.data.message);
     } catch (error) {
       console.log(error);
     }
@@ -58,24 +47,6 @@ export const LoginAuth = () => {
         <LoadingPage />
       ) : (
         <div>
-          {popup && (
-            <div className="absolute top-5 left-5">
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="rounded-lg bg-white border border-bordercolor shadow-sm px-5 py-2 ">
-                  {popText ? (
-                    <div>{popText}</div>
-                  ) : (
-                    <div>hi, This is just a alert 👋</div>
-                  )}
-                </div>
-              </motion.div>
-            </div>
-          )}
           <div className="h-screen w-full  bg-white flex justify-center items-center">
             <div className="w-[80%] lg:w-[50%] grid gap-y-2">
               <div className="text-neutral-800 text-center font-ubuntu text-[2rem]">
@@ -89,6 +60,7 @@ export const LoginAuth = () => {
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
+                  type="email"
                   className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
                   placeholder="example@vitstudent.ac.in"
                 />
@@ -121,6 +93,9 @@ export const LoginAuth = () => {
                 >
                   Sign up
                 </Link>
+              </div>
+              <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+                {popup ? popup : ""}
               </div>
             </div>
           </div>

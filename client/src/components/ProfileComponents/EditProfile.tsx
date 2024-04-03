@@ -5,6 +5,7 @@ import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../config";
 import { LoadingPage } from "../LoadingPage";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 export const EditProfile = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(true);
@@ -31,21 +32,15 @@ export const EditProfile = () => {
   useEffect(() => {
     getData();
   }, []);
+  const { username } = useParams();
 
   async function getData() {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/userdata`,
-        { token }
+        { token, username }
       );
-      const userDataFromServer = response.data.message;
-      setUserData({
-        name: userDataFromServer.name || "",
-        bio: userDataFromServer.bio || "",
-        image: userDataFromServer.image || "",
-        website: userDataFromServer.website || "",
-        relationstatus: userDataFromServer.relationstatus || "",
-      });
+      setUserData(response.data.message);
       setLoadingState(false);
     } catch (error) {
       console.log(error);

@@ -64,21 +64,24 @@ postRouter.post("/create-full-post", async (c) => {
     if (typeof post !== "string" || typeof token !== "string") {
       return c.json({ status: 400, message: "Invalid post or token" });
     }
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized user" });
+    }
     if (!file) {
       return c.json({ status: 400, message: "No image provided" });
     }
     const data = new FormData();
     const blob = new Blob([file]);
-    data.append("file", blob, "user_post_cloudflare_images");
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const userId = await verify(token, c.env.JWT_SECRET);
-
-    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
-    if (!userData) {
-      return c.json({ status: 401, message: "Unauthorized" });
-    }
+    data.append(
+      "file",
+      blob,
+      "post" + "-" + userData.username + ":" + userId.id
+    );
 
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
@@ -106,15 +109,15 @@ postRouter.post("/create-full-post", async (c) => {
       });
 
       if (!success) {
-        return c.json({ status: 403, message: "failed to create new post" });
+        return c.json({ status: 403, message: "Failed to create the post" });
       }
     } else {
       console.error("No variants found in the response.");
     }
 
-    return c.json({ status: 200 });
+    return c.json({ status: 200, message: "Post created successfully" });
   } catch (error) {
-    return c.json({ status: 400 });
+    return c.json({ status: 400, message: "Try again later, Network error" });
   }
 });
 
@@ -129,7 +132,7 @@ postRouter.post("/create-text-post", async (c) => {
     }).$extends(withAccelerate());
     const userData = await prisma.user.findUnique({ where: { id: userId.id } });
     if (!userData) {
-      return c.json({ status: 401, message: "Unauthorized" });
+      return c.json({ status: 401, message: "Unauthorized user" });
     }
 
     const createPost = await prisma.post.create({
@@ -140,12 +143,12 @@ postRouter.post("/create-text-post", async (c) => {
     });
 
     if (!createPost) {
-      return c.json({ status: 403, message: "post creation failed" });
+      return c.json({ status: 403, message: "Failed to create the post" });
     }
 
-    return c.json({ status: 200, message: "post created successfully" });
+    return c.json({ status: 200, message: "Post created successfully" });
   } catch (error) {
-    return c.json({ status: 400, message: "network error" });
+    return c.json({ status: 400, message: "Try again later, Network error" });
   }
 });
 

@@ -12,6 +12,7 @@ export const CreatePost = () => {
   const [post, setPost] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [postImage, setPostImage] = useState<File | null>(null);
+  const [popup, setPopup] = useState("");
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -22,13 +23,13 @@ export const CreatePost = () => {
 
     const maxFileSize = 10 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      alert("File size exceeds 10MB limit");
+      setPopup("File size is more than 10 mb");
       return;
     }
 
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
     if (!allowedTypes.includes(file.type)) {
-      alert("Only PNG, JPG, and JPEG files are allowed");
+      setPopup("Only PNG, JPG, and JPEG files are allowed");
       return;
     }
 
@@ -41,8 +42,8 @@ export const CreatePost = () => {
     reader.readAsDataURL(file);
   };
   async function createPost() {
-    if (post.length < 10) {
-      alert("post has to be minimum 10 characters");
+    if (!post) {
+      setPopup("Write something");
       return;
     }
 
@@ -54,17 +55,15 @@ export const CreatePost = () => {
           `${BACKEND_URL}/api/server/v1/post/create-text-post`,
           { token, post }
         );
-        console.log(response.data.message);
+
+        setPopup(response.data.message);
         setLoadingState(false);
-        navigate("/profile");
-        if (response.data.status == 200) {
-          alert("post created successfully");
-        }
+        navigate("/home");
 
         return;
       } catch (error) {
         console.log(error);
-        alert("netwoerk error");
+        setPopup("netwoerk error");
       }
     }
 
@@ -80,16 +79,11 @@ export const CreatePost = () => {
         formdata
       );
       setLoadingState(false);
-      navigate("/profile");
-
-      if (response.data.status === 200) {
-        alert("post created");
-      } else {
-        alert("network error");
-      }
+      setPopup(response.data.message);
+      navigate("/home");
     } catch (error) {
       console.error("Error creating post:", error);
-      alert("netwoerk error");
+      setPopup("netwoerk error");
     }
   }
 
@@ -155,6 +149,9 @@ export const CreatePost = () => {
                 >
                   post
                 </button>
+                <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+                  {popup ? popup : ""}
+                </div>
               </div>
             </div>
           </div>
