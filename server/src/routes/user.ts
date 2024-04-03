@@ -44,11 +44,14 @@ userRouter.post("/userdata", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+
     const userData = await prisma.user.findUnique({ where: { id: userId.id } });
     if (!userData) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
-    const person = await prisma.user.findFirst({
+    console.log(username);
+    console.log(userData.username, userData.id);
+    const person = await prisma.user.findUnique({
       where: { username: username },
       select: {
         id: true,
@@ -63,7 +66,6 @@ userRouter.post("/userdata", async (c) => {
         matchedUsers: true,
       },
     });
-
     if (!person) {
       return c.json({ status: 404, message: "user not found" });
     }
@@ -136,7 +138,10 @@ userRouter.post("/profile/update", async (c) => {
       return c.json({ status: 400, message: "Invalid data or token" });
     }
     const userId = await verify(token, c.env.JWT_SECRET);
-
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized user" });
+    }
     if (!file) {
       try {
         const updateProfile = await prisma.user.update({
@@ -158,7 +163,11 @@ userRouter.post("/profile/update", async (c) => {
     }
     const data = new FormData();
     const blob = new Blob([file]);
-    data.append("file", blob, "profile-image");
+    data.append(
+      "file",
+      blob,
+      "picture" + "-" + userData.username + ":" + userId.id
+    );
 
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",

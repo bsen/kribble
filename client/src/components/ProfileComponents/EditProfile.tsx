@@ -5,6 +5,7 @@ import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../config";
 import { LoadingPage } from "../LoadingPage";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 export const EditProfile = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(true);
@@ -15,6 +16,7 @@ export const EditProfile = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [logOutState, setLogOutState] = useState(false);
   const [relationstatus, setRelationStatus] = useState("");
+  const [popup, setPopup] = useState("");
   const [userData, setUserData] = useState<{
     name: string;
     bio: string;
@@ -31,21 +33,15 @@ export const EditProfile = () => {
   useEffect(() => {
     getData();
   }, []);
+  const { username } = useParams();
 
   async function getData() {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/userdata`,
-        { token }
+        { token, username }
       );
-      const userDataFromServer = response.data.message;
-      setUserData({
-        name: userDataFromServer.name || "",
-        bio: userDataFromServer.bio || "",
-        image: userDataFromServer.image || "",
-        website: userDataFromServer.website || "",
-        relationstatus: userDataFromServer.relationstatus || "",
-      });
+      setUserData(response.data.message);
       setLoadingState(false);
     } catch (error) {
       console.log(error);
@@ -60,12 +56,12 @@ export const EditProfile = () => {
 
     const maxFileSize = 10 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      alert("File size exceeds 10MB limit");
+      setPopup("File size exceeds 10MB limit");
       return;
     }
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
     if (!allowedTypes.includes(file.type)) {
-      alert("Only PNG, JPG, and JPEG files are allowed");
+      setPopup("Only PNG, JPG, and JPEG files are allowed");
       return;
     }
 
@@ -231,6 +227,9 @@ export const EditProfile = () => {
                     setBio(e.target.value);
                   }}
                 />
+              </div>
+              <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+                {popup ? popup : ""}
               </div>
             </div>
           )}

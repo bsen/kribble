@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,10 +13,7 @@ export const SignupAuth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [popup, setPopup] = useState(false);
-  const [sucPopup, setSucPopup] = useState(false);
-
-  const [popText, setpopText] = useState("");
+  const [popup, setPopup] = useState("");
 
   const validateUsername = (char: string) => {
     return char.match(/^[a-z0-9_]$/i);
@@ -34,90 +30,65 @@ export const SignupAuth = () => {
       .toLowerCase();
     setUsername(newUsername);
   };
+  const handleEmailChnage = (text: string) => {
+    const newEmail = text.toLowerCase();
+    setEmail(newEmail);
+  };
   const handlePasswordChnage = (text: string) => {
     const newPassword = text.split("").filter(validatePassword).join("");
     setPassword(newPassword);
   };
 
-  function popupFn() {
-    setPopup(true);
-    setTimeout(() => {
-      setPopup(false);
-    }, 5000);
-  }
-  function succes() {
-    setName("");
-    setUsername("");
-    setEmail("");
-    setGender("");
-    setPassword("");
-    setSucPopup(true);
-    setTimeout(() => {
-      setSucPopup(false);
-    }, 10000);
-  }
-
   async function signup() {
-    if (name.length < 3) {
-      setpopText("Name length should be mininmum 3 characters!");
-      popupFn();
+    if (!name) {
+      setPopup("Enter a valid name");
       return;
     }
-    if (name.length > 20) {
-      setpopText("Name length should be maximum 40 characters!");
-      popupFn();
-      return;
-    }
-    if (username.length < 3) {
-      setpopText("Username length should be mininmum 3 characters!");
-      popupFn();
-      return;
-    }
-    if (username.length > 20) {
-      setpopText("Username length should be maximum 20 characters!");
-      popupFn();
+    if (!username) {
+      setPopup("Enter a valid username");
       return;
     }
 
-    if (!email.endsWith("@vitstudent.ac.in")) {
-      setpopText("Please enter your VIT student email!");
-      popupFn();
+    if (!email) {
+      setPopup("Please enter your email address");
+
       return;
     }
-    if (gender == "") {
-      setpopText("Please select your gender!");
-      popupFn();
+    if (!gender) {
+      setPopup("Please select your gender");
       return;
     }
     if (password.length < 6) {
-      setpopText("Password length should be minimum 6!");
-      popupFn();
+      setPopup("Please choose a strong password");
+
       return;
     }
-    setLoadingState(true);
     const userdata = { name, username, email, gender, password };
     try {
-      axios
-        .post(`${BACKEND_URL}/api/server/v1/auth/signup`, userdata)
-        .then((response) => {
-          setLoadingState(false);
-          if (response.data.status === 200) {
-            const jwt = response.data.message;
-            localStorage.setItem("token", jwt);
-            navigate("/home");
-            succes();
-          } else if (response.data.status === 409) {
-            setpopText("This email is already used 😢");
-            popupFn();
-          } else if (response.data.status === 411) {
-            setpopText("Username is already taken 😢");
-            popupFn();
-          }
-        });
+      setLoadingState(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/auth/signup`,
+        userdata
+      );
+      setLoadingState(false);
+      if (response.data.status === 200) {
+        const jwt = response.data.token;
+        localStorage.setItem("token", jwt);
+        setName("");
+        setUsername("");
+        setEmail("");
+        setGender("");
+        setGender("");
+        setPassword("");
+        setPopup("");
+        navigate("/home");
+
+        return;
+      }
+      setPopup(response.data.message);
     } catch (error) {
       console.log(error);
-      setpopText("Network error, try again later");
-      popupFn();
+      setPopup("Network error, try again later");
     }
   }
 
@@ -127,41 +98,6 @@ export const SignupAuth = () => {
         <LoadingPage />
       ) : (
         <div>
-          {popup && (
-            <div className="absolute top-5 left-5">
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="rounded-lg bg-white border border-bordercolor shadow-sm px-5 py-2 ">
-                  {popText ? (
-                    <div>{popText}</div>
-                  ) : (
-                    <div>hi, This is just a alert 👋</div>
-                  )}
-                </div>
-              </motion.div>
-            </div>
-          )}
-          {sucPopup && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <motion.div
-                initial={{ opacity: 0, x: 80 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 1 }}
-              >
-                <div className="rounded-lg bg-white border border-indigo-300 shadow-sm p-4 lg:p-12 text-center text-lg">
-                  Congratulations! Your registration is complete 🎉.
-                  <br />
-                  Now you can login with your credentials.
-                </div>
-              </motion.div>
-            </div>
-          )}
-
           <div className="h-screen w-full  bg-white flex justify-center items-center">
             <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
               <div className="text-neutral-800 font-ubuntu text-[1.5rem] text-center my-4">
@@ -172,6 +108,7 @@ export const SignupAuth = () => {
                 <div className="font-semibold m-1 text-neutral-700">Name</div>
                 <input
                   value={name}
+                  maxLength={30}
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
@@ -182,9 +119,10 @@ export const SignupAuth = () => {
               <div>
                 <div className="font-semibold m-1 text-neutral-700">
                   Username
-                </div>{" "}
+                </div>
                 <input
                   value={username}
+                  maxLength={20}
                   onChange={(e) => {
                     handleUsernameChange(e.target.value);
                   }}
@@ -197,7 +135,7 @@ export const SignupAuth = () => {
                 <input
                   value={email}
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    handleEmailChnage(e.target.value);
                   }}
                   className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
                   placeholder="example@vitstudent.ac.in"
@@ -208,6 +146,7 @@ export const SignupAuth = () => {
                 <select
                   className="h-10 w-full rounded-lg px-4 text-neutral-600 bg-white border border-neutral-300 appearance-none"
                   onChange={(e) => setGender(e.target.value)}
+                  value={gender}
                 >
                   <option value="" className="text-neutral-400">
                     Select Gender
@@ -244,6 +183,9 @@ export const SignupAuth = () => {
                 >
                   Login
                 </Link>
+              </div>
+              <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+                {popup ? popup : ""}
               </div>
             </div>
           </div>
