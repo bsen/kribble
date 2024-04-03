@@ -16,6 +16,7 @@ export const EditProfile = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [logOutState, setLogOutState] = useState(false);
   const [relationstatus, setRelationStatus] = useState("");
+  const [popup, setPopup] = useState("");
   const [userData, setUserData] = useState<{
     name: string;
     bio: string;
@@ -55,12 +56,12 @@ export const EditProfile = () => {
 
     const maxFileSize = 10 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      alert("File size exceeds 10MB limit");
+      setPopup("File size exceeds 10MB limit");
       return;
     }
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
     if (!allowedTypes.includes(file.type)) {
-      alert("Only PNG, JPG, and JPEG files are allowed");
+      setPopup("Only PNG, JPG, and JPEG files are allowed");
       return;
     }
 
@@ -226,6 +227,9 @@ export const EditProfile = () => {
                     setBio(e.target.value);
                   }}
                 />
+              </div>
+              <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+                {popup ? popup : ""}
               </div>
             </div>
           )}
