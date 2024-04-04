@@ -42,6 +42,7 @@ export const CreatePost = () => {
     reader.readAsDataURL(file);
   };
   async function createPost() {
+    setPopup("");
     if (!post) {
       setPopup("Write something");
       return;
@@ -93,7 +94,7 @@ export const CreatePost = () => {
         <LoadingPage />
       ) : (
         <div className="h-screen w-full absolute bg-neutral-950">
-          <div className="w-[80%] md:w-[35vw] absolute rounded-lg bg-black shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
+          <div className="w-[80%] md:w-[45vw] absolute rounded-lg bg-neutral-800 shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
             <button
               onClick={() => {
                 setPost("");
@@ -116,9 +117,9 @@ export const CreatePost = () => {
               ) : (
                 <div className="px-5 h-full">
                   <label htmlFor="image-upload" className="cursor-pointer ">
-                    <div className="h-full p-5 gap-2 bg-black rounded-lg border border-dashed border-neutral-300 flex items-center justify-center">
-                      <div className="text-neutral-700">add picture</div>
-                      <AddPhotoAlternateIcon className="text-neutral-700" />
+                    <div className="h-full p-5 gap-2 bg-neutral-800 rounded-lg border border-dashed border-neutral-300 flex items-center justify-center">
+                      <div className="text-neutral-200">add picture</div>
+                      <AddPhotoAlternateIcon className="text-neutral-200" />
                     </div>
                   </label>
                   <input
@@ -131,10 +132,10 @@ export const CreatePost = () => {
                 </div>
               )}
 
-              <div className="text-end flex flex-col p-5">
+              <div className="text-end flex flex-col px-5">
                 <textarea
                   rows={4}
-                  className=" border border-neutral-800 resize-none focus:outline-none p-2 text-neutral-700 rounded-lg"
+                  className="my-4 border border-neutral-800 resize-none focus:outline-none p-2 text-neutral-700 rounded-lg"
                   placeholder="write your thoughts..."
                   wrap="soft"
                   minLength={10}
@@ -145,11 +146,11 @@ export const CreatePost = () => {
                 />
                 <button
                   onClick={createPost}
-                  className="bg-black my-4  hover:bg-neutral-900 text-white border border-neutral-300 px-6 py-2 rounded-lg"
+                  className="bg-black  hover:bg-neutral-900 text-white border border-neutral-700 px-6 py-2 rounded-lg"
                 >
                   post
                 </button>
-                <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+                <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
                   {popup ? popup : ""}
                 </div>
               </div>

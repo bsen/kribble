@@ -17,7 +17,7 @@ model User {
   bio           String?
   image         String?
   website       String?
-  relationstatus String?
+  interest      String?
   createdAt     DateTime   @default(now())
   posts         Post[]     @relation("UserPosts")
   following     Following[] @relation("FollowerRelation")

@@ -60,7 +60,7 @@ userRouter.post("/userdata", async (c) => {
         image: true,
         bio: true,
         website: true,
-        relationstatus: true,
+        interest: true,
         followers: true,
         following: true,
         matchedUsers: true,
@@ -124,7 +124,8 @@ userRouter.post("/profile/update", async (c) => {
     const newName = formData.get("name");
     const newBio = formData.get("bio");
     const newWebsite = formData.get("website");
-    const newRelationStatus = formData.get("relationstatus");
+    const newInterest = formData.get("interest");
+    console.log(token, newName, newWebsite, newBio, newInterest);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -133,7 +134,7 @@ userRouter.post("/profile/update", async (c) => {
       typeof newBio !== "string" ||
       typeof newName !== "string" ||
       typeof newWebsite !== "string" ||
-      typeof newRelationStatus !== "string"
+      typeof newInterest !== "string"
     ) {
       return c.json({ status: 400, message: "Invalid data or token" });
     }
@@ -150,7 +151,7 @@ userRouter.post("/profile/update", async (c) => {
             name: newName,
             bio: newBio,
             website: newWebsite,
-            relationstatus: newRelationStatus,
+            interest: newInterest,
           },
         });
         if (!updateProfile) {
@@ -191,7 +192,7 @@ userRouter.post("/profile/update", async (c) => {
           name: newName,
           bio: newBio,
           website: newWebsite,
-          relationstatus: newRelationStatus,
+          interest: newInterest,
           image: variantUrl,
         },
       });

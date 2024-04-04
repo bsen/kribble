@@ -12,6 +12,7 @@ export const LoginAuth = () => {
   const [popup, setPopup] = useState("");
 
   async function login() {
+    setPopup("");
     if (!email) {
       setPopup("Please enter your email");
       return;
@@ -47,7 +48,7 @@ export const LoginAuth = () => {
         <LoadingPage />
       ) : (
         <div>
-          <div className="h-screen w-full  bg-black flex justify-center items-center">
+          <div className="h-screen w-full  bg-white flex justify-center items-center">
             <div className="w-[80%] lg:w-[50%] grid gap-y-2">
               <div className="text-neutral-800 text-center font-ubuntu text-[2rem]">
                 Login

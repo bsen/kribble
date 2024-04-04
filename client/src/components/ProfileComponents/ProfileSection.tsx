@@ -14,7 +14,7 @@ export const ProfileSection: React.FC = () => {
     image: string;
     bio: string;
     website: string;
-    relationstatus: string;
+    interest: string;
     followers: {
       followerId: string;
       followingId: string;
@@ -29,7 +29,7 @@ export const ProfileSection: React.FC = () => {
     image: "",
     bio: "",
     website: "",
-    relationstatus: "",
+    interest: "",
     followers: [],
     following: [],
   });
@@ -72,6 +72,7 @@ export const ProfileSection: React.FC = () => {
   useEffect(() => {
     try {
       getData();
+      console.log(userData.name, userData.bio, userData.interest);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -103,7 +104,7 @@ export const ProfileSection: React.FC = () => {
       ) : (
         <>
           {profileEditingState ? (
-            <div className="absolute w-full lg:w-[40%]">
+            <div className="absolute w-full lg:w-[45%]">
               <EditProfile />
             </div>
           ) : (
@@ -156,11 +157,7 @@ export const ProfileSection: React.FC = () => {
                 </div>
 
                 <div className="text-white my-2 text-base font-light">
-                  {userData.bio ? (
-                    <div>{userData.bio}</div>
-                  ) : (
-                    <div>write your bio</div>
-                  )}
+                  Bio ·{userData.bio}
                 </div>
                 <div className="">
                   <div className="text-sm text-neutral-400 font-light hover:underline">
@@ -169,8 +166,7 @@ export const ProfileSection: React.FC = () => {
                     </a>
                   </div>
                   <div className="text-base text-neutral-200 font-light">
-                    relationship status ·{" "}
-                    {userData.relationstatus ? userData.relationstatus : ""}
+                    Interest ·{userData.interest ? userData.interest : ""}
                   </div>
                 </div>
                 <div className="flex gap-4 my-2">

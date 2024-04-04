@@ -12,14 +12,13 @@ export const Home = () => {
   useEffect(() => {
     User();
   }, []);
-  console.log("this is before the function");
   async function User() {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/server/v1/user/user`,
         { token }
       );
-      console.log(response.data.message);
+
       if (response.data.status === 401) {
         setErrorState(true);
         return;
@@ -28,15 +27,6 @@ export const Home = () => {
       console.log(error);
     }
   }
-
-  function getddd() {
-    axios.get("http://localhost:3001").then((asssdd) => {
-      console.log(asssdd);
-    });
-  }
-  getddd();
-
-  console.log("this is after");
   return (
     <div className="flex justify-between">
       {errorState ? (
@@ -48,7 +38,7 @@ export const Home = () => {
                 localStorage.removeItem("token");
                 navigate("/login");
               }}
-              className="text-black bg-black hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+              className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
             >
               Log out
             </button>
