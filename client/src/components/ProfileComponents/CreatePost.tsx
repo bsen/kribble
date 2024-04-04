@@ -119,7 +119,7 @@ export const CreatePost = () => {
                   <label htmlFor="image-upload" className="cursor-pointer ">
                     <div className="h-full p-5 gap-2 bg-neutral-800 rounded-lg border border-dashed border-neutral-300 flex items-center justify-center">
                       <div className="text-neutral-200">add picture</div>
-                      <AddPhotoAlternateIcon className="text-neutral-700" />
+                      <AddPhotoAlternateIcon className="text-neutral-200" />
                     </div>
                   </label>
                   <input
