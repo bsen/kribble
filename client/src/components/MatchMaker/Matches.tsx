@@ -32,7 +32,7 @@ export const Matches = () => {
     <div className="w-full flex flex-col items-center">
       <div
         className={
-          "p-2 w-[70%] flex  items-center justify-center gap-2 border-b border-bordercolor"
+          "p-2 w-[70%] flex  items-center justify-center gap-2 border-b border-neutral-800"
         }
       >
         <GroupIcon className={"text-pink-500"} />
@@ -53,7 +53,7 @@ export const Matches = () => {
                     <img
                       src={user.image ? user.image : "/user.png"}
                       alt="Profile"
-                      className="h-8 w-8 bg-white rounded-full"
+                      className="h-8 w-8 bg-black rounded-full"
                     />
                     <p className="text-base font-semibold font-ubuntu text-white">
                       {user.name}

@@ -42,7 +42,7 @@ export const PostsUser = () => {
           .slice()
           .reverse()
           .map((post, index) => (
-            <div key={index} className="border-b border-bordercolor p-5">
+            <div key={index} className="border-b border-neutral-800 p-5">
               <div className="flex gap-2">
                 <div className="">
                   <img
@@ -72,7 +72,7 @@ export const PostsUser = () => {
                   <div>
                     <img
                       src={post.image}
-                      className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-bordercolor"
+                      className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-800"
                     />
                   </div>
                 </div>

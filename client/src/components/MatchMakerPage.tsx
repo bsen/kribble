@@ -14,6 +14,7 @@ export const MatchMakerPage = () => {
   const [loadingState, setLoadingState] = useState(false);
   const [selectGender, setSelectGender] = useState("");
   const [matchingState, setMatchingState] = useState(false);
+  const [popup, setPopup] = useState("");
   const [matchUserData, setMatchUserData] = useState<{
     id: string;
     name: string;
@@ -32,7 +33,7 @@ export const MatchMakerPage = () => {
     const gender = selectGender;
     if (gender == "") {
       console.log(gender);
-      return alert("please select a gender for matching");
+      return setPopup("please select a gender for matching");
     }
     setLoadingState(true);
     try {
@@ -51,7 +52,7 @@ export const MatchMakerPage = () => {
       } else {
         setMatchingState(false);
         setLoadingState(false);
-        alert("No user found for matching!");
+        setPopup("No user found for matching!");
       }
     } catch (e) {
       console.log(e);
@@ -68,13 +69,13 @@ export const MatchMakerPage = () => {
       setLoadingState(false);
       searchPeople();
       if (response.data.status == 400) {
-        return alert("You already have liked thier profile");
+        return setPopup("You already have liked thier profile");
       }
       if (response.data.status == 404) {
-        return alert("Try again, failed for network error");
+        return setPopup("Try again, failed for network error");
       }
       if (response.data.status == 200) {
-        return alert("You liked their profile");
+        return setPopup("You liked their profile");
       }
     } catch (error) {
       console.log(error);
@@ -84,9 +85,9 @@ export const MatchMakerPage = () => {
 
   return (
     <>
-      <div className="h-screen bg-black border-l border-r border-bordercolor flex flex-col justify-between">
+      <div className="h-screen bg-black border-l border-r border-neutral-800 flex flex-col justify-between">
         <div className="w-full flex justify-center">
-          <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-bordercolor">
+          <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-neutral-800">
             Match Maker
           </div>
         </div>
@@ -120,7 +121,7 @@ export const MatchMakerPage = () => {
                   <div>
                     <button
                       onClick={searchPeople}
-                      className="bg-white border font-ubuntu font-light border-bordercolor text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                      className="bg-black border font-ubuntu font-light border-neutral-800 text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                     >
                       <div className="flex items-center justify-evenly">
                         <div>Pass</div>
@@ -131,7 +132,7 @@ export const MatchMakerPage = () => {
                   <div>
                     <button
                       onClick={match}
-                      className="bg-white border font-ubuntu font-light border-bordercolor text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                      className="bg-black border font-ubuntu font-light border-neutral-800 text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                     >
                       <div className="flex items-center justify-evenly">
                         <div>Date</div>
@@ -147,14 +148,19 @@ export const MatchMakerPage = () => {
                   <div className="w-full flex justify-center items-center">
                     <img src="/love.png" className=" h-12 w-12" />
                   </div>
-                  <div className="text-center font-semibold font-ubuntu px-6 my-3  text-lg text-neutral-400">
+                  <div className="text-center font-semibold font-ubuntu px-6 my-3  text-lg text-neutral-200">
                     start matching with kribble
                   </div>
-                  1. Your profile picture will be used for matching.
-                  <br /> 2. Your bio will be shown in the matching.
-                  <br /> 3. You can see your
-                  <span className="text-pink-500"> Matches </span>
-                  on your profile.
+                  <div className="text-neutral-300">
+                    1. Your profile picture will be used for matching.
+                    <br /> 2. Your bio will be shown in the matching.
+                    <br /> 3. Your matches will be updated on
+                    <span className="text-pink-500 text-base px-2">
+                      Matches
+                    </span>
+                    <br />
+                    section in your profile page.
+                  </div>
                 </div>
                 <div className="text-center font-semibold font-ubuntu text-sm text-neutral-400">
                   Select the gender you want to match with
@@ -168,7 +174,7 @@ export const MatchMakerPage = () => {
                     ${
                       selectGender == "male"
                         ? "text-blue-500 border border-blue-500"
-                        : "text-blue-900 border border-blue-900"
+                        : "text-blue-700 border border-blue-700"
                     }`}
                   >
                     <MaleIcon sx={{ fontSize: 35 }} />
@@ -181,7 +187,7 @@ export const MatchMakerPage = () => {
                     ${
                       selectGender == "female"
                         ? "text-pink-500 border border-pink-500"
-                        : "text-pink-900 border border-pink-900"
+                        : "text-pink-700 border border-pink-700"
                     }`}
                   >
                     <FemaleIcon sx={{ fontSize: 35 }} />
@@ -201,11 +207,8 @@ export const MatchMakerPage = () => {
             )}
           </div>
         )}
-        <div></div>
-      </div>
-      <div className="lg:hidden bg-neutral-950 bottom-0 fixed w-full border-l border-r border-t border-bordercolor">
-        <div className="h-14">
-          <ButtonsSidebar />
+        <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
+          {popup ? popup : ""}
         </div>
       </div>
     </>

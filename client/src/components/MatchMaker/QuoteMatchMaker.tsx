@@ -4,9 +4,9 @@ export const QuoteMatchMaker = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="h-screen bg-black border-l border-r border-bordercolor flex flex-col justify-between">
+      <div className="h-screen bg-black border-l border-r border-neutral-800 flex flex-col justify-between">
         <div className="w-full flex justify-center">
-          <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-bordercolor">
+          <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-neutral-800">
             Match Maker
           </div>
         </div>

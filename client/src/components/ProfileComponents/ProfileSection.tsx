@@ -110,8 +110,8 @@ export const ProfileSection: React.FC = () => {
             ""
           )}
 
-          <div className="h-screen border-l border-r border-bordercolor overflow-y-auto no-scrollbar">
-            <div className="px-5 py-2 border-b border-bordercolor">
+          <div className="h-screen overflow-y-auto no-scrollbar">
+            <div className="px-5 py-2 border-b border-neutral-800">
               <div className="flex justify-between items-center">
                 <div>
                   <img

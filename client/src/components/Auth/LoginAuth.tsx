@@ -47,7 +47,7 @@ export const LoginAuth = () => {
         <LoadingPage />
       ) : (
         <div>
-          <div className="h-screen w-full  bg-white flex justify-center items-center">
+          <div className="h-screen w-full  bg-black flex justify-center items-center">
             <div className="w-[80%] lg:w-[50%] grid gap-y-2">
               <div className="text-neutral-800 text-center font-ubuntu text-[2rem]">
                 Login
@@ -94,7 +94,7 @@ export const LoginAuth = () => {
                   Sign up
                 </Link>
               </div>
-              <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+              <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
                 {popup ? popup : ""}
               </div>
             </div>
