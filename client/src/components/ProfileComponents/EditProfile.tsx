@@ -15,20 +15,20 @@ export const EditProfile = () => {
   const [profileImg, setProfileImg] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState("");
   const [logOutState, setLogOutState] = useState(false);
-  const [relationstatus, setRelationStatus] = useState("");
+  const [interest, setInterest] = useState("");
   const [popup, setPopup] = useState("");
   const [userData, setUserData] = useState<{
     name: string;
     bio: string;
     image: string;
     website: string;
-    relationstatus: string;
+    interest: string;
   }>({
     name: "",
     bio: "",
     image: "",
     website: "",
-    relationstatus: "",
+    interest: "",
   });
   useEffect(() => {
     getData();
@@ -78,7 +78,7 @@ export const EditProfile = () => {
       if (
         name.length == 0 ||
         bio.length == 0 ||
-        relationstatus.length == 0 ||
+        interest.length == 0 ||
         website.length == 0
       ) {
       }
@@ -86,15 +86,14 @@ export const EditProfile = () => {
       const newName = name !== "" ? name : userData.name;
       const newBio = bio !== "" ? bio : userData.bio;
       const newWebsite = website !== "" ? website : userData.website;
-      const newRelationStatus =
-        relationstatus !== "" ? relationstatus : userData.relationstatus;
+      const newInterest = interest !== "" ? interest : userData.interest;
 
       const formdata = new FormData();
       formdata.append("image", file ? file : "");
       formdata.append("name", newName);
       formdata.append("bio", newBio);
       formdata.append("website", newWebsite);
-      formdata.append("relationstatus", newRelationStatus);
+      formdata.append("interest", newInterest);
       formdata.append("token", token ? token : "");
 
       setLoadingState(true);
@@ -108,7 +107,7 @@ export const EditProfile = () => {
       setBio("");
       setName("");
       setWebsite("");
-      setRelationStatus("");
+      setInterest("");
       window.location.reload();
     } catch (error) {
       console.log("Error updating profile:", error);
@@ -120,11 +119,11 @@ export const EditProfile = () => {
       {logOutState ? (
         <Logout />
       ) : (
-        <div className="h-screen bg-black/50 text-blakc flex justify-center items-center">
+        <div className="h-screen bg-black/70 text-blakc flex justify-center items-center">
           {loadingState ? (
             <LoadingPage />
           ) : (
-            <div className="bg-black w-[90%]   border border-neutral-800 p-4 rounded-lg flex flex-col gap-4">
+            <div className="bg-black w-[85%]   border border-neutral-800 p-4 rounded-lg flex flex-col gap-4">
               <div className="flex justify-between items-center border-b border-neutral-800 pb-4">
                 <button
                   onClick={() => {
@@ -203,16 +202,57 @@ export const EditProfile = () => {
               <div>
                 <div className="text-neutral-100">Relationship status</div>{" "}
                 <select
-                  className="h-10 w-full rounded-lg px-2 text-neutral-600 bg-black border border-neutral-300 appearance-none"
-                  onChange={(e) => setRelationStatus(e.target.value)}
+                  className="h-10 w-full rounded-lg px-2 text-neutral-600 border border-neutral-300 appearance-none"
+                  onChange={(e) => setInterest(e.target.value)}
+                  defaultValue={userData.interest}
                 >
                   <option value="" className="text-neutral-400">
-                    relationship status
+                    Select your interests
                   </option>
-                  <option value="secret">secret</option>
-                  <option value="single">single</option>
-                  <option value="committed">committed</option>
-                  <option value="married">married</option>
+                  <option value="Paranormal Investigations">
+                    Paranormal Investigations
+                  </option>
+                  <option value="Urban Exploration">Urban Exploration</option>
+                  <option value="Extreme Ironing">Extreme Ironing</option>
+                  <option value="Competitive Eating">Competitive Eating</option>
+                  <option value="Puppetry & Marionettes">
+                    Puppetry & Marionettes
+                  </option>
+                  <option value="Cryptozoology">Cryptozoology</option>
+                  <option value="Vintage Tea Party Planning">
+                    Vintage Tea Party Planning
+                  </option>
+                  <option value="Unicycling & Juggling">
+                    Unicycling & Juggling
+                  </option>
+                  <option value="Competitive Beard Grooming">
+                    Competitive Beard Grooming
+                  </option>
+                  <option value="Cloud Watching">Cloud Watching</option>
+                  <option value="Retro Gaming Collecting">
+                    Retro Gaming Collecting
+                  </option>
+                  <option value="Tea Leaf Reading">Tea Leaf Reading</option>
+                  <option value="Dumpster Diving">Dumpster Diving</option>
+                  <option value="Conlanging (Constructed Languages)">
+                    Conlanging (Constructed Languages)
+                  </option>
+                  <option value="Synchronized Swimming for Dogs">
+                    Synchronized Swimming for Dogs
+                  </option>
+                  <option value="Science & Technology">
+                    Science & Technology
+                  </option>
+                  <option value="Coding & Programming">
+                    Coding & Programming
+                  </option>
+                  <option value="Movies & Filmmaking">
+                    Movies & Filmmaking
+                  </option>
+                  <option value="Travel & Adventure">Travel & Adventure</option>
+                  <option value="Photography & Videography">
+                    Photography & Videography
+                  </option>
                 </select>
               </div>
               <div>

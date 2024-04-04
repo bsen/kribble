@@ -1,13 +1,14 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-import { ButtonsSidebar } from "./ButtonsSidebar";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import { BACKEND_URL } from "../config";
 
 import { useEffect, useState } from "react";
 import { LoadingPage } from "./LoadingPage";
+import { BuildTwoTone } from "@mui/icons-material";
 
 export const MatchMakerPage = () => {
   const token = localStorage.getItem("token");
@@ -30,6 +31,7 @@ export const MatchMakerPage = () => {
   });
 
   async function searchPeople() {
+    setPopup("");
     const gender = selectGender;
     if (gender == "") {
       console.log(gender);
@@ -59,6 +61,7 @@ export const MatchMakerPage = () => {
     }
   }
   async function match() {
+    setPopup("");
     const otherPersonsId = matchUserData.id;
     setLoadingState(true);
     try {
@@ -85,10 +88,26 @@ export const MatchMakerPage = () => {
 
   return (
     <>
-      <div className="h-screen bg-black border-l border-r border-neutral-800 flex flex-col justify-between">
+      <div className="h-screen bg-black border-l border-r border-neutral-800 flex flex-col justify-between py-2">
         <div className="w-full flex justify-center">
-          <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-neutral-800">
-            Match Maker
+          <div className="text-2xl flex justify-center items-center gap-5 text-white font-ubuntu text-center py-4 border-b border-neutral-800 w-[70%]">
+            <div>
+              {matchingState ? (
+                <button
+                  onClick={() => {
+                    setMatchingState(false);
+                  }}
+                >
+                  <ArrowBackIosNewRoundedIcon
+                    className="text-neutral-200 rounded-full border border-neutral-700 py-1 hover:bg-neutral-800"
+                    sx={{ fontSize: 35 }}
+                  />
+                </button>
+              ) : (
+                ""
+              )}
+            </div>
+            <div>Match Maker</div>
           </div>
         </div>
 
@@ -97,48 +116,52 @@ export const MatchMakerPage = () => {
         ) : (
           <div>
             {matchingState ? (
-              <div className="w-full flex flex-col items-center justify-center ">
-                <div className="w-[70%]">
-                  <div className="flex gap-2 m-2 items-center">
-                    <div className="text-white text-lg font-light font-ubuntu">
-                      {matchUserData.name}
-                    </div>
-                    <div className="text-neutral-400 text-sm font-light ">
-                      @{matchUserData.username}
-                    </div>
-                  </div>
-                  <img
-                    src={matchUserData.image ? matchUserData.image : "user.png"}
-                    className="rounded-xl w-[100%]"
-                  />
-
-                  <div className="font-light text-sm text-neutral-200 m-2 w-full">
-                    {matchUserData.bio}
-                  </div>
-                </div>
-
-                <div className="flex py-2 justify-evenly w-full">
-                  <div>
-                    <button
-                      onClick={searchPeople}
-                      className="bg-black border font-ubuntu font-light border-neutral-800 text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
-                    >
-                      <div className="flex items-center justify-evenly">
-                        <div>Pass</div>
-                        <CloseIcon className="text-blue-500" />
+              <div>
+                <div className="w-full flex flex-col items-center justify-center">
+                  <div className="w-[70%]">
+                    <div className="flex gap-2 m-2 items-center">
+                      <div className="text-white text-lg font-light font-ubuntu">
+                        {matchUserData.name}
                       </div>
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      onClick={match}
-                      className="bg-black border font-ubuntu font-light border-neutral-800 text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
-                    >
-                      <div className="flex items-center justify-evenly">
-                        <div>Date</div>
-                        <FavoriteIcon className="text-pink-500" />
+                      <div className="text-neutral-400 text-sm font-light ">
+                        @{matchUserData.username}
                       </div>
-                    </button>
+                    </div>
+                    <img
+                      src={
+                        matchUserData.image ? matchUserData.image : "user.png"
+                      }
+                      className="rounded-xl w-[100%]"
+                    />
+
+                    <div className="font-light text-sm text-neutral-200 m-2 w-full">
+                      {matchUserData.bio}
+                    </div>
+                  </div>
+
+                  <div className="flex py-2 justify-evenly w-full">
+                    <div>
+                      <button
+                        onClick={searchPeople}
+                        className="bg-black border font-ubuntu font-light border-neutral-800 text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                      >
+                        <div className="flex items-center justify-evenly">
+                          <div>Pass</div>
+                          <CloseIcon className="text-blue-500" />
+                        </div>
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={match}
+                        className="bg-black border font-ubuntu font-light border-neutral-800 text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                      >
+                        <div className="flex items-center justify-evenly">
+                          <div>Date</div>
+                          <FavoriteIcon className="text-pink-500" />
+                        </div>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
