@@ -5,10 +5,8 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import { BACKEND_URL } from "../config";
-
 import { useEffect, useState } from "react";
 import { LoadingPage } from "./LoadingPage";
-import { BuildTwoTone } from "@mui/icons-material";
 
 export const MatchMakerPage = () => {
   const token = localStorage.getItem("token");
