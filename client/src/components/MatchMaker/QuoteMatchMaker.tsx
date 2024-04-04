@@ -4,9 +4,9 @@ export const QuoteMatchMaker = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="h-screen bg-black border-l border-r border-bordercolor flex flex-col justify-between">
+      <div className="h-screen bg-black border-l border-r border-neutral-800 flex flex-col justify-between">
         <div className="w-full flex justify-center">
-          <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-bordercolor">
+          <div className="text-2xl  text-white font-ubuntu w-[70%] text-center py-4 border-b border-neutral-800">
             Match Maker
           </div>
         </div>
@@ -20,9 +20,9 @@ export const QuoteMatchMaker = () => {
             </div>
             1. Your profile picture will be used for matching.
             <br /> 2. Your bio will be shown in the matching.
-            <br /> 3. Your matches will be updated on
+            <br /> 3. You can see your
             <span className="text-pink-500"> Matches </span>
-            section.
+            on your profile.
           </div>
           <div className="w-full flex justify-center">
             <div>

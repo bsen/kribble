@@ -98,7 +98,7 @@ export const SignupAuth = () => {
         <LoadingPage />
       ) : (
         <div>
-          <div className="h-screen w-full  bg-white flex justify-center items-center">
+          <div className="h-screen w-full  bg-black flex justify-center items-center">
             <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
               <div className="text-neutral-800 font-ubuntu text-[1.5rem] text-center my-4">
                 Create an account
@@ -144,7 +144,7 @@ export const SignupAuth = () => {
               <div>
                 <div className="font-semibold m-1 text-neutral-700">Gender</div>{" "}
                 <select
-                  className="h-10 w-full rounded-lg px-4 text-neutral-600 bg-white border border-neutral-300 appearance-none"
+                  className="h-10 w-full rounded-lg px-4 text-neutral-600 bg-black border border-neutral-300 appearance-none"
                   onChange={(e) => setGender(e.target.value)}
                   value={gender}
                 >
@@ -184,7 +184,7 @@ export const SignupAuth = () => {
                   Login
                 </Link>
               </div>
-              <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+              <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
                 {popup ? popup : ""}
               </div>
             </div>

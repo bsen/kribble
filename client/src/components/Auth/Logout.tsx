@@ -14,7 +14,7 @@ export const Logout = () => {
         <div className="flex justify-evenly my-5">
           <button
             onClick={logout}
-            className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+            className="text-black bg-black hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
           >
             Log out
           </button>
@@ -22,7 +22,7 @@ export const Logout = () => {
             onClick={() => {
               window.location.reload();
             }}
-            className="text-white bg-neutral-800 hover:bg-neutral-900 font-semibold px-4 py-1 border border-bordercolor rounded-full"
+            className="text-white bg-neutral-800 hover:bg-neutral-900 font-semibold px-4 py-1 border border-neutral-800 rounded-full"
           >
             Cancel
           </button>

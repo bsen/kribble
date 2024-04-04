@@ -124,8 +124,8 @@ export const EditProfile = () => {
           {loadingState ? (
             <LoadingPage />
           ) : (
-            <div className="bg-black w-[90%]   border border-bordercolor p-4 rounded-lg flex flex-col gap-4">
-              <div className="flex justify-between items-center border-b border-bordercolor pb-4">
+            <div className="bg-black w-[90%]   border border-neutral-800 p-4 rounded-lg flex flex-col gap-4">
+              <div className="flex justify-between items-center border-b border-neutral-800 pb-4">
                 <button
                   onClick={() => {
                     window.location.reload();
@@ -203,7 +203,7 @@ export const EditProfile = () => {
               <div>
                 <div className="text-neutral-100">Relationship status</div>{" "}
                 <select
-                  className="h-10 w-full rounded-lg px-2 text-neutral-600 bg-white border border-neutral-300 appearance-none"
+                  className="h-10 w-full rounded-lg px-2 text-neutral-600 bg-black border border-neutral-300 appearance-none"
                   onChange={(e) => setRelationStatus(e.target.value)}
                 >
                   <option value="" className="text-neutral-400">
@@ -228,7 +228,7 @@ export const EditProfile = () => {
                   }}
                 />
               </div>
-              <div className="text-red-400 font-ubuntu font-light text-center text-sm">
+              <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
                 {popup ? popup : ""}
               </div>
             </div>

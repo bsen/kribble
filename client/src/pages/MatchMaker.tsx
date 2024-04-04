@@ -11,7 +11,7 @@ export const MatchMaker = () => {
         <MatchMakerPage />
       </div>
 
-      <div className="w-full md:w-[25%] border-l border-bordercolor flex justify-center"></div>
+      <div className="w-full md:w-[25%] border-l border-neutral-800 flex justify-center"></div>
     </div>
   );
 };
