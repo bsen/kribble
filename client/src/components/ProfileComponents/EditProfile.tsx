@@ -127,7 +127,7 @@ export const EditProfile = () => {
               <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
                 <button
                   onClick={() => {
-                    setLogOutState(false);
+                    window.location.reload();
                   }}
                 >
                   <CloseIcon className="text-primarytextcolor" />
