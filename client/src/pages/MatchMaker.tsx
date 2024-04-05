@@ -10,7 +10,6 @@ export const MatchMaker = () => {
       <div className="w-full lg:w-[45%]">
         <MatchMakerPage />
       </div>
-
       <div className="w-full md:w-[30%] border-l border-neutral-200"></div>
     </div>
   );

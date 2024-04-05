@@ -84,7 +84,7 @@ userRouter.post("/userdata", async (c) => {
     return c.json({ status: 500, message: "error while fetching data" });
   }
 });
-userRouter.post("/userposts", async (c) => {
+userRouter.post("/posts", async (c) => {
   try {
     const body = await c.req.json();
     const username = body.username;
@@ -96,7 +96,6 @@ userRouter.post("/userposts", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-
     const userposts = await prisma.user.findFirst({
       where: { username: username },
       select: {
@@ -104,6 +103,9 @@ userRouter.post("/userposts", async (c) => {
         name: true,
         image: true,
         posts: true,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
     if (!userposts) {
