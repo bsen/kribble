@@ -1,7 +1,6 @@
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -24,85 +23,64 @@ export const ButtonsSidebar = () => {
   }, []);
 
   return (
-    <div className="h-max w-full  flex  justify-center items-center bg-black">
-      <div className="max-lg:flex  max-lg:w-full justify-evenly">
-        <div>
-          <button
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <HomeIcon
-                sx={{ fontSize: 30 }}
-                className={`${
-                  location.pathname === "/home"
-                    ? "text-blue-500"
-                    : "text-neutral-100"
-                }`}
-              />
-              <p
-                className={`text-lg font-medium max-lg:hidden ${
-                  location.pathname === "/home"
-                    ? "text-blue-500"
-                    : "text-neutral-100"
-                }`}
-              >
-                Home
-              </p>
+    <div className="h-max w-full flex flex-col justify-center items-center">
+      <div>
+        <button
+          onClick={() => {
+            navigate("/home");
+          }}
+        >
+          <div className={"mt-4 flex items-center justify-center gap-2"}>
+            {" "}
+            <HomeIcon
+              sx={{ fontSize: 30 }}
+              className={`${
+                location.pathname === "/home"
+                  ? "text-blue-500"
+                  : "text-secondarytextcolor"
+              }`}
+            />
+            <p
+              className={`text-lg font-medium max-lg:hidden ${
+                location.pathname === "/home"
+                  ? "text-blue-500"
+                  : "text-secondarytextcolor"
+              }`}
+            >
+              Home
+            </p>
+          </div>
+        </button>
+      </div>
+      <div>
+        <button>
+          <Link to={`/${currentUser}`}>
+            <div
+              className={
+                "mt-4 flex items-center justify-center gap-2 text-lg font-medium  text-secondarytextcolor"
+              }
+            >
+              <PersonIcon sx={{ fontSize: 30 }} />
+              <p>Profile</p>
             </div>
-          </button>
-        </div>
-        <div>
-          <button>
-            <Link to={`/${currentUser}`}>
-              <div
-                className={
-                  "mt-4 flex items-center justify-center gap-2 text-neutral-100"
-                }
-              >
-                <PersonIcon sx={{ fontSize: 30 }} />
-                <p className="text-lg font-medium max-lg:hidden">Profile</p>
-              </div>
-            </Link>
-          </button>
-        </div>
-
-        <div className="lg:hidden">
-          <button
-            className="flex justify-center"
-            onClick={() => {
-              navigate("/matchmaker");
-            }}
+          </Link>
+        </button>
+      </div>
+      <div>
+        <button
+          onClick={() => {
+            navigate("/post");
+          }}
+        >
+          <div
+            className={
+              "mt-4 px-6 py-1 rounded-full bg-blue-500 flex items-center justify-center gap-2 text-lg font-medium  text-white"
+            }
           >
-            <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <PeopleAltRoundedIcon
-                sx={{ fontSize: 30 }}
-                className={"text-neutral-100"}
-              />
-            </div>
-          </button>
-        </div>
-        <div>
-          <button
-            className="flex justify-center"
-            onClick={() => {
-              navigate("/post");
-            }}
-          >
-            <div className={"mt-4 flex items-center  gap-2"}>
-              <PostAddIcon
-                sx={{ fontSize: 30 }}
-                className={"text-neutral-100"}
-              />
-              <p
-                className={"text-lg font-medium text-neutral-200 max-lg:hidden"}
-              >
-                Post
-              </p>
-            </div>
-          </button>
-        </div>
+            <PostAddIcon sx={{ fontSize: 30 }} />
+            <p>Post</p>
+          </div>
+        </button>
       </div>
     </div>
   );

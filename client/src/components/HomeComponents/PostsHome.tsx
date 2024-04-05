@@ -48,9 +48,8 @@ export const PostsHome = () => {
         <LoadingPage />
       ) : (
         <>
-          <TopBar />
-
-          <div className="bg-black lg:h-screen max-lg:my-14 overflow-y-auto no-scrollbar">
+          <div className="lg:h-screen max-lg:my-14 overflow-y-auto no-scrollbar">
+            <TopBar />
             {postData.posts.length > 0 ? (
               postData.posts
                 .slice()
@@ -59,7 +58,7 @@ export const PostsHome = () => {
                   <>
                     <div
                       key={index}
-                      className="border-b border-neutral-800 p-5"
+                      className="border-b border-neutral-200 p-2 lg:P-5"
                     >
                       <div className="flex gap-2">
                         <div>
@@ -71,7 +70,7 @@ export const PostsHome = () => {
                                   : "/user.png"
                               }
                               alt="Profile"
-                              className="w-10 h-10 rounded-full"
+                              className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
                             />
                           </Link>
                         </div>
@@ -79,27 +78,27 @@ export const PostsHome = () => {
                         <div className="w-[80%]">
                           <div className="flex gap-2 items-center">
                             <Link to={`/${post.creator.username}`}>
-                              <div className="text-white text-base hover:underline font-semibold">
+                              <div className="text-primarytextcolor  text-sm lg:text-base hover:underline font-semibold">
                                 {post.creator.name}
                               </div>
                             </Link>
                             <Link to={`/${post.creator.username}`}>
-                              <div className="text-neutral-400 hover:underline text-sm font-ubuntu">
+                              <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
                                 @{post.creator.username}
                               </div>
                             </Link>
 
-                            <div className="text-neutral-400 text-sm font-ubuntu">
+                            <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
                               · {post.createdAt.slice(0, 10)}
                             </div>
                           </div>
-                          <div className="text-white text-base my-2 font-light">
+                          <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
                             {post.content}
                           </div>
                           <div>
                             <img
                               src={post.image}
-                              className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-800"
+                              className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
                             />
                           </div>
                         </div>
@@ -108,7 +107,7 @@ export const PostsHome = () => {
                   </>
                 ))
             ) : (
-              <div className="text-center font-ubuntu my-5 text-white">
+              <div className="text-center font-ubuntu my-5 text-primarytextcolor">
                 No posts found.
               </div>
             )}

@@ -93,8 +93,8 @@ export const CreatePost = () => {
       {loadingState ? (
         <LoadingPage />
       ) : (
-        <div className="h-screen w-full absolute bg-neutral-950">
-          <div className="w-[80%] md:w-[45vw] absolute rounded-lg bg-neutral-800 shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
+        <div className="h-screen w-full absolute bg-background">
+          <div className="w-[80%] md:w-[45vw] absolute rounded-lg bg-background border border-neutral-200 shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
             <button
               onClick={() => {
                 setPost("");
@@ -103,7 +103,7 @@ export const CreatePost = () => {
                 navigate("/home");
               }}
             >
-              <CloseIcon className="absolute -top-5 -left-5 text-white" />
+              <CloseIcon className="absolute -top-5 -left-5 text-secondarytextcolor" />
             </button>
             <div className="h-full flex flex-col justify-between">
               {postImage ? (
@@ -117,9 +117,9 @@ export const CreatePost = () => {
               ) : (
                 <div className="px-5 h-full">
                   <label htmlFor="image-upload" className="cursor-pointer ">
-                    <div className="h-full p-5 gap-2 bg-neutral-800 rounded-lg border border-dashed border-neutral-300 flex items-center justify-center">
-                      <div className="text-neutral-200">add picture</div>
-                      <AddPhotoAlternateIcon className="text-neutral-200" />
+                    <div className="h-full p-5 gap-2 rounded-lg border border-dashed border-neutral-200 flex items-center justify-center">
+                      <div className="text-secondarytextcolor">add picture</div>
+                      <AddPhotoAlternateIcon className="text-secondarytextcolor" />
                     </div>
                   </label>
                   <input
@@ -135,7 +135,7 @@ export const CreatePost = () => {
               <div className="text-end flex flex-col px-5">
                 <textarea
                   rows={4}
-                  className="my-4 border border-neutral-800 resize-none focus:outline-none p-2 text-neutral-700 rounded-lg"
+                  className="my-4 border border-neutral-200 resize-none focus:outline-none p-2 text-primarytextcolor rounded-lg"
                   placeholder="write your thoughts..."
                   wrap="soft"
                   minLength={10}
@@ -146,7 +146,7 @@ export const CreatePost = () => {
                 />
                 <button
                   onClick={createPost}
-                  className="bg-black  hover:bg-neutral-900 text-white border border-neutral-700 px-6 py-2 rounded-lg"
+                  className="bg-background  hover:bg-neutral-50 text-primarytextcolor border border-neutral-200 px-6 py-2 rounded-lg"
                 >
                   post
                 </button>

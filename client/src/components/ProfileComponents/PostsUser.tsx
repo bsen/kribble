@@ -36,43 +36,43 @@ export const PostsUser = () => {
     getData();
   }, []);
   return (
-    <div className="w-full h-screen">
+    <div className="lg:h-screen">
       {userPosts.posts.length > 0 ? (
         userPosts.posts
           .slice()
           .reverse()
           .map((post, index) => (
-            <div key={index} className="border-b border-neutral-800 p-5">
+            <div key={index} className="border-b border-neutral-200 p-2 lg:p-5">
               <div className="flex gap-2">
-                <div className="">
+                <div>
                   <img
                     src={userPosts.image ? userPosts.image : "/user.png"}
                     alt="Profile"
-                    className="w-10 h-10 rounded-full"
+                    className="h-8 w-8 lg:w-10 lg:h-10 rounded-full"
                   />
                 </div>
 
                 <div className="w-[80%]">
                   <div className="flex gap-2 items-center">
-                    <div className="text-white text-base hover:underline font-semibold">
+                    <div className="text-primarytextcolor  text-sm lg:text-base hover:underline font-semibold">
                       {userPosts.name}
                     </div>
 
-                    <div className="text-neutral-400 hover:underline text-sm font-ubuntu">
+                    <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
                       @{userPosts.username}
                     </div>
 
-                    <div className="text-neutral-400 text-sm font-ubuntu">
+                    <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
                       · {post.createdAt.slice(0, 10)}
                     </div>
                   </div>
-                  <div className="text-white my-2 font-light">
+                  <div className="text-primarytextcolor my-2  text-sm lg:text-base font-light">
                     {post.content}
                   </div>
                   <div>
                     <img
                       src={post.image}
-                      className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-800"
+                      className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
                     />
                   </div>
                 </div>
@@ -80,7 +80,7 @@ export const PostsUser = () => {
             </div>
           ))
       ) : (
-        <div className="text-center font-ubuntu my-5 text-white">
+        <div className=" text-center font-ubuntu my-5 text-primarytextcolor">
           No posts found.
         </div>
       )}

@@ -4,7 +4,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MatchMakerPage } from "../components/MatchMakerPage";
+import { MatchMakerPage } from "../components/MatchMaker/MatchMakerPage";
 export const Home = () => {
   const [errorState, setErrorState] = useState(false);
   const token = localStorage.getItem("token");
@@ -28,9 +28,9 @@ export const Home = () => {
     }
   }
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between bg-background">
       {errorState ? (
-        <div className="text-white h-screen w-full font-lg font-ubuntu font-semibold flex justify-center items-center">
+        <div className="text-primarytextcolor h-screen w-full font-lg font-ubuntu font-semibold flex justify-center items-center">
           <div className="flex flex-col items-center gap-5">
             <div>Netwoerk error, please logout and try again later</div>
             <button

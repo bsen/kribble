@@ -4,9 +4,10 @@ import axios from "axios";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../../config";
 import { useEffect, useState } from "react";
-import { LoadingPage } from "./LoadingPage";
+import { LoadingPage } from "../LoadingPage";
+import { BottomButtons } from "../Mobile/BottomButtons";
 
 export const MatchMakerPage = () => {
   const token = localStorage.getItem("token");
@@ -86,9 +87,9 @@ export const MatchMakerPage = () => {
 
   return (
     <>
-      <div className="h-screen bg-black border-l border-r border-neutral-800 flex flex-col justify-between py-2">
+      <div className="h-screen border-l border-neutral-200 flex flex-col justify-between py-2">
         <div className="w-full flex justify-center">
-          <div className="text-2xl flex justify-center items-center gap-5 text-white font-ubuntu text-center py-4 border-b border-neutral-800 w-[70%]">
+          <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center py-4 border-b border-neutral-200 w-[70%]">
             <div>
               {matchingState ? (
                 <button
@@ -97,7 +98,7 @@ export const MatchMakerPage = () => {
                   }}
                 >
                   <ArrowBackIosNewRoundedIcon
-                    className="text-neutral-200 rounded-full border border-neutral-700 py-1 hover:bg-neutral-800"
+                    className="text-primarytextcolor rounded-full border  py-1 hover:bg-neutral-800"
                     sx={{ fontSize: 35 }}
                   />
                 </button>
@@ -118,10 +119,10 @@ export const MatchMakerPage = () => {
                 <div className="w-full flex flex-col items-center justify-center">
                   <div className="w-[70%]">
                     <div className="flex gap-2 m-2 items-center">
-                      <div className="text-white text-lg font-light font-ubuntu">
+                      <div className="text-primarytextcolor text-lg font-light font-ubuntu">
                         {matchUserData.name}
                       </div>
-                      <div className="text-neutral-400 text-sm font-light ">
+                      <div className="text-secondarytextcolor text-sm font-light ">
                         @{matchUserData.username}
                       </div>
                     </div>
@@ -132,7 +133,7 @@ export const MatchMakerPage = () => {
                       className="rounded-xl w-[100%]"
                     />
 
-                    <div className="font-light text-sm text-neutral-200 m-2 w-full">
+                    <div className="font-light text-sm text-secondarytextcolor m-2 w-full">
                       {matchUserData.bio}
                     </div>
                   </div>
@@ -141,7 +142,7 @@ export const MatchMakerPage = () => {
                     <div>
                       <button
                         onClick={searchPeople}
-                        className="bg-black border font-ubuntu font-light border-neutral-800 text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                        className="bg-background border font-ubuntu font-light border-neutral-200 text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                       >
                         <div className="flex items-center justify-evenly">
                           <div>Pass</div>
@@ -152,7 +153,7 @@ export const MatchMakerPage = () => {
                     <div>
                       <button
                         onClick={match}
-                        className="bg-black border font-ubuntu font-light border-neutral-800 text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                        className="bg-background border font-ubuntu font-light border-neutral-200 text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                       >
                         <div className="flex items-center justify-evenly">
                           <div>Date</div>
@@ -165,14 +166,14 @@ export const MatchMakerPage = () => {
               </div>
             ) : (
               <div>
-                <div className="text-center font-light font-ubuntu px-6 mb-10 text-xs  text-neutral-400">
+                <div className="text-center font-light font-ubuntu px-6 mb-10 text-xs  text-secondarytextcolor">
                   <div className="w-full flex justify-center items-center">
                     <img src="/love.png" className=" h-12 w-12" />
                   </div>
-                  <div className="text-center font-semibold font-ubuntu px-6 my-3  text-lg text-neutral-200">
+                  <div className="text-center font-semibold font-ubuntu px-6 my-3  text-lg text-primarytextcolor">
                     start matching with kribble
                   </div>
-                  <div className="text-neutral-300">
+                  <div className="text-secondarytextcolor">
                     1. Your profile picture will be used for matching.
                     <br /> 2. Your bio will be shown in the matching.
                     <br /> 3. Your matches will be updated on
@@ -183,7 +184,7 @@ export const MatchMakerPage = () => {
                     section in your profile page.
                   </div>
                 </div>
-                <div className="text-center font-semibold font-ubuntu text-sm text-neutral-400">
+                <div className="text-center font-ubuntu text-sm text-secondarytextcolor">
                   Select the gender you want to match with
                 </div>
                 <div className="flex justify-center gap-5 my-5">
@@ -191,11 +192,11 @@ export const MatchMakerPage = () => {
                     onClick={() => {
                       setSelectGender("male");
                     }}
-                    className={`bg-neutral-900  p-1   rounded-full
+                    className={`p-1 rounded-full
                     ${
                       selectGender == "male"
-                        ? "text-blue-500 border border-blue-500"
-                        : "text-blue-700 border border-blue-700"
+                        ? "text-blue-500 border border-blue-500 bg-blue-100"
+                        : "text-blue-800 border border-blue-800"
                     }`}
                   >
                     <MaleIcon sx={{ fontSize: 35 }} />
@@ -204,11 +205,11 @@ export const MatchMakerPage = () => {
                     onClick={() => {
                       setSelectGender("female");
                     }}
-                    className={`bg-neutral-900  p-1 rounded-full
+                    className={`p-1 rounded-full
                     ${
                       selectGender == "female"
-                        ? "text-pink-500 border border-pink-500"
-                        : "text-pink-700 border border-pink-700"
+                        ? "text-pink-500 border border-pink-500 bg-pink-100"
+                        : "text-pink-800 border border-pink-800"
                     }`}
                   >
                     <FemaleIcon sx={{ fontSize: 35 }} />
@@ -217,20 +218,22 @@ export const MatchMakerPage = () => {
                 <div className="w-full flex justify-center">
                   <div>
                     <button
-                      className="text-neutral-300 bg-blue-800 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-700"
+                      className="text-background bg-blue-600 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-800"
                       onClick={searchPeople}
                     >
                       start matching
                     </button>
                   </div>
                 </div>
+                <div className="text-rose-500 my-5 font-ubuntu font-light text-center text-sm">
+                  {popup ? popup : ""}
+                </div>
               </div>
             )}
           </div>
         )}
-        <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
-          {popup ? popup : ""}
-        </div>
+        <div></div>
+        <BottomButtons />
       </div>
     </>
   );

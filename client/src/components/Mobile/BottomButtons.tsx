@@ -23,7 +23,7 @@ export const BottomButtons = () => {
     getUser();
   }, []);
   return (
-    <div className="w-full bottom-0  rounded-t-2xl fixed bg-black border-t border-r border-l border-neutral-800 flex justify-evenly items-center text-white font-ubuntu font-semibold text-2xl h-16 lg:hidden">
+    <div className="w-full bottom-0  rounded-t-2xl fixed bg-background border-t border-r border-l border-neutral-200 flex justify-evenly items-center text-primarytextcolor font-ubuntu font-semibold text-2xl h-16 lg:hidden">
       <div className="max-lg:flex  max-lg:w-full justify-evenly  items-center">
         <button
           onClick={() => {
@@ -36,14 +36,14 @@ export const BottomButtons = () => {
               className={`${
                 location.pathname === "/home"
                   ? "text-blue-500"
-                  : "text-neutral-100"
+                  : "text-secondarytextcolor"
               }`}
             />
             <p
               className={`text-sm lg:text-lg  font-medium ${
                 location.pathname === "/home"
                   ? "text-blue-500"
-                  : "text-neutral-100"
+                  : "text-secondarytextcolor"
               }`}
             >
               Home
@@ -53,9 +53,13 @@ export const BottomButtons = () => {
 
         <button>
           <Link to={`/${currentUser}`}>
-            <div className={" flex flex-col items-center lg:gap-2"}>
+            <div
+              className={
+                " flex flex-col items-center lg:gap-2 text-secondarytextcolor "
+              }
+            >
               <PersonIcon sx={{ fontSize: 30 }} />
-              <p className="text-sm lg:text-lg font-medium">Profile</p>
+              <p className="text-sm lg:text-lg font-medium ">Profile</p>
             </div>
           </Link>
         </button>
@@ -66,14 +70,13 @@ export const BottomButtons = () => {
             navigate("/matchmaker");
           }}
         >
-          <div className={" flex flex-col items-center lg:gap-2"}>
-            <PeopleAltRoundedIcon
-              sx={{ fontSize: 30 }}
-              className={"text-neutral-100"}
-            />
-            <p className={"text-sm lg:text-lg font-medium text-neutral-200"}>
-              Matches
-            </p>
+          <div
+            className={
+              " flex flex-col items-center lg:gap-2 text-secondarytextcolor"
+            }
+          >
+            <PeopleAltRoundedIcon sx={{ fontSize: 30 }} />
+            <p className={"text-sm lg:text-lg font-medium "}>Matches</p>
           </div>
         </button>
 
@@ -83,11 +86,13 @@ export const BottomButtons = () => {
             navigate("/post");
           }}
         >
-          <div className={"flex flex-col items-center  lg:gap-2"}>
-            <PostAddIcon sx={{ fontSize: 30 }} className={"text-neutral-100"} />
-            <p className={"text-sm lg:text-lg font-medium text-neutral-200"}>
-              Post
-            </p>
+          <div
+            className={
+              "flex flex-col items-center  lg:gap-2 text-secondarytextcolor"
+            }
+          >
+            <PostAddIcon sx={{ fontSize: 30 }} />
+            <p className={"text-sm lg:text-lg font-medium "}>Post</p>
           </div>
         </button>
       </div>
