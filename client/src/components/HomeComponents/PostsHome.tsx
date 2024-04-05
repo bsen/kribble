@@ -58,7 +58,7 @@ export const PostsHome = () => {
                   <>
                     <div
                       key={index}
-                      className="border-b border-neutral-200 p-2 lg:P-5"
+                      className="border-b border-neutral-200 p-2 lg:p-5"
                     >
                       <div className="flex gap-2">
                         <div>
