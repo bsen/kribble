@@ -7,10 +7,10 @@ export const Quote = () => {
           <div className="text-white text-[5rem] font-ubuntu">Kribble</div>
         </div>
         <div>
-          <div className=" text-neutral-100 text-3xl font-light font-ubuntu ">
+          <div className=" text-white text-3xl font-light font-ubuntu ">
             Tired of generic feeds? 🤔
           </div>
-          <div className=" text-neutral-300 text-xl font-light my-5">
+          <div className=" text-white text-xl font-light my-5">
             Join the exclusive social media platform built just for college
             students.
           </div>

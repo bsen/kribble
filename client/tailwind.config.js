@@ -4,7 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        logos: "rgba(255, 255, 255, 0.6)",
+        background: "rgb(255,255,255)",
+        primarytextcolor: "rgb(38, 38, 38)",
+        secondarytextcolor: "rgb(82, 82, 82)",
       },
       fontFamily: {
         ubuntu: ["ubuntu", "ubuntu"],

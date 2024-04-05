@@ -32,7 +32,7 @@ export const Matches = () => {
     <div className="w-full flex flex-col items-center">
       <div
         className={
-          "p-2 w-[70%] flex  items-center justify-center gap-2 border-b border-neutral-800"
+          "p-2 lg:w-[50%] flex  items-center justify-center gap-2 border-b border-neutral-200"
         }
       >
         <GroupIcon className={"text-pink-500"} />
@@ -47,15 +47,15 @@ export const Matches = () => {
               <Link to={`/${user.username}`}>
                 <div
                   key={index}
-                  className="flex bg-neutral-950 w-full py-2 items-center justify-start px-2 gap-4 rounded-xl mt-4 border border-neutral-800"
+                  className="flex bg-neutral-50 w-full py-2 items-center justify-start px-2 gap-4 rounded-xl mt-4 border border-neutral-200"
                 >
                   <div className="flex gap-3 items-center justify-center">
                     <img
                       src={user.image ? user.image : "/user.png"}
                       alt="Profile"
-                      className="h-8 w-8 bg-black rounded-full"
+                      className="h-8 w-8 bg-background rounded-full"
                     />
-                    <p className="text-base font-semibold font-ubuntu text-white">
+                    <p className="text-base font-semibold font-ubuntu text-primarytextcolor">
                       {user.name}
                     </p>
                   </div>
@@ -63,7 +63,7 @@ export const Matches = () => {
               </Link>
             ))
         ) : (
-          <p className="text-center font-mono my-2 text-white">
+          <p className="text-center font-mono my-2 text-primarytextcolor">
             No matches found
           </p>
         )}

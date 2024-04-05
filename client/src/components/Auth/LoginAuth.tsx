@@ -55,20 +55,22 @@ export const LoginAuth = () => {
               </div>
 
               <div>
-                <div className="font-semibold m-1 text-neutral-700">Email</div>
+                <div className="font-semibold m-1 text-primarytextcolor">
+                  Email
+                </div>
                 <input
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
                   type="email"
-                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
+                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-200"
                   placeholder="example@vitstudent.ac.in"
                 />
               </div>
 
               <div>
-                <div className="font-semibold m-1 text-neutral-700">
+                <div className="font-semibold m-1 text-primarytextcolor">
                   Password
                 </div>
                 <input
@@ -76,13 +78,13 @@ export const LoginAuth = () => {
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
-                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
+                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-200"
                   placeholder="Enter password"
                 />
               </div>
               <button
                 onClick={login}
-                className="my-4 w-full text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-700"
+                className="my-4 w-full text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-800"
               >
                 Login
               </button>
@@ -90,7 +92,7 @@ export const LoginAuth = () => {
                 Don't have an account?
                 <Link
                   to="/signup"
-                  className="font-semibold text-neutral-700 underline underline-offset-2 mx-1"
+                  className="font-semibold text-primarytextcolor underline underline-offset-2 mx-1"
                 >
                   Sign up
                 </Link>

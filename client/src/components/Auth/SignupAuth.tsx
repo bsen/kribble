@@ -106,7 +106,9 @@ export const SignupAuth = () => {
               </div>
 
               <div>
-                <div className="font-semibold m-1 text-neutral-700">Name</div>
+                <div className="font-semibold m-1 text-primarytextcolor">
+                  Name
+                </div>
                 <input
                   value={name}
                   maxLength={30}
@@ -118,7 +120,7 @@ export const SignupAuth = () => {
                 />
               </div>
               <div>
-                <div className="font-semibold m-1 text-neutral-700">
+                <div className="font-semibold m-1 text-primarytextcolor">
                   Username
                 </div>
                 <input
@@ -132,7 +134,9 @@ export const SignupAuth = () => {
                 />
               </div>
               <div>
-                <div className="font-semibold m-1 text-neutral-700">Email</div>
+                <div className="font-semibold m-1 text-primarytextcolor">
+                  Email
+                </div>
                 <input
                   value={email}
                   onChange={(e) => {
@@ -143,13 +147,15 @@ export const SignupAuth = () => {
                 />
               </div>
               <div>
-                <div className="font-semibold m-1 text-neutral-700">Gender</div>{" "}
+                <div className="font-semibold m-1 text-primarytextcolor">
+                  Gender
+                </div>{" "}
                 <select
-                  className="h-10 w-full rounded-lg px-4 text-neutral-600 border border-neutral-300 appearance-none"
+                  className="h-10 w-full rounded-lg px-4 text-secondarytextcolor border border-neutral-300 appearance-none"
                   onChange={(e) => setGender(e.target.value)}
                   value={gender}
                 >
-                  <option value="" className="text-neutral-400">
+                  <option value="" className="text-secondarytextcolor">
                     Select Gender
                   </option>
                   <option value="male">Male</option>
@@ -158,7 +164,7 @@ export const SignupAuth = () => {
               </div>
 
               <div>
-                <div className="font-semibold m-1 text-neutral-700">
+                <div className="font-semibold m-1 text-primarytextcolor">
                   Password
                 </div>
                 <input
@@ -180,7 +186,7 @@ export const SignupAuth = () => {
                 Already have an account?
                 <Link
                   to="/login"
-                  className="font-semibold text-neutral-700 underline underline-offset-2 mx-1"
+                  className="font-semibold text-primarytextcolor underline underline-offset-2 mx-1"
                 >
                   Login
                 </Link>
