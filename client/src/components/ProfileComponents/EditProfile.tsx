@@ -119,7 +119,7 @@ export const EditProfile = () => {
       {logOutState ? (
         <Logout />
       ) : (
-        <div className="h-screen bg-background/70 text-blakc flex justify-center items-center">
+        <div className="h-screen bg-background/80 text-blakc flex justify-center items-center">
           {loadingState ? (
             <LoadingPage />
           ) : (
