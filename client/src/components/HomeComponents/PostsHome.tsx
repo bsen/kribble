@@ -69,7 +69,7 @@ export const PostsHome = () => {
   return (
     <>
       <div
-        className="lg:h-screen max-lg:my-14 overflow-y-auto no-scrollbar"
+        className="h-screen max-lg:my-14 overflow-y-auto no-scrollbar"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >

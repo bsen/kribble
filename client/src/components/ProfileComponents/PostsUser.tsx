@@ -33,10 +33,11 @@ export const PostsUser = () => {
     }
   }
   useEffect(() => {
+    console.log(userPosts);
     getData();
   }, []);
   return (
-    <div className="lg:h-screen">
+    <div>
       {userPosts.posts.length > 0 ? (
         userPosts.posts.map((post, index) => (
           <div key={index} className="border-b border-neutral-200 p-2 lg:p-5">

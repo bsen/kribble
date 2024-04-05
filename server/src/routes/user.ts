@@ -102,10 +102,11 @@ userRouter.post("/posts", async (c) => {
         username: true,
         name: true,
         image: true,
-        posts: true,
-      },
-      orderBy: {
-        createdAt: "desc",
+        posts: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
     });
     if (!userposts) {
