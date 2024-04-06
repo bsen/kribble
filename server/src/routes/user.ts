@@ -90,34 +90,58 @@ userRouter.post("/posts", async (c) => {
     const username = body.username;
     const token = body.token;
     const userId = await verify(token, c.env.JWT_SECRET);
+
     if (!userId) {
       return c.json({ status: 404, message: "unauthorised" });
     }
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    const userposts = await prisma.user.findFirst({
+
+    const findUser = await prisma.user.findUnique({
       where: { username: username },
-      select: {
-        username: true,
-        name: true,
-        image: true,
-        posts: true,
+    });
+
+    const cursor = body.cursor || null;
+    const take = 3;
+
+    const userposts = await prisma.post.findMany({
+      where: { creatorId: findUser?.id },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
       },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: take + 1,
     });
+
     if (!userposts) {
-      return c.json({ status: 500, message: "error while fetching data" });
+      return c.json({ status: 400, message: "posts not found" });
     }
 
-    return c.json({ status: 200, message: userposts });
+    const hasMore = userposts.length > take;
+    const posts = hasMore ? userposts.slice(0, -1) : userposts;
+    const nextCursor = hasMore ? userposts[userposts.length - 1].id : null;
+
+    return c.json({
+      status: 200,
+      message: posts,
+      nextCursor,
+    });
   } catch (error) {
     console.log(error);
   }
 });
-
 userRouter.post("/profile/update", async (c) => {
   try {
     const formData = await c.req.formData();

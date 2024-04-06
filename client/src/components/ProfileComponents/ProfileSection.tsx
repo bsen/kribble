@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
-import { PostsUser } from "./PostsUser";
 import { LoadingPage } from "../LoadingPage";
 import { EditProfile } from "./EditProfile";
 import { useParams } from "react-router-dom";
-import { Matches } from "../MatchMaker/Matches";
-import { TopBar } from "../Mobile/TopBar";
-import { BottomButtons } from "../Mobile/BottomButtons";
 export const ProfileSection: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
   const [userData, setUserData] = useState<{
@@ -97,8 +93,6 @@ export const ProfileSection: React.FC = () => {
     }
   }
 
-  const [comp, setComp] = useState(true);
-
   return (
     <>
       {loadingState ? (
@@ -113,120 +107,78 @@ export const ProfileSection: React.FC = () => {
             ""
           )}
           <>
-            <div className="lg:h-screen max-lg:my-14 overflow-y-auto no-scrollbar">
-              <TopBar />
-              <div className="px-5 py-2 border-b border-neutral-200">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <img
-                      src={userData.image ? userData.image : "/user.png"}
-                      alt="Profile"
-                      className="w-16 h-16 lg:w-24 lg:h-24 rounded-full"
-                    />
-                  </div>
-                  {currentUser === username ? (
-                    <button
-                      onClick={() => {
-                        setProfileEditingState(true);
-                      }}
-                    >
-                      <div className="text-primarytextcolor text-sm font-ubuntu border border-primarytextcolor hover:bg-neutral-50 rounded-full py-1 px-4">
-                        profile settings
-                      </div>
-                    </button>
-                  ) : (
-                    <div>
-                      <button
-                        onClick={followUser}
-                        className="bg-blue-600 text-background px-4 py-1 rounded-lg font-ubuntu"
-                      >
-                        <div>
-                          {followingState ? (
-                            <div>Unfollow</div>
-                          ) : (
-                            <div>Follow</div>
-                          )}
-                        </div>
-                      </button>
-                    </div>
-                  )}
+            <div className="px-5 py-2">
+              <div className="flex justify-between items-center">
+                <div>
+                  <img
+                    src={userData.image ? userData.image : "/user.png"}
+                    alt="Profile"
+                    className="w-20 h-20 lg:w-24 lg:h-24 rounded-full"
+                  />
                 </div>
-                <div className="my-2">
-                  <div className="text-lg lg:text-xl font-semibold text-primarytextcolor">
-                    {userData.name}
-                  </div>
-                  <div className="text-sm text-secondarytextcolor font-light">
-                    @{userData.username}
-                  </div>
-
-                  <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
-                    Bio · {userData.bio}
-                  </div>
-                  <div className="">
-                    <div className="text-sm text-secondarytextcolor font-light hover:underline">
-                      <a href={userData.website ? userData.website : ""}>
-                        {userData.website ? userData.website : ""}
-                      </a>
+                {currentUser === username ? (
+                  <button
+                    onClick={() => {
+                      setProfileEditingState(true);
+                    }}
+                  >
+                    <div className="text-primarytextcolor text-sm font-ubuntu border border-primarytextcolor hover:bg-neutral-50 rounded-full py-1 px-4">
+                      profile settings
                     </div>
-                    <div className="text-sm lg:text-base text-secondarytextcolor font-light">
-                      Interest · {userData.interest ? userData.interest : ""}
-                    </div>
-                  </div>
-                  <div className="flex gap-4 my-2">
-                    <div className="flex gap-2 items-center">
-                      <div className="text-primarytextcolor">
-                        {userData.followers.length}
-                      </div>
-                      <div className="text-secondarytextcolor">Followers</div>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="text-primarytextcolor">
-                        {userData.following.length}
-                      </div>
-                      <div className="text-secondarytextcolor">Following</div>
-                    </div>
-                  </div>
-                  <div className="flex gap-5">
-                    <button
-                      onClick={() => {
-                        setComp(true);
-                      }}
-                    >
-                      <div className="text-blue-500 text-base font-ubuntu font-semibold">
-                        Posts
-                      </div>
-                    </button>
-                    {currentUser === username ? (
-                      <button
-                        onClick={() => {
-                          setComp(false);
-                        }}
-                      >
-                        <div className="text-pink-500 text-base font-ubuntu font-semibold">
-                          Matches
-                        </div>
-                      </button>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div>
-                {" "}
-                {comp ? (
-                  <PostsUser />
+                  </button>
                 ) : (
                   <div>
-                    {currentUser === username ? (
-                      <Matches />
-                    ) : (
-                      "" + setComp(true)
-                    )}
+                    <button
+                      onClick={followUser}
+                      className="bg-blue-600 text-background px-4 py-1 rounded-lg font-ubuntu"
+                    >
+                      <div>
+                        {followingState ? (
+                          <div>Unfollow</div>
+                        ) : (
+                          <div>Follow</div>
+                        )}
+                      </div>
+                    </button>
                   </div>
                 )}
               </div>
-              <BottomButtons />
+              <div className="my-2">
+                <div className="text-lg lg:text-xl font-semibold text-primarytextcolor">
+                  {userData.name}
+                </div>
+                <div className="text-sm text-secondarytextcolor font-light">
+                  @{userData.username}
+                </div>
+
+                <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
+                  Bio · {userData.bio}
+                </div>
+                <div className="">
+                  <div className="text-sm text-secondarytextcolor font-light hover:underline">
+                    <a href={userData.website ? userData.website : ""}>
+                      {userData.website ? userData.website : ""}
+                    </a>
+                  </div>
+                  <div className="text-sm lg:text-base text-secondarytextcolor font-light">
+                    Interest · {userData.interest ? userData.interest : ""}
+                  </div>
+                </div>
+                <div className="flex gap-4 my-2">
+                  <div className="flex gap-2 items-center">
+                    <div className="text-primarytextcolor">
+                      {userData.followers.length}
+                    </div>
+                    <div className="text-secondarytextcolor">Followers</div>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <div className="text-primarytextcolor">
+                      {userData.following.length}
+                    </div>
+                    <div className="text-secondarytextcolor">Following</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </>
         </>

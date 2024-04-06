@@ -119,7 +119,7 @@ export const EditProfile = () => {
       {logOutState ? (
         <Logout />
       ) : (
-        <div className="h-screen bg-background/70 text-blakc flex justify-center items-center">
+        <div className="h-screen bg-background/80 text-blakc flex justify-center items-center">
           {loadingState ? (
             <LoadingPage />
           ) : (
@@ -200,7 +200,7 @@ export const EditProfile = () => {
                 />
               </div>
               <div>
-                <div className="text-primarytextcolor">Relationship status</div>{" "}
+                <div className="text-primarytextcolor">Interest</div>{" "}
                 <select
                   className="h-10 w-full rounded-lg px-2 text-secondarytextcolor border border-neutral-200 appearance-none"
                   onChange={(e) => setInterest(e.target.value)}
@@ -259,7 +259,7 @@ export const EditProfile = () => {
                 <div className="text-primarytextcolor">Bio</div>
                 <textarea
                   rows={4}
-                  className="w-full p-2  rounded-lg"
+                  className="w-full p-2  rounded-lg border border-neutral-200"
                   defaultValue={userData.bio}
                   wrap="soft"
                   maxLength={160}
