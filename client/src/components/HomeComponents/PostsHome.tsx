@@ -111,7 +111,7 @@ export const PostsHome = () => {
                   <div>
                     <img
                       src={post.image}
-                      className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
+                      className="max-h-[80vh] max-w:w-[100%]  lg:max-w-[80%] rounded-lg border border-neutral-200"
                     />
                   </div>
                 </div>

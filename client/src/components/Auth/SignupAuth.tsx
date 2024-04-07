@@ -143,7 +143,7 @@ export const SignupAuth = () => {
                     handleEmailChnage(e.target.value);
                   }}
                   className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
-                  placeholder="example@vitstudent.ac.in"
+                  placeholder="Enter your email address"
                 />
               </div>
               <div>

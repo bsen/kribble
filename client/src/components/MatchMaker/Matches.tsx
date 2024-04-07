@@ -1,6 +1,6 @@
 import GroupIcon from "@mui/icons-material/Group";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 
@@ -44,15 +44,14 @@ export const Matches = () => {
           .slice()
           .reverse()
           .map((user, index) => (
-            <button
-              onClick={() => {
-                navigate(`/${user.username}`);
-              }}
+            <Link
+              to={`/${user.username}`}
               className="w-full"
+              key={user.username}
             >
               <div
                 key={index}
-                className="flex py-2 px-4 items-center justify-start  gap-4 rounded-xl mt-4 border border-neutral-200"
+                className="flex w-full py-2 px-4 items-center justify-start  gap-4 rounded-xl mt-4 border border-neutral-200"
               >
                 <div className="flex gap-3 items-center justify-center">
                   <img
@@ -60,18 +59,17 @@ export const Matches = () => {
                     alt="Profile"
                     className="h-8 w-8 bg-background rounded-full"
                   />
-                  <div>
-                    <div className="text-primarytextcolor text-base font-semibold">
-                      {user.name}
-                    </div>
 
-                    <div className="text-secondarytextcolor text-xs font-ubuntu">
-                      @{user.username}
-                    </div>
+                  <div className="text-primarytextcolor text-base font-semibold">
+                    {user.name}
+                  </div>
+
+                  <div className="text-secondarytextcolor text-xs font-ubuntu">
+                    @{user.username}
                   </div>
                 </div>
               </div>
-            </button>
+            </Link>
           ))
       ) : (
         <p className="text-center w-full font-mono my-2 text-primarytextcolor">
