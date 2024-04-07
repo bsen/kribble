@@ -164,7 +164,7 @@ postRouter.post("/delete-post", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
-    const postId = body.postId;
+    const postId = body.postDeleteId;
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());

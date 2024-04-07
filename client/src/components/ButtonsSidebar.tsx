@@ -31,20 +31,19 @@ export const ButtonsSidebar = () => {
           }}
         >
           <div className={"mt-4 flex items-center justify-center gap-2"}>
-            {" "}
             <HomeIcon
               sx={{ fontSize: 30 }}
               className={`${
                 location.pathname === "/home"
                   ? "text-blue-500"
-                  : "text-secondarytextcolor"
+                  : "text-primarytextcolor"
               }`}
             />
             <p
               className={`text-lg font-medium max-lg:hidden ${
                 location.pathname === "/home"
                   ? "text-blue-500"
-                  : "text-secondarytextcolor"
+                  : "text-primarytextcolor"
               }`}
             >
               Home
@@ -55,13 +54,24 @@ export const ButtonsSidebar = () => {
       <div>
         <button>
           <Link to={`/${currentUser}`}>
-            <div
-              className={
-                "mt-4 flex items-center justify-center gap-2 text-lg font-medium  text-secondarytextcolor"
-              }
-            >
-              <PersonIcon sx={{ fontSize: 30 }} />
-              <p>Profile</p>
+            <div className={"mt-4 flex items-center justify-center gap-2"}>
+              <PersonIcon
+                sx={{ fontSize: 30 }}
+                className={`${
+                  location.pathname === `/${currentUser}`
+                    ? "text-blue-500"
+                    : "text-primarytextcolor"
+                }`}
+              />
+              <p
+                className={`text-lg font-medium max-lg:hidden ${
+                  location.pathname === `/${currentUser}`
+                    ? "text-blue-500"
+                    : "text-primarytextcolor"
+                }`}
+              >
+                Profile
+              </p>
             </div>
           </Link>
         </button>

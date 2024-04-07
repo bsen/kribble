@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import { MatchMakerPage } from "../components/MatchMaker/MatchMakerPage";
-import { PostsUser } from "../components/ProfileComponents/PostsUser";
+import { ProfileSection } from "../components/ProfileComponents/ProfileSection";
 export const Profile = () => {
   return (
     <div className="flex justify-between bg-background">
@@ -8,7 +8,7 @@ export const Profile = () => {
         <Sidebar />
       </div>
       <div className="w-full lg:w-[45%]">
-        <PostsUser />
+        <ProfileSection />
       </div>
 
       <div className="w-[30%] max-lg:hidden">

@@ -10,7 +10,10 @@ export const LoginAuth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [popup, setPopup] = useState("");
-
+  const handleEmailChnage = (text: string) => {
+    const newEmail = text.toLowerCase();
+    setEmail(newEmail);
+  };
   async function login() {
     setPopup("");
     if (!email) {
@@ -61,11 +64,11 @@ export const LoginAuth = () => {
                 <input
                   value={email}
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    handleEmailChnage(e.target.value);
                   }}
                   type="email"
                   className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-200"
-                  placeholder="example@vitstudent.ac.in"
+                  placeholder="Enter your email address"
                 />
               </div>
 

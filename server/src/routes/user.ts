@@ -49,8 +49,7 @@ userRouter.post("/userdata", async (c) => {
     if (!userData) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
-    console.log(username);
-    console.log(userData.username, userData.id);
+
     const person = await prisma.user.findUnique({
       where: { username: username },
       select: {
@@ -76,9 +75,19 @@ userRouter.post("/userdata", async (c) => {
       },
     });
     if (!checkFollowStatus) {
-      return c.json({ status: 200, message: person, following: false });
+      return c.json({
+        status: 200,
+        message: person,
+        following: false,
+        currentUser: userData.username,
+      });
     }
-    return c.json({ status: 200, message: person, following: true });
+    return c.json({
+      status: 200,
+      message: person,
+      following: true,
+      currentUser: userData.username,
+    });
   } catch (error) {
     console.log(error);
     return c.json({ status: 500, message: "error while fetching data" });
@@ -151,7 +160,6 @@ userRouter.post("/profile/update", async (c) => {
     const newBio = formData.get("bio");
     const newWebsite = formData.get("website");
     const newInterest = formData.get("interest");
-    console.log(token, newName, newWebsite, newBio, newInterest);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
