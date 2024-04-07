@@ -1,11 +1,10 @@
 import GroupIcon from "@mui/icons-material/Group";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 
 export const Matches = () => {
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   interface User {
     name: string;
