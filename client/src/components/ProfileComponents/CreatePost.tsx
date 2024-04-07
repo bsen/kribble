@@ -94,7 +94,10 @@ export const CreatePost = () => {
         <LoadingPage />
       ) : (
         <div className="h-screen w-full absolute bg-background">
-          <div className="w-[80%] md:w-[45vw] absolute rounded-lg bg-background border border-neutral-200 shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
+          <div className="w-full bg-background border-b border-neutral-200 flex justify-evenly items-center text-primarytextcolor font-ubuntu font-semibold text-2xl h-14">
+            Kribble
+          </div>
+          <div className="w-[80%] my-5 md:w-[45vw] absolute rounded-lg bg-background border border-neutral-200 shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
             <button
               onClick={() => {
                 setPost("");
@@ -111,7 +114,7 @@ export const CreatePost = () => {
                   <img
                     src={previewImage ? previewImage : ""}
                     alt="Profile"
-                    className=" max-w-[60%] rounded-lg"
+                    className=" max-w-[50%] rounded-lg"
                   />
                 </div>
               ) : (
@@ -146,7 +149,7 @@ export const CreatePost = () => {
                 />
                 <button
                   onClick={createPost}
-                  className="bg-background  hover:bg-neutral-50 text-primarytextcolor border border-neutral-200 px-6 py-2 rounded-lg"
+                  className="bg-black   hover:bg-neutral-900 text-white border border-neutral-200 px-6 py-2 rounded-lg"
                 >
                   post
                 </button>

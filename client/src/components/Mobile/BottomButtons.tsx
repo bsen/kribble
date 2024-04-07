@@ -51,34 +51,65 @@ export const BottomButtons = () => {
           </div>
         </button>
 
-        <button>
-          <Link to={`/${currentUser}`}>
-            <div
-              className={
-                " flex flex-col items-center lg:gap-2 text-secondarytextcolor "
-              }
-            >
-              <PersonIcon sx={{ fontSize: 30 }} />
-              <p className="text-sm lg:text-lg font-medium ">Profile</p>
-            </div>
-          </Link>
-        </button>
+        <div>
+          <button>
+            <Link to={`/${currentUser}`}>
+              <div
+                className={
+                  " flex flex-col items-center lg:gap-2 text-secondarytextcolor "
+                }
+              >
+                <PersonIcon
+                  sx={{ fontSize: 30 }}
+                  className={`${
+                    location.pathname === `/${currentUser}`
+                      ? "text-blue-500"
+                      : "text-secondarytextcolor"
+                  }`}
+                />
+                <p
+                  className={`text-sm font-medium ${
+                    location.pathname === `/${currentUser}`
+                      ? "text-blue-500"
+                      : "text-secondarytextcolor"
+                  }`}
+                >
+                  Profile
+                </p>
+              </div>
+            </Link>
+          </button>
+        </div>
 
-        <button
-          className="flex justify-center"
-          onClick={() => {
-            navigate("/matchmaker");
-          }}
-        >
-          <div
-            className={
-              " flex flex-col items-center lg:gap-2 text-secondarytextcolor"
-            }
-          >
-            <PeopleAltRoundedIcon sx={{ fontSize: 30 }} />
-            <p className={"text-sm lg:text-lg font-medium "}>Matches</p>
-          </div>
-        </button>
+        <div>
+          <button>
+            <Link to={`/matchmaker`}>
+              <div
+                className={
+                  " flex flex-col items-center lg:gap-2 text-secondarytextcolor "
+                }
+              >
+                <PeopleAltRoundedIcon
+                  sx={{ fontSize: 30 }}
+                  className={`${
+                    location.pathname === `/matchmaker`
+                      ? "text-blue-500"
+                      : "text-secondarytextcolor"
+                  }`}
+                />
+                <p
+                  className={`text-sm font-medium ${
+                    location.pathname === `/matchmaker`
+                      ? "text-blue-500"
+                      : "text-secondarytextcolor"
+                  }`}
+                >
+                  Matches
+                </p>
+              </div>
+            </Link>
+          </button>
+        </div>
 
         <button
           className="flex justify-center"

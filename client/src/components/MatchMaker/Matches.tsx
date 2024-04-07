@@ -1,10 +1,11 @@
 import GroupIcon from "@mui/icons-material/Group";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 
 export const Matches = () => {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   interface User {
     name: string;
@@ -12,7 +13,6 @@ export const Matches = () => {
     image: string;
   }
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
-
   async function getMatchesDetails() {
     try {
       const response = await axios.post(
@@ -29,45 +29,55 @@ export const Matches = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-[80%] flex flex-col items-start p-5">
       <div
         className={
-          "p-2 lg:w-[50%] flex  items-center justify-center gap-2 border-b border-neutral-200"
+          "p-2 flex  items-center text-center w-full justify-center gap-2 "
         }
       >
         <GroupIcon className={"text-pink-500"} />
         <p className={"text-pink-500"}>Matches</p>
       </div>
-      <div className="w-[40%]">
-        {matchedUsers.length > 0 ? (
-          matchedUsers
-            .slice()
-            .reverse()
-            .map((user, index) => (
-              <Link to={`/${user.username}`}>
-                <div
-                  key={index}
-                  className="flex bg-neutral-50 w-full py-2 items-center justify-start px-2 gap-4 rounded-xl mt-4 border border-neutral-200"
-                >
-                  <div className="flex gap-3 items-center justify-center">
-                    <img
-                      src={user.image ? user.image : "/user.png"}
-                      alt="Profile"
-                      className="h-8 w-8 bg-background rounded-full"
-                    />
-                    <p className="text-base font-semibold font-ubuntu text-primarytextcolor">
+
+      {matchedUsers.length > 0 ? (
+        matchedUsers
+          .slice()
+          .reverse()
+          .map((user, index) => (
+            <button
+              onClick={() => {
+                navigate(`/${user.username}`);
+              }}
+              className="w-full"
+            >
+              <div
+                key={index}
+                className="flex py-2 px-4 items-center justify-start  gap-4 rounded-xl mt-4 border border-neutral-200"
+              >
+                <div className="flex gap-3 items-center justify-center">
+                  <img
+                    src={user.image ? user.image : "/user.png"}
+                    alt="Profile"
+                    className="h-8 w-8 bg-background rounded-full"
+                  />
+                  <div>
+                    <div className="text-primarytextcolor text-base font-semibold">
                       {user.name}
-                    </p>
+                    </div>
+
+                    <div className="text-secondarytextcolor text-xs font-ubuntu">
+                      @{user.username}
+                    </div>
                   </div>
                 </div>
-              </Link>
-            ))
-        ) : (
-          <p className="text-center font-mono my-2 text-primarytextcolor">
-            No matches found
-          </p>
-        )}
-      </div>
+              </div>
+            </button>
+          ))
+      ) : (
+        <p className="text-center w-full font-mono my-2 text-primarytextcolor">
+          No matches found
+        </p>
+      )}
     </div>
   );
 };

@@ -147,7 +147,7 @@ export const EditProfile = () => {
                   <div className="absolute text-primarytextcolor z-50">
                     <button>
                       <label htmlFor="image-upload" className="cursor-pointer ">
-                        <CameraAltRoundedIcon />
+                        <CameraAltRoundedIcon className="bg-white rounded-full" />
                       </label>
                       <input
                         id="image-upload"
