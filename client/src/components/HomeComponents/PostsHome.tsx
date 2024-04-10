@@ -6,7 +6,7 @@ import { TopBar } from "../Mobile/TopBar";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import { CircularProgress } from "@mui/material";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
-import { BiotechTwoTone } from "@mui/icons-material";
+
 interface Post {
   id: string;
   creator: {
