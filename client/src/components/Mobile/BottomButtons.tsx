@@ -114,7 +114,7 @@ export const BottomButtons = () => {
         <button
           className="flex justify-center"
           onClick={() => {
-            navigate("/post");
+            navigate("/create/post");
           }}
         >
           <div

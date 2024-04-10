@@ -5,7 +5,7 @@ import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { LoadingPage } from "../LoadingPage";
-export const CreatePost = () => {
+export const CreatePostComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
