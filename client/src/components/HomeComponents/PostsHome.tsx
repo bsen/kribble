@@ -5,7 +5,8 @@ import { BACKEND_URL } from "../../config";
 import { TopBar } from "../Mobile/TopBar";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import { CircularProgress } from "@mui/material";
-
+import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
+import { BiotechTwoTone } from "@mui/icons-material";
 interface Post {
   id: string;
   creator: {
@@ -76,7 +77,7 @@ export const PostsHome = () => {
         <TopBar />
         {postData.posts.length > 0 ? (
           postData.posts.map((post, index) => (
-            <div key={index} className="border-b border-neutral-200 p-2 lg:p-5">
+            <div key={index} className="border-b border-neutral-200 p-4">
               <div className="flex gap-2">
                 <div>
                   <Link to={`/${post.creator.username}`}>
@@ -113,6 +114,13 @@ export const PostsHome = () => {
                       src={post.image}
                       className="max-h-[80vh] max-w:w-[100%]  lg:max-w-[80%] rounded-lg border border-neutral-200"
                     />
+                  </div>
+                  <div>
+                    <div className="mt-2 text-blue-500">
+                      <Link to={`/post/${post.id}`}>
+                        <InsertLinkOutlinedIcon />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

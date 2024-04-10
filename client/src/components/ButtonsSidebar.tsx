@@ -79,7 +79,7 @@ export const ButtonsSidebar = () => {
       <div>
         <button
           onClick={() => {
-            navigate("/post");
+            navigate("/create/post");
           }}
         >
           <div

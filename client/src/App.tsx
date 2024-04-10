@@ -3,8 +3,9 @@ import { Signup } from "./pages/Signup";
 import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
-import { Post } from "./pages/Post";
+import { CreatePost } from "./pages/CreatePost";
 import { MatchMaker } from "./pages/MatchMaker";
+import { Post } from "./pages/Post";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -28,7 +29,14 @@ function App() {
             path="/:username"
             element={<ProtectedRoute element={<Profile />} />}
           />
-          <Route path="/post" element={<ProtectedRoute element={<Post />} />} />
+          <Route
+            path="/create/post"
+            element={<ProtectedRoute element={<CreatePost />} />}
+          />
+          <Route
+            path="/post/:postId"
+            element={<ProtectedRoute element={<Post />} />}
+          />
           <Route
             path="matchmaker"
             element={<ProtectedRoute element={<MatchMaker />} />}

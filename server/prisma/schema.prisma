@@ -20,13 +20,13 @@ model User {
   interest      String?
   createdAt     DateTime   @default(now())
   posts         Post[]     @relation("UserPosts")
+  comments      Comment[]  @relation("Comments")
   following     Following[] @relation("FollowerRelation")
   followers     Following[] @relation("FollowingRelation")
   interestedIn  Matching[] @relation("PersonMatchingRelation")
   interestedBy  Matching[] @relation("InterestedInMatchingRelation")
   matchedUsers  String[]   
 }
-
 
 model Post {
   id        String   @id @default(uuid())
@@ -35,6 +35,17 @@ model Post {
   creator   User     @relation("UserPosts", fields: [creatorId], references: [id])
   creatorId String
   createdAt DateTime @default(now())
+  comments  Comment[] @relation("PostComments")
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  content    String
+  creator    User     @relation("Comments", fields: [creatorId], references: [id])
+  creatorId  String
+  post       Post     @relation("PostComments", fields: [postId], references: [id])
+  postId     String
+  createdAt  DateTime @default(now())
 }
 
 model Following {
@@ -45,6 +56,7 @@ model Following {
 
   @@id([followerId, followingId])
 }
+
 model Matching {
   id              String   @id @default(uuid())
   person          User     @relation("PersonMatchingRelation", fields: [personId], references: [id])
