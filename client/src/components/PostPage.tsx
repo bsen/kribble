@@ -2,11 +2,10 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
-
 export const PostPage = () => {
   const { postId } = useParams();
   const token = localStorage.getItem("token");
-
+  const [comment, setComment] = useState("");
   const [postData, setPostData] = useState<{
     image: string;
     content: string;
@@ -35,6 +34,17 @@ export const PostPage = () => {
     );
     setPostData(response.data.data);
     console.log(response.data.data);
+  }
+  async function CreateComment() {
+    console.log(comment);
+    if (!comment) {
+      alert("write something please");
+    }
+    await axios.post(`${BACKEND_URL}/api/server/v1/post/post-comment`, {
+      token,
+      postId,
+      comment,
+    });
   }
 
   useEffect(() => {
@@ -88,11 +98,17 @@ export const PostPage = () => {
             rows={2}
             className="w-full p-2 focus:outline-none"
             wrap="soft"
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
             maxLength={250}
             placeholder="Post a reply"
           />
           <div>
-            <button className="text-white my-2 py-1 px-4 rounded-full bg-blue-500">
+            <button
+              onClick={CreateComment}
+              className="text-white my-2 py-1 px-4 rounded-full bg-blue-500"
+            >
               Post
             </button>
           </div>
