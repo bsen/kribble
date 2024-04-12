@@ -53,7 +53,6 @@ model Following {
   followerId  String
   following   User @relation("FollowingRelation", fields: [followingId], references: [id])
   followingId String
-
   @@id([followerId, followingId])
 }
 

@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://backend.undate-server.workers.dev";
+export const BACKEND_URL = "https://backend.kribbleceo.workers.dev";

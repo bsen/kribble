@@ -1,12 +1,26 @@
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import { BACKEND_URL } from "../config";
+import { LoadingPage } from "./LoadingPage";
 import { useEffect, useState } from "react";
+import { BACKEND_URL } from "../config";
+interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  creator: {
+    username: string;
+    name: string;
+    image: string | null;
+  };
+}
 
 export const PostPage = () => {
   const { postId } = useParams();
   const token = localStorage.getItem("token");
-
+  const [popup, setPopup] = useState(false);
+  const [comment, setComment] = useState<string>("");
+  const [loadingState, setLoadingState] = useState<boolean>(false);
+  const [postComments, setPostComments] = useState<Comment[]>([]);
   const [postData, setPostData] = useState<{
     image: string;
     content: string;
@@ -15,7 +29,7 @@ export const PostPage = () => {
     creator: {
       username: string;
       name: string;
-      image: string;
+      image: string | null;
     };
   }>({
     image: "",
@@ -28,76 +42,171 @@ export const PostPage = () => {
       image: "",
     },
   });
+
   async function getPost() {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/post/one-post-data`,
-      { token, postId }
-    );
-    setPostData(response.data.data);
-    console.log(response.data.data);
+    try {
+      setLoadingState(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/post/post-data`,
+        { token, postId }
+      );
+      setLoadingState(false);
+      setPostData(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getComments() {
+    try {
+      setLoadingState(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/post/post-comments`,
+        { token, postId }
+      );
+      setLoadingState(false);
+      setPostComments(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function createComment() {
+    try {
+      if (!comment) {
+        setPopup(true);
+        return;
+      }
+
+      setLoadingState(true);
+      await axios.post(`${BACKEND_URL}/api/server/v1/post/create-comment`, {
+        token,
+        postId,
+        comment,
+      });
+      setLoadingState(false);
+      getComments();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
     getPost();
+    getComments();
   }, []);
-
   return (
     <>
-      <div className="flex gap-2  p-4 border-b border-neutral-200">
-        <div>
-          <Link to={`/${postData.creator.username}`}>
-            <img
-              src={
-                postData.creator.image ? postData.creator.image : "/user.png"
-              }
-              alt="Profile"
-              className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
-            />
-          </Link>
-        </div>
-        <div className="w-[80%]">
-          <div className="flex gap-2 items-center">
-            <Link to={`/${postData.creator.username}`}>
-              <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                {postData.creator.name}
+      {loadingState ? (
+        <LoadingPage />
+      ) : (
+        <>
+          <div className="flex flex-col gap-2  p-4 border-b border-neutral-200 ">
+            <div className="flex gap-2 items-center">
+              <Link to={`/${postData.creator.username}`}>
+                <img
+                  src={
+                    postData.creator.image
+                      ? postData.creator.image
+                      : "/user.png"
+                  }
+                  alt="Profile"
+                  className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                />
+              </Link>
+              <div>
+                <div className="flex gap-2 items-center">
+                  <Link to={`/${postData.creator.username}`}>
+                    <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                      {postData.creator.name}
+                    </div>
+                  </Link>
+                  <Link to={`/${postData.creator.username}`}>
+                    <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
+                      @{postData.creator.username}
+                    </div>
+                  </Link>
+                  <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                    · {postData.createdAt.slice(0, 10)}
+                  </div>
+                </div>
               </div>
-            </Link>
-            <Link to={`/${postData.creator.username}`}>
-              <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
-                @{postData.creator.username}
+            </div>
+
+            <div>
+              <div>
+                <img
+                  src={postData.image}
+                  className="max-h-[80vh] max-w:w-[100%]  rounded-lg border border-neutral-200"
+                />
               </div>
-            </Link>
-            <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-              · {postData.createdAt.slice(0, 10)}
+              <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
+                {postData.content}
+              </div>
             </div>
           </div>
-          <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
-            {postData.content}
+          <div className="p-4 border-b border-neutral-200 flex justify-center items-center">
+            <div className="w-full">
+              <textarea
+                rows={2}
+                className={`w-full p-2 focus:outline-none rounded-xl  ${
+                  popup ? "border border-rose-200" : ""
+                }`}
+                wrap="soft"
+                onChange={(e) => {
+                  setPopup(false);
+                  setComment(e.target.value);
+                }}
+                maxLength={250}
+                placeholder="Post a reply"
+              />
+              <div>
+                <button
+                  onClick={createComment}
+                  className="text-white my-2 py-1 px-4 rounded-full bg-blue-500"
+                >
+                  Post
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
-            <img
-              src={postData.image}
-              className="max-h-[80vh] max-w:w-[100%]  rounded-lg border border-neutral-200"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="p-4 border-b border-neutral-200 flex justify-center items-center">
-        <div className="w-[80%]">
-          <textarea
-            rows={2}
-            className="w-full p-2 focus:outline-none"
-            wrap="soft"
-            maxLength={250}
-            placeholder="Post a reply"
-          />
-          <div>
-            <button className="text-white my-2 py-1 px-4 rounded-full bg-blue-500">
-              Post
-            </button>
-          </div>
-        </div>
-      </div>
+          {postComments.map((comment) => (
+            <div
+              key={comment.id}
+              className="px-4 py-2 border-b border-neutral-200"
+            >
+              <div className="flex gap-2 items-center">
+                <Link
+                  to={`/${comment.creator.username}`}
+                  className="flex gap-2 items-center"
+                >
+                  <img
+                    src={
+                      comment.creator.image
+                        ? comment.creator.image
+                        : "/user.png"
+                    }
+                    alt="Profile"
+                    className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                  />
+                  <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                    {comment.creator.name}
+                  </div>
+                  <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                    @{comment.creator.username}
+                  </div>{" "}
+                </Link>
+                <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                  · {new Date(comment.createdAt).toLocaleString()}
+                </div>
+              </div>
+              <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
+                {comment.content}
+              </div>
+            </div>
+          ))}
+        </>
+      )}
     </>
   );
 };

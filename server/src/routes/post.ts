@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
-import { BalancedPool } from "undici";
 
 export const postRouter = new Hono<{
   Bindings: {
@@ -32,6 +31,11 @@ postRouter.post("/paginated-allposts", async (c) => {
     const take = 5;
     const allPosts = await prisma.post.findMany({
       include: {
+        comments: {
+          select: {
+            creatorId: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -51,7 +55,6 @@ postRouter.post("/paginated-allposts", async (c) => {
     const hasMore = allPosts.length > take;
     const posts = hasMore ? allPosts.slice(0, -1) : allPosts;
     const nextCursor = hasMore ? allPosts[allPosts.length - 1].id : null;
-
     return c.json({
       status: 200,
       message: posts,
@@ -192,35 +195,112 @@ postRouter.post("/delete-post", async (c) => {
   }
 });
 
-postRouter.post("/one-post-data", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const postId = body.postId;
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const userId = await verify(token, c.env.JWT_SECRET);
-  const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
-  if (!findUser) {
-    return c.json({ status: 401, message: "User not authenticated" });
-  }
-  const findPost = await prisma.post.findUnique({
-    where: {
-      id: postId,
-    },
-    include: {
-      creator: {
-        select: {
-          id: true,
-          username: true,
-          name: true,
-          image: true,
+postRouter.post("/post-data", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const postId = body.postId;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "User not authenticated" });
+    }
+    const findPost = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
         },
       },
-    },
-  });
-  if (!findPost) {
-    return c.json({ status: 401, message: "Post not found" });
+    });
+    if (!findPost) {
+      return c.json({ status: 401, message: "Post not found" });
+    }
+    return c.json({ status: 200, message: "Post found", data: findPost });
+  } catch (error) {
+    console.log(error);
   }
-  return c.json({ status: 200, message: "Post found", data: findPost });
+});
+postRouter.post("/post-comments", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const postId = body.postId;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "User not authenticated" });
+    }
+    const findComments = await prisma.comment.findMany({
+      where: {
+        postId: postId,
+      },
+      include: {
+        creator: {
+          select: {
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    if (!findComments) {
+      return c.json({ status: 401, message: "Post not found" });
+    }
+    return c.json({ status: 200, message: "Post found", data: findComments });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+postRouter.post("/create-comment", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const comment = body.comment;
+    const postId = body.postId;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+    });
+    if (!findUser) {
+      return c.json({ status: 401, message: "Authentication error" });
+    }
+
+    const createComment = await prisma.comment.create({
+      data: {
+        content: comment,
+        creator: { connect: { id: findUser.id } },
+        post: { connect: { id: postId } },
+      },
+    });
+    if (!createComment) {
+      return c.json({ status: 400, message: "Failed to comment" });
+    }
+    return c.json({ satus: 200, message: "Commnet created successfully" });
+  } catch (error) {
+    console.log(error);
+  }
 });

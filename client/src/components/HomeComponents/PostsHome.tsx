@@ -5,8 +5,7 @@ import { BACKEND_URL } from "../../config";
 import { TopBar } from "../Mobile/TopBar";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import { CircularProgress } from "@mui/material";
-import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
-
+import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 interface Post {
   id: string;
   creator: {
@@ -18,6 +17,7 @@ interface Post {
   content: string;
   image: string;
   createdAt: string;
+  comments: [];
 }
 
 export const PostsHome = () => {
@@ -116,10 +116,11 @@ export const PostsHome = () => {
                     />
                   </div>
                   <div>
-                    <div className="mt-2 text-blue-500">
+                    <div className="mt-2 flex gap-2 text-neutral-600">
                       <Link to={`/post/${post.id}`}>
-                        <InsertLinkOutlinedIcon />
+                        <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 20 }} />
                       </Link>
+                      <div>{post.comments.length}</div>
                     </div>
                   </div>
                 </div>
