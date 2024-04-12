@@ -75,6 +75,16 @@ export const EditProfile = () => {
   };
   async function updateProfile() {
     try {
+      if (!bio) {
+        setBio("Bio");
+      }
+      if (!website) {
+        setWebsite("Website");
+      }
+      if (!interest) {
+        setInterest("Interest");
+      }
+
       if (
         name.length == 0 ||
         bio.length == 0 ||
@@ -87,7 +97,6 @@ export const EditProfile = () => {
       const newBio = bio !== "" ? bio : userData.bio;
       const newWebsite = website !== "" ? website : userData.website;
       const newInterest = interest !== "" ? interest : userData.interest;
-
       const formdata = new FormData();
       formdata.append("image", file ? file : "");
       formdata.append("name", newName);
@@ -209,49 +218,43 @@ export const EditProfile = () => {
                   <option value="" className="text-secondarytextcolor">
                     Select your interests
                   </option>
-                  <option value="Paranormal Investigations">
-                    Paranormal Investigations
+                  <option value="Outdoor Activities">Outdoor Activities</option>
+                  <option value="Healthy Living">Healthy Living</option>
+                  <option value="Exploring New Cultures">
+                    Exploring New Cultures
                   </option>
-                  <option value="Urban Exploration">Urban Exploration</option>
-                  <option value="Extreme Ironing">Extreme Ironing</option>
-                  <option value="Competitive Eating">Competitive Eating</option>
-                  <option value="Puppetry & Marionettes">
-                    Puppetry & Marionettes
+                  <option value="Cooking & Gastronomy">
+                    Cooking & Gastronomy
                   </option>
-                  <option value="Cryptozoology">Cryptozoology</option>
-                  <option value="Vintage Tea Party Planning">
-                    Vintage Tea Party Planning
+                  <option value="Art & Creativity">Art & Creativity</option>
+                  <option value="Music & Dance">Music & Dance</option>
+                  <option value="Technology & Innovation">
+                    Technology & Innovation
                   </option>
-                  <option value="Unicycling & Juggling">
-                    Unicycling & Juggling
+                  <option value="Coding & Development">
+                    Coding & Development
                   </option>
-                  <option value="Competitive Beard Grooming">
-                    Competitive Beard Grooming
-                  </option>
-                  <option value="Cloud Watching">Cloud Watching</option>
-                  <option value="Retro Gaming Collecting">
-                    Retro Gaming Collecting
-                  </option>
-                  <option value="Tea Leaf Reading">Tea Leaf Reading</option>
-                  <option value="Dumpster Diving">Dumpster Diving</option>
-                  <option value="Conlanging (Constructed Languages)">
-                    Conlanging (Constructed Languages)
-                  </option>
-                  <option value="Synchronized Swimming for Dogs">
-                    Synchronized Swimming for Dogs
-                  </option>
-                  <option value="Science & Technology">
-                    Science & Technology
-                  </option>
-                  <option value="Coding & Programming">
-                    Coding & Programming
-                  </option>
-                  <option value="Movies & Filmmaking">
-                    Movies & Filmmaking
+                  <option value="Film & Cinema">Film & Cinema</option>
+                  <option value="Literature & Writing">
+                    Literature & Writing
                   </option>
                   <option value="Travel & Adventure">Travel & Adventure</option>
-                  <option value="Photography & Videography">
-                    Photography & Videography
+                  <option value="Environmental Conservation">
+                    Environmental Conservation
+                  </option>
+                  <option value="Mindfulness & Wellness">
+                    Mindfulness & Wellness
+                  </option>
+                  <option value="History & Archaeology">
+                    History & Archaeology
+                  </option>
+                  <option value="Fashion & Design">Fashion & Design</option>
+                  <option value="Gaming & eSports">Gaming & eSports</option>
+                  <option value="Photography & Visual Arts">
+                    Photography & Visual Arts
+                  </option>
+                  <option value="Science & Exploration">
+                    Science & Exploration
                   </option>
                 </select>
               </div>

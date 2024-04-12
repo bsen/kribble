@@ -5,7 +5,7 @@ import { BACKEND_URL } from "../../config";
 import { TopBar } from "../Mobile/TopBar";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import { CircularProgress } from "@mui/material";
-import MarkUnreadChatAltRoundedIcon from "@mui/icons-material/MarkUnreadChatAltRounded";
+import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 interface Post {
   id: string;
   creator: {
@@ -36,7 +36,7 @@ export const PostsHome = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `http://localhost:8787/api/server/v1/post/paginated-allposts`,
+        `${BACKEND_URL}/api/server/v1/post/paginated-allposts`,
         { token, cursor }
       );
       setPostData({
@@ -116,13 +116,11 @@ export const PostsHome = () => {
                     />
                   </div>
                   <div>
-                    <div className="mt-2 flex gap-2 text-blue-500">
+                    <div className="mt-2 flex gap-2 text-neutral-600">
                       <Link to={`/post/${post.id}`}>
-                        <MarkUnreadChatAltRoundedIcon sx={{ fontSize: 20 }} />
+                        <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 20 }} />
                       </Link>
-                      <div className="text-blue-500">
-                        {post.comments.length}
-                      </div>
+                      <div>{post.comments.length}</div>
                     </div>
                   </div>
                 </div>
