@@ -8,7 +8,7 @@ export const Post = () => {
       <div className="w-[25%] max-lg:hidden">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-[45%]">
+      <div className="w-full lg:w-[45%] h-screen max-lg:my-14 overflow-y-auto no-scrollbar">
         <PostPage />
       </div>
 
