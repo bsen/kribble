@@ -30,12 +30,10 @@ postRouter.post("/paginated-allposts", async (c) => {
     const cursor = body.cursor || null;
     const take = 5;
     const allPosts = await prisma.post.findMany({
-      include: {
-        comments: {
-          select: {
-            creatorId: true,
-          },
-        },
+      select: {
+        id: true,
+        image: true,
+        content: true,
         creator: {
           select: {
             id: true,
@@ -44,6 +42,8 @@ postRouter.post("/paginated-allposts", async (c) => {
             image: true,
           },
         },
+        createdAt: true,
+        commentsCount: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -57,7 +57,7 @@ postRouter.post("/paginated-allposts", async (c) => {
     const nextCursor = hasMore ? allPosts[allPosts.length - 1].id : null;
     return c.json({
       status: 200,
-      message: posts,
+      data: posts,
       nextCursor,
     });
   } catch (error) {
@@ -298,6 +298,19 @@ postRouter.post("/create-comment", async (c) => {
     });
     if (!createComment) {
       return c.json({ status: 400, message: "Failed to comment" });
+    }
+    const incCount = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        commentsCount: {
+          increment: 1,
+        },
+      },
+    });
+    if (!incCount) {
+      return c.json({ status: 400, message: "Comment count increment failed" });
     }
     return c.json({ satus: 200, message: "Commnet created successfully" });
   } catch (error) {
