@@ -75,28 +75,14 @@ export const EditProfile = () => {
   };
   async function updateProfile() {
     try {
-      if (!bio) {
-        setBio("Bio");
-      }
-      if (!website) {
-        setWebsite("Website");
-      }
-      if (!interest) {
-        setInterest("Interest");
-      }
-
-      if (
-        name.length == 0 ||
-        bio.length == 0 ||
-        interest.length == 0 ||
-        website.length == 0
-      ) {
-      }
       const file = profileImg;
       const newName = name !== "" ? name : userData.name;
       const newBio = bio !== "" ? bio : userData.bio;
       const newWebsite = website !== "" ? website : userData.website;
       const newInterest = interest !== "" ? interest : userData.interest;
+      console.log(typeof bio);
+
+      console.log(typeof newBio);
       const formdata = new FormData();
       formdata.append("image", file ? file : "");
       formdata.append("name", newName);

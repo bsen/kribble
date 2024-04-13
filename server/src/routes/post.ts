@@ -341,4 +341,8 @@ postRouter.post("/delete-comment", async (c) => {
       id: commentId,
     },
   });
+  if (!deleteComment) {
+    return c.json({ status: 400, message: "Comment deletion failed" });
+  }
+  return c.json({ status: 200, message: "Comment Deleted successfully" });
 });
