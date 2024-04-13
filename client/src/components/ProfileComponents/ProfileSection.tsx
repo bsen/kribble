@@ -239,18 +239,16 @@ export const ProfileSection: React.FC = () => {
                     </div>
 
                     <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
-                      {userData.bio ? userData.bio : "your bio"}
+                      {userData.bio ? userData.bio : "bio"}
                     </div>
                     <div className="">
                       <div className="text-sm text-secondarytextcolor font-light hover:underline">
                         <a href={userData.website ? userData.website : ""}>
-                          {userData.website ? userData.website : "your website"}
+                          {userData.website ? userData.website : "website"}
                         </a>
                       </div>
                       <div className="text-sm lg:text-base text-secondarytextcolor font-light">
-                        {userData.interest
-                          ? userData.interest
-                          : "your interests"}
+                        {userData.interest ? userData.interest : "interests"}
                       </div>
                     </div>
                     <div className="flex gap-4 my-2">
