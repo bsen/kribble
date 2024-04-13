@@ -142,7 +142,7 @@ export const CreatePostComponent = () => {
                   placeholder="write your thoughts..."
                   wrap="soft"
                   minLength={10}
-                  maxLength={250}
+                  maxLength={300}
                   onChange={(e) => {
                     setPost(e.target.value);
                   }}

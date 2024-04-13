@@ -7,6 +7,8 @@ import { useParams, Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
+
 interface Post {
   id: string;
   creator: {
@@ -18,6 +20,7 @@ interface Post {
   content: string;
   image: string;
   createdAt: string;
+  commentsCount: string;
 }
 
 export const ProfileSection: React.FC = () => {
@@ -273,7 +276,7 @@ export const ProfileSection: React.FC = () => {
                   postData.posts.map((post, index) => (
                     <div
                       key={index}
-                      className="border-b border-neutral-200 p-2 lg:p-5"
+                      className="border-b border-neutral-200 p-3"
                     >
                       <div>
                         <div className="flex gap-2">
@@ -316,16 +319,27 @@ export const ProfileSection: React.FC = () => {
                                 </button>
                               </div>
                             </div>
-                            <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
+                            <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
                               {post.content}
                             </div>
                             <div>
                               <img
                                 src={post.image}
-                                className="max-h-[80vh] max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
+                                className="max-h-[80vh] mt-2 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
                               />
                             </div>
+                            <div>
+                              <div className="flex gap-2 text-neutral-600"></div>
+                            </div>
                           </div>
+                        </div>
+                        <div className="flex gap-2 justify-end text-sm text-neutral-500">
+                          <Link to={`/post/${post.id}`}>
+                            <ChatBubbleOutlineRoundedIcon
+                              sx={{ fontSize: 17 }}
+                            />
+                          </Link>
+                          <div>{post.commentsCount}</div>
                         </div>
                       </div>
                     </div>

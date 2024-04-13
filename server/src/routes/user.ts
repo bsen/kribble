@@ -117,7 +117,10 @@ userRouter.post("/posts", async (c) => {
 
     const userposts = await prisma.post.findMany({
       where: { creatorId: findUser?.id },
-      include: {
+      select: {
+        id: true,
+        image: true,
+        content: true,
         creator: {
           select: {
             id: true,
@@ -126,6 +129,8 @@ userRouter.post("/posts", async (c) => {
             image: true,
           },
         },
+        createdAt: true,
+        commentsCount: true,
       },
       orderBy: {
         createdAt: "desc",

@@ -137,7 +137,7 @@ export const PostPage = () => {
               <div>
                 <img
                   src={postData.image}
-                  className="max-h-[80vh] max-w:w-[100%]  rounded-lg border border-neutral-200"
+                  className="max-h-[60vh]   rounded-lg border border-neutral-200"
                 />
               </div>
               <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
@@ -157,7 +157,7 @@ export const PostPage = () => {
                   setPopup(false);
                   setComment(e.target.value);
                 }}
-                maxLength={250}
+                maxLength={300}
                 placeholder="Post a reply"
               />
               <div>
@@ -171,37 +171,45 @@ export const PostPage = () => {
             </div>
           </div>
           {postComments.map((comment) => (
-            <div
-              key={comment.id}
-              className="px-4 py-2 border-b border-neutral-200"
-            >
-              <div className="flex gap-2 items-center">
-                <Link
-                  to={`/${comment.creator.username}`}
-                  className="flex gap-2 items-center"
-                >
-                  <img
-                    src={
-                      comment.creator.image
-                        ? comment.creator.image
-                        : "/user.png"
-                    }
-                    alt="Profile"
-                    className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
-                  />
-                  <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                    {comment.creator.name}
-                  </div>
-                  <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                    @{comment.creator.username}
-                  </div>{" "}
-                </Link>
-                <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                  · {new Date(comment.createdAt).toLocaleString()}
+            <div key={comment.id} className="p-3 border-b border-neutral-200">
+              <div className="flex gap-2">
+                <div>
+                  <Link to={`/${comment.creator.username}`}>
+                    <img
+                      src={
+                        comment.creator.image
+                          ? comment.creator.image
+                          : "/user.png"
+                      }
+                      alt="Profile"
+                      className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                    />
+                  </Link>
                 </div>
-              </div>
-              <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
-                {comment.content}
+                <div className="w-[80%]">
+                  <div className="flex gap-2 items-center">
+                    <Link to={`/${comment.creator.username}`}>
+                      <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                        {comment.creator.name}
+                      </div>
+                    </Link>
+                    <Link to={`/${comment.creator.username}`}>
+                      <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
+                        @{comment.creator.username}
+                      </div>
+                    </Link>
+                    <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                      · {comment.createdAt.slice(0, 10)}
+                    </div>
+                  </div>
+                  <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
+                    {comment.content}
+                  </div>
+
+                  <div>
+                    <div className="flex gap-2 text-neutral-600"></div>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
