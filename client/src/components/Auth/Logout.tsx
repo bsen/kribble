@@ -4,7 +4,6 @@ export const Logout = () => {
   const navigate = useNavigate();
   function logout() {
     localStorage.removeItem("token");
-    localStorage.removeItem("storageUser");
     navigate("/login");
   }
   return (
