@@ -76,13 +76,11 @@ export const EditProfile = () => {
   async function updateProfile() {
     try {
       const file = profileImg;
-      const newName = name !== "" ? name : userData.name;
-      const newBio = bio !== "" ? bio : userData.bio;
-      const newWebsite = website !== "" ? website : userData.website;
-      const newInterest = interest !== "" ? interest : userData.interest;
-      console.log(typeof bio);
+      let newName = name || userData.name || "";
+      let newBio = bio || userData.bio || "bio";
+      let newWebsite = website || userData.website || "website";
+      let newInterest = interest || userData.interest || "interest";
 
-      console.log(typeof newBio);
       const formdata = new FormData();
       formdata.append("image", file ? file : "");
       formdata.append("name", newName);
