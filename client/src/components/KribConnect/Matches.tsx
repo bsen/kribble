@@ -34,8 +34,8 @@ export const Matches = () => {
           "p-2 flex  items-center text-center w-full justify-center gap-2 "
         }
       >
-        <GroupIcon className={"text-pink-500"} />
-        <p className={"text-pink-500"}>Matches</p>
+        <GroupIcon className={"text-green-600"} />
+        <p className={"text-green-600"}>Matches</p>
       </div>
 
       {matchedUsers.length > 0 ? (

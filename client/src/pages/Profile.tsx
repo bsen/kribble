@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/Sidebar";
-import { MatchMakerPage } from "../components/MatchMaker/MatchMakerPage";
+import { KribConnectPage } from "../components/KribConnect/KribConectPage";
 import { ProfileSection } from "../components/ProfileComponents/ProfileSection";
 export const Profile = () => {
   return (
@@ -12,7 +12,7 @@ export const Profile = () => {
       </div>
 
       <div className="w-[30%] max-lg:hidden">
-        <MatchMakerPage />
+        <KribConnectPage />
       </div>
     </div>
   );

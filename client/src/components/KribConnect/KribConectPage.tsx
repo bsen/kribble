@@ -1,4 +1,4 @@
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import MaleIcon from "@mui/icons-material/Male";
@@ -6,11 +6,12 @@ import FemaleIcon from "@mui/icons-material/Female";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import { BACKEND_URL } from "../../config";
 import { useEffect, useState } from "react";
-import { LoadingPage } from "../LoadingPage";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import { Matches } from "./Matches";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import { CircularProgress } from "@mui/material";
 
-export const MatchMakerPage = () => {
+export const KribConnectPage = () => {
   const token = localStorage.getItem("token");
   const [MatchesComponent, setMatchesComponent] = useState(false);
   const [loadingState, setLoadingState] = useState(false);
@@ -22,12 +23,14 @@ export const MatchMakerPage = () => {
     name: string;
     username: string;
     bio: string;
+    interest: string;
     image: string;
   }>({
     id: "",
     name: "",
     username: "",
     bio: "",
+    interest: "",
     image: "",
   });
 
@@ -36,7 +39,7 @@ export const MatchMakerPage = () => {
     const gender = selectGender;
     if (gender == "") {
       console.log(gender);
-      return setPopup("please select a gender for matching");
+      return setPopup("Please select a gender for connecting");
     }
     setLoadingState(true);
     try {
@@ -109,12 +112,14 @@ export const MatchMakerPage = () => {
                 ""
               )}
             </div>
-            <div>Match Maker</div>
+            <div>KribConnect</div>
           </div>
         </div>
         <div>
           {loadingState ? (
-            <LoadingPage />
+            <div className="h-[80vh] bg-background flex justify-center items-center w-full">
+              <CircularProgress />
+            </div>
           ) : (
             <div>
               {MatchesComponent ? (
@@ -146,6 +151,8 @@ export const MatchMakerPage = () => {
 
                           <div className="font-light text-sm text-secondarytextcolor m-2 w-full">
                             {matchUserData.bio}
+                            <br />
+                            {matchUserData.interest}
                           </div>
                         </div>
 
@@ -153,22 +160,22 @@ export const MatchMakerPage = () => {
                           <div>
                             <button
                               onClick={searchPeople}
-                              className="bg-background border font-ubuntu font-light border-neutral-200 text-blue-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                              className="bg-background hover:bg-blue-50 border font-ubuntu font-light border-neutral-200 text-blue-600 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                             >
                               <div className="flex items-center justify-evenly">
                                 <div>Pass</div>
-                                <CloseIcon className="text-blue-500" />
+                                <CloseIcon className="text-blue-600" />
                               </div>
                             </button>
                           </div>
                           <div>
                             <button
                               onClick={match}
-                              className="bg-background border font-ubuntu font-light border-neutral-200 text-pink-500 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                              className="bg-background hover:bg-green-50 border font-ubuntu font-light border-neutral-200 text-green-600 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
                             >
                               <div className="flex items-center justify-evenly">
-                                <div>Date</div>
-                                <FavoriteIcon className="text-pink-500" />
+                                <div>Connect</div>
+                                <DoneIcon className="text-green-600" />
                               </div>
                             </button>
                           </div>
@@ -179,28 +186,30 @@ export const MatchMakerPage = () => {
                     <div>
                       <div className="text-center font-light font-ubuntu px-6  text-xs  text-secondarytextcolor">
                         <div className="w-full flex justify-center items-center">
-                          <img src="/love.png" className=" h-12 w-12" />
+                          <PeopleAltIcon
+                            sx={{ fontSize: 40 }}
+                            className="text-blue-500"
+                          />
                         </div>
                         <div className="text-center font-semibold font-ubuntu px-6 my-3  text-lg text-primarytextcolor">
-                          start matching with kribble
+                          Start Connecting with Kribble{" "}
                         </div>
                         <div className="text-secondarytextcolor">
-                          1. Your profile picture will be used for matching.
-                          <br /> 2. Your bio will be shown in the matching.
-                          <br />
+                          Your profile picture, bio and interest will be used
+                          for connecting.
                           <button
                             onClick={() => {
                               setMatchesComponent(true);
                             }}
                           >
-                            <div className="text-pink-500 m-4 border border-blue-300   bg-blue-300 shadow-sm px-4 py-1 rounded-full text-base font-ubuntu font-semibold">
-                              Check matches
+                            <div className="text-green-600 m-4  bg-white shadow-md px-4 py-2 border border-neutral-100 rounded-full text-base font-ubuntu font-semibold">
+                              Browse Matches
                             </div>
                           </button>
                         </div>
                       </div>
                       <div className="text-center font-ubuntu text-sm text-secondarytextcolor">
-                        Select the gender you want to match with
+                        Select your preference for connection
                       </div>
                       <div className="flex justify-center gap-5 my-5">
                         <button
@@ -211,7 +220,7 @@ export const MatchMakerPage = () => {
                     ${
                       selectGender == "male"
                         ? "text-blue-500 border border-blue-500 bg-blue-100"
-                        : "text-blue-800 border border-blue-800"
+                        : "text-blue-600 border border-blue-600"
                     }`}
                         >
                           <MaleIcon sx={{ fontSize: 35 }} />
@@ -224,7 +233,7 @@ export const MatchMakerPage = () => {
                     ${
                       selectGender == "female"
                         ? "text-pink-500 border border-pink-500 bg-pink-100"
-                        : "text-pink-800 border border-pink-800"
+                        : "text-pink-600 border border-pink-600"
                     }`}
                         >
                           <FemaleIcon sx={{ fontSize: 35 }} />
@@ -236,7 +245,7 @@ export const MatchMakerPage = () => {
                             className="text-background bg-blue-600 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-800"
                             onClick={searchPeople}
                           >
-                            start matching
+                            Start Connecting
                           </button>
                         </div>
                       </div>

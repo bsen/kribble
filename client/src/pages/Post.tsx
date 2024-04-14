@@ -1,4 +1,4 @@
-import { MatchMakerPage } from "../components/MatchMaker/MatchMakerPage";
+import { KribConnectPage } from "../components/KribConnect/KribConectPage";
 import { PostPage } from "../components/PostPage";
 import { Sidebar } from "../components/Sidebar";
 
@@ -13,7 +13,7 @@ export const Post = () => {
       </div>
 
       <div className="w-[30%] max-lg:hidden">
-        <MatchMakerPage />
+        <KribConnectPage />
       </div>
     </div>
   );

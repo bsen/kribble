@@ -4,7 +4,7 @@ import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
 import { CreatePost } from "./pages/CreatePost";
-import { MatchMaker } from "./pages/MatchMaker";
+import { KribConnect } from "./pages/KribConnect";
 import { Post } from "./pages/Post";
 interface ProtectedRouteProps {
   element: React.ReactNode;
@@ -39,7 +39,7 @@ function App() {
           />
           <Route
             path="matchmaker"
-            element={<ProtectedRoute element={<MatchMaker />} />}
+            element={<ProtectedRoute element={<KribConnect />} />}
           />
         </Routes>
       </BrowserRouter>

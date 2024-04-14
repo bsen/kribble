@@ -39,7 +39,6 @@ export const PostsHome = () => {
         `${BACKEND_URL}/api/server/v1/post/paginated-allposts`,
         { token, cursor }
       );
-      console.log(response.data.data);
       setPostData({
         posts: [...postData.posts, ...response.data.data],
         nextCursor: response.data.nextCursor,
