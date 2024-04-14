@@ -202,7 +202,7 @@ export const KribConnectPage = () => {
                               setMatchesComponent(true);
                             }}
                           >
-                            <div className="text-green-600 m-4  bg-white shadow-md px-4 py-1 rounded-full text-base font-ubuntu font-semibold">
+                            <div className="text-green-600 m-4  bg-white shadow-md px-4 py-2 border border-neutral-100 rounded-full text-base font-ubuntu font-semibold">
                               Browse Matches
                             </div>
                           </button>
