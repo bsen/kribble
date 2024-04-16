@@ -10,7 +10,6 @@ import { BottomButtons } from "../Mobile/BottomButtons";
 import { Matches } from "./Matches";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { CircularProgress } from "@mui/material";
-import { LoadingPage } from "../LoadingPage";
 
 export const KribConnectPage = () => {
   const token = localStorage.getItem("token");
