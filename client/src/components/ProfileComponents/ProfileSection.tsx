@@ -7,6 +7,7 @@ import { useParams, Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { CommentsPage } from "./CommentsPage";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 
 interface Post {
@@ -368,7 +369,7 @@ export const ProfileSection: React.FC = () => {
                   )}
                 </div>
               ) : (
-                <div className="text-center">Comments here</div>
+                <CommentsPage />
               )}
 
               {isLoading && (

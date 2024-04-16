@@ -156,6 +156,34 @@ userRouter.post("/posts", async (c) => {
     console.log(error);
   }
 });
+userRouter.post("/comments", async (c) => {
+  const body = await c.req.json();
+  const token = body.token;
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const userId = await verify(token, c.env.JWT_SECRET);
+  const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+  if (!findUser) {
+    return c.json({ status: 400, message: "User not authenticated" });
+  }
+  const findComments = await prisma.comment.findMany({
+    where: {
+      creatorId: findUser.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  if (!findComments) {
+    return c.json({ status: 404, message: "Comments not found" });
+  }
+  console.log(userId);
+  console.log(findUser);
+  console.log(findComments);
+  return c.json({ status: 200, message: findComments });
+});
 userRouter.post("/profile/update", async (c) => {
   try {
     const formData = await c.req.formData();

@@ -10,6 +10,7 @@ import { BottomButtons } from "../Mobile/BottomButtons";
 import { Matches } from "./Matches";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { CircularProgress } from "@mui/material";
+import { LoadingPage } from "../LoadingPage";
 
 export const KribConnectPage = () => {
   const token = localStorage.getItem("token");
@@ -18,6 +19,7 @@ export const KribConnectPage = () => {
   const [selectGender, setSelectGender] = useState("");
   const [matchingState, setMatchingState] = useState(false);
   const [popup, setPopup] = useState("");
+
   const [matchUserData, setMatchUserData] = useState<{
     id: string;
     name: string;
@@ -187,8 +189,8 @@ export const KribConnectPage = () => {
                       <div className="text-center font-light font-ubuntu px-6  text-xs  text-secondarytextcolor">
                         <div className="w-full flex justify-center items-center">
                           <PeopleAltIcon
-                            sx={{ fontSize: 40 }}
-                            className="text-blue-500"
+                            sx={{ fontSize: 60 }}
+                            className="text-blue-600 p-1 rounded-full"
                           />
                         </div>
                         <div className="text-center font-semibold font-ubuntu px-6 my-3  text-lg text-primarytextcolor">
@@ -202,15 +204,13 @@ export const KribConnectPage = () => {
                               setMatchesComponent(true);
                             }}
                           >
-                            <div className="text-green-600 m-4  bg-white shadow-md px-4 py-2 border border-neutral-100 rounded-full text-base font-ubuntu font-semibold">
+                            <div className="text-primarytextcolor m-4  bg-white shadow-md px-4 py-2 border border-neutral-100 rounded-full text-base font-ubuntu font-semibold">
                               Browse Matches
                             </div>
                           </button>
                         </div>
                       </div>
-                      <div className="text-center font-ubuntu text-sm text-secondarytextcolor">
-                        Select your preference for connection
-                      </div>
+
                       <div className="flex justify-center gap-5 my-5">
                         <button
                           onClick={() => {
