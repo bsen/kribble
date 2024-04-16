@@ -272,7 +272,11 @@ export const ProfileSection: React.FC = () => {
                         onClick={() => {
                           setPostComponent(true);
                         }}
-                        className="text-secondarytextcolor text-sm underline underline-offset-2"
+                        className={`text-sm underline underline-offset-2 ${
+                          postComponent
+                            ? "text-blue-600"
+                            : "text-secondarytextcolor"
+                        }`}
                       >
                         Posts
                       </button>
@@ -280,7 +284,11 @@ export const ProfileSection: React.FC = () => {
                         onClick={() => {
                           setPostComponent(false);
                         }}
-                        className="text-secondarytextcolor text-sm underline underline-offset-2"
+                        className={`text-sm underline underline-offset-2 ${
+                          postComponent
+                            ? "text-secondarytextcolor"
+                            : "text-blue-600"
+                        }`}
                       >
                         Comments
                       </button>

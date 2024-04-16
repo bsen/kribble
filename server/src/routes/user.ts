@@ -179,9 +179,6 @@ userRouter.post("/comments", async (c) => {
   if (!findComments) {
     return c.json({ status: 404, message: "Comments not found" });
   }
-  console.log(userId);
-  console.log(findUser);
-  console.log(findComments);
   return c.json({ status: 200, message: findComments });
 });
 userRouter.post("/profile/update", async (c) => {
