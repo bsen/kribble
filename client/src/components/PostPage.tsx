@@ -135,10 +135,14 @@ export const PostPage = () => {
 
             <div>
               <div>
-                <img
-                  src={postData.image}
-                  className="max-h-[60vh]   rounded-lg border border-neutral-200"
-                />
+                {postData.image ? (
+                  <img
+                    src={postData.image}
+                    className="max-h-[60vh]   rounded-lg border border-neutral-200"
+                  />
+                ) : (
+                  ""
+                )}
               </div>
               <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
                 {postData.content}

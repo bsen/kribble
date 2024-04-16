@@ -35,14 +35,14 @@ export const ButtonsSidebar = () => {
               sx={{ fontSize: 30 }}
               className={`${
                 location.pathname === "/home"
-                  ? "text-blue-500"
+                  ? "text-blue-600"
                   : "text-primarytextcolor"
               }`}
             />
             <p
               className={`text-lg font-medium max-lg:hidden ${
                 location.pathname === "/home"
-                  ? "text-blue-500"
+                  ? "text-blue-600"
                   : "text-primarytextcolor"
               }`}
             >
@@ -59,14 +59,14 @@ export const ButtonsSidebar = () => {
                 sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === `/${currentUser}`
-                    ? "text-blue-500"
+                    ? "text-blue-600"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
                   location.pathname === `/${currentUser}`
-                    ? "text-blue-500"
+                    ? "text-blue-600"
                     : "text-primarytextcolor"
                 }`}
               >
@@ -84,7 +84,7 @@ export const ButtonsSidebar = () => {
         >
           <div
             className={
-              "mt-4 px-6 py-1 rounded-full bg-blue-500 flex items-center justify-center gap-2 text-lg font-medium  text-white"
+              "mt-4 px-6 py-1 rounded-full bg-blue-600 flex items-center justify-center gap-2 text-lg font-medium  text-white"
             }
           >
             <PostAddIcon sx={{ fontSize: 30 }} />
