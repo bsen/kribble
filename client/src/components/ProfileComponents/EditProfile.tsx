@@ -185,6 +185,7 @@ export const EditProfile = () => {
                 <div className="text-primarytextcolor">Website</div>
                 <input
                   type="link"
+                  maxLength={40}
                   defaultValue={userData.website}
                   onChange={(e) => {
                     setWebsite(e.target.value);
@@ -204,12 +205,7 @@ export const EditProfile = () => {
                   </option>
                   <option value="Outdoor Activities">Outdoor Activities</option>
                   <option value="Healthy Living">Healthy Living</option>
-                  <option value="Exploring New Cultures">
-                    Exploring New Cultures
-                  </option>
-                  <option value="Cooking & Gastronomy">
-                    Cooking & Gastronomy
-                  </option>
+
                   <option value="Art & Creativity">Art & Creativity</option>
                   <option value="Music & Dance">Music & Dance</option>
                   <option value="Technology & Innovation">
@@ -225,9 +221,6 @@ export const EditProfile = () => {
                   <option value="Travel & Adventure">Travel & Adventure</option>
                   <option value="Environmental Conservation">
                     Environmental Conservation
-                  </option>
-                  <option value="Mindfulness & Wellness">
-                    Mindfulness & Wellness
                   </option>
                   <option value="History & Archaeology">
                     History & Archaeology
@@ -249,7 +242,7 @@ export const EditProfile = () => {
                   className="w-full p-2  rounded-lg border border-neutral-200"
                   defaultValue={userData.bio}
                   wrap="soft"
-                  maxLength={160}
+                  maxLength={150}
                   onChange={(e) => {
                     setBio(e.target.value);
                   }}
