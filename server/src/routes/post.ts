@@ -231,11 +231,14 @@ postRouter.post("/post-data", async (c) => {
     console.log(error);
   }
 });
+
 postRouter.post("/post-comments", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
     const postId = body.postId;
+    const cursor = body.cursor || null;
+    const take = 10;
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -260,11 +263,16 @@ postRouter.post("/post-comments", async (c) => {
       orderBy: {
         createdAt: "desc",
       },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: take + 1,
     });
-    if (!findComments) {
-      return c.json({ status: 401, message: "Post not found" });
-    }
-    return c.json({ status: 200, message: "Post found", data: findComments });
+    const hasMore = findComments.length > take;
+    const comments = hasMore ? findComments.slice(0, -1) : findComments;
+    const nextCursor = hasMore
+      ? findComments[findComments.length - 1].id
+      : null;
+    console.log(comments);
+    return c.json({ status: 200, data: comments, nextCursor });
   } catch (error) {
     console.log(error);
   }
