@@ -8,6 +8,7 @@ import { CircularProgress } from "@mui/material";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CommentsPage } from "./CommentsPage";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 
 interface Post {
@@ -198,12 +199,20 @@ export const ProfileSection: React.FC = () => {
               ) : (
                 <div className="px-5 py-2 border-b border-neutral-200">
                   <div className="flex justify-between items-center">
-                    <div>
+                    <div className="flex  items-center gap-4">
                       <img
                         src={userData.image ? userData.image : "/user.png"}
                         alt="Profile"
                         className="w-20 h-20 lg:w-24 lg:h-24 rounded-full"
                       />
+                      <div>
+                        <div className="text-lg lg:text-xl font-semibold text-primarytextcolor">
+                          {userData.name}
+                        </div>
+                        <div className="text-sm text-secondarytextcolor font-light">
+                          @{userData.username}
+                        </div>
+                      </div>
                     </div>
                     {currentUser === username ? (
                       <button
@@ -211,9 +220,7 @@ export const ProfileSection: React.FC = () => {
                           setProfileEditingState(true);
                         }}
                       >
-                        <div className="text-primarytextcolor text-sm font-ubuntu border border-secondarytextcolor hover:bg-neutral-50 rounded-full py-1 px-4">
-                          profile settings
-                        </div>
+                        <MoreVertIcon />
                       </button>
                     ) : (
                       <div>
@@ -233,27 +240,21 @@ export const ProfileSection: React.FC = () => {
                     )}
                   </div>
                   <div className="my-2">
-                    <div className="text-lg lg:text-xl font-semibold text-primarytextcolor">
-                      {userData.name}
-                    </div>
-                    <div className="text-sm text-secondarytextcolor font-light">
-                      @{userData.username}
-                    </div>
-
                     <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
                       {userData.bio ? userData.bio : "bio"}
                     </div>
                     <div className="">
-                      <div className="text-sm text-secondarytextcolor font-light hover:underline">
+                      <div className="text-sm text-blue-600 font-light hover:underline">
                         <a href={userData.website ? userData.website : ""}>
-                          {userData.website ? userData.website : "website"}
+                          {userData.website ? userData.website : "website"}{" "}
+                          <OpenInNewIcon sx={{ fontSize: 15 }} />
                         </a>
                       </div>
-                      <div className="text-sm lg:text-base text-secondarytextcolor font-light">
+                      <div className="text-sm text-secondarytextcolor font-light">
                         {userData.interest ? userData.interest : "interests"}
                       </div>
                     </div>
-                    <div className="flex gap-4 my-2">
+                    <div className="flex gap-4 my-2 font-ubuntu text-sm">
                       <div className="flex gap-2 items-center">
                         <div className="text-primarytextcolor">
                           {userData.followers.length}
@@ -272,7 +273,7 @@ export const ProfileSection: React.FC = () => {
                         onClick={() => {
                           setPostComponent(true);
                         }}
-                        className={`text-sm underline underline-offset-2 ${
+                        className={`text-sm font-ubuntu font-semibold ${
                           postComponent
                             ? "text-blue-600"
                             : "text-secondarytextcolor"
@@ -284,7 +285,7 @@ export const ProfileSection: React.FC = () => {
                         onClick={() => {
                           setPostComponent(false);
                         }}
-                        className={`text-sm underline underline-offset-2 ${
+                        className={`text-sm font-ubuntu font-semibold ${
                           postComponent
                             ? "text-secondarytextcolor"
                             : "text-blue-600"
