@@ -114,6 +114,7 @@ export const CommentsPage = () => {
                     onClick={() => {
                       setCommentDeleteState(false);
                       setCommentDeleteId("");
+                      setPostId("");
                     }}
                     className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
                   >
