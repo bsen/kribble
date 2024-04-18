@@ -198,6 +198,7 @@ export const KribConnectPage = () => {
                         <div className="text-secondarytextcolor">
                           Your profile picture, bio and interest will be used
                           for connecting.
+                          <br />
                           <button
                             onClick={() => {
                               setMatchesComponent(true);

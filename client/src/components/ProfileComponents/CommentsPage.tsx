@@ -97,7 +97,7 @@ export const CommentsPage = () => {
       ) : (
         <div>
           {commentDeleteState ? (
-            <div className="w-full h-screen flex justify-center items-center">
+            <div className="w-full h-[65vh] flex justify-center items-center">
               <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
                 Do you really want to delete the comment?
                 <span className="text-xs font-light text-neutral-400">
@@ -114,6 +114,7 @@ export const CommentsPage = () => {
                     onClick={() => {
                       setCommentDeleteState(false);
                       setCommentDeleteId("");
+                      setPostId("");
                     }}
                     className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
                   >
