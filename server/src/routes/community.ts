@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, verify } from "hono/jwt";
-import { date, z } from "zod";
+import { date, string, z } from "zod";
 export const communityRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -16,9 +16,9 @@ export const communityRouter = new Hono<{
 communityRouter.post("/create", async (c) => {
   const body = await c.req.json();
   const token = body.token;
-  const communityName = body.communityName;
-  const communityType = body.communityType;
-  const communityDescription = body.communityDescription;
+  const name = body.name;
+  const catagory = body.catagory;
+  const description = body.description;
   const userId = await verify(token, c.env.JWT_SECRET);
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -32,4 +32,20 @@ communityRouter.post("/create", async (c) => {
   if (!findUser) {
     return c.json({ status: 400, message: "Authentication error" });
   }
+  const createCommunity = await prisma.community.create({
+    data: {
+      creatorId: findUser.id,
+      name: name,
+      description: description,
+      category: catagory,
+    },
+  });
+
+  if (!createCommunity) {
+    return c.json({ status: 400, message: "Failed to create a new community" });
+  }
+  return c.json({
+    status: 200,
+    message: "Successfully created a new community",
+  });
 });

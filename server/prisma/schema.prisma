@@ -34,7 +34,9 @@ model Community {
   id             String    @id @default(uuid())
   name           String
   description    String
+  image          String?
   category       String
+  createdAt      DateTime  @default(now())
   creator        User      @relation("Creator", fields: [creatorId], references: [id])
   creatorId      String
   posts          Post[]    @relation("CommunityPosts")
