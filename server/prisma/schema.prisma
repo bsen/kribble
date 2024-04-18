@@ -8,92 +8,80 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(uuid())
-  name          String
-  email         String     @unique
-  username      String     @unique
-  gender        String
-  password      String
-  bio           String?
-  image         String?
-  website       String?
-  interest      String?
-  createdAt     DateTime   @default(now())
-  posts         Post[]     @relation("UserPosts")
-  community   Community     @relation("CommunityUsers", fields: [communityId], references: [id])
-  communityId String
-  communities   Community[] @relation("UserCommunity")
-  comments      Comment[]  @relation("Comments")
-  following     Following[] @relation("FollowerRelation")
-  followers     Following[] @relation("FollowingRelation")
-  interestedIn  Matching[] @relation("PersonMatchingRelation")
-  interestedBy  Matching[] @relation("InterestedInMatchingRelation")
-  matchedUsers  String[]   
+  id             String     @id @default(uuid())
+  name           String
+  email          String     @unique
+  username       String     @unique
+  gender         String
+  password       String
+  bio            String?
+  image          String?
+  website        String?
+  interest       String?
+  createdAt      DateTime   @default(now())
+  posts          Post[]     @relation("UserPosts")
+  createdCommunities  Community[] @relation("Creator")
+  joinedCommunities   Community[] @relation("Members")
+  comments       Comment[]  @relation("Comments")
+  following      Following[] @relation("FollowerRelation")
+  followers      Following[] @relation("FollowingRelation")
+  interestedIn   Matching[] @relation("PersonMatchingRelation")
+  interestedBy   Matching[] @relation("InterestedInMatchingRelation")
+  matchedUsers   String[]
 }
 
 model Community {
-  id     String @id @default(uuid())
-   name String
-   description String
-   catagory String
-
-  creator User @relation("UserCommunity", fields: [creatrorId],references: [id])
-  creatrorId String
-  posts    Post[] @relation("CommunityPosts")
-  postsCount Int @default(0)
-  followers  User[] @relation("CommunityUsers")
-  followerCounr Int @default(0)
+  id             String    @id @default(uuid())
+  name           String
+  description    String
+  category       String
+  creator        User      @relation("Creator", fields: [creatorId], references: [id])
+  creatorId      String
+  posts          Post[]    @relation("CommunityPosts")
+  postsCount     Int       @default(0)
+  members        User[]    @relation("Members")
+  memberCount    Int       @default(0)
 }
-
-
-
-
-
 
 model Post {
-  id        String   @id @default(uuid())
-  image     String?
-  content   String
-  creator   User     @relation("UserPosts", fields: [creatorId], references: [id])
-  creatorId String
-  createdAt DateTime @default(now())
-  comments  Comment[] @relation("PostComments")
-  community   Community     @relation("CommunityPosts", fields: [communityId], references: [id])
-  communityId String
-  commentsCount Int @default(0)
+  id             String    @id @default(uuid())
+  image          String?
+  content        String
+  creator        User      @relation("UserPosts", fields: [creatorId], references: [id])
+  creatorId      String
+  createdAt      DateTime  @default(now())
+  comments       Comment[] @relation("PostComments")
+  community      Community @relation("CommunityPosts", fields: [communityId], references: [id])
+  communityId    String
+  commentsCount  Int       @default(0)
 }
 
-
-
-
-
-
-
 model Comment {
-  id         String   @id @default(uuid())
-  content    String
-  creator    User     @relation("Comments", fields: [creatorId], references: [id])
-  creatorId  String
-  post       Post     @relation("PostComments", fields: [postId], references: [id])
-  postId     String
-  createdAt  DateTime @default(now())
+  id             String   @id @default(uuid())
+  content        String
+  creator        User     @relation("Comments", fields: [creatorId], references: [id])
+  creatorId      String
+  post           Post     @relation("PostComments", fields: [postId], references: [id])
+  postId         String
+  createdAt      DateTime @default(now())
 }
 
 model Following {
-  follower    User @relation("FollowerRelation", fields: [followerId], references: [id])
-  followerId  String
-  following   User @relation("FollowingRelation", fields: [followingId], references: [id])
-  followingId String
+  follower       User @relation("FollowerRelation", fields: [followerId], references: [id])
+  followerId     String
+  following      User @relation("FollowingRelation", fields: [followingId], references: [id])
+  followingId    String
+
   @@id([followerId, followingId])
 }
 
 model Matching {
-  id              String   @id @default(uuid())
-  person          User     @relation("PersonMatchingRelation", fields: [personId], references: [id])
-  personId        String
-  interestedIn    User     @relation("InterestedInMatchingRelation", fields: [interestedInId], references: [id])
-  interestedInId  String
-  createdAt       DateTime @default(now())
+  id             String   @id @default(uuid())
+  person         User     @relation("PersonMatchingRelation", fields: [personId], references: [id])
+  personId       String
+  interestedIn   User     @relation("InterestedInMatchingRelation", fields: [interestedInId], references: [id])
+  interestedInId String
+  createdAt      DateTime @default(now())
 
   @@unique([personId, interestedInId])
 }
