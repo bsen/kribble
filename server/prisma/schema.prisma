@@ -53,8 +53,8 @@ model Post {
   creatorId      String
   createdAt      DateTime  @default(now())
   comments       Comment[] @relation("PostComments")
-  community      Community @relation("CommunityPosts", fields: [communityId], references: [id])
-  communityId    String
+  community      Community? @relation("CommunityPosts", fields: [communityId], references: [id])
+  communityId    String?
   commentsCount  Int       @default(0)
 }
 
