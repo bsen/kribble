@@ -34,7 +34,7 @@ communityRouter.post("/create", async (c) => {
   }
   const createCommunity = await prisma.community.create({
     data: {
-      creatorId: findUser.id,
+      creator: { connect: { id: findUser.id } },
       name: name,
       description: description,
       category: catagory,
