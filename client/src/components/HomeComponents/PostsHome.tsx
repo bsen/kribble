@@ -6,6 +6,7 @@ import { TopBar } from "../Mobile/TopBar";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
+import { SearchBox } from "./SearchBar";
 interface Post {
   id: string;
   creator: {
@@ -75,10 +76,14 @@ export const PostsHome = () => {
         ref={scrollContainerRef}
       >
         <TopBar />
+        <SearchBox />
         <div>
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (
-              <div key={index} className="border-b border-neutral-200 p-3">
+              <div
+                key={index}
+                className="border-b border-neutral-200 p-3 bg-white"
+              >
                 <div>
                   <div className="flex gap-2">
                     <div>
