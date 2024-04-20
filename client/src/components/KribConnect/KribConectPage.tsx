@@ -94,8 +94,8 @@ export const KribConnectPage = () => {
   return (
     <>
       <div className="h-screen  py-2 ">
-        <div className="w-full flex justify-center h-[8vh]">
-          <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center  border-b border-neutral-200 w-[70%]">
+        <div className="w-full flex justify-center py-2">
+          <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>
               {matchingState || MatchesComponent ? (
                 <button
@@ -151,9 +151,13 @@ export const KribConnectPage = () => {
                           />
 
                           <div className="font-light text-sm text-secondarytextcolor m-2 w-full">
-                            {matchUserData.bio}
+                            {matchUserData.bio
+                              ? "bio · " + matchUserData.bio
+                              : ""}
                             <br />
-                            {matchUserData.interest}
+                            {matchUserData.interest
+                              ? "interest · " + matchUserData.interest
+                              : ""}
                           </div>
                         </div>
 
@@ -161,22 +165,22 @@ export const KribConnectPage = () => {
                           <div>
                             <button
                               onClick={searchPeople}
-                              className="bg-background hover:bg-blue-50 border font-ubuntu font-light border-neutral-200 text-blue-600 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                              className="bg-blue-600 font-ubuntu font-medium shadow-md text-white text-xl px-4 py-1 rounded-lg active:bg-blue-500"
                             >
                               <div className="flex items-center justify-evenly">
                                 <div>Pass</div>
-                                <CloseIcon className="text-blue-600" />
+                                <CloseIcon />
                               </div>
                             </button>
                           </div>
                           <div>
                             <button
                               onClick={match}
-                              className="bg-background hover:bg-green-50 border font-ubuntu font-light border-neutral-200 text-green-600 text-xl px-4 py-1 rounded-lg active:bg-neutral-300"
+                              className="bg-blue-600 font-ubuntu font-medium shadow-md text-white text-xl px-4 py-1 rounded-lg active:bg-blue-500"
                             >
                               <div className="flex items-center justify-evenly">
                                 <div>Connect</div>
-                                <DoneIcon className="text-green-600" />
+                                <DoneIcon />
                               </div>
                             </button>
                           </div>

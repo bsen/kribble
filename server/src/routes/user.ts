@@ -370,6 +370,7 @@ userRouter.post("/matched-dates", async (c) => {
           id: userId,
         },
         select: {
+          id: true,
           name: true,
           username: true,
           image: true,

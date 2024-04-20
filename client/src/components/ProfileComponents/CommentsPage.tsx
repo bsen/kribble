@@ -106,7 +106,7 @@ export const CommentsPage = () => {
                 <div className="flex gap-5">
                   <button
                     onClick={deleteComment}
-                    className="text-white bg-red-500 hover:bg-red-600 font-semibold px-4 py-1  rounded-full"
+                    className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
                   >
                     Delete
                   </button>

@@ -67,14 +67,14 @@ export const SearchBox = () => {
         </div>
         {searchingState && (
           <div className="h-auto z-100  flex justify-center">
-            <div className="w-[90%] bg-white p-4 shadow-md  rounded-b-xl ovverflow-y-auto no-scrollbar">
+            <div className="w-[90%] bg-white px-4 shadow-md  rounded-b-xl ovverflow-y-auto no-scrollbar">
               {users.length !== 0 || communities.length !== 0 ? (
                 <div>
                   <div>
                     {users.map((user) => (
                       <div key={user.username}>
-                        <div className="flex gap-2 items-center">
-                          <div className=" text-sm font-ubuntu font-semibold text-black">
+                        <div className="flex gap-2 items-center my-2">
+                          <div className=" text-sm font-ubuntu font-semibold text-secondarytextcolor">
                             U/
                           </div>
                           <div>
@@ -82,13 +82,13 @@ export const SearchBox = () => {
                               <img
                                 src={user.image ? user.image : "/user.png"}
                                 alt="Profile"
-                                className="h-6 w-6 rounded-full"
+                                className="h-8 w-8 rounded-full"
                               />
                             </Link>
                           </div>
 
                           <Link to={`/${user.username}`}>
-                            <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                            <div className="text-primarytextcolor text-lg hover:underline font-semibold">
                               {user.name}
                             </div>
                           </Link>
