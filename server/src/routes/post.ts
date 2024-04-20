@@ -326,45 +326,49 @@ postRouter.post("/create-comment", async (c) => {
   }
 });
 postRouter.post("/delete-comment", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const commentId = body.commentDeleteId;
-  const postId = body.postId;
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  console.log(commentId);
-  const userId = await verify(token, c.env.JWT_SECRET);
-  const findUser = await prisma.user.findUnique({
-    where: {
-      id: userId.id,
-    },
-  });
-  if (!findUser) {
-    return c.json({ status: 400, message: "User not authenticated" });
-  }
-
-  const deleteComment = await prisma.comment.delete({
-    where: {
-      creatorId: findUser.id,
-      id: commentId,
-    },
-  });
-  if (!deleteComment) {
-    return c.json({ status: 400, message: "Comment deletion failed" });
-  }
-  const decCount = await prisma.post.update({
-    where: {
-      id: postId,
-    },
-    data: {
-      commentsCount: {
-        decrement: 1,
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const commentId = body.commentDeleteId;
+    const postId = body.postId;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    console.log(commentId);
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
       },
-    },
-  });
-  if (!decCount) {
-    return c.json({ status: 400, message: "Comment count decrement failed" });
+    });
+    if (!findUser) {
+      return c.json({ status: 400, message: "User not authenticated" });
+    }
+
+    const deleteComment = await prisma.comment.delete({
+      where: {
+        creatorId: findUser.id,
+        id: commentId,
+      },
+    });
+    if (!deleteComment) {
+      return c.json({ status: 400, message: "Comment deletion failed" });
+    }
+    const decCount = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        commentsCount: {
+          decrement: 1,
+        },
+      },
+    });
+    if (!decCount) {
+      return c.json({ status: 400, message: "Comment count decrement failed" });
+    }
+    return c.json({ status: 200, message: "Comment Deleted successfully" });
+  } catch (error) {
+    console.log(error);
   }
-  return c.json({ status: 200, message: "Comment Deleted successfully" });
 });

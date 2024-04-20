@@ -38,7 +38,7 @@ function App() {
             element={<ProtectedRoute element={<Post />} />}
           />
           <Route
-            path="matchmaker"
+            path="/kribconnect"
             element={<ProtectedRoute element={<KribConnect />} />}
           />
         </Routes>

@@ -66,8 +66,6 @@ searchRouter.post("/", async (c) => {
     if (!searchUsers && !searchCommunity) {
       return c.json({ status: 404, message: "No search found" });
     }
-    console.log(searchingText);
-    console.log(searchUsers, searchCommunity);
     return c.json({
       status: 200,
       message: "User or Community found",

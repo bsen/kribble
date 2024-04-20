@@ -1,7 +1,6 @@
-import { KribConnectPage } from "../components/KribConnect/KribConectPage";
-import { PostPage } from "../components/PostPage";
-import { Sidebar } from "../components/Sidebar";
-
+import { PostPage } from "../components/Post/PostPage";
+import { Sidebar } from "../components/SideBar/Sidebar";
+import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
 export const Post = () => {
   return (
     <div className="flex justify-between bg-background">
@@ -13,7 +12,7 @@ export const Post = () => {
       </div>
 
       <div className="w-[30%] max-lg:hidden">
-        <KribConnectPage />
+        <CommunitySuggestions />
       </div>
     </div>
   );
