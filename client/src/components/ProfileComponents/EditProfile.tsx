@@ -78,7 +78,7 @@ export const EditProfile = () => {
       const file = profileImg;
       let newName = name || userData.name || "";
       let newBio = bio || userData.bio || "bio";
-      let newWebsite = website || userData.website || "website";
+      let newWebsite = website || userData.website || "https://www.kribble.net";
       let newInterest = interest || userData.interest || "interest";
 
       const formdata = new FormData();
@@ -130,7 +130,7 @@ export const EditProfile = () => {
                     setLogOutState(true);
                   }}
                 >
-                  <div className="text-primarytextcolor text-sm font-semibold font-ubuntu px-2 underline underline-offset-2">
+                  <div className="text-red-600 text-sm font-semibold font-ubuntu px-2">
                     Log out
                   </div>
                 </button>
@@ -194,7 +194,7 @@ export const EditProfile = () => {
                 />
               </div>
               <div>
-                <div className="text-primarytextcolor">Interest</div>{" "}
+                <div className="text-primarytextcolor">Interest</div>
                 <select
                   className="h-10 w-full rounded-lg px-2 text-secondarytextcolor border border-neutral-200 appearance-none"
                   onChange={(e) => setInterest(e.target.value)}

@@ -13,7 +13,7 @@ export const Logout = () => {
         <div className="flex justify-evenly my-5">
           <button
             onClick={logout}
-            className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+            className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1 rounded-full"
           >
             Log out
           </button>

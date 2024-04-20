@@ -10,7 +10,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CommentsPage } from "./CommentsPage";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-
+import EmailIcon from "@mui/icons-material/Email";
 interface Post {
   id: string;
   creator: {
@@ -170,7 +170,7 @@ export const ProfileSection: React.FC = () => {
                 <div className="flex gap-5">
                   <button
                     onClick={deletePost}
-                    className="text-white bg-red-500 hover:bg-red-600 font-semibold px-4 py-1  rounded-full"
+                    className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
                   >
                     Delete
                   </button>
@@ -223,7 +223,7 @@ export const ProfileSection: React.FC = () => {
                         <MoreVertIcon />
                       </button>
                     ) : (
-                      <div>
+                      <div className="flex gap-4 justify-between items-center">
                         <button
                           onClick={followUser}
                           className="bg-blue-600 text-background px-4 py-1 rounded-lg font-ubuntu"
@@ -245,7 +245,19 @@ export const ProfileSection: React.FC = () => {
                     </div>
                     <div className="">
                       <div className="text-sm text-blue-600 font-light hover:underline">
-                        <a href={userData.website ? userData.website : ""}>
+                        <a
+                          href={`${
+                            userData.website &&
+                            (userData.website.startsWith("http://") ||
+                              userData.website.startsWith("https://"))
+                              ? userData.website
+                              : "https://" +
+                                (userData.website
+                                  ? userData.website
+                                  : "www.kribble.net")
+                          }`}
+                          target="_blank"
+                        >
                           {userData.website ? userData.website : "website"}{" "}
                           <OpenInNewIcon sx={{ fontSize: 15 }} />
                         </a>
