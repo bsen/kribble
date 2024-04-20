@@ -14,9 +14,11 @@ export const Matches = () => {
     username: "",
     name: "",
     image: "",
+    id: "",
   });
 
   interface User {
+    id: string;
     name: string;
     username: string;
     image: string;
@@ -42,8 +44,13 @@ export const Matches = () => {
     getMatchesDetails();
   }, []);
 
-  const parentToChild = (username: string, name: string, image: string) => {
-    setOtherUser({ username, name, image });
+  const parentToChild = (
+    username: string,
+    name: string,
+    image: string,
+    id: string
+  ) => {
+    setOtherUser({ username, name, image, id });
   };
 
   return (
@@ -54,6 +61,7 @@ export const Matches = () => {
             username: otherUser.username,
             name: otherUser.name,
             image: otherUser.image,
+            id: otherUser.id,
           }}
         />
       ) : (
@@ -80,38 +88,41 @@ export const Matches = () => {
                   .map((user, index) => (
                     <div
                       key={index}
-                      className="flex bg-neutral-100 shadow-sm rounded-xl py-2 px-4 items-center justify-start  gap-4 mt-4"
+                      className="flex bg-white border border-neutral-100 shadow-sm rounded-xl py-2 px-4 items-center justify-start  gap-4 mt-4"
                     >
-                      <div className="flex px-2 gap-5 items-center justify-center">
+                      <div className="flex px-2 gap-3 items-center justify-center">
+                        <img
+                          src={user.image ? user.image : "/user.png"}
+                          alt="Profile"
+                          className="h-8 w-8 bg-background rounded-full"
+                        />
                         <Link
                           to={`/${user.username}`}
                           key={user.username}
                           className="flex gap-2 justify-between items-center"
                         >
-                          <img
-                            src={user.image ? user.image : "/user.png"}
-                            alt="Profile"
-                            className="h-10 w-10 bg-background rounded-full"
-                          />
-                          <div className="">
-                            <div className="text-primarytextcolor text-lg font-semibold">
-                              {user.name}
-                            </div>
+                          <div className="text-primarytextcolor text-lg font-semibold">
+                            {user.name}
+                          </div>
 
-                            <div className="text-secondarytextcolor  text-xs font-ubuntu">
-                              @{user.username}
-                            </div>
+                          <div className="text-secondarytextcolor  text-xs font-ubuntu">
+                            @{user.username}
                           </div>
                         </Link>
                         <button
                           onClick={() => {
-                            parentToChild(user.username, user.name, user.image);
+                            parentToChild(
+                              user.username,
+                              user.name,
+                              user.image,
+                              user.id
+                            );
                             setMessageState(true);
                           }}
                         >
                           <EmailIcon
-                            sx={{ fontSize: 35 }}
-                            className="text-blue-600 hover:bg-text-500 bg-white shadow-sm rounded-full p-1"
+                            sx={{ fontSize: 30 }}
+                            className="text-blue-600 hover:text-blue-500"
                           />
                         </button>
                       </div>

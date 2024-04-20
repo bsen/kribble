@@ -20,6 +20,8 @@ model User {
   interest       String?
   createdAt      DateTime   @default(now())
   posts          Post[]     @relation("UserPosts")
+  sentMessages      Message[]    @relation("MessageSender")
+  receivedMessages  Message[]    @relation("MessageReceiver")
   createdCommunities  Community[] @relation("Creator")
   joinedCommunities   Community[] @relation("Members")
   comments       Comment[]  @relation("Comments")
@@ -86,4 +88,13 @@ model Matching {
   createdAt      DateTime @default(now())
 
   @@unique([personId, interestedInId])
+}
+model Message {
+  id         String   @id @default(uuid())
+  sender     User     @relation("MessageSender", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User     @relation("MessageReceiver", fields: [receiverId], references: [id])
+  receiverId String
+  message    String
+  createdAt  DateTime @default(now())
 }

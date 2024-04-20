@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, jwt, sign, verify } from "hono/jwt";
 import { blobFrom } from "node-fetch";
+import { connect } from "cloudflare:sockets";
 
 export const matchesRouter = new Hono<{
   Bindings: {
@@ -145,4 +146,35 @@ matchesRouter.post("/matchpeople", async (c) => {
     console.log(error);
     return c.json({ status: 404 });
   }
+});
+matchesRouter.post("/message", async (c) => {
+  const body = await c.req.json();
+  const token = body.token;
+  const receiverId = body.receiverId;
+  const message = body.message;
+
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const userId = await verify(token, c.env.JWT_SECRET);
+  const findUser = await prisma.user.findUnique({
+    where: {
+      id: userId.id,
+    },
+  });
+  if (!findUser) {
+    return c.json({ status: 400, message: "User not authenticated" });
+  }
+  const createMessage = await prisma.message.create({
+    data: {
+      message: message,
+      sender: { connect: { id: findUser.id } },
+      receiver: { connect: { id: receiverId } },
+    },
+  });
+  if (!createMessage) {
+    return c.json({ status: 400, message: "Failed to send a message" });
+  }
+  return c.json({ status: 200, message: "Message sent successfully" });
 });
