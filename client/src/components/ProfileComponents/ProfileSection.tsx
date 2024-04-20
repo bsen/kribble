@@ -10,7 +10,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CommentsPage } from "./CommentsPage";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import EmailIcon from "@mui/icons-material/Email";
+
 interface Post {
   id: string;
   creator: {
