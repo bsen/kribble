@@ -1,4 +1,5 @@
-import { Sidebar } from "../components/Sidebar";
+import { Sidebar } from "../components/SideBar/Sidebar";
+import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
 
 import { KribConnectPage } from "../components/KribConnect/KribConectPage";
 export const KribConnect = () => {
@@ -10,7 +11,9 @@ export const KribConnect = () => {
       <div className="w-full lg:w-[45%]">
         <KribConnectPage />
       </div>
-      <div className="w-full md:w-[30%] border-l border-neutral-200"></div>
+      <div className="w-[30%] max-lg:hidden">
+        <CommunitySuggestions />
+      </div>
     </div>
   );
 };

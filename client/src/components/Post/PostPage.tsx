@@ -1,9 +1,9 @@
 // Client-side code
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import { LoadingPage } from "./LoadingPage";
+import { LoadingPage } from "../LoadingPage";
 import { useEffect, useState, useRef } from "react";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../../config";
 
 interface Comment {
   id: string;
@@ -203,7 +203,7 @@ export const PostPage = () => {
                 <div>
                   <button
                     onClick={createComment}
-                    className="text-white my-2 py-1 px-4 rounded-full bg-blue-500"
+                    className="text-white my-2 py-1 px-4 rounded-full bg-blue-600"
                   >
                     Post
                   </button>

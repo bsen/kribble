@@ -1,10 +1,10 @@
-import { Sidebar } from "../components/Sidebar";
+import { Sidebar } from "../components/SideBar/Sidebar";
 import { PostsHome } from "../components/HomeComponents/PostsHome";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { KribConnectPage } from "../components/KribConnect/KribConectPage";
+import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
 export const Home = () => {
   const [errorState, setErrorState] = useState(false);
   const token = localStorage.getItem("token");
@@ -53,7 +53,7 @@ export const Home = () => {
             <PostsHome />
           </div>
           <div className="w-[30%] max-lg:hidden">
-            <KribConnectPage />
+            <CommunitySuggestions />
           </div>
         </>
       )}

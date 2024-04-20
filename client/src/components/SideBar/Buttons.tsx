@@ -3,9 +3,10 @@ import PersonIcon from "@mui/icons-material/Person";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
-export const ButtonsSidebar = () => {
+import { BACKEND_URL } from "../../config";
+export const Buttons = () => {
   const token = localStorage.getItem("token");
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,7 +25,10 @@ export const ButtonsSidebar = () => {
 
   return (
     <div className="h-max w-full flex flex-col justify-center items-center">
-      <div>
+      <div className="flex flex-col  items-start">
+        <div className="bg-gradient-to-r from-blue-600 via-orange-600 to-indigo-600  text-transparent bg-clip-text text-[2rem] mt-4 font-ubuntu flex w-[80%] justify-center">
+          kribble
+        </div>
         <button
           onClick={() => {
             navigate("/home");
@@ -50,8 +54,7 @@ export const ButtonsSidebar = () => {
             </p>
           </div>
         </button>
-      </div>
-      <div>
+
         <button>
           <Link to={`/${currentUser}`}>
             <div className={"mt-4 flex items-center justify-center gap-2"}>
@@ -75,8 +78,31 @@ export const ButtonsSidebar = () => {
             </div>
           </Link>
         </button>
-      </div>
-      <div>
+
+        <button>
+          <Link to={`/kribconnect`}>
+            <div className={"mt-4 flex items-center justify-center gap-2"}>
+              <PeopleAltIcon
+                sx={{ fontSize: 30 }}
+                className={`${
+                  location.pathname === `/kribconnect`
+                    ? "text-blue-600"
+                    : "text-primarytextcolor"
+                }`}
+              />
+              <p
+                className={`text-lg font-medium max-lg:hidden ${
+                  location.pathname === `/kribconnect`
+                    ? "text-blue-600"
+                    : "text-primarytextcolor"
+                }`}
+              >
+                KribConnect
+              </p>
+            </div>
+          </Link>
+        </button>
+
         <button
           onClick={() => {
             navigate("/create/post");

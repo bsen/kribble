@@ -93,7 +93,7 @@ export const KribConnectPage = () => {
 
   return (
     <>
-      <div className="h-screen border-l border-neutral-200 py-2 ">
+      <div className="h-screen  py-2 ">
         <div className="w-full flex justify-center h-[8vh]">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center  border-b border-neutral-200 w-[70%]">
             <div>
@@ -128,7 +128,7 @@ export const KribConnectPage = () => {
                   <Matches />
                 </div>
               ) : (
-                <div className="h-[90vh] flex flex-col items-center justify-center">
+                <div className="h-[80vh] flex flex-col items-center justify-center">
                   {matchingState ? (
                     <div>
                       <div className="w-full flex flex-col items-center justify-center">
