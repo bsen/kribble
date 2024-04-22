@@ -90,10 +90,7 @@ export const MatchesComponent = () => {
                 </div>
                 <div></div>
               </div>
-              <div className="my-2 text-sm font-ubuntu font-light text-neutral-600">
-                You can only exchange messages with people you've been matched
-                with
-              </div>
+
               <div className="w-full flex justify-center flex-col items-center overflow-y-auto no-scrollbar">
                 {matchedUsers.length > 0 ? (
                   matchedUsers
