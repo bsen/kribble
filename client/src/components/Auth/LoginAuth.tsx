@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { LoadingPage } from "../LoadingPage";
+import { Loading } from "../Loading";
 
 export const LoginAuth = () => {
   const navigate = useNavigate();
@@ -44,11 +44,17 @@ export const LoginAuth = () => {
       console.log(error);
     }
   }
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      login();
+    }
+  };
 
   return (
     <>
       {loadingState ? (
-        <LoadingPage />
+        <Loading />
       ) : (
         <div>
           <div className="h-screen w-full  bg-white flex justify-center items-center">
@@ -81,6 +87,8 @@ export const LoginAuth = () => {
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
+                  type="password"
+                  onKeyDown={handleKeyDown}
                   className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-200"
                   placeholder="Enter password"
                 />

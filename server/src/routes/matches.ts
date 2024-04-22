@@ -183,7 +183,6 @@ matchesRouter.post("/send-message", async (c) => {
     if (!createMessage) {
       return c.json({ status: 400, message: "Failed to send a message" });
     }
-
     return c.json({ status: 200, message: "Message sent successfully" });
   }
   return c.json({ status: 400, message: "You have send 10 messages" });
@@ -209,11 +208,19 @@ matchesRouter.post("/get-messages", async (c) => {
       senderId: findUser.id,
       receiverId: receiverId,
     },
+    select: {
+      message: true,
+      createdAt: true,
+    },
   });
   const findReceivedMessages = await prisma.message.findMany({
     where: {
       senderId: receiverId,
       receiverId: findUser.id,
+    },
+    select: {
+      message: true,
+      createdAt: true,
     },
   });
 

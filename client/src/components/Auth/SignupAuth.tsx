@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { LoadingPage } from "../LoadingPage";
+import { Loading } from "../Loading";
 
 export const SignupAuth = () => {
   const navigate = useNavigate();
@@ -92,11 +92,17 @@ export const SignupAuth = () => {
       setPopup("Network error, try again later");
     }
   }
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      signup();
+    }
+  };
 
   return (
     <>
       {loadingState ? (
-        <LoadingPage />
+        <Loading />
       ) : (
         <div>
           <div className="h-screen w-full  bg-white flex justify-center items-center">
@@ -172,6 +178,7 @@ export const SignupAuth = () => {
                   onChange={(e) => {
                     handlePasswordChnage(e.target.value);
                   }}
+                  onKeyDown={handleKeyDown}
                   className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
                   placeholder="Enter password"
                 />

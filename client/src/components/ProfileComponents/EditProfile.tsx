@@ -3,7 +3,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Logout } from "../Auth/Logout";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../config";
-import { LoadingPage } from "../LoadingPage";
+import { Loading } from "../Loading";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 export const EditProfile = () => {
@@ -114,7 +114,7 @@ export const EditProfile = () => {
       ) : (
         <div className="h-screen bg-background/80 text-blakc flex justify-center items-center">
           {loadingState ? (
-            <LoadingPage />
+            <Loading />
           ) : (
             <div className="bg-background w-[85%]   border border-neutral-200 p-4 rounded-lg flex flex-col gap-4">
               <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
