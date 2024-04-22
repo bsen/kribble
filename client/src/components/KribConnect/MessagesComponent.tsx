@@ -25,6 +25,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [popUp, setPopUp] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   async function send() {
     if (sendMessages.length == 10) {
@@ -74,6 +75,12 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
     getMessages();
     checkMessages();
   }, []);
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }, [sendMessages, receivedMessages]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -115,8 +122,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
           @{username}
         </div>
         <div className="text-sm text-center text-secondarytextcolor font-ubuntu">
-          {sendMessages.length} Congratulations you have a match with {name}{" "}
-          <br />
+          Congratulations you have a match with {name} <br />
           {popUp ? (
             <div className="text-rose-500">You can't send more messages</div>
           ) : (
@@ -124,7 +130,10 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
           )}
         </div>
       </div>
-      <div className="flex-grow mb-16 overflow-y-auto flex flex-col p-4 no-scrollbar">
+      <div
+        className="flex-grow mb-16 overflow-y-auto flex flex-col p-4 no-scrollbar"
+        ref={chatContainerRef}
+      >
         {[...receivedMessages, ...sendMessages]
           .sort(
             (a, b) =>
@@ -133,7 +142,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
           .map((message, index) => (
             <div
               key={index}
-              className={`mt-2 max-w-[70%]   rounded-lg px-3 py-2 ${
+              className={`mt-2 max-w-[70%] rounded-lg px-3 py-2 ${
                 message.sender === "self"
                   ? "bg-blue-500 text-white self-end"
                   : "bg-neutral-100 text-secondarytextcolor self-start"

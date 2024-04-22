@@ -90,6 +90,7 @@ export const MatchesComponent = () => {
                 </div>
                 <div></div>
               </div>
+
               <div className="w-full flex justify-center flex-col items-center overflow-y-auto no-scrollbar">
                 {matchedUsers.length > 0 ? (
                   matchedUsers

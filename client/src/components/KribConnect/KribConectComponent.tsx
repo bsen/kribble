@@ -185,12 +185,15 @@ export const KribConectComponent = () => {
                         className="text-blue-500 p-1 rounded-full"
                       />
                     </div>
-                    <div className="text-center font-semibold font-ubuntu px-6 my-3  text-lg text-primarytextcolor">
+                    <div className="text-center font-semibold font-ubuntu px-6 my-3  text-xl text-primarytextcolor">
                       Start Connecting with Kribble{" "}
                     </div>
-                    <div className="text-secondarytextcolor">
-                      Your profile picture, bio and interest will be used for
+                    <div className="text-secondarytextcolor text-sm">
+                      1. Your profile picture, bio and interest will be used for
                       connecting.
+                      <br />
+                      2. You can only exchange messages with people you've been
+                      matched with.
                     </div>
                   </div>
 
@@ -224,14 +227,14 @@ export const KribConectComponent = () => {
                   </div>
                   <div className="w-full gap-5 flex items-center flex-col justify-center">
                     <button
-                      className="text-background  w-[60%] bg-blue-500 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-800"
+                      className="text-background  w-[40%] bg-blue-500 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-800"
                       onClick={searchPeople}
                     >
                       Start Connecting
                     </button>
 
                     <Link
-                      className="text-background w-[60%] text-center bg-neutral-800 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-800"
+                      className="text-background w-[40%] text-center bg-neutral-800 rounded-lg text-xl py-2 px-4 font-ubuntu  active:bg-blue-800"
                       to={"/matches"}
                     >
                       Browse matches
