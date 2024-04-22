@@ -1,7 +1,7 @@
 import { Sidebar } from "../components/SideBar/Sidebar";
 import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
 
-import { KribConnectPage } from "../components/KribConnect/KribConectPage";
+import { KribConectComponent } from "../components/KribConnect/KribConectComponent";
 export const KribConnect = () => {
   return (
     <div className="lg:flex justify-between bg-background">
@@ -9,7 +9,7 @@ export const KribConnect = () => {
         <Sidebar />
       </div>
       <div className="w-full lg:w-[45%]">
-        <KribConnectPage />
+        <KribConectComponent />
       </div>
       <div className="w-[30%] max-lg:hidden">
         <CommunitySuggestions />

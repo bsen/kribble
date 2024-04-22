@@ -1,7 +1,7 @@
 // Client-side code
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import { LoadingPage } from "../LoadingPage";
+import { Loading } from "../Loading";
 import { useEffect, useState, useRef } from "react";
 import { BACKEND_URL } from "../../config";
 
@@ -28,7 +28,7 @@ interface PostData {
   };
 }
 
-export const PostPage = () => {
+export const PostComponent = () => {
   const { postId } = useParams();
   const token = localStorage.getItem("token");
   const [popup, setPopup] = useState(false);
@@ -129,7 +129,7 @@ export const PostPage = () => {
   return (
     <>
       {loadingState ? (
-        <LoadingPage />
+        <Loading />
       ) : (
         <>
           <div
@@ -203,7 +203,7 @@ export const PostPage = () => {
                 <div>
                   <button
                     onClick={createComment}
-                    className="text-white my-2 py-1 px-4 rounded-full bg-blue-600"
+                    className="text-white my-2 py-1 px-4 rounded-full bg-blue-500"
                   >
                     Post
                   </button>
@@ -263,5 +263,3 @@ export const PostPage = () => {
     </>
   );
 };
-
-export default PostPage;

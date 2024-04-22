@@ -4,7 +4,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { LoadingPage } from "../LoadingPage";
+import { Loading } from "../Loading";
 export const CreatePostComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -91,7 +91,7 @@ export const CreatePostComponent = () => {
   return (
     <>
       {loadingState ? (
-        <LoadingPage />
+        <Loading />
       ) : (
         <div className="h-screen w-full absolute bg-background">
           <div className="w-full bg-background border-b border-neutral-200 flex justify-evenly items-center text-primarytextcolor font-ubuntu font-semibold text-2xl h-14">

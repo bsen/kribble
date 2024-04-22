@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Link } from "react-router-dom";
 
-export const CommentsPage = () => {
+export const CommentsComponent = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);

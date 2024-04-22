@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
-import { LoadingPage } from "../LoadingPage";
+import { Loading } from "../Loading";
 import { EditProfile } from "./EditProfile";
 import { useParams, Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { CommentsPage } from "./CommentsPage";
+import { CommentsComponent } from "./CommentsComponent";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 
@@ -157,7 +157,7 @@ export const ProfileSection: React.FC = () => {
   return (
     <>
       {loadingState ? (
-        <LoadingPage />
+        <Loading />
       ) : (
         <div className="h-screen flex flex-col">
           {postDeleteState ? (
@@ -226,7 +226,7 @@ export const ProfileSection: React.FC = () => {
                       <div className="flex gap-4 justify-between items-center">
                         <button
                           onClick={followUser}
-                          className="bg-blue-600 text-background px-4 py-1 rounded-lg font-ubuntu"
+                          className="bg-blue-500 text-background px-4 py-1 rounded-lg font-ubuntu"
                         >
                           <div>
                             {followingState ? (
@@ -244,7 +244,7 @@ export const ProfileSection: React.FC = () => {
                       {userData.bio ? userData.bio : "bio"}
                     </div>
                     <div className="">
-                      <div className="text-sm text-blue-600 font-light hover:underline">
+                      <div className="text-sm text-blue-500 font-light hover:underline">
                         <a
                           href={`${
                             userData.website &&
@@ -287,7 +287,7 @@ export const ProfileSection: React.FC = () => {
                         }}
                         className={`text-sm font-ubuntu font-semibold ${
                           postComponent
-                            ? "text-blue-600"
+                            ? "text-blue-500"
                             : "text-secondarytextcolor"
                         }`}
                       >
@@ -300,7 +300,7 @@ export const ProfileSection: React.FC = () => {
                         className={`text-sm font-ubuntu font-semibold ${
                           postComponent
                             ? "text-secondarytextcolor"
-                            : "text-blue-600"
+                            : "text-blue-500"
                         }`}
                       >
                         Comments
@@ -390,7 +390,7 @@ export const ProfileSection: React.FC = () => {
                   )}
                 </div>
               ) : (
-                <CommentsPage />
+                <CommentsComponent />
               )}
 
               {isLoading && (

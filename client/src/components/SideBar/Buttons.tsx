@@ -26,7 +26,7 @@ export const Buttons = () => {
   return (
     <div className="h-max w-full flex flex-col justify-center items-center">
       <div className="flex flex-col  items-start">
-        <div className="bg-gradient-to-r from-blue-600 via-orange-600 to-indigo-600  text-transparent bg-clip-text text-[2rem] mt-4 font-ubuntu flex w-[80%] justify-center">
+        <div className="bg-gradient-to-r from-blue-500 via-orange-600 to-indigo-600  text-transparent bg-clip-text text-[2rem] mt-4 font-ubuntu flex w-[80%] justify-center">
           kribble
         </div>
         <button
@@ -39,14 +39,14 @@ export const Buttons = () => {
               sx={{ fontSize: 30 }}
               className={`${
                 location.pathname === "/home"
-                  ? "text-blue-600"
+                  ? "text-blue-500"
                   : "text-primarytextcolor"
               }`}
             />
             <p
               className={`text-lg font-medium max-lg:hidden ${
                 location.pathname === "/home"
-                  ? "text-blue-600"
+                  ? "text-blue-500"
                   : "text-primarytextcolor"
               }`}
             >
@@ -62,14 +62,14 @@ export const Buttons = () => {
                 sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === `/${currentUser}`
-                    ? "text-blue-600"
+                    ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
                   location.pathname === `/${currentUser}`
-                    ? "text-blue-600"
+                    ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               >
@@ -86,14 +86,14 @@ export const Buttons = () => {
                 sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === `/kribconnect`
-                    ? "text-blue-600"
+                    ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
                   location.pathname === `/kribconnect`
-                    ? "text-blue-600"
+                    ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               >
@@ -110,7 +110,7 @@ export const Buttons = () => {
         >
           <div
             className={
-              "mt-4 px-6 py-1 rounded-full bg-blue-600 flex items-center justify-center gap-2 text-lg font-medium  text-white"
+              "mt-4 px-6 py-1 rounded-full bg-blue-500 flex items-center justify-center gap-2 text-lg font-medium  text-white"
             }
           >
             <PostAddIcon sx={{ fontSize: 30 }} />

@@ -6,6 +6,7 @@ import { Profile } from "./pages/Profile";
 import { CreatePost } from "./pages/CreatePost";
 import { KribConnect } from "./pages/KribConnect";
 import { Post } from "./pages/Post";
+import { Matches } from "./pages/Matches";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -40,6 +41,10 @@ function App() {
           <Route
             path="/kribconnect"
             element={<ProtectedRoute element={<KribConnect />} />}
+          />
+          <Route
+            path="/matches"
+            element={<ProtectedRoute element={<Matches />} />}
           />
         </Routes>
       </BrowserRouter>

@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import EmailIcon from "@mui/icons-material/Email";
 import axios from "axios";
-import { Messages } from "./Messages";
+import { MessagesComponent } from "./MessagesComponent";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 
-export const Matches = () => {
+export const MatchesComponent = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [messageState, setMessageState] = useState(false);
@@ -56,7 +57,7 @@ export const Matches = () => {
   return (
     <>
       {messageState ? (
-        <Messages
+        <MessagesComponent
           otherUser={{
             username: otherUser.username,
             name: otherUser.name,
@@ -71,44 +72,50 @@ export const Matches = () => {
               Loading ...
             </div>
           ) : (
-            <div className=" bg-gre flex flex-col items-center p-5">
+            <div className="flex flex-col items-center p-5">
               <div
                 className={
-                  "p-2 flex  items-center text-center w-full justify-center gap-2 "
+                  "p-2 flex justify-evenly items-center text-center w-full"
                 }
               >
-                <GroupIcon className={"text-blue-600"} />
-                <p className={"text-blue-600"}>Matches</p>
+                <Link to={"/kribconnect"}>
+                  <ArrowBackIosNewRoundedIcon
+                    className="text-secondarytextcolor rounded-full border  py-1 hover:bg-neutral-100"
+                    sx={{ fontSize: 35 }}
+                  />
+                </Link>
+                <div className="flex justify-center items-center gap-2">
+                  <GroupIcon className={"text-blue-500"} />
+                  <p className={"text-blue-500"}>Matches</p>
+                </div>
+                <div></div>
               </div>
-
-              {matchedUsers.length > 0 ? (
-                matchedUsers
-                  .slice()
-                  .reverse()
-                  .map((user, index) => (
-                    <div
-                      key={index}
-                      className="flex bg-white border border-neutral-100 shadow-sm rounded-xl py-2 px-4 items-center justify-start  gap-4 mt-4"
-                    >
-                      <div className="flex px-2 gap-3 items-center justify-center">
-                        <img
-                          src={user.image ? user.image : "/user.png"}
-                          alt="Profile"
-                          className="h-8 w-8 bg-background rounded-full"
-                        />
-                        <Link
-                          to={`/${user.username}`}
-                          key={user.username}
-                          className="flex gap-2 justify-between items-center"
-                        >
-                          <div className="text-primarytextcolor text-lg font-semibold">
-                            {user.name}
-                          </div>
-
+              <div className="w-full flex justify-center flex-col items-center overflow-y-auto no-scrollbar">
+                {matchedUsers.length > 0 ? (
+                  matchedUsers
+                    .slice()
+                    .reverse()
+                    .map((user, index) => (
+                      <div
+                        key={index}
+                        className="flex w-[80%] bg-white  border border-neutral-100 shadow-sm rounded-xl py-2 px-4 items-center justify-between  gap-4 mt-4"
+                      >
+                        <div className="flex gap-2 justify-center items-center">
+                          <img
+                            src={user.image ? user.image : "/user.png"}
+                            alt="Profile"
+                            className="h-10 w-10 bg-background rounded-full"
+                          />
+                          <Link to={`/${user.username}`} key={user.username}>
+                            <div className="text-primarytextcolor text-lg font-semibold">
+                              {user.name}
+                            </div>
+                          </Link>
                           <div className="text-secondarytextcolor  text-xs font-ubuntu">
                             @{user.username}
                           </div>
-                        </Link>
+                        </div>
+
                         <button
                           onClick={() => {
                             parentToChild(
@@ -122,17 +129,17 @@ export const Matches = () => {
                         >
                           <EmailIcon
                             sx={{ fontSize: 30 }}
-                            className="text-blue-600 hover:text-blue-500"
+                            className="text-blue-500 hover:text-blue-500"
                           />
                         </button>
                       </div>
-                    </div>
-                  ))
-              ) : (
-                <p className="text-center w-full font-mono my-2 text-primarytextcolor">
-                  No matches found
-                </p>
-              )}
+                    ))
+                ) : (
+                  <p className="text-center w-full font-mono my-2 text-primarytextcolor">
+                    No matches found
+                  </p>
+                )}
+              </div>
             </div>
           )}
         </div>
