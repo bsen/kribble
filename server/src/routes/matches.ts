@@ -147,17 +147,17 @@ matchesRouter.post("/matchpeople", async (c) => {
     return c.json({ status: 404 });
   }
 });
-matchesRouter.post("/message", async (c) => {
+matchesRouter.post("/send-message", async (c) => {
   const body = await c.req.json();
   const token = body.token;
   const receiverId = body.receiverId;
   const message = body.message;
-
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
   const userId = await verify(token, c.env.JWT_SECRET);
+
   const findUser = await prisma.user.findUnique({
     where: {
       id: userId.id,
@@ -166,15 +166,65 @@ matchesRouter.post("/message", async (c) => {
   if (!findUser) {
     return c.json({ status: 400, message: "User not authenticated" });
   }
-  const createMessage = await prisma.message.create({
-    data: {
-      message: message,
-      sender: { connect: { id: findUser.id } },
-      receiver: { connect: { id: receiverId } },
+  const findMessages = await prisma.message.findMany({
+    where: {
+      senderId: findUser.id,
+      receiverId: receiverId,
     },
   });
-  if (!createMessage) {
-    return c.json({ status: 400, message: "Failed to send a message" });
+  if (findMessages.length < 10) {
+    const createMessage = await prisma.message.create({
+      data: {
+        message: message,
+        sender: { connect: { id: findUser.id } },
+        receiver: { connect: { id: receiverId } },
+      },
+    });
+    if (!createMessage) {
+      return c.json({ status: 400, message: "Failed to send a message" });
+    }
+
+    return c.json({ status: 200, message: "Message sent successfully" });
   }
-  return c.json({ status: 200, message: "Message sent successfully" });
+  return c.json({ status: 400, message: "You have send 10 messages" });
+});
+matchesRouter.post("/get-messages", async (c) => {
+  const body = await c.req.json();
+  const token = body.token;
+  const receiverId = body.receiverId;
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const userId = await verify(token, c.env.JWT_SECRET);
+  const findUser = await prisma.user.findUnique({
+    where: {
+      id: userId.id,
+    },
+  });
+  if (!findUser) {
+    return c.json({ status: 401, message: "Unauthorised user" });
+  }
+  const findSendMesssages = await prisma.message.findMany({
+    where: {
+      senderId: findUser.id,
+      receiverId: receiverId,
+    },
+  });
+  const findReceivedMessages = await prisma.message.findMany({
+    where: {
+      senderId: receiverId,
+      receiverId: findUser.id,
+    },
+  });
+
+  if (!findSendMesssages && !findReceivedMessages) {
+    return c.json({ status: 404, message: "NO messages found" });
+  }
+
+  return c.json({
+    status: 200,
+    message: "Your messages are fetcehd",
+    sendMessages: findSendMesssages,
+    receivedMessages: findReceivedMessages,
+  });
 });
