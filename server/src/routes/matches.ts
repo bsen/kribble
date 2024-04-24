@@ -192,50 +192,54 @@ matchesRouter.post("/send-message", async (c) => {
   }
 });
 matchesRouter.post("/get-messages", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const receiverId = body.receiverId;
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const userId = await verify(token, c.env.JWT_SECRET);
-  const findUser = await prisma.user.findUnique({
-    where: {
-      id: userId.id,
-    },
-  });
-  if (!findUser) {
-    return c.json({ status: 401, message: "Unauthorised user" });
-  }
-  const findSendMesssages = await prisma.message.findMany({
-    where: {
-      senderId: findUser.id,
-      receiverId: receiverId,
-    },
-    select: {
-      message: true,
-      createdAt: true,
-    },
-  });
-  const findReceivedMessages = await prisma.message.findMany({
-    where: {
-      senderId: receiverId,
-      receiverId: findUser.id,
-    },
-    select: {
-      message: true,
-      createdAt: true,
-    },
-  });
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const receiverId = body.receiverId;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+    });
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorised user" });
+    }
+    const findSendMesssages = await prisma.message.findMany({
+      where: {
+        senderId: findUser.id,
+        receiverId: receiverId,
+      },
+      select: {
+        message: true,
+        createdAt: true,
+      },
+    });
+    const findReceivedMessages = await prisma.message.findMany({
+      where: {
+        senderId: receiverId,
+        receiverId: findUser.id,
+      },
+      select: {
+        message: true,
+        createdAt: true,
+      },
+    });
 
-  if (!findSendMesssages && !findReceivedMessages) {
-    return c.json({ status: 404, message: "NO messages found" });
-  }
+    if (!findSendMesssages && !findReceivedMessages) {
+      return c.json({ status: 404, message: "NO messages found" });
+    }
 
-  return c.json({
-    status: 200,
-    message: "Your messages are fetcehd",
-    sendMessages: findSendMesssages,
-    receivedMessages: findReceivedMessages,
-  });
+    return c.json({
+      status: 200,
+      message: "Your messages are fetcehd",
+      sendMessages: findSendMesssages,
+      receivedMessages: findReceivedMessages,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
