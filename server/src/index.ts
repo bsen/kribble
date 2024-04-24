@@ -5,6 +5,7 @@ import { authRouter } from "./routes/auth";
 import { matchesRouter } from "./routes/matches";
 import { communityRouter } from "./routes/community";
 import { searchRouter } from "./routes/search";
+import { kribtvRouter } from "./routes/kribtv";
 import { cors } from "hono/cors";
 
 const app = new Hono<{
@@ -23,5 +24,6 @@ app.route("/api/server/v1/auth", authRouter);
 app.route("/api/server/v1/matches", matchesRouter);
 app.route("/api/server/v1/community", communityRouter);
 app.route("/api/server/v1/search", searchRouter);
+app.route("/api/server/v1/kribtv", kribtvRouter);
 
 export default app;
