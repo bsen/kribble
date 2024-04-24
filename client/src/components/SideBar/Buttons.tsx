@@ -4,7 +4,7 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import EmailIcon from "@mui/icons-material/Email";
+
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
 export const Buttons = () => {
@@ -99,29 +99,6 @@ export const Buttons = () => {
                 }`}
               >
                 KribConnect
-              </p>
-            </div>
-          </Link>
-        </button>
-        <button>
-          <Link to={`/matches`}>
-            <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <EmailIcon
-                sx={{ fontSize: 30 }}
-                className={`${
-                  location.pathname === `/matches`
-                    ? "text-blue-500"
-                    : "text-primarytextcolor"
-                }`}
-              />
-              <p
-                className={`text-lg font-medium max-lg:hidden ${
-                  location.pathname === `/matches`
-                    ? "text-blue-500"
-                    : "text-primarytextcolor"
-                }`}
-              >
-                Messages
               </p>
             </div>
           </Link>

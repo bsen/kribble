@@ -14,38 +14,45 @@ export const communityRouter = new Hono<{
 }>();
 
 communityRouter.post("/create", async (c) => {
-  const body = await c.req.json();
-  const token = body.token;
-  const name = body.name;
-  const catagory = body.catagory;
-  const description = body.description;
-  const userId = await verify(token, c.env.JWT_SECRET);
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const name = body.name;
+    const catagory = body.catagory;
+    const description = body.description;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
 
-  const findUser = await prisma.user.findUnique({
-    where: {
-      id: userId.id,
-    },
-  });
-  if (!findUser) {
-    return c.json({ status: 400, message: "Authentication error" });
-  }
-  const createCommunity = await prisma.community.create({
-    data: {
-      creator: { connect: { id: findUser.id } },
-      name: name,
-      description: description,
-      category: catagory,
-    },
-  });
+    const findUser = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+    });
+    if (!findUser) {
+      return c.json({ status: 400, message: "Authentication error" });
+    }
+    const createCommunity = await prisma.community.create({
+      data: {
+        creator: { connect: { id: findUser.id } },
+        name: name,
+        description: description,
+        category: catagory,
+      },
+    });
 
-  if (!createCommunity) {
-    return c.json({ status: 400, message: "Failed to create a new community" });
+    if (!createCommunity) {
+      return c.json({
+        status: 400,
+        message: "Failed to create a new community",
+      });
+    }
+    return c.json({
+      status: 200,
+      message: "Successfully created a new community",
+    });
+  } catch (error) {
+    console.log(error);
   }
-  return c.json({
-    status: 200,
-    message: "Successfully created a new community",
-  });
 });
