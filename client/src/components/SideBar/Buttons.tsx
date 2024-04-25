@@ -27,7 +27,7 @@ export const Buttons = () => {
   return (
     <div className="h-max w-full flex flex-col justify-center items-center">
       <div className="flex flex-col  items-start">
-        <div className="bg-gradient-to-r from-blue-500 via-orange-600 to-indigo-600  text-transparent bg-clip-text text-[2rem] mt-4 font-ubuntu flex w-[80%] justify-center">
+        <div className="bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-[2rem] mt-4 font-ubuntu flex w-[80%] justify-center">
           kribble
         </div>
         <button
