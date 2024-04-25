@@ -9,6 +9,7 @@ import { BottomButtons } from "../Mobile/BottomButtons";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CommentsComponent } from "./CommentsComponent";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import SettingsIcon from "@mui/icons-material/Settings";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 
 interface Post {
@@ -220,7 +221,7 @@ export const ProfileSection: React.FC = () => {
                           setProfileEditingState(true);
                         }}
                       >
-                        <MoreVertIcon />
+                        <SettingsIcon />
                       </button>
                     ) : (
                       <div className="flex gap-4 justify-between items-center">
