@@ -113,3 +113,19 @@ authRouter.post("/login", async (c) => {
     return c.json({ status: 400, message: "Login failed" });
   }
 });
+
+authRouter.get("/users-count", async (c) => {
+  try {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const users = await prisma.user.count({});
+    if (!users) {
+      return c.json({ status: 400, message: "Failed to fetch users count" });
+    }
+
+    return c.json({ status: 200, message: users });
+  } catch (error) {
+    console.log(error);
+  }
+});
