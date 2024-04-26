@@ -134,7 +134,7 @@ export const SearchBox = () => {
                   </div>{" "}
                 </div>
               ) : (
-                <div className="text-sm font-ubuntu font-medium text-center text-secondarytextcolor">
+                <div className="text-sm my-4 font-ubuntu font-medium text-center text-secondarytextcolor">
                   Search result not found
                 </div>
               )}
