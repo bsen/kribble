@@ -1,16 +1,23 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../../config";
-import { Loading } from "../Loading";
-import { EditProfile } from "./EditProfile";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
-import { BottomButtons } from "../Mobile/BottomButtons";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { CommentsComponent } from "./CommentsComponent";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
+import { Loading } from "../Loading";
+import { EditProfile } from "./EditProfile";
+import { BottomButtons } from "../Mobile/BottomButtons";
+import { BACKEND_URL } from "../../config";
+
+interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  creatorId: string;
+  postId: string;
+}
 
 interface Post {
   id: string;
@@ -27,17 +34,7 @@ interface Post {
 }
 
 export const ProfileSection: React.FC = () => {
-  const [postComponent, setPostComponent] = useState(true);
   const [loadingState, setLoadingState] = useState(false);
-  const [postDeleteId, setPostDeleteId] = useState("");
-  const [postDeleteState, setPostDeleteState] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
-  const [profileEditingState, setProfileEditingState] = useState(false);
-  const [followingState, setFollowingState] = useState();
-  const { username } = useParams();
-  const token = localStorage.getItem("token");
-  const [isLoading, setIsLoading] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [userData, setUserData] = useState<{
     name: string;
     username: string;
@@ -63,6 +60,12 @@ export const ProfileSection: React.FC = () => {
     followers: [],
     following: [],
   });
+  const [postComponent, setPostComponent] = useState(true);
+  const [currentUser, setCurrentUser] = useState("");
+  const [followingState, setFollowingState] = useState(false);
+  const [profileEditingState, setProfileEditingState] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
   const [postData, setPostData] = useState<{
     posts: Post[];
     nextCursor: string | null;
@@ -70,10 +73,23 @@ export const ProfileSection: React.FC = () => {
     posts: [],
     nextCursor: null,
   });
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [postDeleteId, setPostDeleteId] = useState("");
+  const [deleteState, setDeleteState] = useState(false);
+  const [isLoadingComments, setIsLoadingComments] = useState(false);
+  const [postId, setPostId] = useState("");
+  const [commentDeleteId, setCommentDeleteId] = useState("");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const { username } = useParams();
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     getData();
     getAllPosts(null, true);
+    getComments();
   }, [username]);
+
   async function getData() {
     try {
       setLoadingState(true);
@@ -89,6 +105,7 @@ export const ProfileSection: React.FC = () => {
       console.log(error);
     }
   }
+
   async function getAllPosts(
     cursor: string | null | undefined,
     truncate: boolean
@@ -99,18 +116,44 @@ export const ProfileSection: React.FC = () => {
         `${BACKEND_URL}/api/server/v1/user/posts`,
         { token, cursor, username }
       );
-      setPostData({
+      setPostData((prevData) => ({
         posts: truncate
           ? [...response.data.message]
-          : [...postData.posts, ...response.data.message],
+          : [...prevData.posts, ...response.data.message],
         nextCursor: response.data.nextCursor,
-      });
+      }));
       setIsLoading(false);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
     }
   }
+
+  async function getComments(cursor?: string) {
+    try {
+      setIsLoadingComments(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/user/comments`,
+        {
+          token,
+          cursor,
+        }
+      );
+      if (cursor) {
+        setComments((prevComments) => [
+          ...prevComments,
+          ...response.data.message,
+        ]);
+      } else {
+        setComments(response.data.message);
+      }
+      setIsLoadingComments(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoadingComments(false);
+    }
+  }
+
   const handleScroll = () => {
     if (
       scrollContainerRef.current &&
@@ -139,6 +182,7 @@ export const ProfileSection: React.FC = () => {
       console.log(error);
     }
   }
+
   async function deletePost() {
     try {
       setLoadingState(true);
@@ -146,10 +190,25 @@ export const ProfileSection: React.FC = () => {
         token,
         postDeleteId,
       });
-      setPostDeleteState(false);
+      setDeleteState(false);
       setPostDeleteId("");
       window.location.reload();
       setLoadingState(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function deleteComment() {
+    try {
+      setLoadingState(true);
+      await axios.post(`${BACKEND_URL}/api/server/v1/post/delete-comment`, {
+        token,
+        commentDeleteId: commentDeleteId,
+        postId,
+      });
+      setLoadingState(false);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -161,24 +220,27 @@ export const ProfileSection: React.FC = () => {
         <Loading />
       ) : (
         <div className="h-screen flex flex-col">
-          {postDeleteState ? (
+          {deleteState ? (
             <div className="w-full h-screen flex justify-center items-center">
               <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
-                Do you really want to delete the post?
-                <span className="text-xs font-light text-neutral-400">
-                  note you can not get back the deleted posts!
+                Do you really want to delete the
+                {postDeleteId ? " post" : " comment"} ?
+                <span className="text-xs font-light text-neutral-600">
+                  note you can not get back the deleted item!
                 </span>
                 <div className="flex gap-5">
                   <button
-                    onClick={deletePost}
+                    onClick={postDeleteId ? deletePost : deleteComment}
                     className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
                   >
                     Delete
                   </button>
                   <button
                     onClick={() => {
-                      setPostDeleteState(false);
+                      setDeleteState(false);
                       setPostDeleteId("");
+                      setCommentDeleteId("");
+                      setPostId("");
                     }}
                     className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
                   >
@@ -359,7 +421,7 @@ export const ProfileSection: React.FC = () => {
                                 <div className="text-neutral-600">
                                   <button
                                     onClick={() => {
-                                      setPostDeleteState(true);
+                                      setDeleteState(true);
                                       setPostDeleteId(post.id);
                                     }}
                                   >
@@ -399,19 +461,63 @@ export const ProfileSection: React.FC = () => {
                   )}
                 </div>
               ) : (
-                <CommentsComponent />
-              )}
-
-              {isLoading && (
-                <div className="text-center my-5">
-                  <CircularProgress />
+                <div>
+                  {comments.length > 0 ? (
+                    comments.map((comment) => (
+                      <div
+                        key={comment.id}
+                        className="border-b border-neutral-200 p-4 hover:bg-neutral-50"
+                      >
+                        <div className="flex flex-col gap-2 ">
+                          <div className="text-primarytextcolor w-max flex items-center justify-between gap-2 text-sm font-light">
+                            <Link to={`/post/${comment.postId}`}>
+                              <OpenInNewIcon
+                                sx={{ fontSize: 20 }}
+                                className="text-blue-500"
+                              />
+                            </Link>
+                            {comment.createdAt.slice(0, 10)}{" "}
+                            <div className="text-neutral-600">
+                              <button
+                                onClick={() => {
+                                  setCommentDeleteId(comment.id);
+                                  setPostId(comment.postId);
+                                  setDeleteState(true);
+                                }}
+                              >
+                                <MoreVertIcon sx={{ fontSize: 18 }} />
+                              </button>
+                            </div>
+                          </div>
+                          <div className="text-primarytextcolor  text-sm lg:text-base font-light">
+                            {comment.content}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center font-ubuntu my-5 text-primarytextcolor">
+                      No Comments found.
+                    </div>
+                  )}
+                  {isLoadingComments && (
+                    <div className="text-center my-5 text-gray-500">
+                      Loading ...
+                    </div>
+                  )}
                 </div>
               )}
             </div>
           )}
-          <BottomButtons />
+
+          {isLoading && (
+            <div className="text-center my-5">
+              <CircularProgress />
+            </div>
+          )}
         </div>
       )}
+      <BottomButtons />
     </>
   );
 };
