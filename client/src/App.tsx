@@ -8,6 +8,8 @@ import { KribConnect } from "./pages/KribConnect";
 import { Post } from "./pages/Post";
 import { Matches } from "./pages/Matches";
 import { KribTvConnect } from "./components/KribTv/KribTvComponent";
+import { Followers } from "./pages/Followers";
+import { Following } from "./pages/Following";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -46,6 +48,14 @@ function App() {
           <Route
             path="/matches"
             element={<ProtectedRoute element={<Matches />} />}
+          />
+          <Route
+            path="/followers"
+            element={<ProtectedRoute element={<Followers />} />}
+          />
+          <Route
+            path="/following"
+            element={<ProtectedRoute element={<Following />} />}
           />
           <Route path="/kribtv" element={<KribTvConnect />} />
         </Routes>

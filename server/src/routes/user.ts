@@ -428,7 +428,7 @@ userRouter.post("/followers", async (c) => {
   }
 });
 
-userRouter.post("/followings", async (c) => {
+userRouter.post("/following", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -446,7 +446,7 @@ userRouter.post("/followings", async (c) => {
     if (!findUser) {
       return c.json({ status: 401, message: "User not authenticated" });
     }
-    const findFollowings = await prisma.user.findMany({
+    const findFollowing = await prisma.user.findMany({
       where: {
         username: username,
       },
@@ -455,13 +455,13 @@ userRouter.post("/followings", async (c) => {
       },
     });
 
-    if (!findFollowings) {
-      return c.json({ status: 404, message: "No followings found" });
+    if (!findFollowing) {
+      return c.json({ status: 404, message: "No following found" });
     }
     return c.json({
       status: 200,
       message: "following found",
-      followers: findFollowings,
+      followers: findFollowing,
     });
   } catch (error) {
     console.log(error);
