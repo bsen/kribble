@@ -1,3 +1,6 @@
+import { useParams } from "react-router-dom";
+
 export const FollowingComponent = () => {
-  return <div>following</div>;
+  const { username } = useParams();
+  return <div>following of {username}</div>;
 };

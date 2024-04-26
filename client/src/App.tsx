@@ -50,11 +50,11 @@ function App() {
             element={<ProtectedRoute element={<Matches />} />}
           />
           <Route
-            path="/followers"
+            path="/followers/:username"
             element={<ProtectedRoute element={<Followers />} />}
           />
           <Route
-            path="/following"
+            path="/following/:username"
             element={<ProtectedRoute element={<Following />} />}
           />
           <Route path="/kribtv" element={<KribTvConnect />} />

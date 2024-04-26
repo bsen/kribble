@@ -268,18 +268,26 @@ export const ProfileSection: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex gap-4 my-2 font-ubuntu text-sm">
-                      <div className="flex gap-2 items-center">
-                        <div className="text-primarytextcolor">
-                          {userData.followers.length}
+                      <Link to={`/followers/${username}`}>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-primarytextcolor">
+                            {userData.followers.length}
+                          </div>
+                          <div className="text-secondarytextcolor">
+                            Followers
+                          </div>
                         </div>
-                        <div className="text-secondarytextcolor">Followers</div>
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        <div className="text-primarytextcolor">
-                          {userData.following.length}
+                      </Link>
+                      <Link to={`/following/${username}`}>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-primarytextcolor">
+                            {userData.following.length}
+                          </div>
+                          <div className="text-secondarytextcolor">
+                            Following
+                          </div>
                         </div>
-                        <div className="text-secondarytextcolor">Following</div>
-                      </div>
+                      </Link>
                     </div>
                     <div className="flex justify-start items-center gap-4">
                       <button
