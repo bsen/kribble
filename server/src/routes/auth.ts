@@ -123,7 +123,6 @@ authRouter.get("/users-count", async (c) => {
     if (!users) {
       return c.json({ status: 400, message: "Failed to fetch users count" });
     }
-
     return c.json({ status: 200, message: users });
   } catch (error) {
     console.log(error);
