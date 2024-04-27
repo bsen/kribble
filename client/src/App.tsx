@@ -7,7 +7,8 @@ import { CreatePost } from "./pages/CreatePost";
 import { KribConnect } from "./pages/KribConnect";
 import { Post } from "./pages/Post";
 import { Matches } from "./pages/Matches";
-import { KribTvConnect } from "./components/KribTv/KribTvComponent";
+import { Lobby } from "./components/KribTv/Lobby";
+
 import { Followers } from "./pages/Followers";
 import { Following } from "./pages/Following";
 interface ProtectedRouteProps {
@@ -57,7 +58,7 @@ function App() {
             path="/following/:username"
             element={<ProtectedRoute element={<Following />} />}
           />
-          <Route path="/kribtv" element={<KribTvConnect />} />
+          <Route path="/tv" element={<ProtectedRoute element={<Lobby />} />} />
         </Routes>
       </BrowserRouter>
     </>

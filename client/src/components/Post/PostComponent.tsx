@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Loading } from "../Loading";
 import { useEffect, useState, useRef } from "react";
 import { BACKEND_URL } from "../../config";
+import { CircularProgress } from "@mui/material";
 
 interface Comment {
   id: string;
@@ -253,9 +254,10 @@ export const PostComponent = () => {
                 </div>
               </div>
             ))}
-
             {isLoadingComments && (
-              <div className="text-center my-5">Loading...</div>
+              <div className="text-center my-5">
+                <CircularProgress />
+              </div>
             )}
           </div>
         </>
