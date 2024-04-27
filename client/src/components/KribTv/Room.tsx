@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Socket, io } from "socket.io-client";
+import { io } from "socket.io-client";
 
 const URL = "http://localhost:3000";
 
@@ -13,30 +13,24 @@ export const Room = ({
   localVideoTrack: MediaStreamTrack | null;
 }) => {
   const [lobby, setLobby] = useState(true);
-  const [socket, setSocket] = useState<null | Socket>(null);
-  const [sendingPc, setSendingPc] = useState<null | RTCPeerConnection>(null);
-  const [receivingPc, setReceivingPc] = useState<null | RTCPeerConnection>(
-    null
-  );
-  const [remoteVideoTrack, setRemoteVideoTrack] =
-    useState<MediaStreamTrack | null>(null);
-  const [remoteAudioTrack, setRemoteAudioTrack] =
-    useState<MediaStreamTrack | null>(null);
-  const [remoteMediaStream, setRemoteMediaStream] =
-    useState<MediaStream | null>(null);
+  const sendingPc = useRef<null | RTCPeerConnection>(null);
+  const receivingPc = useRef<null | RTCPeerConnection>(null);
+  const remoteVideoTrack = useRef<MediaStreamTrack | null>(null);
+  const remoteAudioTrack = useRef<MediaStreamTrack | null>(null);
+  const remoteMediaStream = useRef<MediaStream | null>(null);
 
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
-
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const socket = io(URL);
+
     socket.on("send-offer", async ({ roomId }) => {
       console.log("sending offer");
       setLobby(false);
       const pc = new RTCPeerConnection();
 
-      setSendingPc(pc);
+      sendingPc.current = pc;
       if (localVideoTrack) {
         console.error("added tack");
         console.log(localVideoTrack);
@@ -84,12 +78,13 @@ export const Room = ({
         remoteVideoRef.current.srcObject = stream;
       }
 
-      setRemoteMediaStream(stream);
+      remoteMediaStream.current = stream;
       // trickle ice
-      setReceivingPc(pc);
+      receivingPc.current = pc;
       //@ts-ignore
       window.pcr = pc;
       pc.ontrack = (e) => {
+        console.log(e.track);
         alert("ontrack");
       };
 
@@ -116,11 +111,11 @@ export const Room = ({
         const track2 = pc.getTransceivers()[1].receiver.track;
         console.log(track1);
         if (track1.kind === "video") {
-          setRemoteAudioTrack(track2);
-          setRemoteVideoTrack(track1);
+          remoteAudioTrack.current = track2;
+          remoteVideoTrack.current = track1;
         } else {
-          setRemoteAudioTrack(track1);
-          setRemoteVideoTrack(track2);
+          remoteAudioTrack.current = track1;
+          remoteVideoTrack.current = track2;
         }
         //@ts-ignore
         remoteVideoRef.current.srcObject.addTrack(track1);
@@ -133,10 +128,7 @@ export const Room = ({
 
     socket.on("answer", ({ sdp: remoteSdp }) => {
       setLobby(false);
-      setSendingPc((pc) => {
-        pc?.setRemoteDescription(remoteSdp);
-        return pc;
-      });
+      sendingPc.current?.setRemoteDescription(remoteSdp);
       console.log("loop closed");
     });
 
@@ -148,29 +140,11 @@ export const Room = ({
       console.log("add ice candidate from remote");
       console.log({ candidate, type });
       if (type == "sender") {
-        setReceivingPc((pc) => {
-          if (!pc) {
-            console.error("receicng pc nout found");
-          } else {
-            console.error(pc.ontrack);
-          }
-          pc?.addIceCandidate(candidate);
-          return pc;
-        });
+        receivingPc.current?.addIceCandidate(candidate);
       } else {
-        setSendingPc((pc) => {
-          if (!pc) {
-            console.error("sending pc nout found");
-          } else {
-            // console.error(pc.ontrack)
-          }
-          pc?.addIceCandidate(candidate);
-          return pc;
-        });
+        sendingPc.current?.addIceCandidate(candidate);
       }
     });
-
-    setSocket(socket);
   }, [name]);
 
   useEffect(() => {
