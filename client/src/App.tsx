@@ -4,10 +4,9 @@ import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
 import { CreatePost } from "./pages/CreatePost";
-import { KribConnect } from "./pages/KribConnect";
+import { Konnect } from "./pages/Konnect";
 import { Post } from "./pages/Post";
 import { Matches } from "./pages/Matches";
-import { Lobby } from "./components/KribTv/Lobby";
 
 import { Followers } from "./pages/Followers";
 import { Following } from "./pages/Following";
@@ -43,8 +42,8 @@ function App() {
             element={<ProtectedRoute element={<Post />} />}
           />
           <Route
-            path="/kribconnect"
-            element={<ProtectedRoute element={<KribConnect />} />}
+            path="/konnect"
+            element={<ProtectedRoute element={<Konnect />} />}
           />
           <Route
             path="/matches"
@@ -58,7 +57,6 @@ function App() {
             path="/following/:username"
             element={<ProtectedRoute element={<Following />} />}
           />
-          <Route path="/tv" element={<ProtectedRoute element={<Lobby />} />} />
         </Routes>
       </BrowserRouter>
     </>
