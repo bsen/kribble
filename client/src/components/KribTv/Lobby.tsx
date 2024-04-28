@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Room } from "./Room";
 
 export const Lobby = () => {
-  const [name, setName] = useState("");
   const [localAudioTrack, setLocalAudioTrack] =
     useState<MediaStreamTrack | null>(null);
   const [localVideoTrack, setlocalVideoTrack] =
@@ -38,12 +37,7 @@ export const Lobby = () => {
     return (
       <div>
         <video autoPlay ref={videoRef}></video>
-        <input
-          type="text"
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        ></input>
+
         <button
           onClick={() => {
             setJoined(true);
@@ -56,10 +50,6 @@ export const Lobby = () => {
   }
 
   return (
-    <Room
-      name={name}
-      localAudioTrack={localAudioTrack}
-      localVideoTrack={localVideoTrack}
-    />
+    <Room localAudioTrack={localAudioTrack} localVideoTrack={localVideoTrack} />
   );
 };

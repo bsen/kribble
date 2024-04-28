@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
-const URL = "https://kribbletv-git-main-biswarupzs-projects.vercel.app";
+const URL = "http://localhost:3000";
 
 export const Room = ({
-  name,
   localAudioTrack,
   localVideoTrack,
 }: {
-  name: string;
   localAudioTrack: MediaStreamTrack | null;
   localVideoTrack: MediaStreamTrack | null;
 }) => {
@@ -145,7 +143,7 @@ export const Room = ({
         sendingPc.current?.addIceCandidate(candidate);
       }
     });
-  }, [name]);
+  }, []);
 
   useEffect(() => {
     if (localVideoRef.current) {
@@ -158,9 +156,8 @@ export const Room = ({
 
   return (
     <div>
-      Hi {name}
       <video autoPlay width={400} height={400} ref={localVideoRef} />
-      {lobby ? "Waiting to connect you to someone" : null}
+      <div> {lobby ? "Waiting to connect you to someone" : ""}</div>
       <video autoPlay width={400} height={400} ref={remoteVideoRef} />
     </div>
   );
