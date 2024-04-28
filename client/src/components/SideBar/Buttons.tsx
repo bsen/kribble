@@ -98,7 +98,7 @@ export const Buttons = () => {
                     : "text-primarytextcolor"
                 }`}
               >
-                KribConnect
+                Konnect
               </p>
             </div>
           </Link>
