@@ -81,19 +81,19 @@ export const Buttons = () => {
         </button>
 
         <button>
-          <Link to={`/kribconnect`}>
+          <Link to={`/konnect`}>
             <div className={"mt-4 flex items-center justify-center gap-2"}>
               <PeopleAltIcon
                 sx={{ fontSize: 30 }}
                 className={`${
-                  location.pathname === `/kribconnect`
+                  location.pathname === `/konnect`
                     ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
-                  location.pathname === `/kribconnect`
+                  location.pathname === `/konnect`
                     ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
