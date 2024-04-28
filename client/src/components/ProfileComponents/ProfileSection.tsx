@@ -10,6 +10,8 @@ import { Loading } from "../Loading";
 import { EditProfile } from "./EditProfile";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import { BACKEND_URL } from "../../config";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 interface Comment {
   id: string;
@@ -30,7 +32,9 @@ interface Post {
   content: string;
   image: string;
   createdAt: string;
+  likesCount: string;
   commentsCount: string;
+  isLiked: boolean;
 }
 
 export const ProfileSection: React.FC = () => {
@@ -118,8 +122,8 @@ export const ProfileSection: React.FC = () => {
       );
       setPostData((prevData) => ({
         posts: truncate
-          ? [...response.data.message]
-          : [...prevData.posts, ...response.data.message],
+          ? [...response.data.data]
+          : [...prevData.posts, ...response.data.data],
         nextCursor: response.data.nextCursor,
       }));
       setIsLoading(false);
@@ -213,6 +217,32 @@ export const ProfileSection: React.FC = () => {
       console.log(error);
     }
   }
+  const handleLike = async (postId: string) => {
+    try {
+      const details = { postId, token };
+      await axios.post(
+        `${BACKEND_URL}/api/server/v1/post/like-unlike`,
+        details
+      );
+      setPostData((prevData) => ({
+        ...prevData,
+        posts: prevData.posts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                isLiked: !post.isLiked,
+                likesCount: post.isLiked
+                  ? parseInt(post.likesCount) - 1
+                  : parseInt(post.likesCount) + 1,
+              }
+            : post
+        ) as Post[],
+        nextCursor: prevData.nextCursor,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -418,16 +448,6 @@ export const ProfileSection: React.FC = () => {
                                 <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
                                   · {post.createdAt.slice(0, 10)}
                                 </div>
-                                <div className="text-neutral-600">
-                                  <button
-                                    onClick={() => {
-                                      setDeleteState(true);
-                                      setPostDeleteId(post.id);
-                                    }}
-                                  >
-                                    <MoreVertIcon />
-                                  </button>
-                                </div>
                               </div>
                               <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
                                 {post.content}
@@ -435,21 +455,50 @@ export const ProfileSection: React.FC = () => {
                               <div>
                                 <img
                                   src={post.image}
-                                  className="max-h-[80vh] mt-2 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
+                                  className="max-h-[80vh]  max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-100"
                                 />
                               </div>
                               <div>
                                 <div className="flex gap-2 text-neutral-600"></div>
                               </div>
+                              <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
+                                <div
+                                  className="flex justify-center items-center gap-2 cursor-pointer"
+                                  onClick={() => handleLike(post.id)}
+                                >
+                                  {post.isLiked ? (
+                                    <FavoriteIcon
+                                      sx={{
+                                        fontSize: 18,
+                                      }}
+                                      className="text-rose-500"
+                                    />
+                                  ) : (
+                                    <FavoriteBorderIcon
+                                      sx={{
+                                        fontSize: 18,
+                                      }}
+                                      className="text-rose-500"
+                                    />
+                                  )}
+
+                                  <div className="text-base text-rose-500">
+                                    {post.likesCount}
+                                  </div>
+                                </div>
+                                <div className="flex justify-center items-center gap-2">
+                                  <Link to={`/post/${post.id}`}>
+                                    <ChatBubbleOutlineRoundedIcon
+                                      sx={{ fontSize: 18 }}
+                                      className="text-blue-500"
+                                    />
+                                  </Link>
+                                  <div className="text-base text-blue-500">
+                                    {post.commentsCount}
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex gap-2 justify-end text-sm text-neutral-500">
-                            <Link to={`/post/${post.id}`}>
-                              <ChatBubbleOutlineRoundedIcon
-                                sx={{ fontSize: 17 }}
-                              />
-                            </Link>
-                            <div>{post.commentsCount}</div>
                           </div>
                         </div>
                       </div>

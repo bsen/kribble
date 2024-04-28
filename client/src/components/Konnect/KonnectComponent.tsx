@@ -188,7 +188,7 @@ export const KonnectComponent = () => {
                     <div className="text-center font-semibold font-ubuntu px-6 my-3  text-xl text-primarytextcolor">
                       Start Connecting with Kribble{" "}
                     </div>
-                    <div className="text-secondarytextcolor text-sm">
+                    <div className="text-secondarytextcolor font-normal text-sm">
                       1. Your profile picture, bio and interest will be used for
                       connecting.
                       <br />

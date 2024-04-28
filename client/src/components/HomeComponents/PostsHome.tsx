@@ -6,6 +6,8 @@ import { BottomButtons } from "../Mobile/BottomButtons";
 import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import { SearchBox } from "./SearchBar";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 interface Post {
   id: string;
   creator: {
@@ -18,6 +20,8 @@ interface Post {
   image: string;
   createdAt: string;
   commentsCount: string;
+  likesCount: string;
+  isLiked: boolean;
 }
 
 export const PostsHome = () => {
@@ -64,6 +68,33 @@ export const PostsHome = () => {
       !isLoading
     ) {
       getAllPosts(postData.nextCursor);
+    }
+  };
+
+  const handleLike = async (postId: string) => {
+    try {
+      const details = { postId, token };
+      await axios.post(
+        `${BACKEND_URL}/api/server/v1/post/like-unlike`,
+        details
+      );
+      setPostData((prevData) => ({
+        ...prevData,
+        posts: prevData.posts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                isLiked: !post.isLiked,
+                likesCount: post.isLiked
+                  ? parseInt(post.likesCount) - 1
+                  : parseInt(post.likesCount) + 1,
+              }
+            : post
+        ) as Post[],
+        nextCursor: prevData.nextCursor,
+      }));
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -125,13 +156,44 @@ export const PostsHome = () => {
                       <div>
                         <div className="flex gap-2 text-neutral-600"></div>
                       </div>
+                      <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
+                        <div
+                          className="flex justify-center items-center gap-2 cursor-pointer"
+                          onClick={() => handleLike(post.id)}
+                        >
+                          {post.isLiked ? (
+                            <FavoriteIcon
+                              sx={{
+                                fontSize: 18,
+                              }}
+                              className="text-rose-500"
+                            />
+                          ) : (
+                            <FavoriteBorderIcon
+                              sx={{
+                                fontSize: 18,
+                              }}
+                              className="text-rose-500"
+                            />
+                          )}
+
+                          <div className="text-base text-rose-500">
+                            {post.likesCount}
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center gap-2">
+                          <Link to={`/post/${post.id}`}>
+                            <ChatBubbleOutlineRoundedIcon
+                              sx={{ fontSize: 18 }}
+                              className="text-blue-500"
+                            />
+                          </Link>
+                          <div className="text-base text-blue-500">
+                            {post.commentsCount}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex gap-2 justify-end text-sm text-neutral-500">
-                    <Link to={`/post/${post.id}`}>
-                      <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 17 }} />
-                    </Link>
-                    <div>{post.commentsCount}</div>
                   </div>
                 </div>
               </div>

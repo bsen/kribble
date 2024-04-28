@@ -99,28 +99,29 @@ userRouter.post("/posts", async (c) => {
     const username = body.username;
     const token = body.token;
     const userId = await verify(token, c.env.JWT_SECRET);
-
-    if (!userId) {
-      return c.json({ status: 404, message: "unauthorised" });
-    }
-
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-
-    const findUser = await prisma.user.findUnique({
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorized Main User" });
+    }
+    const profileUser = await prisma.user.findUnique({
       where: { username: username },
     });
-
+    if (!profileUser) {
+      return c.json({ status: 401, message: "Unauthorized Other User" });
+    }
     const cursor = body.cursor || null;
     const take = 3;
 
     const userposts = await prisma.post.findMany({
-      where: { creatorId: findUser?.id },
+      where: { creatorId: profileUser?.id },
       select: {
         id: true,
         image: true,
         content: true,
+        likesCount: true,
         creator: {
           select: {
             id: true,
@@ -147,13 +148,27 @@ userRouter.post("/posts", async (c) => {
     const posts = hasMore ? userposts.slice(0, -1) : userposts;
     const nextCursor = hasMore ? userposts[userposts.length - 1].id : null;
 
-    return c.json({
-      status: 200,
-      message: posts,
-      nextCursor,
-    });
+    const postsWithLikedState = await Promise.all(
+      posts.map(async (post) => {
+        const isLiked = await prisma.like.findUnique({
+          where: {
+            userId_postId: {
+              userId: findUser.id,
+              postId: post.id,
+            },
+          },
+        });
+        return {
+          ...post,
+          isLiked: isLiked ? true : false,
+        };
+      })
+    );
+
+    return c.json({ status: 200, data: postsWithLikedState, nextCursor });
   } catch (error) {
     console.log(error);
+    return c.json({ status: 400 });
   }
 });
 userRouter.post("/comments", async (c) => {
