@@ -1,4 +1,4 @@
-import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
+import { Suggestions } from "../components/Communities/Suggestions";
 import { FollowingComponent } from "../components/ProfileComponents/FollowingComponent";
 import { Sidebar } from "../components/SideBar/Sidebar";
 export const Following = () => {
@@ -12,7 +12,7 @@ export const Following = () => {
       </div>
 
       <div className="w-[30%] max-lg:hidden">
-        <CommunitySuggestions />
+        <Suggestions />
       </div>
     </div>
   );

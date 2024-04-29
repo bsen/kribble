@@ -1,5 +1,5 @@
-import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
-import CreatePostComponent from "../components/ProfileComponents/CreatePostComponent";
+import { Suggestions } from "../components/Communities/Suggestions";
+import { CreatePostComponent } from "../components/ProfileComponents/CreatePostComponent";
 import { Sidebar } from "../components/SideBar/Sidebar";
 export const CreatePost = () => {
   return (
@@ -12,7 +12,7 @@ export const CreatePost = () => {
       </div>
 
       <div className="w-[30%] max-lg:hidden">
-        <CommunitySuggestions />
+        <Suggestions />
       </div>
     </div>
   );

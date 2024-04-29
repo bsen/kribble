@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/SideBar/Sidebar";
-import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
+import { Suggestions } from "../components/Communities/Suggestions";
 import { ProfileSection } from "../components/ProfileComponents/ProfileSection";
 export const Profile = () => {
   return (
@@ -12,7 +12,7 @@ export const Profile = () => {
       </div>
 
       <div className="w-[30%] max-lg:hidden">
-        <CommunitySuggestions />
+        <Suggestions />
       </div>
     </div>
   );

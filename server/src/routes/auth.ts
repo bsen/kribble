@@ -18,6 +18,28 @@ const emailSchema = z.string().email();
 const genderSchema = z.string();
 const passwordSchema = z.string().min(6);
 
+authRouter.post("/check-name", async (c) => {
+  try {
+    const body = await c.req.json();
+    const username = body.username;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const checkUsername = await prisma.user.findFirst({
+      where: {
+        username: username,
+      },
+    });
+    if (checkUsername) {
+      return c.json({ status: 101 });
+    } else {
+      return c.json({ status: 102 });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 authRouter.post("/signup", async (c) => {
   try {
     const body = await c.req.json();
@@ -38,7 +60,7 @@ authRouter.post("/signup", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    const email = await prisma.user.findUnique({
+    const email = await prisma.user.findFirst({
       where: {
         email: body.email,
       },
@@ -47,7 +69,7 @@ authRouter.post("/signup", async (c) => {
     if (email) {
       return c.json({ status: 401, message: "This email is already in use" });
     }
-    const username = await prisma.user.findUnique({
+    const username = await prisma.user.findFirst({
       where: {
         username: body.username,
       },

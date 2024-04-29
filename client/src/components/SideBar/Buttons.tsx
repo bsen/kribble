@@ -1,9 +1,9 @@
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
-import PostAddIcon from "@mui/icons-material/PostAdd";
+import AddIcon from "@mui/icons-material/Add";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import GroupsIcon from "@mui/icons-material/Groups";
+import PeopleIcon from "@mui/icons-material/People";
 import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
@@ -106,7 +106,7 @@ export const Buttons = () => {
         <button>
           <Link to={`/communities`}>
             <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <GroupsIcon
+              <PeopleIcon
                 sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === `/communities`
@@ -137,7 +137,7 @@ export const Buttons = () => {
               "mt-10 px-6 py-1 rounded-full bg-neutral-800 flex items-center justify-center gap-2 text-lg font-medium  text-white"
             }
           >
-            <PostAddIcon sx={{ fontSize: 25 }} />
+            <AddIcon sx={{ fontSize: 30 }} />
             <p>Post</p>
           </div>
         </button>

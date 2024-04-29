@@ -1,7 +1,6 @@
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import { useEffect, useState } from "react";

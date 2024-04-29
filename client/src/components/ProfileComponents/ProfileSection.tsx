@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import PostAddIcon from "@mui/icons-material/PostAdd";
+import AddIcon from "@mui/icons-material/Add";
 import { Loading } from "../Loading";
 import { EditProfile } from "./EditProfile";
 import { BottomButtons } from "../Mobile/BottomButtons";
@@ -366,7 +366,7 @@ export const ProfileSection: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <div className="my-2">
+                  <div>
                     <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
                       {userData.bio ? userData.bio : "bio"}
                     </div>
@@ -393,43 +393,8 @@ export const ProfileSection: React.FC = () => {
                         {userData.interest ? userData.interest : "interests"}
                       </div>
                     </div>
-                    <div className="mt-2 flex justify-between">
-                      <div className="flex flex-col justify-start items-start gap-1">
-                        <button
-                          onClick={() => {
-                            setPostComponent(true);
-                          }}
-                          className={`text-sm font-ubuntu font-semibold ${
-                            postComponent
-                              ? "text-blue-500"
-                              : "text-secondarytextcolor"
-                          }`}
-                        >
-                          Posts
-                        </button>
-                        <button
-                          onClick={() => {
-                            setPostComponent(false);
-                          }}
-                          className={`text-sm font-ubuntu font-semibold ${
-                            postComponent
-                              ? "text-secondarytextcolor"
-                              : "text-blue-500"
-                          }`}
-                        >
-                          Comments
-                        </button>
 
-                        <Link to={`/${userData.username}/communities`}>
-                          <div
-                            className={
-                              "text-sm font-ubuntu font-semibold text-secondarytextcolor"
-                            }
-                          >
-                            My Communities
-                          </div>
-                        </Link>
-                      </div>
+                    <div className="flex flex-col my-4 items-start gap-2">
                       <button
                         onClick={() => {
                           navigate("/create/post");
@@ -437,16 +402,58 @@ export const ProfileSection: React.FC = () => {
                       >
                         <div
                           className={
-                            "px-2 py-2 rounded-full bg-neutral-800 flex items-center justify-center gap-2 text-sm  text-white"
+                            "px-4 py-1 rounded-full border border-neutral-400  bg-white flex items-center justify-center gap-2 text-sm text-primarytextcolor"
                           }
                         >
-                          <PostAddIcon sx={{ fontSize: 20 }} />
+                          <AddIcon sx={{ fontSize: 20 }} />
+                          <p>Post</p>
+                        </div>
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/create/community");
+                        }}
+                      >
+                        <div
+                          className={
+                            "px-4 py-1 rounded-full border border-neutral-400  bg-white flex items-center justify-center gap-2 text-sm text-primarytextcolor"
+                          }
+                        >
+                          <AddIcon sx={{ fontSize: 20 }} />
+                          <p>Community</p>
                         </div>
                       </button>
                     </div>
                   </div>
+                  <div className="flex justify-start items-start gap-5">
+                    <button
+                      onClick={() => {
+                        setPostComponent(true);
+                      }}
+                      className={`text-sm font-ubuntu font-semibold ${
+                        postComponent
+                          ? "bg-neutral-100 px-4 py-1 rounded-full"
+                          : "text-primarytextcolor px-4 py-1 rounded-full bg-white"
+                      }`}
+                    >
+                      Posts
+                    </button>
+                    <button
+                      onClick={() => {
+                        setPostComponent(false);
+                      }}
+                      className={`text-sm font-ubuntu font-semibold ${
+                        postComponent
+                          ? "text-primarytextcolor px-4 py-1 rounded-full bg-white"
+                          : "bg-neutral-100 px-4 py-1 rounded-full"
+                      }`}
+                    >
+                      Comments
+                    </button>
+                  </div>
                 </div>
               )}
+
               {postComponent ? (
                 <div>
                   {postData.posts.length > 0 ? (

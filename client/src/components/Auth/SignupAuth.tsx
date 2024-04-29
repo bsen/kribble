@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { Loading } from "../Loading";
 export const SignupAuth = () => {
   const navigate = useNavigate();
   const [loadingState, setLoadingState] = useState(false);
-
+  const [available, setAvailable] = useState(true);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -39,8 +39,30 @@ export const SignupAuth = () => {
     setPassword(newPassword);
   };
 
+  async function checkName() {
+    const response = await axios.post(
+      `${BACKEND_URL}/api/server/v1/auth/check-name`,
+      { username }
+    );
+    if (response.data.status === 101) {
+      setPopup("This username is already taken");
+      return setAvailable(false);
+    }
+    if (response.data.status === 102) {
+      setPopup("");
+      return setAvailable(true);
+    }
+  }
+  useEffect(() => {
+    setPopup("");
+    checkName();
+  }, [username]);
+
   async function signup() {
     setPopup("");
+    if (available == false) {
+      return setPopup("This username is already taken");
+    }
     if (!name) {
       setPopup("Enter a valid name");
       return;
@@ -135,7 +157,9 @@ export const SignupAuth = () => {
                   onChange={(e) => {
                     handleUsernameChange(e.target.value);
                   }}
-                  className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
+                  className={`w-full h-10 px-4 border border-neutral-300 focus:outline-none  rounded-lg ${
+                    available ? "" : "border border-rose-500"
+                  }`}
                   placeholder="Enter your username"
                 />
               </div>
@@ -199,7 +223,7 @@ export const SignupAuth = () => {
                 </Link>
               </div>
               <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
-                {popup ? popup : ""}
+                {popup ? popup : "‎"}
               </div>
             </div>
           </div>

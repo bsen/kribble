@@ -224,8 +224,6 @@ userRouter.post("/profile/update", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-
-    console.log(newBio, newWebsite, newInterest);
     if (
       typeof token !== "string" ||
       typeof newBio !== "string" ||

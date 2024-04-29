@@ -4,7 +4,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
+import { Suggestions } from "../components/Communities/Suggestions";
 export const Home = () => {
   const [errorState, setErrorState] = useState(false);
   const token = localStorage.getItem("token");
@@ -53,7 +53,7 @@ export const Home = () => {
             <PostsHome />
           </div>
           <div className="w-[30%] max-lg:hidden">
-            <CommunitySuggestions />
+            <Suggestions />
           </div>
         </>
       )}

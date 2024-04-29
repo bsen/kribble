@@ -1,12 +1,13 @@
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading";
 import { BACKEND_URL } from "../../config";
 
-const CreatePostComponent = () => {
+export const CreatePostComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
@@ -96,15 +97,28 @@ const CreatePostComponent = () => {
       ) : (
         <div className="h-screen flex justify-center items-center">
           <div className="w-full max-w-md my-5 rounded-lg bg-background">
+            <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
+              <div>
+                <button onClick={handleClose}>
+                  <CloseIcon
+                    className="bg-neutral-800 p-1 rounded-full text-white"
+                    sx={{ fontSize: 30 }}
+                  />
+                </button>
+              </div>
+              <div>Create Post</div>
+            </div>
             <div>
-              <button onClick={handleClose} className="my-5">
-                <CloseIcon
-                  className="bg-neutral-800 p-1 rounded-full text-white"
-                  sx={{ fontSize: 30 }}
-                />
-              </button>
               {postImage ? (
                 <div className="flex justify-center items-center">
+                  <button
+                    onClick={() => {
+                      setPostImage(null);
+                    }}
+                    className="absolute p-1 bg-white text-black rounded-full"
+                  >
+                    <DeleteIcon sx={{ fontSize: 25 }} />
+                  </button>
                   <img
                     src={previewImage}
                     alt="Preview"
@@ -159,5 +173,3 @@ const CreatePostComponent = () => {
     </>
   );
 };
-
-export default CreatePostComponent;
