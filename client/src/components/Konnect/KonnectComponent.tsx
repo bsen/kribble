@@ -93,7 +93,7 @@ export const KonnectComponent = () => {
 
   return (
     <>
-      <div className="h-screen  py-2 ">
+      <div className="h-screen">
         <div className="w-full flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>
@@ -117,17 +117,17 @@ export const KonnectComponent = () => {
         </div>
         <div>
           {loadingState ? (
-            <div className="h-[80vh] bg-background flex justify-center items-center w-full">
+            <div className="h-[90vh] bg-background flex justify-center items-center w-full">
               <CircularProgress />
             </div>
           ) : (
-            <div className="h-[80vh] flex flex-col items-center justify-center">
+            <div className="h-[90vh] flex flex-col items-center justify-center">
               {matchingState ? (
                 <div>
-                  <div className="w-full flex flex-col items-center justify-center">
-                    <div className="w-[70%]">
-                      <div className="flex gap-2 m-2 items-center">
-                        <div className="text-primarytextcolor text-lg font-light font-ubuntu">
+                  <div className="h-[90vh] flex flex-col items-center justify-evenly">
+                    <div className="w-[60%] flex flex-col gap-4">
+                      <div className="flex  flex-col gap-2 m-2 items-start">
+                        <div className="text-primarytextcolor text-xl font-medium font-ubuntu">
                           {matchUserData.name}
                         </div>
                         <div className="text-secondarytextcolor text-sm font-light ">
@@ -141,7 +141,7 @@ export const KonnectComponent = () => {
                         className="rounded-xl w-[100%]"
                       />
 
-                      <div className="font-light text-sm text-secondarytextcolor m-2 w-full">
+                      <div className="font-normal text-base text-secondarytextcolor m-2 w-full">
                         {matchUserData.bio ? "bio · " + matchUserData.bio : ""}
                         <br />
                         {matchUserData.interest
@@ -150,24 +150,18 @@ export const KonnectComponent = () => {
                       </div>
                     </div>
 
-                    <div className="flex py-2 justify-evenly w-full">
-                      <div>
-                        <button
-                          onClick={searchPeople}
-                          className="bg-blue-500 font-ubuntu font-medium shadow-md text-white text-xl px-4 py-1 rounded-lg active:bg-blue-500"
-                        >
-                          <div className="flex items-center justify-evenly">
+                    <div className="flex py-2 justify-center gap-5 w-full">
+                      <div className="bg-neutral-600 font-ubuntu font-medium text-lg  py-2 rounded-full active:bg-neutral-700 w-[27%] flex justify-center">
+                        <button onClick={searchPeople}>
+                          <div className="flex items-center text-white justify-evenly">
                             <div>Pass</div>
                             <CloseIcon />
                           </div>
                         </button>
                       </div>
-                      <div>
-                        <button
-                          onClick={match}
-                          className="bg-blue-500 font-ubuntu font-medium shadow-md text-white text-xl px-4 py-1 rounded-lg active:bg-blue-500"
-                        >
-                          <div className="flex items-center justify-evenly">
+                      <div className="bg-blue-500 font-ubuntu font-medium text-lg  py-2 rounded-full active:bg-blue-600 w-[27%] flex justify-center">
+                        <button onClick={match}>
+                          <div className="flex text-white items-center justify-evenly">
                             <div>Connect</div>
                             <DoneIcon />
                           </div>
@@ -230,7 +224,7 @@ export const KonnectComponent = () => {
                       className="text-background  rounded-full w-[40%] bg-blue-500  text-lg py-2 px-4 font-ubuntu  active:bg-blue-800"
                       onClick={searchPeople}
                     >
-                      Start Konnecting
+                      Start Connecting
                     </button>
 
                     <Link

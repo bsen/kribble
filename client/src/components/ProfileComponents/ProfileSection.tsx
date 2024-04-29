@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import { Loading } from "../Loading";
 import { EditProfile } from "./EditProfile";
 import { BottomButtons } from "../Mobile/BottomButtons";
@@ -38,6 +39,7 @@ interface Post {
 }
 
 export const ProfileSection: React.FC = () => {
+  const navigate = useNavigate();
   const [loadingState, setLoadingState] = useState(false);
   const [userData, setUserData] = useState<{
     name: string;
@@ -77,7 +79,13 @@ export const ProfileSection: React.FC = () => {
     posts: [],
     nextCursor: null,
   });
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [commentsData, setCommentsData] = useState<{
+    comments: Comment[];
+    nextCursor: string | null;
+  }>({
+    comments: [],
+    nextCursor: null,
+  });
   const [postDeleteId, setPostDeleteId] = useState("");
   const [deleteState, setDeleteState] = useState(false);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
@@ -91,7 +99,7 @@ export const ProfileSection: React.FC = () => {
   useEffect(() => {
     getData();
     getAllPosts(null, true);
-    getComments();
+    getComments(null, true);
   }, [username]);
 
   async function getData() {
@@ -122,8 +130,8 @@ export const ProfileSection: React.FC = () => {
       );
       setPostData((prevData) => ({
         posts: truncate
-          ? [...response.data.data]
-          : [...prevData.posts, ...response.data.data],
+          ? [...response.data.posts]
+          : [...prevData.posts, ...response.data.posts],
         nextCursor: response.data.nextCursor,
       }));
       setIsLoading(false);
@@ -133,7 +141,10 @@ export const ProfileSection: React.FC = () => {
     }
   }
 
-  async function getComments(cursor?: string) {
+  async function getComments(
+    cursor: string | null | undefined,
+    truncate: boolean
+  ) {
     try {
       setIsLoadingComments(true);
       const response = await axios.post(
@@ -141,16 +152,17 @@ export const ProfileSection: React.FC = () => {
         {
           token,
           cursor,
+          username,
         }
       );
-      if (cursor) {
-        setComments((prevComments) => [
-          ...prevComments,
-          ...response.data.message,
-        ]);
-      } else {
-        setComments(response.data.message);
-      }
+
+      setCommentsData((prevComments) => ({
+        comments: truncate
+          ? [...response.data.comments]
+          : [...prevComments.comments, ...response.data.commnets],
+        nextCursor: response.data.messages,
+      }));
+
       setIsLoadingComments(false);
     } catch (error) {
       console.error(error);
@@ -305,6 +317,28 @@ export const ProfileSection: React.FC = () => {
                         <div className="text-sm text-secondarytextcolor font-light">
                           @{userData.username}
                         </div>
+                        <div className="flex  mt-2 gap-4 font-ubuntu text-sm">
+                          <Link to={`/followers/${username}`}>
+                            <div className="flex gap-2 items-center">
+                              <div className="text-primarytextcolor">
+                                {userData.followers.length}
+                              </div>
+                              <div className="text-secondarytextcolor">
+                                Followers
+                              </div>
+                            </div>
+                          </Link>
+                          <Link to={`/following/${username}`}>
+                            <div className="flex gap-2 items-center">
+                              <div className="text-primarytextcolor">
+                                {userData.following.length}
+                              </div>
+                              <div className="text-secondarytextcolor">
+                                Following
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                     {currentUser === username ? (
@@ -319,7 +353,7 @@ export const ProfileSection: React.FC = () => {
                       <div className="flex gap-4 justify-between items-center">
                         <button
                           onClick={followUser}
-                          className="bg-blue-500 text-background px-4 py-1 rounded-lg font-ubuntu"
+                          className="bg-neutral-800 text-background px-4 py-1 rounded-full font-ubuntu"
                         >
                           <div>
                             {followingState ? (
@@ -336,7 +370,7 @@ export const ProfileSection: React.FC = () => {
                     <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
                       {userData.bio ? userData.bio : "bio"}
                     </div>
-                    <div className="">
+                    <div>
                       <div className="text-sm text-blue-500 font-light hover:underline">
                         <a
                           href={`${
@@ -359,52 +393,55 @@ export const ProfileSection: React.FC = () => {
                         {userData.interest ? userData.interest : "interests"}
                       </div>
                     </div>
-                    <div className="flex gap-4 my-2 font-ubuntu text-sm">
-                      <Link to={`/followers/${username}`}>
-                        <div className="flex gap-2 items-center">
-                          <div className="text-primarytextcolor">
-                            {userData.followers.length}
+                    <div className="mt-2 flex justify-between">
+                      <div className="flex flex-col justify-start items-start gap-1">
+                        <button
+                          onClick={() => {
+                            setPostComponent(true);
+                          }}
+                          className={`text-sm font-ubuntu font-semibold ${
+                            postComponent
+                              ? "text-blue-500"
+                              : "text-secondarytextcolor"
+                          }`}
+                        >
+                          Posts
+                        </button>
+                        <button
+                          onClick={() => {
+                            setPostComponent(false);
+                          }}
+                          className={`text-sm font-ubuntu font-semibold ${
+                            postComponent
+                              ? "text-secondarytextcolor"
+                              : "text-blue-500"
+                          }`}
+                        >
+                          Comments
+                        </button>
+
+                        <Link to={`/${userData.username}/communities`}>
+                          <div
+                            className={
+                              "text-sm font-ubuntu font-semibold text-secondarytextcolor"
+                            }
+                          >
+                            My Communities
                           </div>
-                          <div className="text-secondarytextcolor">
-                            Followers
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to={`/following/${username}`}>
-                        <div className="flex gap-2 items-center">
-                          <div className="text-primarytextcolor">
-                            {userData.following.length}
-                          </div>
-                          <div className="text-secondarytextcolor">
-                            Following
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                    <div className="flex justify-start items-center gap-4">
+                        </Link>
+                      </div>
                       <button
                         onClick={() => {
-                          setPostComponent(true);
+                          navigate("/create/post");
                         }}
-                        className={`text-sm font-ubuntu font-semibold ${
-                          postComponent
-                            ? "text-blue-500"
-                            : "text-secondarytextcolor"
-                        }`}
                       >
-                        Posts
-                      </button>
-                      <button
-                        onClick={() => {
-                          setPostComponent(false);
-                        }}
-                        className={`text-sm font-ubuntu font-semibold ${
-                          postComponent
-                            ? "text-secondarytextcolor"
-                            : "text-blue-500"
-                        }`}
-                      >
-                        Comments
+                        <div
+                          className={
+                            "px-2 py-2 rounded-full bg-neutral-800 flex items-center justify-center gap-2 text-sm  text-white"
+                          }
+                        >
+                          <PostAddIcon sx={{ fontSize: 20 }} />
+                        </div>
                       </button>
                     </div>
                   </div>
@@ -511,8 +548,8 @@ export const ProfileSection: React.FC = () => {
                 </div>
               ) : (
                 <div>
-                  {comments.length > 0 ? (
-                    comments.map((comment) => (
+                  {commentsData.comments.length > 0 ? (
+                    commentsData.comments.map((comment) => (
                       <div
                         key={comment.id}
                         className="border-b border-neutral-200 p-4 hover:bg-neutral-50"

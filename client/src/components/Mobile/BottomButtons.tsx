@@ -3,6 +3,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
@@ -36,14 +37,14 @@ export const BottomButtons = () => {
               className={`${
                 location.pathname === "/home"
                   ? "text-blue-500"
-                  : "text-secondarytextcolor"
+                  : "text-primarytextcolor"
               }`}
             />
             <p
               className={`text-sm lg:text-lg  font-medium ${
                 location.pathname === "/home"
                   ? "text-blue-500"
-                  : "text-secondarytextcolor"
+                  : "text-primarytextcolor"
               }`}
             >
               Home
@@ -56,7 +57,7 @@ export const BottomButtons = () => {
             <Link to={`/${currentUser}`}>
               <div
                 className={
-                  " flex flex-col items-center lg:gap-2 text-secondarytextcolor "
+                  " flex flex-col items-center lg:gap-2 text-primarytextcolor "
                 }
               >
                 <PersonIcon
@@ -64,14 +65,14 @@ export const BottomButtons = () => {
                   className={`${
                     location.pathname === `/${currentUser}`
                       ? "text-blue-500"
-                      : "text-secondarytextcolor"
+                      : "text-primarytextcolor"
                   }`}
                 />
                 <p
                   className={`text-sm font-medium ${
                     location.pathname === `/${currentUser}`
                       ? "text-blue-500"
-                      : "text-secondarytextcolor"
+                      : "text-primarytextcolor"
                   }`}
                 >
                   Profile
@@ -83,28 +84,28 @@ export const BottomButtons = () => {
 
         <div>
           <button>
-            <Link to={`/matchmaker`}>
+            <Link to={`/konnect`}>
               <div
                 className={
-                  " flex flex-col items-center lg:gap-2 text-secondarytextcolor "
+                  " flex flex-col items-center lg:gap-2 text-primarytextcolor "
                 }
               >
-                <PeopleAltRoundedIcon
+                <JoinInnerIcon
                   sx={{ fontSize: 30 }}
                   className={`${
-                    location.pathname === `/matchmaker`
+                    location.pathname === `/konnect`
                       ? "text-blue-500"
-                      : "text-secondarytextcolor"
+                      : "text-primarytextcolor"
                   }`}
                 />
                 <p
                   className={`text-sm font-medium ${
-                    location.pathname === `/matchmaker`
+                    location.pathname === `/konnect`
                       ? "text-blue-500"
-                      : "text-secondarytextcolor"
+                      : "text-primarytextcolor"
                   }`}
                 >
-                  Matches
+                  Konnect
                 </p>
               </div>
             </Link>
@@ -119,7 +120,7 @@ export const BottomButtons = () => {
         >
           <div
             className={
-              "flex flex-col items-center  lg:gap-2 text-secondarytextcolor"
+              "flex flex-col items-center  lg:gap-2 text-primarytextcolor"
             }
           >
             <PostAddIcon sx={{ fontSize: 30 }} />

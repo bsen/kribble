@@ -164,7 +164,7 @@ export const EditProfile = () => {
                 </div>
 
                 <button onClick={updateProfile}>
-                  <div className="text-primarytextcolor text-sm font-ubuntu border border-secondarytextcolor hover:bg-neutral-50 rounded-full py-1 px-4">
+                  <div className="text-white bg-neutral-800 text-base font-ubuntu hover:bg-neutral-950 rounded-full py-1 px-4">
                     save
                   </div>
                 </button>
