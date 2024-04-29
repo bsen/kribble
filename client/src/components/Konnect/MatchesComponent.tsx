@@ -131,7 +131,7 @@ export const MatchesComponent = () => {
 
                           <EmailIcon
                             sx={{ fontSize: 30 }}
-                            className="text-secondarytextcolor"
+                            className="text-neutral-800"
                           />
                         </button>
                       </div>

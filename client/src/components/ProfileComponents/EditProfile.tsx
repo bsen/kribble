@@ -50,15 +50,17 @@ export const EditProfile = () => {
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
+
     if (!file) {
       return;
     }
 
     const maxFileSize = 10 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      setPopup("File size exceeds 10MB limit");
+      setPopup("File size is more than 10 mb");
       return;
     }
+
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
     if (!allowedTypes.includes(file.type)) {
       setPopup("Only PNG, JPG, and JPEG files are allowed");
@@ -69,7 +71,26 @@ export const EditProfile = () => {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPreviewImage(reader.result as string);
+      const img = new Image();
+      img.src = reader.result as string;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const size = Math.min(img.width, img.height);
+
+        canvas.width = size;
+        canvas.height = size;
+
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.beginPath();
+          ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI); // Draw a circle
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(img, 0, 0);
+          const roundImage = canvas.toDataURL();
+          setPreviewImage(roundImage);
+        }
+      };
     };
     reader.readAsDataURL(file);
   };
@@ -164,7 +185,7 @@ export const EditProfile = () => {
                 </div>
 
                 <button onClick={updateProfile}>
-                  <div className="text-primarytextcolor text-sm font-ubuntu border border-secondarytextcolor hover:bg-neutral-50 rounded-full py-1 px-4">
+                  <div className="text-white bg-neutral-800 text-base font-ubuntu hover:bg-neutral-950 rounded-full py-1 px-4">
                     save
                   </div>
                 </button>
@@ -233,6 +254,7 @@ export const EditProfile = () => {
                   <option value="Science & Exploration">
                     Science & Exploration
                   </option>
+                  <option value="Others">Others</option>
                 </select>
               </div>
               <div>

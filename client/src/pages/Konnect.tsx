@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/SideBar/Sidebar";
-import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
+import { Suggestions } from "../components/Communities/Suggestions";
 
 import { KonnectComponent } from "../components/Konnect/KonnectComponent";
 export const Konnect = () => {
@@ -12,7 +12,7 @@ export const Konnect = () => {
         <KonnectComponent />
       </div>
       <div className="w-[30%] max-lg:hidden">
-        <CommunitySuggestions />
+        <Suggestions />
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ export const SearchBox = () => {
               type="text"
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search"
-              className="w-full h-full bg-neutral-50 focus:outline-none"
+              className="w-full h-full bg-neutral-100 focus:outline-none"
             />
             <SearchIcon />
           </div>

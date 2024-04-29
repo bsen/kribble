@@ -152,7 +152,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
             </div>
           ))}
       </div>
-      <div className="border-t bg-white bottom-16 lg:bottom-0 border-gray-200 gap-4 w-full  lg:w-[45%] flex items-center h-16 fixed justify-center">
+      <div className="border-t bg-white bottom-0 border-gray-200 gap-4 w-full  lg:w-[45%] flex items-center h-16 fixed justify-center">
         <input
           type="text"
           maxLength={300}
@@ -166,7 +166,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
         <button onClick={send}>
           <SendIcon
             sx={{ fontSize: 30 }}
-            className="text-blue-500 hover:text-blue-700 active:bg-neutral-200 p-1 rounded-full"
+            className="text-neutral-800 hover:text-neutral-950 active:bg-neutral-200 p-1 rounded-full"
           />
         </button>
       </div>

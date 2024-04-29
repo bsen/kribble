@@ -1,14 +1,15 @@
+import { CommunitesComponent } from "../components/Communities/CommunitesComponent";
 import { Suggestions } from "../components/Communities/Suggestions";
-import { FollowingComponent } from "../components/ProfileComponents/FollowingComponent";
 import { Sidebar } from "../components/SideBar/Sidebar";
-export const Following = () => {
+
+export const Communities = () => {
   return (
     <div className="flex justify-between bg-background">
       <div className="w-[25%] max-lg:hidden">
         <Sidebar />
       </div>
       <div className="w-full lg:w-[45%]">
-        <FollowingComponent />
+        <CommunitesComponent />
       </div>
 
       <div className="w-[30%] max-lg:hidden">

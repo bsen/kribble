@@ -1,10 +1,12 @@
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import { BACKEND_URL } from "../../config";
-import axios from "axios";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Loading } from "../Loading";
+import { BACKEND_URL } from "../../config";
+
 export const CreatePostComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -41,87 +43,96 @@ export const CreatePostComponent = () => {
     };
     reader.readAsDataURL(file);
   };
-  async function createPost() {
+
+  const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPost(e.target.value);
+  };
+
+  const handleClose = () => {
+    setPost("");
+    setPostImage(null);
+    setPreviewImage("");
+    navigate("/home");
+  };
+
+  const createPost = async () => {
     setPopup("");
     if (!post) {
       setPopup("Write something");
       return;
     }
 
-    if (postImage == null) {
-      try {
-        setLoadingState(true);
-        console.log(post);
+    try {
+      setLoadingState(true);
+      const formData = new FormData();
+      formData.append("post", post);
+      formData.append("token", token || "");
+      if (postImage) {
+        formData.append("image", postImage);
+        const response = await axios.post(
+          `${BACKEND_URL}/api/server/v1/post/create-full-post`,
+          formData
+        );
+        setPopup(response.data.message);
+      } else {
         const response = await axios.post(
           `${BACKEND_URL}/api/server/v1/post/create-text-post`,
           { token, post }
         );
-
         setPopup(response.data.message);
-        setLoadingState(false);
-        navigate("/home");
-
-        return;
-      } catch (error) {
-        console.log(error);
-        setPopup("netwoerk error");
       }
-    }
-
-    const file = postImage;
-    const formdata = new FormData();
-    formdata.append("image", file ? file : "");
-    formdata.append("post", post ? post : "");
-    formdata.append("token", token ? token : "");
-    try {
-      setLoadingState(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/create-full-post`,
-        formdata
-      );
       setLoadingState(false);
-      setPopup(response.data.message);
       navigate("/home");
     } catch (error) {
       console.error("Error creating post:", error);
-      setPopup("netwoerk error");
+      setPopup("Network error");
+      setLoadingState(false);
     }
-  }
+  };
 
   return (
     <>
       {loadingState ? (
         <Loading />
       ) : (
-        <div className="h-screen w-full absolute bg-background">
-          <div className="w-full bg-background border-b border-neutral-200 flex justify-evenly items-center text-primarytextcolor font-ubuntu font-semibold text-2xl h-14">
-            Kribble
-          </div>
-          <div className="w-[80%] my-5 md:w-[45vw] absolute rounded-lg bg-background border border-neutral-200 shadow-md top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
-            <button
-              onClick={() => {
-                setPost("");
-                setPostImage(null);
-                setPreviewImage("");
-                navigate("/home");
-              }}
-            >
-              <CloseIcon className="absolute -top-5 -left-5 text-secondarytextcolor" />
-            </button>
-            <div className="h-full flex flex-col justify-between">
+        <div className="h-screen flex justify-center items-center">
+          <div className="w-full max-w-md my-5 rounded-lg bg-background">
+            <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
+              <div>
+                <button onClick={handleClose}>
+                  <CloseIcon
+                    className="bg-neutral-800 p-1 rounded-full text-white"
+                    sx={{ fontSize: 30 }}
+                  />
+                </button>
+              </div>
+              <div>Create Post</div>
+            </div>
+            <div>
               {postImage ? (
-                <div className="flex justify-center items-center w-full">
+                <div className="flex justify-center items-center">
+                  <button
+                    onClick={() => {
+                      setPostImage(null);
+                    }}
+                    className="absolute p-1 bg-white text-black rounded-full"
+                  >
+                    <DeleteIcon sx={{ fontSize: 25 }} />
+                  </button>
                   <img
-                    src={previewImage ? previewImage : ""}
-                    alt="Profile"
-                    className=" max-w-[50%] rounded-lg"
+                    src={previewImage}
+                    alt="Preview"
+                    className="max-h-[50vh] h-auto rounded-lg"
                   />
                 </div>
               ) : (
-                <div className="px-5 h-full">
-                  <label htmlFor="image-upload" className="cursor-pointer ">
-                    <div className="h-full p-5 gap-2 rounded-lg border border-dashed border-neutral-200 flex items-center justify-center">
-                      <div className="text-secondarytextcolor">add picture</div>
+                <div>
+                  <label
+                    htmlFor="image-upload"
+                    className="cursor-pointer block text-center"
+                  >
+                    <div className="h-20 border-dashed border border-secondarytextcolor rounded-lg gap-2 flex justify-center items-center">
+                      <div className="text-secondarytextcolor">Add Picture</div>
                       <AddPhotoAlternateIcon className="text-secondarytextcolor" />
                     </div>
                   </label>
@@ -134,28 +145,26 @@ export const CreatePostComponent = () => {
                   />
                 </div>
               )}
-
-              <div className="text-end flex flex-col px-5">
-                <textarea
-                  rows={4}
-                  className="my-4 border border-neutral-200 resize-none focus:outline-none p-2 text-primarytextcolor rounded-lg"
-                  placeholder="write your thoughts..."
-                  wrap="soft"
-                  minLength={10}
-                  maxLength={300}
-                  onChange={(e) => {
-                    setPost(e.target.value);
-                  }}
-                />
+              <textarea
+                value={post}
+                onChange={handlePostChange}
+                rows={4}
+                className="w-full my-4 border border-neutral-200 resize-none focus:outline-none p-2 text-primarytextcolor rounded-lg"
+                placeholder="Write your thoughts..."
+                wrap="soft"
+                minLength={10}
+                maxLength={300}
+              />
+              <div className="flex w-full justify-center">
                 <button
                   onClick={createPost}
-                  className="bg-black   hover:bg-neutral-900 text-white border border-neutral-200 px-6 py-2 rounded-lg"
+                  className="bg-black w-full hover:bg-neutral-900 text-white border border-neutral-200 px-6 py-2 rounded-lg"
                 >
-                  post
+                  Post
                 </button>
-                <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
-                  {popup ? popup : ""}
-                </div>
+              </div>
+              <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
+                {popup ? popup : ""}
               </div>
             </div>
           </div>

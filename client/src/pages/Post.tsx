@@ -1,6 +1,6 @@
 import { PostComponent } from "../components/Post/PostComponent";
 import { Sidebar } from "../components/SideBar/Sidebar";
-import { CommunitySuggestions } from "../components/Communities/CommunitySuggestions";
+import { Suggestions } from "../components/Communities/Suggestions";
 export const Post = () => {
   return (
     <div className="flex justify-between bg-background">
@@ -12,7 +12,7 @@ export const Post = () => {
       </div>
 
       <div className="w-[30%] max-lg:hidden">
-        <CommunitySuggestions />
+        <Suggestions />
       </div>
     </div>
   );
