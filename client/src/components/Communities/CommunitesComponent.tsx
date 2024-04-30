@@ -72,34 +72,39 @@ export const CommunitesComponent = () => {
             communityData.communities.map((community, index) => (
               <div
                 key={index}
-                className="border-b border-neutral-200 p-3 bg-white"
+                className="border-b hover:bg-neutral-50 border-neutral-200 p-3 bg-white"
               >
-                <div className="flex justify-between gap-2">
-                  <div className="flex gap-2 w-[90%]">
-                    <div className="w-[10%]">
-                      <img
-                        className="h-10 w-10 rounded-full bg-neutral-50"
-                        src={community.image ? community.image : "/group.png"}
-                      />
+                <Link to={`/community/${community.name}`}>
+                  <div className="flex justify-between gap-2">
+                    <div className="flex gap-2 w-[90%]">
+                      <div className="w-[10%]">
+                        <img
+                          className="h-10 w-10 rounded-full bg-neutral-50"
+                          src={community.image ? community.image : "/group.png"}
+                        />
+                      </div>
+                      <div className="flex flex-col w-full">
+                        <div className="text-primarytextcolor text-xl font-medium font-ubuntu">
+                          {community.name}
+                        </div>
+                        <div className="text-primarytextcolor text-sm lg:text-base font-normal">
+                          {community.category}
+                        </div>
+                        <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                          {community.description}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex flex-col w-full">
-                      <div className="text-primarytextcolor text-xl font-medium font-ubuntu">
-                        {community.name}
-                      </div>
-                      <div className="text-primarytextcolor text-sm lg:text-base font-normal">
-                        {community.category}
-                      </div>
-                      <div className="text-primarytextcolor text-sm lg:text-base font-light">
-                        {community.description}
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="text-secondarytextcolor text-center my-2 text-sm font-medium">
-                    <span className="text-base"> {community.memberCount}</span>
-                    <br /> members
+                    <div className="text-secondarytextcolor text-center my-2 text-sm font-medium">
+                      <span className="text-base">
+                        {" "}
+                        {community.memberCount}
+                      </span>
+                      <br /> members
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             ))
           ) : (

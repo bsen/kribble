@@ -151,13 +151,13 @@ export const PostComponent = () => {
                     className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
                   />
                 </Link>
-                <div>
+                <div className="w-[80%]">
+                  <Link to={`/${postData.creator.username}`}>
+                    <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                      {postData.creator.name}
+                    </div>
+                  </Link>
                   <div className="flex gap-2 items-center">
-                    <Link to={`/${postData.creator.username}`}>
-                      <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                        {postData.creator.name}
-                      </div>
-                    </Link>
                     <Link to={`/${postData.creator.username}`}>
                       <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
                         @{postData.creator.username}
@@ -175,7 +175,7 @@ export const PostComponent = () => {
                   {postData.image ? (
                     <img
                       src={postData.image}
-                      className="max-h-[60vh]   rounded-lg border border-neutral-200"
+                      className="max-w-[80%]   rounded-lg border border-neutral-200"
                     />
                   ) : (
                     ""
@@ -228,12 +228,12 @@ export const PostComponent = () => {
                     </Link>
                   </div>
                   <div className="w-[80%]">
+                    <Link to={`/${comment.creator.username}`}>
+                      <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                        {comment.creator.name}
+                      </div>
+                    </Link>
                     <div className="flex gap-2 items-center">
-                      <Link to={`/${comment.creator.username}`}>
-                        <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                          {comment.creator.name}
-                        </div>
-                      </Link>
                       <Link to={`/${comment.creator.username}`}>
                         <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
                           @{comment.creator.username}
