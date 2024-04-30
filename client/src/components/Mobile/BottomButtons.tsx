@@ -3,7 +3,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import { useLocation, useNavigate } from "react-router-dom";
 import JoinInnerIcon from "@mui/icons-material/JoinInner";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -25,80 +25,102 @@ export const BottomButtons = () => {
     getUser();
   }, []);
   return (
-    <div className="w-full bottom-0  rounded-t-2xl fixed bg-background border-t border-r border-l border-neutral-200 flex justify-evenly items-center text-primarytextcolor font-ubuntu font-semibold text-2xl h-16 lg:hidden">
-      <div className="max-lg:flex  max-lg:w-full justify-evenly  items-center">
-        <button
-          onClick={() => {
-            navigate("/home");
-          }}
-        >
-          <div className={"flex flex-col items-center lg:gap-2"}>
-            <HomeIcon
+    <>
+      <button
+        onClick={() => {
+          navigate("/home");
+        }}
+      >
+        <div className={"mt-4 flex items-center justify-center gap-2"}>
+          <HomeIcon
+            sx={{ fontSize: 30 }}
+            className={`${
+              location.pathname === "/home"
+                ? "text-blue-500"
+                : "text-primarytextcolor"
+            }`}
+          />
+          <p
+            className={`text-lg font-medium max-lg:hidden ${
+              location.pathname === "/home"
+                ? "text-blue-500"
+                : "text-primarytextcolor"
+            }`}
+          >
+            Home
+          </p>
+        </div>
+      </button>
+      <button>
+        <Link to={`/communities`}>
+          <div className={"mt-4 flex items-center justify-center gap-2"}>
+            <GroupsRoundedIcon
               sx={{ fontSize: 30 }}
               className={`${
-                location.pathname === "/home"
+                location.pathname === `/communities`
                   ? "text-blue-500"
                   : "text-primarytextcolor"
               }`}
             />
+            <p
+              className={`text-lg font-medium max-lg:hidden ${
+                location.pathname === `/communities`
+                  ? "text-blue-500"
+                  : "text-primarytextcolor"
+              }`}
+            >
+              Communities
+            </p>
           </div>
-        </button>
+        </Link>
+      </button>
+      <button>
+        <Link to={`/konnect`}>
+          <div className={"mt-4 flex items-center justify-center gap-2"}>
+            <JoinInnerIcon
+              sx={{ fontSize: 30 }}
+              className={`${
+                location.pathname === `/konnect`
+                  ? "text-blue-500"
+                  : "text-primarytextcolor"
+              }`}
+            />
+            <p
+              className={`text-lg font-medium max-lg:hidden ${
+                location.pathname === `/konnect`
+                  ? "text-blue-500"
+                  : "text-primarytextcolor"
+              }`}
+            >
+              Konnect
+            </p>
+          </div>
+        </Link>
+      </button>
 
-        <button>
-          <NavLink to={`/communities`}>
-            <div
-              className={
-                " flex flex-col items-center lg:gap-2 text-primarytextcolor "
-              }
+      <button>
+        <Link to={`/${currentUser}`}>
+          <div className={"mt-4 flex items-center justify-center gap-2"}>
+            <PersonIcon
+              sx={{ fontSize: 30 }}
+              className={`${
+                location.pathname === `/${currentUser}`
+                  ? "text-blue-500"
+                  : "text-primarytextcolor"
+              }`}
+            />
+            <p
+              className={`text-lg font-medium max-lg:hidden ${
+                location.pathname === `/${currentUser}`
+                  ? "text-blue-500"
+                  : "text-primarytextcolor"
+              }`}
             >
-              <GroupsRoundedIcon
-                sx={{ fontSize: 30 }}
-                className={`${
-                  location.pathname === `/communities`
-                    ? "text-blue-500"
-                    : "text-primarytextcolor"
-                }`}
-              />
-            </div>
-          </NavLink>
-        </button>
-        <button>
-          <NavLink to={`/konnect`}>
-            <div
-              className={
-                " flex flex-col items-center lg:gap-2 text-primarytextcolor "
-              }
-            >
-              <JoinInnerIcon
-                sx={{ fontSize: 30 }}
-                className={`${
-                  location.pathname === `/konnect`
-                    ? "text-blue-500"
-                    : "text-primarytextcolor"
-                }`}
-              />
-            </div>
-          </NavLink>
-        </button>
-        <button>
-          <NavLink to={`/${currentUser}`}>
-            <div
-              className={
-                " flex flex-col items-center lg:gap-2 text-primarytextcolor "
-              }
-            >
-              <PersonIcon
-                sx={{ fontSize: 30 }}
-                className={`${
-                  location.pathname === `/${currentUser}`
-                    ? "text-blue-500"
-                    : "text-primarytextcolor"
-                }`}
-              />
-            </div>
-          </NavLink>
-        </button>
-      </div>
-    </div>
+              Profile
+            </p>
+          </div>
+        </Link>
+      </button>
+    </>
   );
 };

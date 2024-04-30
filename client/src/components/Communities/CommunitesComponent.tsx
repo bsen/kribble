@@ -119,7 +119,6 @@ export const CommunitesComponent = () => {
             </div>
           )}
         </div>
-        <BottomButtons />
       </div>
     </>
   );

@@ -366,35 +366,35 @@ export const ProfileSection: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <div>
+                  <div className="mb-2">
                     <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
                       {userData.bio ? userData.bio : "bio"}
                     </div>
-                    <div>
-                      <div className="text-sm text-blue-500 font-light hover:underline">
-                        <a
-                          href={`${
-                            userData.website &&
-                            (userData.website.startsWith("http://") ||
-                              userData.website.startsWith("https://"))
-                              ? userData.website
-                              : "https://" +
-                                (userData.website
-                                  ? userData.website
-                                  : "www.kribble.net")
-                          }`}
-                          target="_blank"
-                        >
-                          {userData.website ? userData.website : "website"}{" "}
-                          <OpenInNewIcon sx={{ fontSize: 15 }} />
-                        </a>
-                      </div>
-                      <div className="text-sm text-secondarytextcolor font-light">
-                        {userData.interest ? userData.interest : "interests"}
-                      </div>
-                    </div>
 
-                    <div className="flex flex-col my-4 items-start gap-2">
+                    <div className="text-sm text-blue-500 font-light hover:underline">
+                      <a
+                        href={`${
+                          userData.website &&
+                          (userData.website.startsWith("http://") ||
+                            userData.website.startsWith("https://"))
+                            ? userData.website
+                            : "https://" +
+                              (userData.website
+                                ? userData.website
+                                : "www.kribble.net")
+                        }`}
+                        target="_blank"
+                      >
+                        {userData.website ? userData.website : "website"}{" "}
+                        <OpenInNewIcon sx={{ fontSize: 15 }} />
+                      </a>
+                    </div>
+                    <div className="text-sm text-secondarytextcolor font-light">
+                      {userData.interest ? userData.interest : "interests"}
+                    </div>
+                  </div>
+                  {currentUser == username ? (
+                    <div className="flex my-2 flex-col items-start gap-2">
                       <button
                         onClick={() => {
                           navigate("/create/post");
@@ -424,8 +424,11 @@ export const ProfileSection: React.FC = () => {
                         </div>
                       </button>
                     </div>
-                  </div>
-                  <div className="flex justify-start items-start gap-5">
+                  ) : (
+                    ""
+                  )}
+
+                  <div className="flex mt-2 justify-start items-start gap-5">
                     <button
                       onClick={() => {
                         setPostComponent(true);
@@ -507,7 +510,7 @@ export const ProfileSection: React.FC = () => {
                                 </div>
                                 <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
                                   <div
-                                    className="flex justify-center items-center gap-2 cursor-pointer"
+                                    className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                                     onClick={() => handleLike(post.id)}
                                   >
                                     {post.isLiked ? (
@@ -530,7 +533,7 @@ export const ProfileSection: React.FC = () => {
                                       {post.likesCount}
                                     </div>
                                   </div>
-                                  <div className="flex justify-center items-center gap-2">
+                                  <div className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer">
                                     <Link to={`/post/${post.id}`}>
                                       <ChatBubbleOutlineRoundedIcon
                                         sx={{ fontSize: 18 }}
@@ -611,7 +614,6 @@ export const ProfileSection: React.FC = () => {
           )}
         </div>
       )}
-      <BottomButtons />
     </>
   );
 };

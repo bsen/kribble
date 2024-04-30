@@ -242,8 +242,6 @@ export const KonnectComponent = () => {
             </div>
           )}
         </div>
-
-        <BottomButtons />
       </div>
     </>
   );
