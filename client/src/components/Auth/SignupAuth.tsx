@@ -12,6 +12,7 @@ export const SignupAuth = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
   const [gender, setGender] = useState("");
   const [popup, setPopup] = useState("");
 
@@ -82,8 +83,15 @@ export const SignupAuth = () => {
       return;
     }
     if (password.length < 6) {
-      setPopup("Please choose a strong password");
-
+      setPopup("Password should be minimum 6 characters");
+      return;
+    }
+    if (!confirmPass) {
+      setPopup("Please confirm your password");
+      return;
+    }
+    if (password !== confirmPass) {
+      setPopup("Passwords are not same");
       return;
     }
     const userdata = { name, username, email, gender, password };
@@ -120,6 +128,14 @@ export const SignupAuth = () => {
       signup();
     }
   };
+  const [passState, setPassState] = useState(false);
+  useEffect(() => {
+    if (confirmPass == password) {
+      setPassState(false);
+    } else {
+      setPassState(true);
+    }
+  }, [confirmPass]);
 
   return (
     <>
@@ -192,7 +208,6 @@ export const SignupAuth = () => {
                   <option value="female">Female</option>
                 </select>
               </div>
-
               <div>
                 <div className="font-semibold m-1 text-primarytextcolor">
                   Password
@@ -205,6 +220,24 @@ export const SignupAuth = () => {
                   onKeyDown={handleKeyDown}
                   className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
                   placeholder="Enter password"
+                />
+              </div>
+
+              <div>
+                <div className="font-semibold m-1 text-primarytextcolor">
+                  Confirm your password
+                </div>
+                <input
+                  value={confirmPass}
+                  type="password"
+                  onChange={(e) => {
+                    setConfirmPass(e.target.value);
+                  }}
+                  onKeyDown={handleKeyDown}
+                  className={`${
+                    passState ? "border border-rose-500" : ""
+                  } h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300`}
+                  placeholder="Confirm password"
                 />
               </div>
               <button

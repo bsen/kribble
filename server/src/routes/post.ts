@@ -53,8 +53,6 @@ postRouter.post("/paginated-allposts", async (c) => {
     const hasMore = allPosts.length > take;
     const posts = hasMore ? allPosts.slice(0, -1) : allPosts;
     const nextCursor = hasMore ? allPosts[allPosts.length - 1].id : null;
-
-    // Check if the user has liked the post
     const postsWithLikedState = await Promise.all(
       posts.map(async (post) => {
         const isLiked = await prisma.like.findUnique({

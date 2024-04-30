@@ -129,12 +129,12 @@ export const PostsHome = () => {
                       </Link>
                     </div>
                     <div className="w-[80%]">
+                      <Link to={`/${post.creator.username}`}>
+                        <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                          {post.creator.name}
+                        </div>
+                      </Link>
                       <div className="flex gap-2 items-center">
-                        <Link to={`/${post.creator.username}`}>
-                          <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                            {post.creator.name}
-                          </div>
-                        </Link>
                         <Link to={`/${post.creator.username}`}>
                           <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
                             @{post.creator.username}
