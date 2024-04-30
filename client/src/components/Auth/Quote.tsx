@@ -39,7 +39,7 @@ export const Quote = () => {
             Joined by {usersCount}k +
           </div>
         ) : (
-          ""
+          "‎"
         )}
 
         <div className="lg:hidden text-left">

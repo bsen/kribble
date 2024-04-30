@@ -114,16 +114,16 @@ export const SearchBox = () => {
                                 src={
                                   community.image
                                     ? community.image
-                                    : "/comunity.png"
+                                    : "/group.png"
                                 }
                                 alt="Profile"
-                                className="w-6 h-6 lg:h-8 lg:w-8 rounded-full"
+                                className="h-8 w-8 rounded-full"
                               />
                             </Link>
                           </div>
                           <div className="items-center">
                             <Link to={`/${community.name}`}>
-                              <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                              <div className="text-primarytextcolor text-lg hover:underline font-semibold">
                                 {community.name}
                               </div>
                             </Link>

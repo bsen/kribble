@@ -74,28 +74,30 @@ export const CommunitesComponent = () => {
                 key={index}
                 className="border-b border-neutral-200 p-3 bg-white"
               >
-                <div>
-                  <div className="flex gap-2">
-                    <div className="flex gap-2 items-center">
-                      <Link to={`/${community.name}`}>
-                        <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
-                          {community.name}
-                        </div>
-                      </Link>
-                      <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
-                        members {community.memberCount}
+                <div className="flex justify-between gap-2">
+                  <div className="flex gap-2 w-[90%]">
+                    <div className="w-[10%]">
+                      <img
+                        className="h-10 w-10 rounded-full bg-neutral-50"
+                        src={community.image ? community.image : "/group.png"}
+                      />
+                    </div>
+                    <div className="flex flex-col w-full">
+                      <div className="text-primarytextcolor text-xl font-medium font-ubuntu">
+                        {community.name}
+                      </div>
+                      <div className="text-primarytextcolor text-sm lg:text-base font-normal">
+                        {community.category}
+                      </div>
+                      <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                        {community.description}
                       </div>
                     </div>
-                    <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
-                      catagory {community.category}
-                    </div>
-                    <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
-                      description {community.description}
-                    </div>
+                  </div>
 
-                    <div>
-                      <div className="flex gap-2 text-neutral-600"></div>
-                    </div>
+                  <div className="text-secondarytextcolor text-center my-2 text-sm font-medium">
+                    <span className="text-base"> {community.memberCount}</span>
+                    <br /> members
                   </div>
                 </div>
               </div>
