@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { BottomButtons } from "../Mobile/BottomButtons";
 import { Link } from "react-router-dom";
 import { SearchBox } from "../HomeComponents/SearchBar";
+import { BACKEND_URL } from "../../config";
 
 interface Communities {
   id: string;
@@ -28,7 +29,7 @@ export const CommunitesComponent = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `http://localhost:8787/api/server/v1/community/all/communities`,
+        `${BACKEND_URL}/api/server/v1/community/all/communities`,
         { token, cursor }
       );
       setCommunityData({

@@ -453,9 +453,9 @@ export const ProfileSection: React.FC = () => {
                   </div>
                 </div>
               )}
-              <div className="mb-16">
+              <div className="flex-1 overflow-y-auto no-scrollbar touch-action-none">
                 {postComponent ? (
-                  <div>
+                  <div className="mb-16 overflow-y-auto touch-action-none">
                     {postData.posts.length > 0 ? (
                       postData.posts.map((post, index) => (
                         <div
@@ -483,7 +483,6 @@ export const ProfileSection: React.FC = () => {
                                     {post.creator.name}
                                   </div>
                                 </Link>
-
                                 <div className="flex gap-2 items-center">
                                   <Link to={`/${post.creator.username}`}>
                                     <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
@@ -555,7 +554,7 @@ export const ProfileSection: React.FC = () => {
                     )}
                   </div>
                 ) : (
-                  <div>
+                  <div className="mb-16 overflow-y-auto touch-action-none">
                     {commentsData.comments.length > 0 ? (
                       commentsData.comments.map((comment) => (
                         <div

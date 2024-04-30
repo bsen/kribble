@@ -55,31 +55,29 @@ export const Buttons = () => {
             </p>
           </div>
         </button>
-
         <button>
-          <Link to={`/${currentUser}`}>
+          <Link to={`/communities`}>
             <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <PersonIcon
+              <GroupsRoundedIcon
                 sx={{ fontSize: 30 }}
                 className={`${
-                  location.pathname === `/${currentUser}`
+                  location.pathname === `/communities`
                     ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
-                  location.pathname === `/${currentUser}`
+                  location.pathname === `/communities`
                     ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               >
-                Profile
+                Communities
               </p>
             </div>
           </Link>
         </button>
-
         <button>
           <Link to={`/konnect`}>
             <div className={"mt-4 flex items-center justify-center gap-2"}>
@@ -103,25 +101,26 @@ export const Buttons = () => {
             </div>
           </Link>
         </button>
+
         <button>
-          <Link to={`/communities`}>
+          <Link to={`/${currentUser}`}>
             <div className={"mt-4 flex items-center justify-center gap-2"}>
-              <GroupsRoundedIcon
+              <PersonIcon
                 sx={{ fontSize: 30 }}
                 className={`${
-                  location.pathname === `/communities`
+                  location.pathname === `/${currentUser}`
                     ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
-                  location.pathname === `/communities`
+                  location.pathname === `/${currentUser}`
                     ? "text-blue-500"
                     : "text-primarytextcolor"
                 }`}
               >
-                Communities
+                Profile
               </p>
             </div>
           </Link>

@@ -101,12 +101,12 @@ export const PostsHome = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar"
+        className="h-screen overflow-y-auto no-scrollbar pt-16 pb-20"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <SearchBox />
-        <div className="my-16">
+        <div>
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (
               <div
