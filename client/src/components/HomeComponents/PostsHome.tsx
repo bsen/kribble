@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import { BottomButtons } from "../Mobile/BottomButtons";
 import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import { SearchBox } from "./SearchBar";
@@ -101,7 +100,7 @@ export const PostsHome = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar pt-16 pb-20"
+        className="h-screen overflow-y-auto no-scrollbar pt-16"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
@@ -158,7 +157,7 @@ export const PostsHome = () => {
                       </div>
                       <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
                         <div
-                          className="flex justify-center items-center gap-2 cursor-pointer"
+                          className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                           onClick={() => handleLike(post.id)}
                         >
                           {post.isLiked ? (
@@ -181,7 +180,7 @@ export const PostsHome = () => {
                             {post.likesCount}
                           </div>
                         </div>
-                        <div className="flex justify-center items-center gap-2">
+                        <div className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer">
                           <Link to={`/post/${post.id}`}>
                             <ChatBubbleOutlineRoundedIcon
                               sx={{ fontSize: 18 }}
@@ -210,7 +209,6 @@ export const PostsHome = () => {
             <CircularProgress />
           </div>
         )}
-        <BottomButtons />
       </div>
     </>
   );

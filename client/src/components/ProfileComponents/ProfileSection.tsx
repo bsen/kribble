@@ -9,10 +9,10 @@ import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineR
 import AddIcon from "@mui/icons-material/Add";
 import { Loading } from "../Loading";
 import { EditProfile } from "./EditProfile";
-import { BottomButtons } from "../Mobile/BottomButtons";
 import { BACKEND_URL } from "../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { SearchBox } from "../HomeComponents/SearchBar";
 
 interface Comment {
   id: string;
@@ -293,108 +293,124 @@ export const ProfileSection: React.FC = () => {
             </div>
           ) : (
             <div
-              className="flex-1 overflow-y-auto no-scrollbar"
+              className="overflow-y-auto no-scrollbar pt-14"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
+              <SearchBox />
               {profileEditingState ? (
                 <div className="absolute w-full lg:w-[45%]">
                   <EditProfile />
                 </div>
               ) : (
                 <div className="px-5 py-2 border-b border-neutral-200">
-                  <div className="flex justify-between items-center">
-                    <div className="flex  items-center gap-4">
-                      <img
-                        src={userData.image ? userData.image : "/user.png"}
-                        alt="Profile"
-                        className="w-20 h-20 lg:w-24 lg:h-24 rounded-full"
-                      />
-                      <div>
-                        <div className="text-lg lg:text-xl font-semibold text-primarytextcolor">
-                          {userData.name}
-                        </div>
-                        <div className="text-sm text-secondarytextcolor font-light">
-                          @{userData.username}
-                        </div>
-                        <div className="flex  mt-2 gap-4 font-ubuntu text-sm">
-                          <Link to={`/followers/${username}`}>
-                            <div className="flex gap-2 items-center">
-                              <div className="text-primarytextcolor">
-                                {userData.followers.length}
-                              </div>
-                              <div className="text-secondarytextcolor">
-                                Followers
-                              </div>
-                            </div>
-                          </Link>
-                          <Link to={`/following/${username}`}>
-                            <div className="flex gap-2 items-center">
-                              <div className="text-primarytextcolor">
-                                {userData.following.length}
-                              </div>
-                              <div className="text-secondarytextcolor">
-                                Following
-                              </div>
-                            </div>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                    {currentUser === username ? (
-                      <button
-                        onClick={() => {
-                          setProfileEditingState(true);
-                        }}
-                      >
-                        <SettingsIcon />
-                      </button>
-                    ) : (
-                      <div className="flex gap-4 justify-between items-center">
-                        <button
-                          onClick={followUser}
-                          className="bg-neutral-800 text-background px-4 py-1 rounded-full font-ubuntu"
-                        >
+                  <div className="flex flex-col justify-between">
+                    <div className="flex items-start gap-4">
+                      <div className="flex w-full justify-between items-start gap-2">
+                        <div className="flex gap-2 items-center">
+                          <img
+                            src={userData.image ? userData.image : "/user.png"}
+                            alt="Profile"
+                            className="w-16 h-16 lg:w-24 lg:h-24 rounded-full"
+                          />
+
                           <div>
-                            {followingState ? (
-                              <div>Unfollow</div>
+                            <div className="text-base lg:text-xl font-semibold text-primarytextcolor">
+                              {userData.name}
+                            </div>
+                            <div className="text-sm text-secondarytextcolor font-light">
+                              @{userData.username}
+                            </div>
+
+                            {currentUser === username ? (
+                              ""
                             ) : (
-                              <div>Follow</div>
+                              <div className="flex my-2 gap-4 justify-between items-center">
+                                <button
+                                  onClick={followUser}
+                                  className="bg-neutral-800 text-background px-4 py-1 rounded-full font-ubuntu"
+                                >
+                                  <div>
+                                    {followingState ? (
+                                      <div>Unfollow</div>
+                                    ) : (
+                                      <div>Follow</div>
+                                    )}
+                                  </div>
+                                </button>
+                              </div>
                             )}
                           </div>
-                        </button>
+                        </div>
+                        <div>
+                          {currentUser === username ? (
+                            <button
+                              onClick={() => {
+                                setProfileEditingState(true);
+                              }}
+                              className="text-left"
+                            >
+                              <SettingsIcon />
+                            </button>
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </div>
-                    )}
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
+
+                  <div className="mt-2">
+                    <div className="flex gap-4 font-ubuntu text-sm">
+                      <Link to={`/followers/${username}`}>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-primarytextcolor">
+                            {userData.followers.length}
+                          </div>
+                          <div className="text-secondarytextcolor">
+                            Followers
+                          </div>
+                        </div>
+                      </Link>
+                      <Link to={`/following/${username}`}>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-primarytextcolor">
+                            {userData.following.length}
+                          </div>
+                          <div className="text-secondarytextcolor">
+                            Following
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="text-primarytextcolor  text-sm lg:text-base font-light">
                       {userData.bio ? userData.bio : "bio"}
                     </div>
-                    <div>
-                      <div className="text-sm text-blue-500 font-light hover:underline">
-                        <a
-                          href={`${
-                            userData.website &&
-                            (userData.website.startsWith("http://") ||
-                              userData.website.startsWith("https://"))
-                              ? userData.website
-                              : "https://" +
-                                (userData.website
-                                  ? userData.website
-                                  : "www.kribble.net")
-                          }`}
-                          target="_blank"
-                        >
-                          {userData.website ? userData.website : "website"}{" "}
-                          <OpenInNewIcon sx={{ fontSize: 15 }} />
-                        </a>
-                      </div>
-                      <div className="text-sm text-secondarytextcolor font-light">
-                        {userData.interest ? userData.interest : "interests"}
-                      </div>
-                    </div>
 
-                    <div className="flex flex-col my-4 items-start gap-2">
+                    <div className="text-sm text-blue-500 font-light hover:underline">
+                      <a
+                        href={`${
+                          userData.website &&
+                          (userData.website.startsWith("http://") ||
+                            userData.website.startsWith("https://"))
+                            ? userData.website
+                            : "https://" +
+                              (userData.website
+                                ? userData.website
+                                : "www.kribble.net")
+                        }`}
+                        target="_blank"
+                      >
+                        {userData.website ? userData.website : "website"}{" "}
+                        <OpenInNewIcon sx={{ fontSize: 15 }} />
+                      </a>
+                    </div>
+                    <div className="text-sm text-secondarytextcolor font-light">
+                      {userData.interest ? userData.interest : "interests"}
+                    </div>
+                  </div>
+                  {currentUser == username ? (
+                    <div className="flex my-2 flex-col items-start gap-2">
                       <button
                         onClick={() => {
                           navigate("/create/post");
@@ -424,8 +440,11 @@ export const ProfileSection: React.FC = () => {
                         </div>
                       </button>
                     </div>
-                  </div>
-                  <div className="flex justify-start items-start gap-5">
+                  ) : (
+                    ""
+                  )}
+
+                  <div className="flex mt-2 justify-start items-start gap-5">
                     <button
                       onClick={() => {
                         setPostComponent(true);
@@ -453,9 +472,9 @@ export const ProfileSection: React.FC = () => {
                   </div>
                 </div>
               )}
-              <div className="flex-1 overflow-y-auto no-scrollbar touch-action-none">
+              <div className="overflow-y-auto no-scrollbar touch-action-none">
                 {postComponent ? (
-                  <div className="mb-16 overflow-y-auto touch-action-none">
+                  <div className="overflow-y-auto touch-action-none">
                     {postData.posts.length > 0 ? (
                       postData.posts.map((post, index) => (
                         <div
@@ -507,7 +526,7 @@ export const ProfileSection: React.FC = () => {
                                 </div>
                                 <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
                                   <div
-                                    className="flex justify-center items-center gap-2 cursor-pointer"
+                                    className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                                     onClick={() => handleLike(post.id)}
                                   >
                                     {post.isLiked ? (
@@ -530,7 +549,7 @@ export const ProfileSection: React.FC = () => {
                                       {post.likesCount}
                                     </div>
                                   </div>
-                                  <div className="flex justify-center items-center gap-2">
+                                  <div className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer">
                                     <Link to={`/post/${post.id}`}>
                                       <ChatBubbleOutlineRoundedIcon
                                         sx={{ fontSize: 18 }}
@@ -554,7 +573,7 @@ export const ProfileSection: React.FC = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="mb-16 overflow-y-auto touch-action-none">
+                  <div className="overflow-y-auto no-scrollbar touch-action-none">
                     {commentsData.comments.length > 0 ? (
                       commentsData.comments.map((comment) => (
                         <div
@@ -611,7 +630,6 @@ export const ProfileSection: React.FC = () => {
           )}
         </div>
       )}
-      <BottomButtons />
     </>
   );
 };

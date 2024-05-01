@@ -1,7 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { BottomButtons } from "../Mobile/BottomButtons";
 import { Link } from "react-router-dom";
 import { SearchBox } from "../HomeComponents/SearchBar";
 import { BACKEND_URL } from "../../config";
@@ -63,63 +62,54 @@ export const CommunitesComponent = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar"
+        className="h-screen overflow-y-auto no-scrollbar pt-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <SearchBox />
-        <div className="my-14">
-          {communityData.communities.length > 0 ? (
-            communityData.communities.map((community, index) => (
-              <div
-                key={index}
-                className="border-b hover:bg-neutral-50 border-neutral-200 p-3 bg-white"
-              >
-                <Link to={`/community/${community.name}`}>
-                  <div className="flex justify-between gap-2">
-                    <div className="flex gap-2 w-[90%]">
-                      <div className="w-[10%]">
-                        <img
-                          className="h-10 w-10 rounded-full bg-neutral-50"
-                          src={community.image ? community.image : "/group.png"}
-                        />
-                      </div>
-                      <div className="flex flex-col w-full">
-                        <div className="text-primarytextcolor text-xl font-medium font-ubuntu">
-                          {community.name}
-                        </div>
-                        <div className="text-primarytextcolor text-sm lg:text-base font-normal">
-                          {community.category}
-                        </div>
-                        <div className="text-primarytextcolor text-sm lg:text-base font-light">
-                          {community.description}
-                        </div>
-                      </div>
-                    </div>
 
-                    <div className="text-secondarytextcolor text-center my-2 text-sm font-medium">
-                      <span className="text-base">
-                        {" "}
-                        {community.memberCount}
-                      </span>
-                      <br /> members
+        {communityData.communities.length > 0 ? (
+          communityData.communities.map((community, index) => (
+            <div
+              key={index}
+              className="border-b hover:bg-neutral-50 border-neutral-200 p-3 bg-white"
+            >
+              <Link to={`/community/${community.name}`}>
+                <div className="flex justify-between gap-2">
+                  <div className="flex gap-2 ">
+                    <img
+                      className="h-10 w-10 rounded-full bg-neutral-50"
+                      src={community.image ? community.image : "/group.png"}
+                    />
+                    <div className="flex flex-col w-full">
+                      <div className="text-primarytextcolor text-base lg:text- font-medium font-ubuntu">
+                        {community.name}
+                      </div>
+                      <div className="text-primarytextcolor text-sm lg:text-base font-normal">
+                        {community.category}
+                      </div>
+                      <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                        {community.description}
+                      </div>
+                      <div className="text-primarytextcolor  text-sm font-light">
+                        {community.memberCount} members
+                      </div>
                     </div>
                   </div>
-                </Link>
-              </div>
-            ))
-          ) : (
-            <div className="text-center font-ubuntu my-5 text-primarytextcolor">
-              No posts found.
+                </div>
+              </Link>
             </div>
-          )}
-          {isLoading && (
-            <div className="text-center my-5">
-              <CircularProgress />
-            </div>
-          )}
-        </div>
-        <BottomButtons />
+          ))
+        ) : (
+          <div className="text-center font-ubuntu my-5 text-primarytextcolor">
+            No posts found.
+          </div>
+        )}
+        {isLoading && (
+          <div className="text-center my-5">
+            <CircularProgress />
+          </div>
+        )}
       </div>
     </>
   );

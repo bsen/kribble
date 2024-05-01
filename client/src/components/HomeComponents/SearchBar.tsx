@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { BACKEND_URL } from "../../config";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import DensityMediumIcon from "@mui/icons-material/DensityMedium";
+import { DropDown } from "../Mobile/DropDown";
 interface User {
   username: string;
   name: string;
@@ -21,8 +23,9 @@ export const SearchBox = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [communities, setCommunities] = useState<Community[]>([]);
   const modal = useRef<HTMLDivElement>(null);
+  const [dropdown, setDropdown] = useState(false);
+
   async function SearchText() {
-    console.log(search);
     const response = await axios.post(`${BACKEND_URL}/api/server/v1/search`, {
       token,
       search,
@@ -33,11 +36,11 @@ export const SearchBox = () => {
 
   const closeModal = (e: MouseEvent) => {
     if (
-      searchingState &&
-      modal.current &&
-      !modal.current.contains(e.target as Node)
+      searchingState ||
+      (dropdown && modal.current && !modal.current.contains(e.target as Node))
     ) {
       setSearchingState(false);
+      setDropdown(false);
     }
   };
   document.addEventListener("mousedown", closeModal);
@@ -45,6 +48,7 @@ export const SearchBox = () => {
   useEffect(() => {
     if (search.length !== 0) {
       setSearchingState(true);
+      setDropdown(false);
       SearchText();
     } else {
       setSearchingState(false);
@@ -54,8 +58,11 @@ export const SearchBox = () => {
   return (
     <>
       <div className="top-0 fixed w-full  lg:w-[45%]" ref={modal}>
-        <div className="w-full border-b border-neutral-200 bg-white h-14 flex justify-center items-center">
-          <div className="flex px-4 justify-between items-center border border-neutral-100 bg-neutral-50 rounded-full h-10 w-[75%]">
+        <div className="w-full border-b border-neutral-200 bg-white h-14 flex justify-evenly items-center">
+          <div className="lg:hidden bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-2xl font-ubuntu">
+            kr
+          </div>
+          <div className="flex px-4 justify-between items-center border border-neutral-100 bg-neutral-100 rounded-full h-10 w-[70%]">
             <input
               type="text"
               onChange={(e) => setSearch(e.target.value)}
@@ -64,81 +71,97 @@ export const SearchBox = () => {
             />
             <SearchIcon />
           </div>
+          <button
+            onClick={() => {
+              setDropdown(!dropdown);
+            }}
+            className="lg:hidden text-primarytextcolor"
+          >
+            <DensityMediumIcon />
+          </button>
         </div>
-        {searchingState && (
-          <div className="h-auto z-100  flex justify-center">
-            <div className="w-[90%] bg-white px-4 shadow-md  rounded-b-xl ovverflow-y-auto no-scrollbar">
-              {users.length !== 0 || communities.length !== 0 ? (
-                <div>
-                  <div>
-                    {users.map((user) => (
-                      <div key={user.username}>
-                        <div className="flex gap-2 items-center my-2">
-                          <div className=" text-sm font-ubuntu font-semibold text-secondarytextcolor">
-                            U/
-                          </div>
-                          <div>
-                            <Link to={`/${user.username}`}>
-                              <img
-                                src={user.image ? user.image : "/user.png"}
-                                alt="Profile"
-                                className="h-8 w-8 rounded-full"
-                              />
-                            </Link>
-                          </div>
-
-                          <Link to={`/${user.username}`}>
-                            <div className="text-primarytextcolor text-lg hover:underline font-semibold">
-                              {user.name}
-                            </div>
-                          </Link>
-                          <Link to={`/${user.username}`}>
-                            <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
-                              @{user.username}
-                            </div>
-                          </Link>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div>
-                    {communities.map((community) => (
-                      <div key={community.name}>
-                        <div className="flex gap-2 items-center">
-                          <div className=" text-sm font-ubuntu font-semibold text-black">
-                            C/
-                          </div>
-                          <div>
-                            <Link to={`/${community.name}`}>
-                              <img
-                                src={
-                                  community.image
-                                    ? community.image
-                                    : "/group.png"
-                                }
-                                alt="Profile"
-                                className="h-8 w-8 rounded-full"
-                              />
-                            </Link>
-                          </div>
-                          <div className="items-center">
-                            <Link to={`/${community.name}`}>
-                              <div className="text-primarytextcolor text-lg hover:underline font-semibold">
-                                {community.name}
+        {dropdown ? (
+          <div className="absolute lg:hidden flex flex-col items-start p-4 rounded-b-xl border-l border-b border-neutral-200 bg-white shadow-sm right-0 top-14">
+            <DropDown />
+          </div>
+        ) : (
+          <div>
+            {searchingState && (
+              <div className="h-auto z-100  flex justify-center">
+                <div className="w-[90%] bg-white px-4 shadow-md  rounded-b-xl ovverflow-y-auto no-scrollbar">
+                  {users.length !== 0 || communities.length !== 0 ? (
+                    <div>
+                      <div>
+                        {users.map((user) => (
+                          <div key={user.username}>
+                            <div className="flex gap-2 items-center my-2">
+                              <div className=" text-sm font-ubuntu font-semibold text-secondarytextcolor">
+                                U/
                               </div>
-                            </Link>
+                              <div>
+                                <Link to={`/${user.username}`}>
+                                  <img
+                                    src={user.image ? user.image : "/user.png"}
+                                    alt="Profile"
+                                    className="h-8 w-8 rounded-full"
+                                  />
+                                </Link>
+                              </div>
+
+                              <Link to={`/${user.username}`}>
+                                <div className="text-primarytextcolor text-lg hover:underline font-semibold">
+                                  {user.name}
+                                </div>
+                              </Link>
+                              <Link to={`/${user.username}`}>
+                                <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
+                                  @{user.username}
+                                </div>
+                              </Link>
+                            </div>
                           </div>
-                        </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>{" "}
+                      <div>
+                        {communities.map((community) => (
+                          <div key={community.name}>
+                            <div className="flex gap-2 items-center">
+                              <div className=" text-sm font-ubuntu font-semibold text-black">
+                                C/
+                              </div>
+                              <div>
+                                <Link to={`/${community.name}`}>
+                                  <img
+                                    src={
+                                      community.image
+                                        ? community.image
+                                        : "/group.png"
+                                    }
+                                    alt="Profile"
+                                    className="h-8 w-8 rounded-full"
+                                  />
+                                </Link>
+                              </div>
+                              <div className="items-center">
+                                <Link to={`/${community.name}`}>
+                                  <div className="text-primarytextcolor text-lg hover:underline font-semibold">
+                                    {community.name}
+                                  </div>
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>{" "}
+                    </div>
+                  ) : (
+                    <div className="text-sm my-4 font-ubuntu font-medium text-center text-secondarytextcolor">
+                      Search result not found
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="text-sm my-4 font-ubuntu font-medium text-center text-secondarytextcolor">
-                  Search result not found
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
       </div>
