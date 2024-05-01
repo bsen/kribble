@@ -156,7 +156,7 @@ export const PostsHome = () => {
                         <div className="flex gap-2 text-neutral-600"></div>
                       </div>
                       <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
-                        <div
+                        <button
                           className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                           onClick={() => handleLike(post.id)}
                         >
@@ -179,18 +179,20 @@ export const PostsHome = () => {
                           <div className="text-base text-rose-500">
                             {post.likesCount}
                           </div>
-                        </div>
-                        <div className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer">
-                          <Link to={`/post/${post.id}`}>
-                            <ChatBubbleOutlineRoundedIcon
-                              sx={{ fontSize: 18 }}
-                              className="text-blue-500"
-                            />
-                          </Link>
+                        </button>
+
+                        <Link
+                          to={`/post/${post.id}`}
+                          className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
+                        >
+                          <ChatBubbleOutlineRoundedIcon
+                            sx={{ fontSize: 18 }}
+                            className="text-blue-500"
+                          />
                           <div className="text-base text-blue-500">
                             {post.commentsCount}
                           </div>
-                        </div>
+                        </Link>
                       </div>
                     </div>
                   </div>
