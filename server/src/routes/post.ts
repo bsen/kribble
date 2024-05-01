@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
+import { string } from "zod";
 
 export const postRouter = new Hono<{
   Bindings: {
@@ -173,7 +174,6 @@ postRouter.post("/create-text-post", async (c) => {
     return c.json({ status: 400, message: "Try again later, Network error" });
   }
 });
-
 postRouter.post("/delete-post", async (c) => {
   try {
     const body = await c.req.json();
@@ -182,23 +182,34 @@ postRouter.post("/delete-post", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-
     const userId = await verify(token, c.env.JWT_SECRET);
     const userData = await prisma.user.findUnique({ where: { id: userId.id } });
     if (!userData) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
+
+    const deleteLikes = await prisma.like.deleteMany({
+      where: {
+        postId: postId,
+      },
+    });
+
+    const deleteComments = await prisma.comment.deleteMany({
+      where: {
+        postId: postId,
+      },
+    });
     const deletepost = await prisma.post.delete({
       where: {
         id: postId,
       },
     });
 
-    if (!deletepost) {
-      return c.json({ status: 403, message: "post deletion failed" });
+    if (!deletepost || !deleteLikes || !deleteComments) {
+      return c.json({ status: 403, message: "Post deletion failed" });
     }
 
-    return c.json({ status: 200, message: "post deleted successfuly" });
+    return c.json({ status: 200, message: "Post deleted successfuly" });
   } catch (error) {
     console.log(error);
     return c.json({ status: 400 });

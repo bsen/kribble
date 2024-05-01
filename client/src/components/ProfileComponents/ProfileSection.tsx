@@ -12,6 +12,7 @@ import { BACKEND_URL } from "../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { SearchBox } from "../HomeComponents/SearchBar";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface Post {
   id: string;
@@ -71,19 +72,17 @@ export const ProfileSection: React.FC = () => {
   });
   const [postDeleteId, setPostDeleteId] = useState("");
   const [deleteState, setDeleteState] = useState(false);
-  const [postId, setPostId] = useState("");
-  const [commentDeleteId, setCommentDeleteId] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const postsScrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { username } = useParams();
   const token = localStorage.getItem("token");
-
   useEffect(() => {
     getData();
     getAllPosts(null, true);
   }, [username]);
 
-  async function getData() {
+  const getData = async () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
@@ -97,12 +96,12 @@ export const ProfileSection: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  async function getAllPosts(
+  const getAllPosts = async (
     cursor: string | null | undefined,
     truncate: boolean
-  ) {
+  ) => {
     try {
       setIsLoading(true);
       const response = await axios.post(
@@ -120,21 +119,19 @@ export const ProfileSection: React.FC = () => {
       console.log(error);
       setIsLoading(false);
     }
-  }
-
+  };
   const handleScroll = () => {
+    const postsScrollContainer = postsScrollContainerRef.current;
     if (
-      scrollContainerRef.current &&
-      scrollContainerRef.current.scrollTop +
-        scrollContainerRef.current.clientHeight >=
-        scrollContainerRef.current.scrollHeight &&
+      postsScrollContainer &&
+      postsScrollContainer.scrollTop + postsScrollContainer.clientHeight >=
+        postsScrollContainer.scrollHeight &&
       postData.nextCursor &&
       !isLoading
     ) {
       getAllPosts(postData.nextCursor, false);
     }
   };
-
   async function followUser() {
     setLoadingState(true);
     try {
@@ -151,8 +148,9 @@ export const ProfileSection: React.FC = () => {
     }
   }
 
-  async function deletePost() {
+  const deletePost = async () => {
     try {
+      console.log(postDeleteId, token);
       setLoadingState(true);
       await axios.post(`${BACKEND_URL}/api/server/v1/post/delete-post`, {
         token,
@@ -165,22 +163,8 @@ export const ProfileSection: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  async function deleteComment() {
-    try {
-      setLoadingState(true);
-      await axios.post(`${BACKEND_URL}/api/server/v1/post/delete-comment`, {
-        token,
-        commentDeleteId: commentDeleteId,
-        postId,
-      });
-      setLoadingState(false);
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  }
   const handleLike = async (postId: string) => {
     try {
       const details = { postId, token };
@@ -217,14 +201,13 @@ export const ProfileSection: React.FC = () => {
           {deleteState ? (
             <div className="w-full h-screen flex justify-center items-center">
               <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
-                Do you really want to delete the
-                {postDeleteId ? " post" : " comment"} ?
+                Do you really want to delete the post
                 <span className="text-xs font-light text-neutral-600">
                   note you can not get back the deleted item!
                 </span>
                 <div className="flex gap-5">
                   <button
-                    onClick={postDeleteId ? deletePost : deleteComment}
+                    onClick={deletePost}
                     className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
                   >
                     Delete
@@ -233,8 +216,6 @@ export const ProfileSection: React.FC = () => {
                     onClick={() => {
                       setDeleteState(false);
                       setPostDeleteId("");
-                      setCommentDeleteId("");
-                      setPostId("");
                     }}
                     className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
                   >
@@ -395,7 +376,10 @@ export const ProfileSection: React.FC = () => {
                 </div>
               )}
 
-              <div className="overflow-y-auto no-scrollbar touch-action-none">
+              <div
+                className="overflow-y-auto no-scrollbar touch-action-none"
+                ref={postsScrollContainerRef}
+              >
                 {postData.posts.length > 0 ? (
                   postData.posts.map((post, index) => (
                     <div
@@ -417,18 +401,36 @@ export const ProfileSection: React.FC = () => {
                               />
                             </Link>
                           </div>
-                          <div className="w-[80%]">
-                            <Link to={`/${post.creator.username}`}>
-                              <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                                {post.creator.name}
-                              </div>
-                            </Link>
+                          <div className="w-[90%]">
+                            <div className="flex justify-between items-center">
+                              <Link to={`/${post.creator.username}`}>
+                                <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                                  {post.creator.name}
+                                </div>
+                              </Link>
+                              {currentUser == username ? (
+                                <button
+                                  onClick={() => {
+                                    setPostDeleteId(post.id);
+                                    setDeleteState(true);
+                                  }}
+                                >
+                                  <MoreVertIcon
+                                    sx={{ fontSize: 20 }}
+                                    className="text-neutral-600"
+                                  />
+                                </button>
+                              ) : (
+                                ""
+                              )}
+                            </div>
                             <div className="flex gap-2 items-center">
                               <Link to={`/${post.creator.username}`}>
                                 <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
                                   @{post.creator.username}
                                 </div>
                               </Link>
+
                               <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
                                 · {post.createdAt.slice(0, 10)}
                               </div>
