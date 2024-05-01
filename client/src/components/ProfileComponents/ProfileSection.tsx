@@ -72,7 +72,6 @@ export const ProfileSection: React.FC = () => {
   });
   const [postDeleteId, setPostDeleteId] = useState("");
   const [deleteState, setDeleteState] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const postsScrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { username } = useParams();
@@ -226,9 +225,8 @@ export const ProfileSection: React.FC = () => {
             </div>
           ) : (
             <div
-              className="overflow-y-auto no-scrollbar py-14"
+              className="overflow-y-auto no-scrollbar pt-14"
               onScroll={handleScroll}
-              ref={scrollContainerRef}
             >
               <SearchBox />
               {profileEditingState ? (
