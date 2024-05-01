@@ -186,7 +186,7 @@ export const PostComponent = () => {
                 </div>
               </div>
             </div>
-            <div className="px-4 border-b border-neutral-200 flex justify-center items-center">
+            <div className="px-4 py-2 border-b border-neutral-200 flex justify-center items-center">
               <div className="w-full">
                 <textarea
                   rows={3}
@@ -204,7 +204,7 @@ export const PostComponent = () => {
                 <div>
                   <button
                     onClick={createComment}
-                    className="text-white my-2 py-1 px-4 rounded-full bg-blue-500"
+                    className="text-white mb-2 py-1 px-4 rounded-full bg-blue-500"
                   >
                     Post
                   </button>
