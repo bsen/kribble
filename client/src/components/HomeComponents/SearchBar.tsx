@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { BACKEND_URL } from "../../config";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
-import { BottomButtons } from "../Mobile/BottomButtons";
+import { DropDown } from "../Mobile/DropDown";
 interface User {
   username: string;
   name: string;
@@ -59,7 +59,7 @@ export const SearchBox = () => {
     <>
       <div className="top-0 fixed w-full  lg:w-[45%]" ref={modal}>
         <div className="w-full border-b border-neutral-200 bg-white h-14 flex justify-evenly items-center">
-          <div className="bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-2xl font-ubuntu">
+          <div className="lg:hidden bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-2xl font-ubuntu">
             kr
           </div>
           <div className="flex px-4 justify-between items-center border border-neutral-100 bg-neutral-100 rounded-full h-10 w-[70%]">
@@ -73,15 +73,16 @@ export const SearchBox = () => {
           </div>
           <button
             onClick={() => {
-              setDropdown(true);
+              setDropdown(!dropdown);
             }}
+            className="lg:hidden text-primarytextcolor"
           >
-            <DensityMediumIcon className="text-black" />
+            <DensityMediumIcon />
           </button>
         </div>
         {dropdown ? (
-          <div className="absolute flex flex-col items-start p-4 rounded-b-xl border-l border-b border-neutral-200 bg-white shadow-sm right-0 top-14">
-            <BottomButtons />
+          <div className="absolute lg:hidden flex flex-col items-start p-4 rounded-b-xl border-l border-b border-neutral-200 bg-white shadow-sm right-0 top-14">
+            <DropDown />
           </div>
         ) : (
           <div>

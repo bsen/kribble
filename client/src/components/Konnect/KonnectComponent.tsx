@@ -6,7 +6,6 @@ import FemaleIcon from "@mui/icons-material/Female";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import { BACKEND_URL } from "../../config";
 import { useEffect, useState } from "react";
-import { BottomButtons } from "../Mobile/BottomButtons";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -112,12 +111,18 @@ export const KonnectComponent = () => {
                 ""
               )}
             </div>
+            <Link to={"/home"}>
+              <ArrowBackIosNewRoundedIcon
+                className="text-secondarytextcolor rounded-full border  py-1 hover:bg-neutral-100"
+                sx={{ fontSize: 35 }}
+              />
+            </Link>
             <div>Konnect</div>
           </div>
         </div>
         <div>
           {loadingState ? (
-            <div className="h-[90vh] bg-background flex justify-center items-center w-full">
+            <div className="h-screen bg-background flex justify-center items-center w-full">
               <CircularProgress />
             </div>
           ) : (
@@ -151,7 +156,7 @@ export const KonnectComponent = () => {
                     </div>
 
                     <div className="flex py-2 justify-center gap-5 w-full">
-                      <div className="bg-neutral-600 font-ubuntu font-medium text-lg  py-2 rounded-full active:bg-neutral-700 w-[27%] flex justify-center">
+                      <div className="bg-neutral-800 font-ubuntu font-medium text-sm lg:text-lg  py-2 rounded-full active:bg-neutral-700 w-[27%] flex justify-center">
                         <button onClick={searchPeople}>
                           <div className="flex items-center text-white justify-evenly">
                             <div>Pass</div>
@@ -221,21 +226,21 @@ export const KonnectComponent = () => {
                   </div>
                   <div className="w-full gap-5 flex items-center flex-col justify-center">
                     <button
-                      className="text-background  rounded-full w-[40%] bg-blue-500  text-lg py-2 px-4 font-ubuntu  active:bg-blue-800"
+                      className="text-background  rounded-full  bg-blue-500 text-sm lg:text-lg py-2 px-4 font-ubuntu  active:bg-blue-800"
                       onClick={searchPeople}
                     >
                       Start Connecting
                     </button>
 
                     <Link
-                      className="text-background w-[40%] text-center bg-neutral-800 rounded-full text-lg py-2 px-4 font-ubuntu  active:bg-neutral-800"
+                      className="text-background  text-center bg-neutral-800 rounded-full text-sm lg:text-lg  py-2 px-4 font-ubuntu  active:bg-neutral-800"
                       to={"/matches"}
                     >
                       Browse Matches
                     </Link>
                   </div>
                   <div className="text-rose-500 my-5 font-ubuntu font-light text-center text-sm">
-                    {popup ? popup : ""}
+                    {popup ? popup : "‎"}
                   </div>
                 </div>
               )}

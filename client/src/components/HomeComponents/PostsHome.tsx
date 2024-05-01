@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import { BottomButtons } from "../Mobile/BottomButtons";
 import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import { SearchBox } from "./SearchBar";
@@ -101,7 +100,7 @@ export const PostsHome = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar pt-16 pb-20"
+        className="h-screen overflow-y-auto no-scrollbar pt-16"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >

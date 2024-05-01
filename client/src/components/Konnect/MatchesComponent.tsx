@@ -85,7 +85,10 @@ export const MatchesComponent = () => {
                   />
                 </Link>
                 <div className="flex justify-center font-ubuntu text-lg font-semibold text-primarytextcolor items-center gap-2">
-                  <GroupIcon />
+                  <EmailIcon
+                    sx={{ fontSize: 25 }}
+                    className="text-neutral-800"
+                  />
                   <p>Matches</p>
                 </div>
                 <div></div>
@@ -99,7 +102,7 @@ export const MatchesComponent = () => {
                     .map((user, index) => (
                       <div
                         key={index}
-                        className="flex w-[80%] bg-white  border border-neutral-100 shadow-sm rounded-xl  items-center justify-between  gap-4 mt-4"
+                        className="flex w-full lg:w-[80%] bg-white  border border-neutral-100 shadow-sm rounded-xl  items-center justify-between  gap-4 mt-4"
                       >
                         <button
                           onClick={() => {
@@ -111,7 +114,7 @@ export const MatchesComponent = () => {
                             );
                             setMessageState(true);
                           }}
-                          className=" w-full m-2 flex justify-between items-center"
+                          className="w-full  m-2 flex justify-between items-center"
                         >
                           <div className="flex gap-2 justify-center items-center">
                             <img
@@ -119,20 +122,16 @@ export const MatchesComponent = () => {
                               alt="Profile"
                               className="h-10 w-10 bg-background rounded-full"
                             />
+                            <div className="flex flex-col items-start">
+                              <div className="text-primarytextcolor text-sm lg:text-lg  font-semibold">
+                                {user.name}
+                              </div>
 
-                            <div className="text-primarytextcolor text-lg font-semibold">
-                              {user.name}
-                            </div>
-
-                            <div className="text-secondarytextcolor  text-xs font-ubuntu">
-                              @{user.username}
+                              <div className="text-secondarytextcolor  text-xs font-ubuntu">
+                                @{user.username}
+                              </div>
                             </div>
                           </div>
-
-                          <EmailIcon
-                            sx={{ fontSize: 30 }}
-                            className="text-neutral-800"
-                          />
                         </button>
                       </div>
                     ))

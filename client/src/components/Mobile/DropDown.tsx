@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
-export const BottomButtons = () => {
+export const DropDown = () => {
   const token = localStorage.getItem("token");
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export const BottomButtons = () => {
             }`}
           />
           <p
-            className={`text-lg font-medium max-lg:hidden ${
+            className={`text-lg font-medium ${
               location.pathname === "/home"
                 ? "text-blue-500"
                 : "text-primarytextcolor"
@@ -63,7 +63,7 @@ export const BottomButtons = () => {
               }`}
             />
             <p
-              className={`text-lg font-medium max-lg:hidden ${
+              className={`text-lg font-medium  ${
                 location.pathname === `/communities`
                   ? "text-blue-500"
                   : "text-primarytextcolor"
@@ -86,7 +86,7 @@ export const BottomButtons = () => {
               }`}
             />
             <p
-              className={`text-lg font-medium max-lg:hidden ${
+              className={`text-lg font-medium  ${
                 location.pathname === `/konnect`
                   ? "text-blue-500"
                   : "text-primarytextcolor"
@@ -110,7 +110,7 @@ export const BottomButtons = () => {
               }`}
             />
             <p
-              className={`text-lg font-medium max-lg:hidden ${
+              className={`text-lg font-medium  ${
                 location.pathname === `/${currentUser}`
                   ? "text-blue-500"
                   : "text-primarytextcolor"
