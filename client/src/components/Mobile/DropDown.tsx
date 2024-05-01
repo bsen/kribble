@@ -31,7 +31,7 @@ export const DropDown = () => {
           navigate("/home");
         }}
       >
-        <div className={"mt-4 flex items-center justify-center gap-2"}>
+        <div className={"flex items-center justify-center gap-2"}>
           <HomeIcon
             sx={{ fontSize: 30 }}
             className={`${
