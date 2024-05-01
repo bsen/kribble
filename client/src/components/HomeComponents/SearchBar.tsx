@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { BACKEND_URL } from "../../config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 import { DropDown } from "../Mobile/DropDown";
@@ -24,7 +24,7 @@ export const SearchBox = () => {
   const [communities, setCommunities] = useState<Community[]>([]);
   const modal = useRef<HTMLDivElement>(null);
   const [dropdown, setDropdown] = useState(false);
-
+  const navigation = useNavigate();
   async function SearchText() {
     const response = await axios.post(`${BACKEND_URL}/api/server/v1/search`, {
       token,
@@ -59,9 +59,15 @@ export const SearchBox = () => {
     <>
       <div className="top-0 fixed w-full  lg:w-[45%]" ref={modal}>
         <div className="w-full border-b border-neutral-200 bg-white h-14 flex justify-evenly items-center">
-          <div className="lg:hidden bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-2xl font-ubuntu">
-            kr
-          </div>
+          <button
+            onClick={() => {
+              navigation("/home");
+            }}
+          >
+            <div className="lg:hidden bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-3xl font-ubuntu">
+              Kr
+            </div>
+          </button>
           <div className="flex px-4 justify-between items-center border border-neutral-100 bg-neutral-100 rounded-full h-10 w-[70%]">
             <input
               type="text"

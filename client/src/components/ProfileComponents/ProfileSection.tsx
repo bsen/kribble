@@ -293,7 +293,7 @@ export const ProfileSection: React.FC = () => {
             </div>
           ) : (
             <div
-              className="overflow-y-auto no-scrollbar pt-14"
+              className="overflow-y-auto no-scrollbar py-14"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
@@ -474,7 +474,7 @@ export const ProfileSection: React.FC = () => {
               )}
               <div className="overflow-y-auto no-scrollbar touch-action-none">
                 {postComponent ? (
-                  <div className="overflow-y-auto touch-action-none">
+                  <div>
                     {postData.posts.length > 0 ? (
                       postData.posts.map((post, index) => (
                         <div
@@ -573,7 +573,7 @@ export const ProfileSection: React.FC = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="overflow-y-auto no-scrollbar touch-action-none">
+                  <div>
                     {commentsData.comments.length > 0 ? (
                       commentsData.comments.map((comment) => (
                         <div
