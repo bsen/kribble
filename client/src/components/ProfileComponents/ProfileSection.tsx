@@ -307,28 +307,27 @@ export const ProfileSection: React.FC = () => {
                   <div className="flex flex-col justify-between">
                     <div className="flex items-start gap-4">
                       <div className="flex w-full justify-between items-start gap-2">
-                        <div className="flex gap-2 items-center">
+                        <div className="w-full items-start justify-between flex gap-4 ">
                           <img
                             src={userData.image ? userData.image : "/user.png"}
                             alt="Profile"
-                            className="w-16 h-16 lg:w-24 lg:h-24 rounded-full"
+                            className="w-20 h-20 lg:w-24 lg:h-24 rounded-full"
                           />
-
                           <div>
-                            <div className="text-base lg:text-xl font-semibold text-primarytextcolor">
-                              {userData.name}
-                            </div>
-                            <div className="text-sm text-secondarytextcolor font-light">
-                              @{userData.username}
-                            </div>
-
                             {currentUser === username ? (
-                              ""
+                              <button
+                                onClick={() => {
+                                  setProfileEditingState(true);
+                                }}
+                                className="text-left"
+                              >
+                                <SettingsIcon />
+                              </button>
                             ) : (
                               <div className="flex my-2 gap-4 justify-between items-center">
                                 <button
                                   onClick={followUser}
-                                  className="bg-neutral-800 text-background px-4 py-1 rounded-full font-ubuntu"
+                                  className="bg-neutral-800 text-background px-4 py-1 text-sm lg:text-lg rounded-full font-ubuntu"
                                 >
                                   <div>
                                     {followingState ? (
@@ -342,46 +341,18 @@ export const ProfileSection: React.FC = () => {
                             )}
                           </div>
                         </div>
-                        <div>
-                          {currentUser === username ? (
-                            <button
-                              onClick={() => {
-                                setProfileEditingState(true);
-                              }}
-                              className="text-left"
-                            >
-                              <SettingsIcon />
-                            </button>
-                          ) : (
-                            ""
-                          )}
-                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="mt-2">
-                    <div className="flex gap-4 font-ubuntu text-sm">
-                      <Link to={`/followers/${username}`}>
-                        <div className="flex gap-2 items-center">
-                          <div className="text-primarytextcolor">
-                            {userData.followers.length}
-                          </div>
-                          <div className="text-secondarytextcolor">
-                            Followers
-                          </div>
+                    <div className="mt-2">
+                      <div>
+                        <div className="text-base lg:text-xl font-semibold text-primarytextcolor">
+                          {userData.name}
                         </div>
-                      </Link>
-                      <Link to={`/following/${username}`}>
-                        <div className="flex gap-2 items-center">
-                          <div className="text-primarytextcolor">
-                            {userData.following.length}
-                          </div>
-                          <div className="text-secondarytextcolor">
-                            Following
-                          </div>
+                        <div className="text-sm text-secondarytextcolor font-light">
+                          @{userData.username}
                         </div>
-                      </Link>
+                      </div>
                     </div>
                     <div className="text-primarytextcolor  text-sm lg:text-base font-light">
                       {userData.bio ? userData.bio : "bio"}
@@ -408,6 +379,28 @@ export const ProfileSection: React.FC = () => {
                     <div className="text-sm text-secondarytextcolor font-light">
                       {userData.interest ? userData.interest : "interests"}
                     </div>
+                    <div className="flex  items-center gap-4 font-ubuntu text-sm">
+                      <Link to={`/followers/${username}`}>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-primarytextcolor">
+                            {userData.followers.length}
+                          </div>
+                          <div className="text-secondarytextcolor">
+                            Followers
+                          </div>
+                        </div>
+                      </Link>
+                      <Link to={`/following/${username}`}>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-primarytextcolor">
+                            {userData.following.length}
+                          </div>
+                          <div className="text-secondarytextcolor">
+                            Following
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                   {currentUser == username ? (
                     <div className="flex my-2 flex-col items-start gap-2">
@@ -418,7 +411,7 @@ export const ProfileSection: React.FC = () => {
                       >
                         <div
                           className={
-                            "px-4 py-1 rounded-full border border-neutral-400  bg-white flex items-center justify-center gap-2 text-sm text-primarytextcolor"
+                            "flex justify-between items-center text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
                           }
                         >
                           <AddIcon sx={{ fontSize: 20 }} />
@@ -432,7 +425,7 @@ export const ProfileSection: React.FC = () => {
                       >
                         <div
                           className={
-                            "px-4 py-1 rounded-full border border-neutral-400  bg-white flex items-center justify-center gap-2 text-sm text-primarytextcolor"
+                            "flex justify-between items-center text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
                           }
                         >
                           <AddIcon sx={{ fontSize: 20 }} />
@@ -449,10 +442,10 @@ export const ProfileSection: React.FC = () => {
                       onClick={() => {
                         setPostComponent(true);
                       }}
-                      className={`text-sm font-ubuntu font-semibold ${
+                      className={`text-sm font-ubuntu font-semibold text-primarytextcolor ${
                         postComponent
-                          ? "bg-neutral-100 px-4 py-1 rounded-full"
-                          : "text-primarytextcolor px-4 py-1 rounded-full bg-white"
+                          ? "bg-neutral-100 px-4 py-1 rounded-full "
+                          : "px-4 py-1 rounded-full bg-white"
                       }`}
                     >
                       Posts
@@ -461,9 +454,9 @@ export const ProfileSection: React.FC = () => {
                       onClick={() => {
                         setPostComponent(false);
                       }}
-                      className={`text-sm font-ubuntu font-semibold ${
+                      className={`text-sm font-ubuntu font-semibold text-primarytextcolor ${
                         postComponent
-                          ? "text-primarytextcolor px-4 py-1 rounded-full bg-white"
+                          ? "px-4 py-1 rounded-full bg-white"
                           : "bg-neutral-100 px-4 py-1 rounded-full"
                       }`}
                     >
