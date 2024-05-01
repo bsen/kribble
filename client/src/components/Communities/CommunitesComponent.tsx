@@ -74,35 +74,35 @@ export const CommunitesComponent = () => {
               key={index}
               className="border-b hover:bg-neutral-50 border-neutral-200 p-3 bg-white"
             >
-              <Link to={`/community/${community.name}`}>
-                <div className="flex justify-between gap-2">
-                  <div className="flex gap-2 ">
-                    <img
-                      className="h-10 w-10 rounded-full bg-neutral-50"
-                      src={community.image ? community.image : "/group.png"}
-                    />
-                    <div className="flex flex-col w-full">
-                      <div className="text-primarytextcolor text-base lg:text- font-medium font-ubuntu">
+              <div className="flex justify-between gap-2">
+                <div className="flex gap-2 ">
+                  <img
+                    className="h-10 w-10 rounded-full bg-neutral-50"
+                    src={community.image ? community.image : "/group.png"}
+                  />
+                  <div className="flex flex-col w-full">
+                    <Link to={`/community/${community.name}`}>
+                      <div className="text-primarytextcolor text-base lg:text-lg font-medium font-ubuntu">
                         {community.name}
-                      </div>
-                      <div className="text-primarytextcolor text-sm lg:text-base font-normal">
-                        {community.category}
-                      </div>
-                      <div className="text-primarytextcolor text-sm lg:text-base font-light">
-                        {community.description}
-                      </div>
-                      <div className="text-primarytextcolor  text-sm font-light">
-                        {community.memberCount} members
-                      </div>
+                      </div>{" "}
+                    </Link>
+                    <div className="text-primarytextcolor text-sm  font-normal">
+                      {community.category}
+                    </div>
+                    <div className="text-primarytextcolor text-sm  font-light">
+                      {community.description}
+                    </div>
+                    <div className="text-primarytextcolor  text-sm font-light">
+                      {community.memberCount} members
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             </div>
           ))
         ) : (
           <div className="text-center font-ubuntu my-5 text-primarytextcolor">
-            No posts found.
+            No communities found.
           </div>
         )}
         {isLoading && (
