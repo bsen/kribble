@@ -1,5 +1,5 @@
 import { Suggestions } from "../components/Communities/Suggestions";
-import { CreatePostComponent } from "../components/ProfileComponents/CreatePostComponent";
+import { CreatePostComponent } from "../components/Post/CreatePostComponent";
 import { Sidebar } from "../components/SideBar/Sidebar";
 export const CreatePost = () => {
   return (

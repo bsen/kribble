@@ -327,7 +327,7 @@ export const ProfileSection: React.FC = () => {
                               <div className="flex my-2 gap-4 justify-between items-center">
                                 <button
                                   onClick={followUser}
-                                  className="bg-neutral-800 text-background px-4 py-1 text-sm lg:text-lg rounded-full font-ubuntu"
+                                  className="bg-neutral-800 text-background px-4 py-1 text-sm rounded-full font-ubuntu"
                                 >
                                   <div>
                                     {followingState ? (
@@ -345,14 +345,34 @@ export const ProfileSection: React.FC = () => {
                     </div>
 
                     <div className="mt-2">
-                      <div>
-                        <div className="text-base lg:text-xl font-semibold text-primarytextcolor">
-                          {userData.name}
-                        </div>
-                        <div className="text-sm text-secondarytextcolor font-light">
-                          @{userData.username}
-                        </div>
+                      <div className="text-base lg:text-xl font-semibold text-primarytextcolor">
+                        {userData.name}
                       </div>
+                      <div className="text-sm text-secondarytextcolor font-light">
+                        @{userData.username}
+                      </div>
+                    </div>
+                    <div className="flex  items-center gap-4 font-ubuntu text-sm">
+                      <Link to={`/followers/${username}`}>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-primarytextcolor">
+                            {userData.followers.length}
+                          </div>
+                          <div className="text-secondarytextcolor">
+                            Followers
+                          </div>
+                        </div>
+                      </Link>
+                      <Link to={`/following/${username}`}>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-primarytextcolor">
+                            {userData.following.length}
+                          </div>
+                          <div className="text-secondarytextcolor">
+                            Following
+                          </div>
+                        </div>
+                      </Link>
                     </div>
                     <div className="text-primarytextcolor  text-sm lg:text-base font-light">
                       {userData.bio ? userData.bio : "bio"}
@@ -379,28 +399,6 @@ export const ProfileSection: React.FC = () => {
                     <div className="text-sm text-secondarytextcolor font-light">
                       {userData.interest ? userData.interest : "interests"}
                     </div>
-                    <div className="flex  items-center gap-4 font-ubuntu text-sm">
-                      <Link to={`/followers/${username}`}>
-                        <div className="flex gap-2 items-center">
-                          <div className="text-primarytextcolor">
-                            {userData.followers.length}
-                          </div>
-                          <div className="text-secondarytextcolor">
-                            Followers
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to={`/following/${username}`}>
-                        <div className="flex gap-2 items-center">
-                          <div className="text-primarytextcolor">
-                            {userData.following.length}
-                          </div>
-                          <div className="text-secondarytextcolor">
-                            Following
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
                   </div>
                   {currentUser == username ? (
                     <div className="flex my-2 flex-col items-start gap-2">
@@ -411,7 +409,7 @@ export const ProfileSection: React.FC = () => {
                       >
                         <div
                           className={
-                            "flex justify-between items-center text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                            "flex justify-between text-sm items-center text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
                           }
                         >
                           <AddIcon sx={{ fontSize: 20 }} />
@@ -425,7 +423,7 @@ export const ProfileSection: React.FC = () => {
                       >
                         <div
                           className={
-                            "flex justify-between items-center text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                            "flex justify-between text-sm items-center text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
                           }
                         >
                           <AddIcon sx={{ fontSize: 20 }} />
@@ -442,7 +440,7 @@ export const ProfileSection: React.FC = () => {
                       onClick={() => {
                         setPostComponent(true);
                       }}
-                      className={`text-sm font-ubuntu font-semibold text-primarytextcolor ${
+                      className={`text-sm font-ubuntu font-semibold text-secondarytextcolor ${
                         postComponent
                           ? "bg-neutral-100 px-4 py-1 rounded-full "
                           : "px-4 py-1 rounded-full bg-white"
@@ -454,7 +452,7 @@ export const ProfileSection: React.FC = () => {
                       onClick={() => {
                         setPostComponent(false);
                       }}
-                      className={`text-sm font-ubuntu font-semibold text-primarytextcolor ${
+                      className={`text-sm font-ubuntu font-semibold text-secondarytextcolor ${
                         postComponent
                           ? "px-4 py-1 rounded-full bg-white"
                           : "bg-neutral-100 px-4 py-1 rounded-full"
