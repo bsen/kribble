@@ -7,6 +7,7 @@ import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
+import { ClassNames } from "@emotion/react";
 export const Buttons = () => {
   const token = localStorage.getItem("token");
   const location = useLocation();
@@ -130,10 +131,11 @@ export const Buttons = () => {
           onClick={() => {
             navigate("/create/post");
           }}
+          className="mt-10"
         >
           <div
             className={
-              "mt-10 px-6 py-1 rounded-full bg-neutral-800 flex items-center justify-center gap-2 text-lg font-medium  text-white"
+              "px-6 py-1 rounded-full bg-neutral-800 flex items-center justify-center gap-2 text-lg font-medium  text-white"
             }
           >
             <AddIcon sx={{ fontSize: 30 }} />

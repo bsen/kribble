@@ -31,8 +31,18 @@ interface Post {
 }
 
 export const ProfileSection: React.FC = () => {
+  const { username } = useParams();
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [loadingState, setLoadingState] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
+  const [followingState, setFollowingState] = useState(false);
+  const [profileEditingState, setProfileEditingState] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [postDeleteId, setPostDeleteId] = useState("");
+  const [deleteState, setDeleteState] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const postsScrollContainerRef = useRef<HTMLDivElement>(null);
   const [userData, setUserData] = useState<{
     name: string;
     username: string;
@@ -58,11 +68,7 @@ export const ProfileSection: React.FC = () => {
     followers: [],
     following: [],
   });
-  const [currentUser, setCurrentUser] = useState("");
-  const [followingState, setFollowingState] = useState(false);
-  const [profileEditingState, setProfileEditingState] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
   const [postData, setPostData] = useState<{
     posts: Post[];
     nextCursor: string | null;
@@ -70,12 +76,7 @@ export const ProfileSection: React.FC = () => {
     posts: [],
     nextCursor: null,
   });
-  const [postDeleteId, setPostDeleteId] = useState("");
-  const [deleteState, setDeleteState] = useState(false);
-  const postsScrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const { username } = useParams();
-  const token = localStorage.getItem("token");
   useEffect(() => {
     getData();
     getAllPosts(null, true);
@@ -225,8 +226,9 @@ export const ProfileSection: React.FC = () => {
             </div>
           ) : (
             <div
-              className="overflow-y-auto no-scrollbar pt-14"
+              className="overflow-y-auto no-scrollbar py-14"
               onScroll={handleScroll}
+              ref={scrollContainerRef}
             >
               <SearchBox />
               {profileEditingState ? (
@@ -366,10 +368,22 @@ export const ProfileSection: React.FC = () => {
                     ""
                   )}
 
-                  <div className="flex mt-2 justify-start items-start gap-5">
+                  <div className="flex mt-2 justify-start items-center gap-2">
                     <button className="text-sm font-ubuntu font-semibold text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full">
                       Posts
                     </button>
+                    {currentUser === username ? (
+                      <button
+                        onClick={() => {
+                          navigate("/comments");
+                        }}
+                        className="text-sm font-ubuntu font-semibold text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                      >
+                        Comments
+                      </button>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               )}
