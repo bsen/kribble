@@ -1,4 +1,3 @@
-import GroupIcon from "@mui/icons-material/Group";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
