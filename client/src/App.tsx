@@ -12,6 +12,7 @@ import { Followers } from "./pages/Followers";
 import { Following } from "./pages/Following";
 import { CreateCommunity } from "./pages/CreateCommunity";
 import { Community } from "./pages/Community";
+import { Comments } from "./pages/Comments";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -34,6 +35,10 @@ function App() {
           <Route
             path="/:username"
             element={<ProtectedRoute element={<Profile />} />}
+          />
+          <Route
+            path="/comments"
+            element={<ProtectedRoute element={<Comments />} />}
           />
           <Route
             path="/communities"

@@ -350,12 +350,11 @@ postRouter.post("/delete-comment", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
-    const commentId = body.commentDeleteId;
-    const postId = body.postId;
+    const commentId = body.deleteCommentId;
+    const postId = body.deleteCommentPostId;
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    console.log(commentId);
     const userId = await verify(token, c.env.JWT_SECRET);
     const findUser = await prisma.user.findUnique({
       where: {
