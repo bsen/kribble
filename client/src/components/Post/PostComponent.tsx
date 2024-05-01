@@ -186,10 +186,10 @@ export const PostComponent = () => {
                 </div>
               </div>
             </div>
-            <div className="p-4 border-b border-neutral-200 flex justify-center items-center">
+            <div className="px-4 border-b border-neutral-200 flex justify-center items-center">
               <div className="w-full">
                 <textarea
-                  rows={2}
+                  rows={3}
                   className={`w-full p-2 focus:outline-none rounded-xl  ${
                     popup ? "border border-rose-200" : ""
                   }`}

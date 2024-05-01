@@ -14,14 +14,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { SearchBox } from "../HomeComponents/SearchBar";
 
-interface Comment {
-  id: string;
-  content: string;
-  createdAt: string;
-  creatorId: string;
-  postId: string;
-}
-
 interface Post {
   id: string;
   creator: {
@@ -66,7 +58,6 @@ export const ProfileSection: React.FC = () => {
     followers: [],
     following: [],
   });
-  const [postComponent, setPostComponent] = useState(true);
   const [currentUser, setCurrentUser] = useState("");
   const [followingState, setFollowingState] = useState(false);
   const [profileEditingState, setProfileEditingState] = useState(false);
@@ -79,16 +70,8 @@ export const ProfileSection: React.FC = () => {
     posts: [],
     nextCursor: null,
   });
-  const [commentsData, setCommentsData] = useState<{
-    comments: Comment[];
-    nextCursor: string | null;
-  }>({
-    comments: [],
-    nextCursor: null,
-  });
   const [postDeleteId, setPostDeleteId] = useState("");
   const [deleteState, setDeleteState] = useState(false);
-  const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [postId, setPostId] = useState("");
   const [commentDeleteId, setCommentDeleteId] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -99,7 +82,6 @@ export const ProfileSection: React.FC = () => {
   useEffect(() => {
     getData();
     getAllPosts(null, true);
-    getComments(null, true);
   }, [username]);
 
   async function getData() {
@@ -138,35 +120,6 @@ export const ProfileSection: React.FC = () => {
     } catch (error) {
       console.log(error);
       setIsLoading(false);
-    }
-  }
-
-  async function getComments(
-    cursor: string | null | undefined,
-    truncate: boolean
-  ) {
-    try {
-      setIsLoadingComments(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/comments`,
-        {
-          token,
-          cursor,
-          username,
-        }
-      );
-
-      setCommentsData((prevComments) => ({
-        comments: truncate
-          ? [...response.data.comments]
-          : [...prevComments.comments, ...response.data.commnets],
-        nextCursor: response.data.messages,
-      }));
-
-      setIsLoadingComments(false);
-    } catch (error) {
-      console.error(error);
-      setIsLoadingComments(false);
     }
   }
 
@@ -293,7 +246,7 @@ export const ProfileSection: React.FC = () => {
             </div>
           ) : (
             <div
-              className="overflow-y-auto no-scrollbar pt-14"
+              className="overflow-y-auto no-scrollbar py-14"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
@@ -436,178 +389,108 @@ export const ProfileSection: React.FC = () => {
                   )}
 
                   <div className="flex mt-2 justify-start items-start gap-5">
-                    <button
-                      onClick={() => {
-                        setPostComponent(true);
-                      }}
-                      className={`text-sm font-ubuntu font-semibold text-secondarytextcolor ${
-                        postComponent
-                          ? "bg-neutral-100 px-4 py-1 rounded-full "
-                          : "px-4 py-1 rounded-full bg-white"
-                      }`}
-                    >
+                    <button className="text-sm font-ubuntu font-semibold text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full">
                       Posts
-                    </button>
-                    <button
-                      onClick={() => {
-                        setPostComponent(false);
-                      }}
-                      className={`text-sm font-ubuntu font-semibold text-secondarytextcolor ${
-                        postComponent
-                          ? "px-4 py-1 rounded-full bg-white"
-                          : "bg-neutral-100 px-4 py-1 rounded-full"
-                      }`}
-                    >
-                      Comments
                     </button>
                   </div>
                 </div>
               )}
-              <div className="overflow-y-auto no-scrollbar touch-action-none">
-                {postComponent ? (
-                  <div className="overflow-y-auto no-scrollbar touch-action-none">
-                    {postData.posts.length > 0 ? (
-                      postData.posts.map((post, index) => (
-                        <div
-                          key={index}
-                          className="border-b border-neutral-200 p-3"
-                        >
-                          <div>
-                            <div className="flex gap-2">
-                              <div>
-                                <Link to={`/${post.creator.username}`}>
-                                  <img
-                                    src={
-                                      post.creator.image
-                                        ? post.creator.image
-                                        : "/user.png"
-                                    }
-                                    alt="Profile"
-                                    className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
-                                  />
-                                </Link>
-                              </div>
-                              <div className="w-[80%]">
-                                <Link to={`/${post.creator.username}`}>
-                                  <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                                    {post.creator.name}
-                                  </div>
-                                </Link>
-                                <div className="flex gap-2 items-center">
-                                  <Link to={`/${post.creator.username}`}>
-                                    <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
-                                      @{post.creator.username}
-                                    </div>
-                                  </Link>
-                                  <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                                    · {post.createdAt.slice(0, 10)}
-                                  </div>
-                                </div>
-                                <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
-                                  {post.content}
-                                </div>
-                                <div>
-                                  <img
-                                    src={post.image}
-                                    className="max-h-[80vh]  max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-100"
-                                  />
-                                </div>
-                                <div>
-                                  <div className="flex gap-2 text-neutral-600"></div>
-                                </div>
-                                <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
-                                  <div
-                                    className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
-                                    onClick={() => handleLike(post.id)}
-                                  >
-                                    {post.isLiked ? (
-                                      <FavoriteIcon
-                                        sx={{
-                                          fontSize: 18,
-                                        }}
-                                        className="text-rose-500"
-                                      />
-                                    ) : (
-                                      <FavoriteBorderIcon
-                                        sx={{
-                                          fontSize: 18,
-                                        }}
-                                        className="text-rose-500"
-                                      />
-                                    )}
 
-                                    <div className="text-base text-rose-500">
-                                      {post.likesCount}
-                                    </div>
-                                  </div>
-                                  <div className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer">
-                                    <Link to={`/post/${post.id}`}>
-                                      <ChatBubbleOutlineRoundedIcon
-                                        sx={{ fontSize: 18 }}
-                                        className="text-blue-500"
-                                      />
-                                    </Link>
-                                    <div className="text-base text-blue-500">
-                                      {post.commentsCount}
-                                    </div>
-                                  </div>
+              <div className="overflow-y-auto no-scrollbar touch-action-none">
+                {postData.posts.length > 0 ? (
+                  postData.posts.map((post, index) => (
+                    <div
+                      key={index}
+                      className="border-b border-neutral-200 p-3"
+                    >
+                      <div>
+                        <div className="flex gap-2">
+                          <div>
+                            <Link to={`/${post.creator.username}`}>
+                              <img
+                                src={
+                                  post.creator.image
+                                    ? post.creator.image
+                                    : "/user.png"
+                                }
+                                alt="Profile"
+                                className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                              />
+                            </Link>
+                          </div>
+                          <div className="w-[80%]">
+                            <Link to={`/${post.creator.username}`}>
+                              <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                                {post.creator.name}
+                              </div>
+                            </Link>
+                            <div className="flex gap-2 items-center">
+                              <Link to={`/${post.creator.username}`}>
+                                <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
+                                  @{post.creator.username}
+                                </div>
+                              </Link>
+                              <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                                · {post.createdAt.slice(0, 10)}
+                              </div>
+                            </div>
+                            <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
+                              {post.content}
+                            </div>
+                            <div>
+                              <img
+                                src={post.image}
+                                className="max-h-[80vh]  max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-100"
+                              />
+                            </div>
+                            <div>
+                              <div className="flex gap-2 text-neutral-600"></div>
+                            </div>
+                            <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
+                              <div
+                                className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
+                                onClick={() => handleLike(post.id)}
+                              >
+                                {post.isLiked ? (
+                                  <FavoriteIcon
+                                    sx={{
+                                      fontSize: 18,
+                                    }}
+                                    className="text-rose-500"
+                                  />
+                                ) : (
+                                  <FavoriteBorderIcon
+                                    sx={{
+                                      fontSize: 18,
+                                    }}
+                                    className="text-rose-500"
+                                  />
+                                )}
+
+                                <div className="text-base text-rose-500">
+                                  {post.likesCount}
+                                </div>
+                              </div>
+                              <div className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer">
+                                <Link to={`/post/${post.id}`}>
+                                  <ChatBubbleOutlineRoundedIcon
+                                    sx={{ fontSize: 18 }}
+                                    className="text-blue-500"
+                                  />
+                                </Link>
+                                <div className="text-base text-blue-500">
+                                  {post.commentsCount}
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="text-center font-ubuntu my-5 text-primarytextcolor">
-                        No posts found.
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  ))
                 ) : (
-                  <div className="overflow-y-auto no-scrollbar touch-action-none">
-                    {commentsData.comments.length > 0 ? (
-                      commentsData.comments.map((comment) => (
-                        <div
-                          key={comment.id}
-                          className="border-b border-neutral-200 p-4 hover:bg-neutral-50"
-                        >
-                          <div className="flex flex-col gap-2 ">
-                            <div className="text-primarytextcolor w-max flex items-center justify-between gap-2 text-sm font-light">
-                              <Link to={`/post/${comment.postId}`}>
-                                <OpenInNewIcon
-                                  sx={{ fontSize: 20 }}
-                                  className="text-blue-500"
-                                />
-                              </Link>
-                              {comment.createdAt.slice(0, 10)}{" "}
-                              <div className="text-neutral-600">
-                                <button
-                                  onClick={() => {
-                                    setCommentDeleteId(comment.id);
-                                    setPostId(comment.postId);
-                                    setDeleteState(true);
-                                  }}
-                                >
-                                  <MoreVertIcon sx={{ fontSize: 18 }} />
-                                </button>
-                              </div>
-                            </div>
-                            <div className="text-primarytextcolor  text-sm lg:text-base font-light">
-                              {comment.content}
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-center font-ubuntu my-5 text-primarytextcolor">
-                        No Comments found.
-                      </div>
-                    )}
-                    {isLoadingComments && (
-                      <div className="text-center my-5 text-gray-500">
-                        Loading ...
-                      </div>
-                    )}
+                  <div className="text-center font-ubuntu my-5 text-primarytextcolor">
+                    No posts found.
                   </div>
                 )}
               </div>
