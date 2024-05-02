@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import SettingsIcon from "@mui/icons-material/Settings";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import AddIcon from "@mui/icons-material/Add";
 import { Loading } from "../Loading";
@@ -36,7 +35,7 @@ export const ProfileSection: React.FC = () => {
   const navigate = useNavigate();
   const [loadingState, setLoadingState] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
-  const [followingState, setFollowingState] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
   const [profileEditingState, setProfileEditingState] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [postDeleteId, setPostDeleteId] = useState("");
@@ -91,7 +90,7 @@ export const ProfileSection: React.FC = () => {
       );
       setUserData(response.data.message);
       setCurrentUser(response.data.currentUser);
-      setFollowingState(response.data.following);
+      setIsFollowing(response.data.following);
       setLoadingState(false);
     } catch (error) {
       console.log(error);
@@ -263,7 +262,7 @@ export const ProfileSection: React.FC = () => {
                                   className="bg-neutral-800 text-background px-4 py-1 text-sm rounded-full font-ubuntu"
                                 >
                                   <div>
-                                    {followingState ? (
+                                    {isFollowing ? (
                                       <div>Unfollow</div>
                                     ) : (
                                       <div>Follow</div>

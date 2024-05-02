@@ -6,7 +6,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 model User {
   id             String     @id @default(uuid())
   name           String
@@ -19,12 +18,11 @@ model User {
   website        String?
   interest       String?
   posts          Post[]     @relation("UserPosts")
-  likedPosts Like[] @relation("UserLikes")
-
+  likedPosts     Like[]     @relation("UserLikes")
   sentMessages      Message[]    @relation("MessageSender")
   receivedMessages  Message[]    @relation("MessageReceiver")
   createdCommunities  Community[] @relation("Creator")
-  joinedCommunities   Community[] @relation("Members")
+  memberOfCommunities CommunityMembership[] @relation("UserCommunityMembership")
   comments       Comment[]  @relation("Comments")
   following      Following[] @relation("FollowerRelation")
   followers      Following[] @relation("FollowingRelation")
@@ -44,8 +42,8 @@ model Community {
   creatorId      String
   posts          Post[]    @relation("CommunityPosts")
   postsCount     Int       @default(0)
-  members        User[]    @relation("Members")
-  memberCount    Int       @default(0)
+  members        CommunityMembership[] @relation("CommunityMembership")
+  membersCount    Int       @default(0)
   createdAt      DateTime  @default(now())
 }
 
@@ -93,7 +91,16 @@ model Following {
   createdAt    DateTime @default(now())
   @@unique([followerId, followingId])
 }
+model CommunityMembership {
+  id           String   @id @default(uuid())
+  user         User     @relation("UserCommunityMembership", fields: [userId], references: [id])
+  userId       String
+  community    Community @relation("CommunityMembership", fields: [communityId], references: [id])
+  communityId  String
+  joinedAt     DateTime @default(now())
 
+  @@unique([userId, communityId])
+}
 
 model Matching {
   id             String   @id @default(uuid())
