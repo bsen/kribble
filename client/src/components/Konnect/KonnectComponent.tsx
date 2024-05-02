@@ -111,26 +111,20 @@ export const KonnectComponent = () => {
                 ""
               )}
             </div>
-            <Link to={"/home"}>
-              <ArrowBackIosNewRoundedIcon
-                className="text-secondarytextcolor rounded-full border  py-1 hover:bg-neutral-100"
-                sx={{ fontSize: 35 }}
-              />
-            </Link>
             <div>Konnect</div>
           </div>
         </div>
         <div>
           {loadingState ? (
-            <div className="h-screen bg-background flex justify-center items-center w-full">
+            <div className="my-10 bg-background flex justify-center items-center w-full">
               <CircularProgress />
             </div>
           ) : (
-            <div className="h-[90vh] flex flex-col items-center justify-center">
+            <div className="h-[85vh] flex flex-col items-center justify-center">
               {matchingState ? (
                 <div>
                   <div className="h-[90vh] flex flex-col items-center justify-evenly">
-                    <div className="w-[60%] flex flex-col gap-4">
+                    <div className="w-[80%] lg:w-[60%] flex flex-col gap-4">
                       <div className="flex  flex-col gap-2 m-2 items-start">
                         <div className="text-primarytextcolor text-xl font-medium font-ubuntu">
                           {matchUserData.name}
@@ -155,20 +149,18 @@ export const KonnectComponent = () => {
                       </div>
                     </div>
 
-                    <div className="flex py-2 justify-center gap-5 w-full">
-                      <div className="bg-neutral-800 font-ubuntu font-medium text-sm lg:text-lg  py-2 rounded-full active:bg-neutral-700 w-[27%] flex justify-center">
+                    <div className="flex items-center py-2 justify-center gap-5 w-full">
+                      <div className="bg-neutral-800 w-[36%] lg:w-[25%] font-ubuntu font-normal text-base  py-2 rounded-full active:bg-neutral-700 flex justify-center">
                         <button onClick={searchPeople}>
                           <div className="flex items-center text-white justify-evenly">
                             <div>Pass</div>
-                            <CloseIcon />
                           </div>
                         </button>
                       </div>
-                      <div className="bg-blue-500 font-ubuntu font-medium text-lg  py-2 rounded-full active:bg-blue-600 w-[27%] flex justify-center">
+                      <div className="bg-blue-500 w-[36%] lg:w-[25%] font-ubuntu font-normal text-base  py-2 rounded-full active:bg-blue-600 flex justify-center">
                         <button onClick={match}>
                           <div className="flex text-white items-center justify-evenly">
                             <div>Connect</div>
-                            <DoneIcon />
                           </div>
                         </button>
                       </div>

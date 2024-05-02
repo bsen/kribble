@@ -20,7 +20,7 @@ export const CommentsComponent = () => {
   const [deleteState, setDeleteState] = useState(false);
   const [deleteCommentId, setDeleteCommentId] = useState("");
   const [deleteCommentPostId, setDeleteCommentPostId] = useState("");
-
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const commentsScrollContainerRef = useRef<HTMLDivElement>(null);
   const [commentsData, setCommentsData] = useState<{
     comments: Comment[];
@@ -92,11 +92,11 @@ export const CommentsComponent = () => {
   };
   return (
     <>
-      <div className="h-screen">
+      <div className="h-screen" ref={scrollContainerRef}>
         {deleteState ? (
           <div className="w-full h-screen flex justify-center items-center">
             <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
-              Do you really want to delete the post
+              Do you really want to delete the comment
               <span className="text-xs font-light text-neutral-600">
                 note you can not get back the deleted item!
               </span>
@@ -122,7 +122,7 @@ export const CommentsComponent = () => {
           </div>
         ) : (
           <div
-            className="h-screen overflow-y-auto no-scrollbar py-14"
+            className="h-screen overflow-y-auto touch-action-none no-scrollbar py-14"
             onScroll={handleScroll}
             ref={commentsScrollContainerRef}
           >
