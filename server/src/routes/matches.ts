@@ -156,9 +156,7 @@ matchesRouter.post("/send-message", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-
     const userId = await verify(token, c.env.JWT_SECRET);
-
     const findUser = await prisma.user.findUnique({
       where: {
         id: userId.id,
@@ -167,26 +165,17 @@ matchesRouter.post("/send-message", async (c) => {
     if (!findUser) {
       return c.json({ status: 400, message: "User not authenticated" });
     }
-    const findMessages = await prisma.message.findMany({
-      where: {
-        senderId: findUser.id,
-        receiverId: receiverId,
+    const createMessage = await prisma.message.create({
+      data: {
+        message: message,
+        sender: { connect: { id: findUser.id } },
+        receiver: { connect: { id: receiverId } },
       },
     });
-    if (findMessages.length < 10) {
-      const createMessage = await prisma.message.create({
-        data: {
-          message: message,
-          sender: { connect: { id: findUser.id } },
-          receiver: { connect: { id: receiverId } },
-        },
-      });
-      if (!createMessage) {
-        return c.json({ status: 400, message: "Failed to send a message" });
-      }
-      return c.json({ status: 200, message: "Message sent successfully" });
+    if (!createMessage) {
+      return c.json({ status: 400, message: "Failed to send a message" });
     }
-    return c.json({ status: 400, message: "You have send 10 messages" });
+    return c.json({ status: 200, message: "Message sent successfully" });
   } catch (error) {
     console.log(error);
   }
@@ -196,6 +185,8 @@ matchesRouter.post("/get-messages", async (c) => {
     const body = await c.req.json();
     const token = body.token;
     const receiverId = body.receiverId;
+    const page = body.page || 1;
+    const limit = 20;
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -217,6 +208,11 @@ matchesRouter.post("/get-messages", async (c) => {
         message: true,
         createdAt: true,
       },
+      take: limit,
+      skip: (page - 1) * limit,
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     const findReceivedMessages = await prisma.message.findMany({
       where: {
@@ -226,6 +222,11 @@ matchesRouter.post("/get-messages", async (c) => {
       select: {
         message: true,
         createdAt: true,
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+      orderBy: {
+        createdAt: "desc",
       },
     });
 

@@ -12,7 +12,7 @@ export const userRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-userRouter.post("/user", async (c) => {
+userRouter.post("/current-user", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -29,7 +29,7 @@ userRouter.post("/user", async (c) => {
     if (!person) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
-    return c.json({ status: 200, message: person });
+    return c.json({ status: 200, data: person.username });
   } catch (error) {
     return c.json({ status: 400 });
   }
@@ -60,8 +60,8 @@ userRouter.post("/userdata", async (c) => {
         bio: true,
         website: true,
         interest: true,
-        followers: true,
-        following: true,
+        followersCount: true,
+        followingCount: true,
         matchedUsers: true,
       },
     });
@@ -341,6 +341,24 @@ userRouter.post("/follow-unfollow", async (c) => {
           followingId: otherUser.id,
         },
       });
+      await prisma.user.update({
+        where: {
+          id: currentUser!.id,
+        },
+        data: {
+          followingCount: {
+            increment: 1,
+          },
+        },
+      });
+      await prisma.user.update({
+        where: {
+          id: otherUser!.id,
+        },
+        data: {
+          followersCount: { increment: 1 },
+        },
+      });
       return c.json({ status: 200, message: "User followed successfully" });
     } else {
       await prisma.following.delete({
@@ -349,6 +367,24 @@ userRouter.post("/follow-unfollow", async (c) => {
             followerId: currentUser!.id,
             followingId: otherUser.id,
           },
+        },
+      });
+      await prisma.user.update({
+        where: {
+          id: currentUser!.id,
+        },
+        data: {
+          followingCount: {
+            decrement: 1,
+          },
+        },
+      });
+      await prisma.user.update({
+        where: {
+          id: otherUser!.id,
+        },
+        data: {
+          followersCount: { decrement: 1 },
         },
       });
       return c.json({ status: 200, message: "User unfollowed successfully" });
