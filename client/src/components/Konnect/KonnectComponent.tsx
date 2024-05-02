@@ -1,5 +1,3 @@
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
@@ -9,6 +7,7 @@ import { useEffect, useState } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
+import { SearchBox } from "../HomeComponents/SearchBar";
 
 export const KonnectComponent = () => {
   const token = localStorage.getItem("token");
@@ -92,8 +91,9 @@ export const KonnectComponent = () => {
 
   return (
     <>
-      <div className="h-screen">
-        <div className="w-full flex justify-center py-2">
+      <div className=" pt-16">
+        <SearchBox />
+        <div className="w-full mb-5 flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>
               {matchingState ? (
@@ -120,26 +120,25 @@ export const KonnectComponent = () => {
               <CircularProgress />
             </div>
           ) : (
-            <div className="h-[85vh] flex flex-col items-center justify-center">
+            <div className=" flex flex-col items-center justify-center">
               {matchingState ? (
                 <div>
-                  <div className="h-[90vh] flex flex-col items-center justify-evenly">
-                    <div className="w-[80%] lg:w-[60%] flex flex-col gap-4">
-                      <div className="flex  flex-col gap-2 m-2 items-start">
-                        <div className="text-primarytextcolor text-xl font-medium font-ubuntu">
+                  <div className=" flex flex-col items-center justify-evenly">
+                    <div className="w-[80%] lg:w-[60%] flex flex-col gap-2">
+                      <img
+                        src={
+                          matchUserData.image ? matchUserData.image : "user.png"
+                        }
+                        className="rounded-xl w-[100%] border border-neutral-100 p-2"
+                      />
+                      <div>
+                        <div className="text-primarytextcolor text-base font-medium font-ubuntu">
                           {matchUserData.name}
                         </div>
                         <div className="text-secondarytextcolor text-sm font-light ">
                           @{matchUserData.username}
                         </div>
                       </div>
-                      <img
-                        src={
-                          matchUserData.image ? matchUserData.image : "user.png"
-                        }
-                        className="rounded-xl w-[100%]"
-                      />
-
                       <div className="font-normal text-base text-secondarytextcolor m-2 w-full">
                         {matchUserData.bio ? "bio · " + matchUserData.bio : ""}
                         <br />

@@ -252,9 +252,9 @@ export const ProfileSection: React.FC = () => {
                                 onClick={() => {
                                   setProfileEditingState(true);
                                 }}
-                                className="text-left"
+                                className="text-left text-white bg-primarytextcolor font-ubuntu font-light rounded-full px-3 py-1 text-sm"
                               >
-                                <SettingsIcon />
+                                Edit profile
                               </button>
                             ) : (
                               <div className="flex my-2 gap-4 justify-between items-center">

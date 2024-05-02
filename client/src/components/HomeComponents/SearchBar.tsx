@@ -87,7 +87,7 @@ export const SearchBox = () => {
           </button>
         </div>
         {dropdown ? (
-          <div className="absolute lg:hidden flex flex-col items-start p-4 rounded-b-xl border-l border-b border-neutral-200 bg-white shadow-sm right-0 top-14">
+          <div className="absolute lg:hidden flex flex-col items-start p-4 rounded-b-xl border-l border-b border-neutral-50 bg-white shadow-sm right-0 top-14">
             <DropDown />
           </div>
         ) : (

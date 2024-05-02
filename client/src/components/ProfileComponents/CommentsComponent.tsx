@@ -33,6 +33,22 @@ export const CommentsComponent = () => {
 
   useEffect(() => {
     getComments(null, true);
+
+    const commentsScrollContainer = commentsScrollContainerRef.current;
+    if (commentsScrollContainer) {
+      commentsScrollContainer.addEventListener("scroll", handleScrollOrTouch);
+      window.addEventListener("touchmove", handleScrollOrTouch);
+    }
+
+    return () => {
+      if (commentsScrollContainer) {
+        commentsScrollContainer.removeEventListener(
+          "scroll",
+          handleScrollOrTouch
+        );
+        window.removeEventListener("touchmove", handleScrollOrTouch);
+      }
+    };
   }, []);
 
   const getComments = async (
@@ -63,16 +79,19 @@ export const CommentsComponent = () => {
     }
   };
 
-  const handleScroll = () => {
+  const handleScrollOrTouch = (event: any) => {
     const commentsScrollContainer = commentsScrollContainerRef.current;
-    if (
-      commentsScrollContainer &&
-      commentsScrollContainer.scrollTop +
-        commentsScrollContainer.clientHeight >=
-        commentsScrollContainer.scrollHeight &&
-      commentsData.nextCursor &&
-      !isLoadingComments
-    ) {
+    if (!commentsScrollContainer) return;
+
+    const isScrollEvent = event.type === "scroll";
+    const isScrolledToBottom = isScrollEvent
+      ? commentsScrollContainer.scrollTop +
+          commentsScrollContainer.clientHeight >=
+        commentsScrollContainer.scrollHeight
+      : window.innerHeight + window.pageYOffset >=
+        document.documentElement.offsetHeight;
+
+    if (isScrolledToBottom && commentsData.nextCursor && !isLoadingComments) {
       getComments(commentsData.nextCursor, false);
     }
   };
@@ -90,6 +109,7 @@ export const CommentsComponent = () => {
       console.log(error);
     }
   };
+
   return (
     <>
       <div className="h-screen" ref={scrollContainerRef}>
@@ -123,7 +143,7 @@ export const CommentsComponent = () => {
         ) : (
           <div
             className="h-screen overflow-y-auto touch-action-none no-scrollbar py-14"
-            onScroll={handleScroll}
+            onScroll={handleScrollOrTouch}
             ref={commentsScrollContainerRef}
           >
             <SearchBox />

@@ -24,13 +24,10 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   const [sendMessages, setSendMessages] = useState<Message[]>([]);
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [popUp, setPopUp] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   async function send() {
-    if (sendMessages.length == 10) {
-      return setPopUp(true);
-    }
     if (sendingmessage.trim()) {
       await axios.post(`${BACKEND_URL}/api/server/v1/matches/send-message`, {
         token,
@@ -39,7 +36,6 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
       });
       setSendingMessage("");
       getMessages();
-      checkMessages();
     }
   }
 
@@ -49,32 +45,59 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
       {
         token,
         receiverId: id,
+        page: currentPage,
       }
     );
-    setSendMessages(
-      response.data.sendMessages.map((msg: Message) => ({
+
+    const newSendMessages = response.data.sendMessages
+      .filter(
+        (msg: Message) =>
+          !sendMessages.some((oldMsg) => oldMsg.message === msg.message)
+      )
+      .map((msg: Message) => ({
         ...msg,
         sender: "self",
-      }))
-    );
-    setReceivedMessages(
-      response.data.receivedMessages.map((msg: Message) => ({
+      }));
+
+    const newReceivedMessages = response.data.receivedMessages
+      .filter(
+        (msg: Message) =>
+          !receivedMessages.some((oldMsg) => oldMsg.message === msg.message)
+      )
+      .map((msg: Message) => ({
         ...msg,
         sender: "other",
-      }))
-    );
+      }));
+
+    setSendMessages([...sendMessages, ...newSendMessages]);
+    setReceivedMessages([...receivedMessages, ...newReceivedMessages]);
   }
 
-  function checkMessages() {
-    setPopUp(false);
-    if (sendMessages.length == 10) {
-      setPopUp(true);
+  const handleScroll = () => {
+    const chatContainer = chatContainerRef.current;
+    if (
+      chatContainer &&
+      chatContainer.scrollTop === 0 &&
+      (sendMessages.length + receivedMessages.length) % 20 === 0
+    ) {
+      setCurrentPage(currentPage + 1);
+      getMessages();
     }
-  }
+  };
+
   useEffect(() => {
     getMessages();
-    checkMessages();
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (chatContainer) {
+        chatContainer.removeEventListener("scroll", handleScroll);
+      }
+    };
   }, []);
+
   useEffect(() => {
     const chatContainer = chatContainerRef.current;
     if (chatContainer) {
@@ -105,7 +128,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
           </button>
           <img
             src={image ? image : "/user.pmg"}
-            className="h-20 w-20 rounded-full"
+            className="h-16 w-16 rounded-full"
             alt={name}
           />
           <button className="invisible">
@@ -115,19 +138,11 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
             />
           </button>
         </div>
-        <div className="text-xl font-semibold text-primarytextcolor">
+        <div className="text-base font-semibold text-primarytextcolor">
           {name}
         </div>
         <div className="text-sm text-secondarytextcolor font-light">
           @{username}
-        </div>
-        <div className="text-sm text-center text-secondarytextcolor font-ubuntu">
-          Congratulations you have a match with {name} <br />
-          {popUp ? (
-            <div className="text-rose-500">You can't send more messages</div>
-          ) : (
-            <div> You can send {10 - sendMessages.length} messages</div>
-          )}
         </div>
       </div>
       <div
