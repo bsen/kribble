@@ -15,11 +15,11 @@ export const DropDown = () => {
   const [currentUser, setCurrentUser] = useState("");
   async function getUser() {
     const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/user/user`,
+      `${BACKEND_URL}/api/server/v1/user/current-user`,
       { token }
     );
 
-    setCurrentUser(response.data.message.username);
+    setCurrentUser(response.data.data);
   }
   useEffect(() => {
     getUser();

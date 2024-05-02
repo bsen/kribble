@@ -49,14 +49,8 @@ export const ProfileSection: React.FC = () => {
     bio: string;
     website: string;
     interest: string;
-    followers: {
-      followerId: string;
-      followingId: string;
-    }[];
-    following: {
-      followerId: string;
-      followingId: string;
-    }[];
+    followersCount: string;
+    followingCount: string;
   }>({
     name: "",
     username: "",
@@ -64,8 +58,8 @@ export const ProfileSection: React.FC = () => {
     bio: "",
     website: "",
     interest: "",
-    followers: [],
-    following: [],
+    followersCount: "",
+    followingCount: "",
   });
 
   const [postData, setPostData] = useState<{
@@ -288,7 +282,7 @@ export const ProfileSection: React.FC = () => {
                       <Link to={`/followers/${username}`}>
                         <div className="flex gap-2 items-center">
                           <div className="text-primarytextcolor">
-                            {userData.followers.length}
+                            {userData.followersCount}
                           </div>
                           <div className="text-secondarytextcolor">
                             Followers
@@ -298,7 +292,7 @@ export const ProfileSection: React.FC = () => {
                       <Link to={`/following/${username}`}>
                         <div className="flex gap-2 items-center">
                           <div className="text-primarytextcolor">
-                            {userData.following.length}
+                            {userData.followingCount}
                           </div>
                           <div className="text-secondarytextcolor">
                             Following
@@ -341,7 +335,7 @@ export const ProfileSection: React.FC = () => {
                       >
                         <div
                           className={
-                            "flex justify-between text-sm items-center text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                            "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
                           }
                         >
                           <AddIcon sx={{ fontSize: 20 }} />
@@ -355,7 +349,7 @@ export const ProfileSection: React.FC = () => {
                       >
                         <div
                           className={
-                            "flex justify-between text-sm items-center text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                            "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
                           }
                         >
                           <AddIcon sx={{ fontSize: 20 }} />

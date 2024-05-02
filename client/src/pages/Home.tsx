@@ -15,7 +15,7 @@ export const Home = () => {
   async function User() {
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/user`,
+        `${BACKEND_URL}/api/server/v1/user/current-user`,
         { token }
       );
 

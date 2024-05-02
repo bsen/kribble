@@ -132,11 +132,11 @@ communityRouter.post("/all/communities", async (c) => {
     return c.json({ status: 400 });
   }
 });
-
 communityRouter.post("/community-data", async (c) => {
   const body = await c.req.json();
   const token = body.token;
   const name = body.name;
+
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -147,14 +147,17 @@ communityRouter.post("/community-data", async (c) => {
       id: userId.id,
     },
   });
+
   if (!findUser) {
     return c.json({ status: 401, message: "User not authenticated" });
   }
+
   const findCommunityData = await prisma.community.findFirst({
     where: {
       name: name,
     },
     select: {
+      id: true,
       name: true,
       description: true,
       category: true,
@@ -163,9 +166,105 @@ communityRouter.post("/community-data", async (c) => {
       postsCount: true,
     },
   });
+
   if (!findCommunityData) {
     return c.json({ status: 404, message: "No community found" });
   }
-  console.log(findCommunityData);
-  return c.json({ status: 200, data: findCommunityData });
+
+  const checkJoinedStatus = await prisma.communityMembership.findUnique({
+    where: {
+      userId_communityId: {
+        userId: findUser.id,
+        communityId: findCommunityData.id,
+      },
+    },
+  });
+
+  if (!checkJoinedStatus) {
+    return c.json({
+      status: 200,
+      data: findCommunityData,
+      joined: false,
+      currentUser: findUser.username,
+    });
+  }
+
+  return c.json({
+    status: 200,
+    data: findCommunityData,
+    joined: true,
+    currentUser: findUser.username,
+  });
+});
+communityRouter.post("/join-leave-community", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const communityName = body.name;
+
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+    });
+
+    const community = await prisma.community.findFirst({
+      where: {
+        name: communityName,
+      },
+    });
+
+    if (!community) {
+      return c.json({ status: 404, error: "Community not found" });
+    }
+
+    const isMember = await prisma.communityMembership.findUnique({
+      where: {
+        userId_communityId: {
+          userId: currentUser!.id,
+          communityId: community.id,
+        },
+      },
+    });
+    console.log(isMember);
+
+    if (!isMember) {
+      await prisma.communityMembership.create({
+        data: {
+          user: { connect: { id: currentUser!.id } },
+          community: { connect: { id: community.id } },
+        },
+      });
+      await prisma.community.update({
+        where: { id: community.id },
+        data: { membersCount: { increment: 1 } },
+      });
+
+      return c.json({ status: 200, message: "Joined community successfully" });
+    } else {
+      await prisma.communityMembership.delete({
+        where: {
+          userId_communityId: {
+            userId: currentUser!.id,
+            communityId: community.id,
+          },
+        },
+      });
+
+      await prisma.community.update({
+        where: { id: community.id },
+        data: { membersCount: { decrement: 1 } },
+      });
+
+      return c.json({ status: 200, message: "Left community successfully" });
+    }
+  } catch (error) {
+    console.error(error);
+    return c.json({ status: 500, error: "Something went wrong" });
+  }
 });

@@ -25,6 +25,8 @@ model User {
   memberOfCommunities CommunityMembership[] @relation("UserCommunityMembership")
   comments       Comment[]  @relation("Comments")
   following      Following[] @relation("FollowerRelation")
+  followingCount Int @default(0)
+  followersCount Int @default(0)
   followers      Following[] @relation("FollowingRelation")
   interestedIn   Matching[] @relation("PersonMatchingRelation")
   interestedBy   Matching[] @relation("InterestedInMatchingRelation")
