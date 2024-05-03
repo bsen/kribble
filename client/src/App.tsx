@@ -13,6 +13,7 @@ import { Following } from "./pages/Following";
 import { CreateCommunity } from "./pages/CreateCommunity";
 import { Community } from "./pages/Community";
 import { Comments } from "./pages/Comments";
+import { CreateCommunityPost } from "./pages/CreateCommunityPost";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -55,6 +56,10 @@ function App() {
           <Route
             path="/create/post"
             element={<ProtectedRoute element={<CreatePost />} />}
+          />
+          <Route
+            path="/community/:name/post"
+            element={<ProtectedRoute element={<CreateCommunityPost />} />}
           />
           <Route
             path="/post/:postId"

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import { SearchBox } from "../HomeComponents/SearchBar";
 import AddIcon from "@mui/icons-material/Add";
 import { Loading } from "../Loading";
 
 interface CommunityData {
+  id: string;
   name: string;
   description: string;
   category: string;
@@ -18,10 +19,10 @@ interface CommunityData {
 export const CommunityProfile: React.FC = () => {
   const { name } = useParams();
   const token = localStorage.getItem("token");
-  const navigate = useNavigate();
   const [loadingState, setLoadingState] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [communityData, setCommunityData] = useState<CommunityData>({
+    id: "",
     name: "",
     description: "",
     category: "",
@@ -97,20 +98,17 @@ export const CommunityProfile: React.FC = () => {
                 ? communityData.description
                 : "description"}
             </div>
-            <button
-              onClick={() => {
-                navigate("/create/post");
-              }}
+
+            <Link
+              to={`/community/${communityData.name}/post`}
+              className={
+                "flex justify-between text-sm my-2 items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+              }
             >
-              <div
-                className={
-                  "flex justify-between text-sm my-2 items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
-                }
-              >
-                <AddIcon sx={{ fontSize: 20 }} />
-                <p>Post</p>
-              </div>
-            </button>
+              <AddIcon sx={{ fontSize: 20 }} />
+              <p>Post</p>
+            </Link>
+
             <div className="flex justify-evenly gap-5 items-center text-sm text-primarytextcolor font-ubuntu">
               <div className="text-sm font-ubuntu font-semibold text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full">
                 Members: {communityData.membersCount}

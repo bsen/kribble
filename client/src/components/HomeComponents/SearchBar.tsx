@@ -61,7 +61,7 @@ export const SearchBox = () => {
         <div className="w-full border-b border-neutral-200 bg-white h-14 flex justify-evenly items-center">
           <button
             onClick={() => {
-              navigation("/home");
+              history.go(-1);
             }}
           >
             <div className="lg:hidden bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-3xl font-ubuntu">

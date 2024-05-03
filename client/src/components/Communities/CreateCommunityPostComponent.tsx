@@ -2,11 +2,13 @@ import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading";
 import { BACKEND_URL } from "../../config";
 
-export const CreatePostComponent = () => {
+export const CreateCommunityPostComponent = () => {
+  const { name } = useParams();
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [post, setPost] = useState("");
@@ -53,29 +55,29 @@ export const CreatePostComponent = () => {
     history.go(-1);
   };
 
-  const createPost = async () => {
+  const createCommunityPost = async () => {
     setPopup("");
     if (!post) {
       setPopup("Write something");
       return;
     }
-
     try {
       setLoadingState(true);
       const formData = new FormData();
       formData.append("post", post);
+      formData.append("communityName", name || "");
       formData.append("token", token || "");
       if (postImage) {
         formData.append("image", postImage);
         const response = await axios.post(
-          `${BACKEND_URL}/api/server/v1/post/create-full-post`,
+          `${BACKEND_URL}/api/server/v1/community/create-full-post`,
           formData
         );
         setPopup(response.data.message);
       } else {
         const response = await axios.post(
-          `${BACKEND_URL}/api/server/v1/post/create-text-post`,
-          { token, post }
+          `${BACKEND_URL}/api/server/v1/community/create-text-post`,
+          { communityName: name, token, post }
         );
         setPopup(response.data.message);
       }
@@ -104,7 +106,7 @@ export const CreatePostComponent = () => {
                   />
                 </button>
               </div>
-              <div>Create Post</div>
+              <div>Create Post in {name}</div>
             </div>
             <div>
               {postImage ? (
@@ -155,7 +157,7 @@ export const CreatePostComponent = () => {
               />
               <div className="flex w-full justify-center">
                 <button
-                  onClick={createPost}
+                  onClick={createCommunityPost}
                   className="bg-black w-full hover:bg-neutral-900 text-white border border-neutral-200 px-6 py-2 rounded-lg"
                 >
                   Post
