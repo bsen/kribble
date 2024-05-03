@@ -30,7 +30,7 @@ export const MatchesComponent = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/matched-dates`,
+        `${BACKEND_URL}/api/server/v1/konnect/user-matches`,
         { token }
       );
       setLoadingState(false);

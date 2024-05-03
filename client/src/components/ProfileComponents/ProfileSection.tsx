@@ -79,7 +79,7 @@ export const ProfileSection: React.FC = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/userdata`,
+        `${BACKEND_URL}/api/server/v1/user/user-profile-data`,
         { token, username }
       );
       setUserData(response.data.message);
@@ -98,7 +98,7 @@ export const ProfileSection: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/posts`,
+        `${BACKEND_URL}/api/server/v1/post/user-all-posts`,
         { token, cursor, username }
       );
       setPostData((prevData) => ({
@@ -162,7 +162,7 @@ export const ProfileSection: React.FC = () => {
     try {
       const details = { postId, token };
       await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/like-unlike`,
+        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
         details
       );
       setPostData((prevData) => ({

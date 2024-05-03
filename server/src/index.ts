@@ -2,9 +2,10 @@ import { Hono } from "hono";
 import { userRouter } from "./routes/user";
 import { postRouter } from "./routes/post";
 import { authRouter } from "./routes/auth";
-import { matchesRouter } from "./routes/matches";
+import { konnectRouter } from "./routes/konnect";
 import { communityRouter } from "./routes/community";
 import { searchRouter } from "./routes/search";
+import { commentRouter } from "./routes/comment";
 import { cors } from "hono/cors";
 const app = new Hono<{
   Bindings: {
@@ -18,8 +19,9 @@ app.get("/", (c) => {
 app.use("/*", cors());
 app.route("/api/server/v1/user", userRouter);
 app.route("/api/server/v1/post", postRouter);
+app.route("/api/server/v1/comment", commentRouter);
 app.route("/api/server/v1/auth", authRouter);
-app.route("/api/server/v1/matches", matchesRouter);
+app.route("/api/server/v1/konnect", konnectRouter);
 app.route("/api/server/v1/community", communityRouter);
 app.route("/api/server/v1/search", searchRouter);
 export default app;

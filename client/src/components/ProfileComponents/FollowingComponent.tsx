@@ -33,7 +33,7 @@ export const FollowingComponent = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/following`,
+        `${BACKEND_URL}/api/server/v1/user/following-list`,
         { token, cursor, username }
       );
       setFollowingsData({

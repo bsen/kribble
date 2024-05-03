@@ -38,7 +38,7 @@ export const EditProfile = () => {
   async function getData() {
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/userdata`,
+        `${BACKEND_URL}/api/server/v1/user/user-profile-data`,
         { token, username }
       );
       setUserData(response.data.message);
@@ -83,7 +83,7 @@ export const EditProfile = () => {
         const ctx = canvas.getContext("2d");
         if (ctx) {
           ctx.beginPath();
-          ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI); // Draw a circle
+          ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
           ctx.closePath();
           ctx.clip();
           ctx.drawImage(img, 0, 0);
@@ -112,7 +112,7 @@ export const EditProfile = () => {
 
       setLoadingState(true);
       await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/profile/update`,
+        `${BACKEND_URL}/api/server/v1/user/profile-update`,
         formdata
       );
       setLoadingState(false);

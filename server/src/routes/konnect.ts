@@ -1,11 +1,9 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { decode, jwt, sign, verify } from "hono/jwt";
-import { blobFrom } from "node-fetch";
-import { connect } from "cloudflare:sockets";
+import { verify } from "hono/jwt";
 
-export const matchesRouter = new Hono<{
+export const konnectRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
@@ -15,7 +13,7 @@ export const matchesRouter = new Hono<{
   };
 }>();
 
-matchesRouter.post("/users-for-match", async (c) => {
+konnectRouter.post("/users-for-match", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -86,7 +84,7 @@ matchesRouter.post("/users-for-match", async (c) => {
   }
 });
 
-matchesRouter.post("/matchpeople", async (c) => {
+konnectRouter.post("/match-people", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -147,7 +145,51 @@ matchesRouter.post("/matchpeople", async (c) => {
     return c.json({ status: 404 });
   }
 });
-matchesRouter.post("/send-message", async (c) => {
+
+konnectRouter.post("/user-matches", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findDates = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+      select: {
+        matchedUsers: true,
+      },
+    });
+    if (!findDates) {
+      return c.json({ status: 404, message: "user not found or auth error" });
+    }
+
+    const userPromises = findDates.matchedUsers.map(async (userId) => {
+      const userDetails = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          image: true,
+        },
+      });
+      return userDetails;
+    });
+
+    const userMatchData = await Promise.all(userPromises);
+
+    return c.json({ status: 200, message: userMatchData });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    return c.json({ status: 500, message: "Internal Server Error" });
+  }
+});
+konnectRouter.post("/send-message", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -180,7 +222,7 @@ matchesRouter.post("/send-message", async (c) => {
     console.log(error);
   }
 });
-matchesRouter.post("/get-messages", async (c) => {
+konnectRouter.post("/get-messages", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;

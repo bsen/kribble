@@ -24,7 +24,7 @@ export const CreateCommunityComponent = () => {
   };
   async function checkName() {
     const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/community/check-name`,
+      `${BACKEND_URL}/api/server/v1/community/community-name-check`,
       { name }
     );
     if (response.data.status === 101) {
@@ -57,7 +57,7 @@ export const CreateCommunityComponent = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/create`,
+        `${BACKEND_URL}/api/server/v1/community/create-community`,
         { token, name, description, catagory }
       );
       setLoadingState(false);
