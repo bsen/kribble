@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { BACKEND_URL } from "../../config";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 import { DropDown } from "../Mobile/DropDown";
@@ -24,7 +24,6 @@ export const SearchBox = () => {
   const [communities, setCommunities] = useState<Community[]>([]);
   const modal = useRef<HTMLDivElement>(null);
   const [dropdown, setDropdown] = useState(false);
-  const navigation = useNavigate();
   async function SearchText() {
     const response = await axios.post(`${BACKEND_URL}/api/server/v1/search`, {
       token,
