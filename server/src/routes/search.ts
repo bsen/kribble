@@ -50,6 +50,7 @@ searchRouter.post("/search-all", async (c) => {
         name: true,
         image: true,
       },
+      take: 15,
     });
     const searchCommunity = await prisma.community.findMany({
       where: {
@@ -61,6 +62,7 @@ searchRouter.post("/search-all", async (c) => {
         name: true,
         image: true,
       },
+      take: 15,
     });
 
     if (!searchUsers && !searchCommunity) {

@@ -41,6 +41,12 @@ postRouter.post("/home-all-posts", async (c) => {
             image: true,
           },
         },
+        community: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
         createdAt: true,
         commentsCount: true,
       },
@@ -70,7 +76,6 @@ postRouter.post("/home-all-posts", async (c) => {
         };
       })
     );
-
     return c.json({ status: 200, data: postsWithLikedState, nextCursor });
   } catch (error) {
     console.log(error);

@@ -15,6 +15,10 @@ interface Post {
     name: string;
     image: string | null;
   };
+  community: {
+    name: string;
+    image: string | null;
+  };
   content: string;
   image: string;
   createdAt: string;
@@ -115,30 +119,59 @@ export const PostsHome = () => {
                 <div>
                   <div className="flex gap-2">
                     <div>
-                      <Link to={`/${post.creator.username}`}>
-                        <img
-                          src={
-                            post.creator.image
-                              ? post.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
-                        />
-                      </Link>
+                      {post.community ? (
+                        <div>
+                          {post.community && (
+                            <Link
+                              to={`/community/${post.community.name}`}
+                              className="flex gap-2  mt-2 text-neutral-600"
+                            >
+                              {post.community && (
+                                <img
+                                  src={post.community.image || "/group.png"}
+                                  className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                                  alt="Community"
+                                />
+                              )}
+                            </Link>
+                          )}
+                        </div>
+                      ) : (
+                        <Link to={`/${post.creator.username}`}>
+                          <img
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                          />
+                        </Link>
+                      )}
                     </div>
                     <div className="w-[80%]">
-                      <Link to={`/${post.creator.username}`}>
-                        <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                          {post.creator.name}
-                        </div>
-                      </Link>
-                      <div className="flex gap-2 items-center">
+                      {post.community ? (
+                        <Link to={`/community/${post.community.name}`}>
+                          {post.community && (
+                            <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                              c/ {post.community.name}
+                            </div>
+                          )}
+                        </Link>
+                      ) : (
                         <Link to={`/${post.creator.username}`}>
-                          <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
-                            @{post.creator.username}
+                          <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                            {post.creator.name}
                           </div>
                         </Link>
+                      )}
+
+                      <div className="flex gap-2 items-center">
+                        <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                          @{post.creator.username}
+                        </div>
+
                         <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
                           · {post.createdAt.slice(0, 10)}
                         </div>
