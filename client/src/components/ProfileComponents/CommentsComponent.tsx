@@ -20,8 +20,7 @@ export const CommentsComponent = () => {
   const [deleteState, setDeleteState] = useState(false);
   const [deleteCommentId, setDeleteCommentId] = useState("");
   const [deleteCommentPostId, setDeleteCommentPostId] = useState("");
-
-  const commentsScrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [commentsData, setCommentsData] = useState<{
     comments: Comment[];
     nextCursor: string | null;
@@ -64,12 +63,11 @@ export const CommentsComponent = () => {
   };
 
   const handleScroll = () => {
-    const commentsScrollContainer = commentsScrollContainerRef.current;
     if (
-      commentsScrollContainer &&
-      commentsScrollContainer.scrollTop +
-        commentsScrollContainer.clientHeight >=
-        commentsScrollContainer.scrollHeight &&
+      scrollContainerRef.current &&
+      scrollContainerRef.current.scrollTop +
+        scrollContainerRef.current.clientHeight >=
+        scrollContainerRef.current.scrollHeight &&
       commentsData.nextCursor &&
       !isLoadingComments
     ) {
@@ -123,13 +121,13 @@ export const CommentsComponent = () => {
         <div
           className="h-screen overflow-y-auto no-scrollbar py-14"
           onScroll={handleScroll}
-          ref={commentsScrollContainerRef}
+          ref={scrollContainerRef}
         >
           <SearchBox />
           {commentsData.comments.length > 0 ? (
-            commentsData.comments.map((comment) => (
+            commentsData.comments.map((comment, index) => (
               <div
-                key={comment.id}
+                key={index}
                 className="border-b border-neutral-200 p-4 hover:bg-neutral-50"
               >
                 <div className="flex flex-col gap-2 ">
