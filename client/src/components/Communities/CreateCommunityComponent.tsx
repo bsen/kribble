@@ -1,11 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import { Loading } from "../Loading";
 import CloseIcon from "@mui/icons-material/Close";
 export const CreateCommunityComponent = () => {
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [popup, setPopup] = useState("");
@@ -65,7 +63,7 @@ export const CreateCommunityComponent = () => {
       setLoadingState(false);
       setPopup(response.data.message);
       if (response.data.status == 200) {
-        navigate("/home");
+        history.go(-1);
       }
     } catch (error) {
       console.log(error);
@@ -73,7 +71,7 @@ export const CreateCommunityComponent = () => {
   }
 
   const handleClose = () => {
-    navigate("/home");
+    history.go(-1);
   };
 
   return (

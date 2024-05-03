@@ -231,8 +231,6 @@ communityRouter.post("/join-leave-community", async (c) => {
         },
       },
     });
-    console.log(isMember);
-
     if (!isMember) {
       await prisma.communityMembership.create({
         data: {
@@ -266,5 +264,141 @@ communityRouter.post("/join-leave-community", async (c) => {
   } catch (error) {
     console.error(error);
     return c.json({ status: 500, error: "Something went wrong" });
+  }
+});
+
+communityRouter.post("/create-full-post", async (c) => {
+  try {
+    const formData = await c.req.formData();
+    const file = formData.get("image");
+    const post = formData.get("post");
+    const token = formData.get("token");
+    const communityName = formData.get("communityName");
+
+    if (
+      typeof post !== "string" ||
+      typeof token !== "string" ||
+      typeof communityName !== "string"
+    ) {
+      return c.json({ status: 400, message: "Invalid post or token" });
+    }
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized user" });
+    }
+
+    const findCommunity = await prisma.community.findFirst({
+      where: { name: communityName },
+    });
+    if (!findCommunity) {
+      return c.json({ status: 404, message: "No community found" });
+    }
+
+    if (!file) {
+      return c.json({ status: 400, message: "No image provided" });
+    }
+    const data = new FormData();
+    const blob = new Blob([file]);
+    data.append(
+      "file",
+      blob,
+      "community-post" +
+        "-" +
+        findCommunity.name +
+        userData.username +
+        ":" +
+        userId.id
+    );
+
+    const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${c.env.CLOUDFLARE_IMGAES_API_TOKEN}`,
+      },
+      body: data,
+    });
+    const imgUrl = (await response.json()) as {
+      result: { variants: string[] };
+    };
+    if (
+      imgUrl.result &&
+      imgUrl.result.variants &&
+      imgUrl.result.variants.length > 0
+    ) {
+      const variantUrl = imgUrl.result.variants[0];
+
+      const createPost = await prisma.post.create({
+        data: {
+          content: post,
+          creator: { connect: { id: userId.id } },
+          community: { connect: { id: findCommunity.id } },
+          image: variantUrl,
+        },
+      });
+      const countInc = await prisma.community.update({
+        where: { id: findCommunity.id },
+        data: {
+          postsCount: { increment: 1 },
+        },
+      });
+
+      if (!createPost || !countInc) {
+        return c.json({ status: 403, message: "Failed to create the post" });
+      }
+    } else {
+      console.error("No variants found in the response.");
+    }
+
+    return c.json({ status: 200, message: "Post created successfully" });
+  } catch (error) {
+    return c.json({ status: 400, message: "Try again later, Network error" });
+  }
+});
+
+communityRouter.post("/create-text-post", async (c) => {
+  try {
+    const body = await c.req.json();
+    const post = body.post;
+    const token = body.token;
+    const communityName = body.communityName;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized user" });
+    }
+    const findCommunity = await prisma.community.findFirst({
+      where: { name: communityName },
+    });
+    if (!findCommunity) {
+      return c.json({ status: 404, message: "No community found" });
+    }
+    const createPost = await prisma.post.create({
+      data: {
+        content: post,
+        creator: { connect: { id: userId.id } },
+        community: { connect: { id: findCommunity.id } },
+      },
+    });
+    const countInc = await prisma.community.update({
+      where: { id: findCommunity.id },
+      data: {
+        postsCount: { increment: 1 },
+      },
+    });
+
+    if (!createPost || !countInc) {
+      return c.json({ status: 403, message: "Failed to create the post" });
+    }
+
+    return c.json({ status: 200, message: "Post created successfully" });
+  } catch (error) {
+    return c.json({ status: 400, message: "Try again later, Network error" });
   }
 });

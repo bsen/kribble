@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { BACKEND_URL } from "../../config";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 import { DropDown } from "../Mobile/DropDown";
@@ -24,7 +24,6 @@ export const SearchBox = () => {
   const [communities, setCommunities] = useState<Community[]>([]);
   const modal = useRef<HTMLDivElement>(null);
   const [dropdown, setDropdown] = useState(false);
-  const navigation = useNavigate();
   async function SearchText() {
     const response = await axios.post(`${BACKEND_URL}/api/server/v1/search`, {
       token,
@@ -61,7 +60,7 @@ export const SearchBox = () => {
         <div className="w-full border-b border-neutral-200 bg-white h-14 flex justify-evenly items-center">
           <button
             onClick={() => {
-              navigation("/home");
+              history.go(-1);
             }}
           >
             <div className="lg:hidden bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-3xl font-ubuntu">
