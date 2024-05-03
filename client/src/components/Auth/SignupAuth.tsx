@@ -56,7 +56,9 @@ export const SignupAuth = () => {
   }
   useEffect(() => {
     setPopup("");
-    checkName();
+    setTimeout(() => {
+      checkName();
+    }, 1000);
   }, [username]);
 
   async function signup() {

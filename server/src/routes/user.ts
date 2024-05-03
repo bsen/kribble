@@ -295,7 +295,7 @@ userRouter.post("/following-list", async (c) => {
       return c.json({ status: 401, message: "Unauthorized" });
     }
     const cursor = body.cursor || null;
-    const take = 20;
+    const take = 30;
     const profileUser = await prisma.user.findUnique({
       where: {
         username: username,
@@ -350,7 +350,7 @@ userRouter.post("/followers-list", async (c) => {
       return c.json({ status: 401, message: "Unauthorized" });
     }
     const cursor = body.cursor || null;
-    const take = 20;
+    const take = 30;
     const profileUser = await prisma.user.findUnique({
       where: {
         username: username,

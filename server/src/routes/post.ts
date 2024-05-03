@@ -26,7 +26,7 @@ postRouter.post("/home-all-posts", async (c) => {
       return c.json({ status: 401, message: "Unauthorized" });
     }
     const cursor = body.cursor || null;
-    const take = 5;
+    const take = 10;
     const allPosts = await prisma.post.findMany({
       select: {
         id: true,
@@ -37,6 +37,12 @@ postRouter.post("/home-all-posts", async (c) => {
           select: {
             id: true,
             username: true,
+            name: true,
+            image: true,
+          },
+        },
+        community: {
+          select: {
             name: true,
             image: true,
           },
@@ -70,7 +76,6 @@ postRouter.post("/home-all-posts", async (c) => {
         };
       })
     );
-
     return c.json({ status: 200, data: postsWithLikedState, nextCursor });
   } catch (error) {
     console.log(error);
@@ -98,7 +103,7 @@ postRouter.post("/user-all-posts", async (c) => {
       return c.json({ status: 401, message: "Unauthorized Other User" });
     }
     const cursor = body.cursor || null;
-    const take = 3;
+    const take = 10;
 
     const userposts = await prisma.post.findMany({
       where: { creatorId: profileUser?.id },

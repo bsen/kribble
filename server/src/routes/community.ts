@@ -12,6 +12,81 @@ export const communityRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
+
+communityRouter.post("/community-all-posts", async (c) => {
+  try {
+    const body = await c.req.json();
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const communityName = body.name;
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
+    const cursor = body.cursor || null;
+    const take = 10;
+    const allPosts = await prisma.post.findMany({
+      where: {
+        community: { name: communityName },
+      },
+      select: {
+        id: true,
+        image: true,
+        content: true,
+        likesCount: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
+        community: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+        createdAt: true,
+        commentsCount: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: take + 1,
+    });
+
+    const hasMore = allPosts.length > take;
+    const posts = hasMore ? allPosts.slice(0, -1) : allPosts;
+    const nextCursor = hasMore ? allPosts[allPosts.length - 1].id : null;
+    const postsWithLikedState = await Promise.all(
+      posts.map(async (post) => {
+        const isLiked = await prisma.like.findUnique({
+          where: {
+            userId_postId: {
+              userId: findUser.id,
+              postId: post.id,
+            },
+          },
+        });
+        return {
+          ...post,
+          isLiked: isLiked ? true : false,
+        };
+      })
+    );
+    return c.json({ status: 200, data: postsWithLikedState, nextCursor });
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 400 });
+  }
+});
+
 communityRouter.post("/community-name-check", async (c) => {
   try {
     const body = await c.req.json();

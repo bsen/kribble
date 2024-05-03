@@ -190,7 +190,7 @@ export const PostComponent = () => {
               <div className="w-full">
                 <textarea
                   rows={3}
-                  className={`w-full p-2 focus:outline-none rounded-xl  ${
+                  className={`w-full border border-neutral-100 p-2 focus:outline-none rounded-xl  ${
                     popup ? "border border-rose-200" : ""
                   }`}
                   wrap="soft"
@@ -201,10 +201,10 @@ export const PostComponent = () => {
                   maxLength={300}
                   placeholder="Post a reply"
                 />
-                <div>
+                <div className="flex justify-end">
                   <button
                     onClick={createComment}
-                    className="text-white mb-2 py-1 px-4 rounded-full bg-blue-500"
+                    className="text-white text-base py-1 px-6 rounded-full bg-blue-500"
                   >
                     Post
                   </button>

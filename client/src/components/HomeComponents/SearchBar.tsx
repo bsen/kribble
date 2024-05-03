@@ -19,12 +19,14 @@ interface Community {
 export const SearchBox = () => {
   const token = localStorage.getItem("token");
   const [search, setSearch] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [searchingState, setSearchingState] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [communities, setCommunities] = useState<Community[]>([]);
   const modal = useRef<HTMLDivElement>(null);
   const [dropdown, setDropdown] = useState(false);
   async function SearchText() {
+    setIsSearching(true);
     const response = await axios.post(
       `${BACKEND_URL}/api/server/v1/search/search-all`,
       {
@@ -32,26 +34,33 @@ export const SearchBox = () => {
         search,
       }
     );
+    setIsSearching(false);
     setUsers(response.data.users);
     setCommunities(response.data.communities);
   }
-
   const closeModal = (e: MouseEvent) => {
     if (
       searchingState ||
-      (dropdown && modal.current && !modal.current.contains(e.target as Node))
+      (dropdown &&
+        modal.current &&
+        !modal.current.contains(e.target as Node) &&
+        !(e.target instanceof Node && modal.current.contains(e.target)))
     ) {
       setSearchingState(false);
       setDropdown(false);
     }
   };
+
   document.addEventListener("mousedown", closeModal);
 
   useEffect(() => {
     if (search.length !== 0) {
+      setIsSearching(true);
       setSearchingState(true);
       setDropdown(false);
-      SearchText();
+      setTimeout(() => {
+        SearchText();
+      }, 1000);
     } else {
       setSearchingState(false);
     }
@@ -96,75 +105,74 @@ export const SearchBox = () => {
           <div>
             {searchingState && (
               <div className="h-auto z-100  flex justify-center">
-                <div className="w-[90%] bg-white px-4 shadow-md  rounded-b-xl ovverflow-y-auto no-scrollbar">
+                <div className="w-[90%] bg-white  shadow-md  rounded-b-xl ovverflow-y-auto no-scrollbar">
                   {users.length !== 0 || communities.length !== 0 ? (
                     <div>
                       <div>
                         {users.map((user) => (
-                          <div key={user.username}>
-                            <div className="flex gap-2 items-center my-2">
-                              <div className=" text-sm font-ubuntu font-semibold text-secondarytextcolor">
-                                U/
+                          <Link to={`/${user.username}`} key={user.username}>
+                            <div className="flex gap-2 py-2 items-center px-4 hover:bg-neutral-50 border-b border-neutral-100">
+                              <div className=" text-sm font-medium text-primarytextcolor">
+                                u/
                               </div>
                               <div>
-                                <Link to={`/${user.username}`}>
-                                  <img
-                                    src={user.image ? user.image : "/user.png"}
-                                    alt="Profile"
-                                    className="h-8 w-8 rounded-full"
-                                  />
-                                </Link>
+                                <img
+                                  src={user.image ? user.image : "/user.png"}
+                                  alt="Profile"
+                                  className="h-8 w-8 rounded-full"
+                                />
                               </div>
 
-                              <Link to={`/${user.username}`}>
-                                <div className="text-primarytextcolor text-lg hover:underline font-semibold">
-                                  {user.name}
-                                </div>
-                              </Link>
-                              <Link to={`/${user.username}`}>
-                                <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
-                                  @{user.username}
-                                </div>
-                              </Link>
+                              <div className="text-primarytextcolor text-lg  font-semibold">
+                                {user.name}
+                              </div>
+
+                              <div className="text-secondarytextcolor  text-xs lg:text-sm font-ubuntu">
+                                @{user.username}
+                              </div>
                             </div>
-                          </div>
+                          </Link>
                         ))}
                       </div>
                       <div>
                         {communities.map((community) => (
-                          <div key={community.name}>
-                            <div className="flex gap-2 items-center">
-                              <div className=" text-sm font-ubuntu font-semibold text-black">
-                                C/
+                          <Link to={`/${community.name}`} key={community.name}>
+                            <div className="flex py-2 gap-2 items-center px-4 hover:bg-neutral-50">
+                              <div className=" text-sm font-medium text-primarytextcolor">
+                                c/
                               </div>
                               <div>
-                                <Link to={`/${community.name}`}>
-                                  <img
-                                    src={
-                                      community.image
-                                        ? community.image
-                                        : "/group.png"
-                                    }
-                                    alt="Profile"
-                                    className="h-8 w-8 rounded-full"
-                                  />
-                                </Link>
+                                <img
+                                  src={
+                                    community.image
+                                      ? community.image
+                                      : "/group.png"
+                                  }
+                                  alt="Profile"
+                                  className="h-8 w-8 rounded-full"
+                                />
                               </div>
                               <div className="items-center">
-                                <Link to={`/${community.name}`}>
-                                  <div className="text-primarytextcolor text-lg hover:underline font-semibold">
-                                    {community.name}
-                                  </div>
-                                </Link>
+                                <div className="text-primarytextcolor text-lg  font-semibold">
+                                  {community.name}
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          </Link>
                         ))}
                       </div>{" "}
                     </div>
                   ) : (
-                    <div className="text-sm my-4 font-ubuntu font-medium text-center text-secondarytextcolor">
-                      Search result not found
+                    <div>
+                      {isSearching ? (
+                        <div className="text-sm my-4 font-ubuntu font-normal text-center text-secondarytextcolor">
+                          Searching
+                        </div>
+                      ) : (
+                        <div className="text-sm my-4 font-ubuntu font-normal text-center text-secondarytextcolor">
+                          Search result not found
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

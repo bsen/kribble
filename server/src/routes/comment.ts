@@ -73,7 +73,7 @@ commentRouter.post("/user-all-comments", async (c) => {
     return c.json({ status: 400, message: "User not authenticated" });
   }
 
-  const take = 6;
+  const take = 15;
   const findComments = await prisma.comment.findMany({
     where: {
       creatorId: findUser.id,

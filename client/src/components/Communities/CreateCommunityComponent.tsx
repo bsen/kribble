@@ -38,7 +38,9 @@ export const CreateCommunityComponent = () => {
   }
   useEffect(() => {
     setPopup("");
-    checkName();
+    setTimeout(() => {
+      checkName();
+    }, 1000);
   }, [name]);
 
   async function createCommunity() {
