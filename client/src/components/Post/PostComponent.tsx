@@ -55,7 +55,7 @@ export const PostComponent = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/post-data`,
+        `${BACKEND_URL}/api/server/v1/post/one-post-data`,
         { token, postId }
       );
       setLoadingState(false);
@@ -69,7 +69,7 @@ export const PostComponent = () => {
     try {
       setIsLoadingComments(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/post-comments`,
+        `${BACKEND_URL}/api/server/v1/comment/one-post-comments`,
         { token, postId, cursor }
       );
       if (cursor) {
@@ -96,7 +96,7 @@ export const PostComponent = () => {
       }
 
       setLoadingState(true);
-      await axios.post(`${BACKEND_URL}/api/server/v1/post/create-comment`, {
+      await axios.post(`${BACKEND_URL}/api/server/v1/comment/create-comment`, {
         token,
         postId,
         comment,

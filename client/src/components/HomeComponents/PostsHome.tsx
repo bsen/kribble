@@ -39,7 +39,7 @@ export const PostsHome = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/paginated-allposts`,
+        `${BACKEND_URL}/api/server/v1/post/home-all-posts`,
         { token, cursor }
       );
       setPostData({
@@ -74,7 +74,7 @@ export const PostsHome = () => {
     try {
       const details = { postId, token };
       await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/like-unlike`,
+        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
         details
       );
       setPostData((prevData) => ({

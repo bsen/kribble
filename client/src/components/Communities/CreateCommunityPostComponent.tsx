@@ -70,13 +70,13 @@ export const CreateCommunityPostComponent = () => {
       if (postImage) {
         formData.append("image", postImage);
         const response = await axios.post(
-          `${BACKEND_URL}/api/server/v1/community/create-full-post`,
+          `${BACKEND_URL}/api/server/v1/community/create-community-full-post`,
           formData
         );
         setPopup(response.data.message);
       } else {
         const response = await axios.post(
-          `${BACKEND_URL}/api/server/v1/community/create-text-post`,
+          `${BACKEND_URL}/api/server/v1/community/create-community-text-post`,
           { communityName: name, token, post }
         );
         setPopup(response.data.message);

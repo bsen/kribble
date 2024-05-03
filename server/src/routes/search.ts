@@ -13,7 +13,7 @@ export const searchRouter = new Hono<{
   };
 }>();
 
-searchRouter.post("/", async (c) => {
+searchRouter.post("/search-all", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;

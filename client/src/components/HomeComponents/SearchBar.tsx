@@ -25,10 +25,13 @@ export const SearchBox = () => {
   const modal = useRef<HTMLDivElement>(null);
   const [dropdown, setDropdown] = useState(false);
   async function SearchText() {
-    const response = await axios.post(`${BACKEND_URL}/api/server/v1/search`, {
-      token,
-      search,
-    });
+    const response = await axios.post(
+      `${BACKEND_URL}/api/server/v1/search/search-all`,
+      {
+        token,
+        search,
+      }
+    );
     setUsers(response.data.users);
     setCommunities(response.data.communities);
   }

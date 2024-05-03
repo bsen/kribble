@@ -35,7 +35,7 @@ export const CommunityProfile: React.FC = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/community-data`,
+        `${BACKEND_URL}/api/server/v1/community/one-community-data`,
         { token, name }
       );
       setCommunityData(response.data.data);

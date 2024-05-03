@@ -43,7 +43,7 @@ export const KonnectComponent = () => {
     setLoadingState(true);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/matches/users-for-match`,
+        `${BACKEND_URL}/api/server/v1/konnect/users-for-match`,
         { token, gender }
       );
 
@@ -69,7 +69,7 @@ export const KonnectComponent = () => {
     setLoadingState(true);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/matches/matchpeople`,
+        `${BACKEND_URL}/api/server/v1/konnect/match-people`,
         { token, otherPersonsId }
       );
       setLoadingState(false);

@@ -42,7 +42,7 @@ export const SignupAuth = () => {
 
   async function checkName() {
     const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/auth/check-name`,
+      `${BACKEND_URL}/api/server/v1/auth/username-check`,
       { username }
     );
     if (response.data.status === 101) {

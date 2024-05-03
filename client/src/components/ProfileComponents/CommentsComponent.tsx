@@ -17,9 +17,9 @@ interface Comment {
 
 export const CommentsComponent = () => {
   const token = localStorage.getItem("token");
-  //const [deleteState, setDeleteState] = useState(false);
-  //const [deleteCommentId, setDeleteCommentId] = useState("");
-  //const [deleteCommentPostId, setDeleteCommentPostId] = useState("");
+  const [deleteState, setDeleteState] = useState(false);
+  const [deleteCommentId, setDeleteCommentId] = useState("");
+  const [deleteCommentPostId, setDeleteCommentPostId] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [commentsData, setCommentsData] = useState<{
     comments: Comment[];
@@ -31,29 +31,24 @@ export const CommentsComponent = () => {
   const [isLoadingComments, setIsLoadingComments] = useState(false);
 
   useEffect(() => {
-    getComments(null, true);
+    getComments();
   }, []);
 
-  const getComments = async (
-    cursor: string | null | undefined,
-    truncate: boolean
-  ) => {
+  const getComments = async (cursor?: string) => {
     try {
       setIsLoadingComments(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/comments`,
+        `${BACKEND_URL}/api/server/v1/comment/user-all-comments`,
         {
           token,
           cursor,
         }
       );
-
-      setCommentsData((prevComments) => ({
-        comments: truncate
-          ? [...response.data.comments]
-          : [...prevComments.comments, ...response.data.comments],
+      console.log(response.data.data);
+      setCommentsData({
+        comments: [...commentsData.comments, ...response.data.comments],
         nextCursor: response.data.nextCursor,
-      }));
+      });
 
       setIsLoadingComments(false);
     } catch (error) {
@@ -71,26 +66,26 @@ export const CommentsComponent = () => {
       commentsData.nextCursor &&
       !isLoadingComments
     ) {
-      getComments(commentsData.nextCursor, false);
+      getComments(commentsData.nextCursor);
     }
   };
-  // const deleteComment = async () => {
-  //   try {
-  //     setIsLoadingComments(true);
-  //     await axios.post(`${BACKEND_URL}/api/server/v1/post/delete-comment`, {
-  //       token,
-  //       deleteCommentId,
-  //       deleteCommentPostId,
-  //     });
-  //     window.location.reload();
-  //     setIsLoadingComments(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const deleteComment = async () => {
+    try {
+      setIsLoadingComments(true);
+      await axios.post(`${BACKEND_URL}/api/server/v1/comment/delete-comment`, {
+        token,
+        deleteCommentId,
+        deleteCommentPostId,
+      });
+      window.location.reload();
+      setIsLoadingComments(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
-      {/* {deleteState ? (
+      {deleteState ? (
         <div className="w-full h-screen flex justify-center items-center">
           <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
             Do you really want to delete the post
@@ -117,57 +112,58 @@ export const CommentsComponent = () => {
             </div>
           </div>
         </div>
-      ) : ( */}
-      <div
-        className="h-screen overflow-y-auto no-scrollbar py-14"
-        onScroll={handleScroll}
-        ref={scrollContainerRef}
-      >
-        <SearchBox />
-        {commentsData.comments.length > 0 ? (
-          commentsData.comments.map((comment, index) => (
-            <div
-              key={index}
-              className="border-b border-neutral-200 p-4 hover:bg-neutral-50"
-            >
-              <div className="flex flex-col gap-2 ">
-                <div className="text-primarytextcolor w-max flex items-center justify-between gap-2 text-sm font-light">
-                  <Link to={`/post/${comment.postId}`}>
-                    <OpenInNewIcon
-                      sx={{ fontSize: 20 }}
-                      className="text-blue-500"
-                    />
-                  </Link>
-                  {comment.createdAt.slice(0, 10)}{" "}
-                  <div className="text-neutral-600">
-                    <button
-                    // onClick={() => {
-                    //   setDeleteCommentId(comment.id);
-                    //   setDeleteCommentPostId(comment.postId);
-                    //   setDeleteState(true);
-                    // }}
-                    >
-                      <MoreVertIcon sx={{ fontSize: 18 }} />
-                    </button>
+      ) : (
+        <div
+          className="h-screen overflow-y-auto no-scrollbar py-14"
+          onScroll={handleScroll}
+          ref={scrollContainerRef}
+        >
+          <SearchBox />
+          {commentsData.comments.length > 0 ? (
+            commentsData.comments.map((comment, index) => (
+              <div
+                key={index}
+                className="border-b border-neutral-200 p-4 hover:bg-neutral-50"
+              >
+                <div className="flex flex-col gap-2 ">
+                  <div className="text-primarytextcolor w-max flex items-center justify-between gap-2 text-sm font-light">
+                    <Link to={`/post/${comment.postId}`}>
+                      <OpenInNewIcon
+                        sx={{ fontSize: 20 }}
+                        className="text-blue-500"
+                      />
+                    </Link>
+                    {comment.createdAt.slice(0, 10)}{" "}
+                    <div className="text-neutral-600">
+                      <button
+                        onClick={() => {
+                          setDeleteCommentId(comment.id);
+                          setDeleteCommentPostId(comment.postId);
+                          setDeleteState(true);
+                        }}
+                      >
+                        <MoreVertIcon sx={{ fontSize: 18 }} />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="text-primarytextcolor  text-sm lg:text-base font-light">
+                    {comment.content}
                   </div>
                 </div>
-                <div className="text-primarytextcolor  text-sm lg:text-base font-light">
-                  {comment.content}
-                </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center font-ubuntu my-5 text-primarytextcolor">
+              No comments found.
             </div>
-          ))
-        ) : (
-          <div className="text-center font-ubuntu my-5 text-primarytextcolor">
-            No comments found.
-          </div>
-        )}
-        {isLoadingComments && (
-          <div className="text-center my-5">
-            <CircularProgress />
-          </div>
-        )}
-      </div>
+          )}
+          {isLoadingComments && (
+            <div className="text-center my-5">
+              <CircularProgress />
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

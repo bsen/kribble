@@ -13,7 +13,7 @@ export const postRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-postRouter.post("/paginated-allposts", async (c) => {
+postRouter.post("/home-all-posts", async (c) => {
   try {
     const body = await c.req.json();
     const prisma = new PrismaClient({
@@ -75,6 +75,121 @@ postRouter.post("/paginated-allposts", async (c) => {
   } catch (error) {
     console.log(error);
     return c.json({ status: 400 });
+  }
+});
+
+postRouter.post("/user-all-posts", async (c) => {
+  try {
+    const body = await c.req.json();
+    const username = body.username;
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorized Main User" });
+    }
+    const profileUser = await prisma.user.findUnique({
+      where: { username: username },
+    });
+    if (!profileUser) {
+      return c.json({ status: 401, message: "Unauthorized Other User" });
+    }
+    const cursor = body.cursor || null;
+    const take = 3;
+
+    const userposts = await prisma.post.findMany({
+      where: { creatorId: profileUser?.id },
+      select: {
+        id: true,
+        image: true,
+        content: true,
+        likesCount: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
+        createdAt: true,
+        commentsCount: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: take + 1,
+    });
+
+    if (!userposts) {
+      return c.json({ status: 400, message: "posts not found" });
+    }
+
+    const hasMore = userposts.length > take;
+    const posts = hasMore ? userposts.slice(0, -1) : userposts;
+    const nextCursor = hasMore ? userposts[userposts.length - 1].id : null;
+
+    const postsWithLikedState = await Promise.all(
+      posts.map(async (post) => {
+        const isLiked = await prisma.like.findUnique({
+          where: {
+            userId_postId: {
+              userId: findUser.id,
+              postId: post.id,
+            },
+          },
+        });
+        return {
+          ...post,
+          isLiked: isLiked ? true : false,
+        };
+      })
+    );
+
+    return c.json({ status: 200, posts: postsWithLikedState, nextCursor });
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 400 });
+  }
+});
+postRouter.post("/one-post-data", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const postId = body.postId;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "User not authenticated" });
+    }
+    const findPost = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+    if (!findPost) {
+      return c.json({ status: 401, message: "Post not found" });
+    }
+    return c.json({ status: 200, message: "Post found", data: findPost });
+  } catch (error) {
+    console.log(error);
   }
 });
 postRouter.post("/create-full-post", async (c) => {
@@ -216,183 +331,7 @@ postRouter.post("/delete-post", async (c) => {
   }
 });
 
-postRouter.post("/post-data", async (c) => {
-  try {
-    const body = await c.req.json();
-    const token = body.token;
-    const postId = body.postId;
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
-    if (!findUser) {
-      return c.json({ status: 401, message: "User not authenticated" });
-    }
-    const findPost = await prisma.post.findUnique({
-      where: {
-        id: postId,
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            image: true,
-          },
-        },
-      },
-    });
-    if (!findPost) {
-      return c.json({ status: 401, message: "Post not found" });
-    }
-    return c.json({ status: 200, message: "Post found", data: findPost });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-postRouter.post("/post-comments", async (c) => {
-  try {
-    const body = await c.req.json();
-    const token = body.token;
-    const postId = body.postId;
-    const cursor = body.cursor || null;
-    const take = 10;
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
-    if (!findUser) {
-      return c.json({ status: 401, message: "User not authenticated" });
-    }
-    const findComments = await prisma.comment.findMany({
-      where: {
-        postId: postId,
-      },
-      include: {
-        creator: {
-          select: {
-            username: true,
-            name: true,
-            image: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      cursor: cursor ? { id: cursor } : undefined,
-      take: take + 1,
-    });
-    const hasMore = findComments.length > take;
-    const comments = hasMore ? findComments.slice(0, -1) : findComments;
-    const nextCursor = hasMore
-      ? findComments[findComments.length - 1].id
-      : null;
-    console.log(comments);
-    return c.json({ status: 200, data: comments, nextCursor });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-postRouter.post("/create-comment", async (c) => {
-  try {
-    const body = await c.req.json();
-    const token = body.token;
-    const comment = body.comment;
-    const postId = body.postId;
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const findUser = await prisma.user.findUnique({
-      where: {
-        id: userId.id,
-      },
-    });
-    if (!findUser) {
-      return c.json({ status: 401, message: "Authentication error" });
-    }
-
-    const createComment = await prisma.comment.create({
-      data: {
-        content: comment,
-        creator: { connect: { id: findUser.id } },
-        post: { connect: { id: postId } },
-      },
-    });
-    if (!createComment) {
-      return c.json({ status: 400, message: "Failed to comment" });
-    }
-    const incCount = await prisma.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        commentsCount: {
-          increment: 1,
-        },
-      },
-    });
-    if (!incCount) {
-      return c.json({ status: 400, message: "Comment count increment failed" });
-    }
-    return c.json({ satus: 200, message: "Commnet created successfully" });
-  } catch (error) {
-    console.log(error);
-  }
-});
-postRouter.post("/delete-comment", async (c) => {
-  try {
-    const body = await c.req.json();
-    const token = body.token;
-    const commentId = body.deleteCommentId;
-    const postId = body.deleteCommentPostId;
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const findUser = await prisma.user.findUnique({
-      where: {
-        id: userId.id,
-      },
-    });
-    if (!findUser) {
-      return c.json({ status: 400, message: "User not authenticated" });
-    }
-
-    const deleteComment = await prisma.comment.delete({
-      where: {
-        creatorId: findUser.id,
-        id: commentId,
-      },
-    });
-    if (!deleteComment) {
-      return c.json({ status: 400, message: "Comment deletion failed" });
-    }
-    const decCount = await prisma.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        commentsCount: {
-          decrement: 1,
-        },
-      },
-    });
-    if (!decCount) {
-      return c.json({ status: 400, message: "Comment count decrement failed" });
-    }
-    return c.json({ status: 200, message: "Comment Deleted successfully" });
-  } catch (error) {
-    console.log(error);
-  }
-});
-postRouter.post("/like-unlike", async (c) => {
+postRouter.post("/post-like-unlike", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;

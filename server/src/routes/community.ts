@@ -12,7 +12,7 @@ export const communityRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-communityRouter.post("/check-name", async (c) => {
+communityRouter.post("/community-name-check", async (c) => {
   try {
     const body = await c.req.json();
     const name = body.name;
@@ -34,7 +34,7 @@ communityRouter.post("/check-name", async (c) => {
   }
 });
 
-communityRouter.post("/create", async (c) => {
+communityRouter.post("/create-community", async (c) => {
   try {
     const body = await c.req.json();
     const { token, name, catagory, description } = body;
@@ -90,7 +90,7 @@ communityRouter.post("/create", async (c) => {
   }
 });
 
-communityRouter.post("/all/communities", async (c) => {
+communityRouter.post("/all-communities", async (c) => {
   try {
     const body = await c.req.json();
     const prisma = new PrismaClient({
@@ -132,7 +132,7 @@ communityRouter.post("/all/communities", async (c) => {
     return c.json({ status: 400 });
   }
 });
-communityRouter.post("/community-data", async (c) => {
+communityRouter.post("/one-community-data", async (c) => {
   const body = await c.req.json();
   const token = body.token;
   const name = body.name;
@@ -267,7 +267,7 @@ communityRouter.post("/join-leave-community", async (c) => {
   }
 });
 
-communityRouter.post("/create-full-post", async (c) => {
+communityRouter.post("/create-community-full-post", async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get("image");
@@ -359,7 +359,7 @@ communityRouter.post("/create-full-post", async (c) => {
   }
 });
 
-communityRouter.post("/create-text-post", async (c) => {
+communityRouter.post("/create-community-text-post", async (c) => {
   try {
     const body = await c.req.json();
     const post = body.post;

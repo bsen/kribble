@@ -18,7 +18,7 @@ const emailSchema = z.string().email();
 const genderSchema = z.string();
 const passwordSchema = z.string().min(6);
 
-authRouter.post("/check-name", async (c) => {
+authRouter.post("/username-check", async (c) => {
   try {
     const body = await c.req.json();
     const username = body.username;
