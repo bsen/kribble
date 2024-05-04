@@ -109,7 +109,7 @@ konnectRouter.post("/match-people", async (c) => {
         },
       },
     });
-
+    console.log("already a  like match", alreadyMatched);
     if (alreadyMatched) {
       return c.json({
         status: 400,
@@ -126,6 +126,7 @@ konnectRouter.post("/match-people", async (c) => {
     });
 
     if (otherPersonMatch) {
+      console.log("creating matches its a match");
       const createMatches = await prisma.matches.create({
         data: {
           userOneId: findUser.id,
@@ -146,7 +147,7 @@ konnectRouter.post("/match-people", async (c) => {
         matchedByUserId: otherPersonsId,
       },
     });
-
+    console.log("new match ", createMatch);
     if (!createMatch) {
       return c.json({ status: 404, message: "Network error" });
     }
@@ -173,7 +174,7 @@ konnectRouter.post("/user-matches", async (c) => {
     if (!findUser) {
       return c.json({ status: 404, message: "User not found" });
     }
-    console.log(findUser);
+
     const userMatches = await prisma.matches.findMany({
       where: {
         userOneId: findUser.id,
@@ -183,8 +184,10 @@ konnectRouter.post("/user-matches", async (c) => {
           select: { id: true, name: true, username: true, image: true },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
-
     return c.json({
       status: 200,
       data: userMatches,
