@@ -50,6 +50,20 @@ postRouter.post("/home-all-posts", async (c) => {
         createdAt: true,
         commentsCount: true,
       },
+      where: {
+        OR: [
+          { communityId: null },
+          {
+            community: {
+              members: {
+                some: {
+                  userId: findUser.id,
+                },
+              },
+            },
+          },
+        ],
+      },
       orderBy: {
         createdAt: "desc",
       },

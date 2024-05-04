@@ -17,23 +17,23 @@ model User {
   image          String?
   website        String?
   interest       String?
-  posts          Post[]     @relation("UserPosts")
-  likedPosts     Like[]     @relation("UserLikes")
-  sentMessages      Message[]    @relation("MessageSender")
-  receivedMessages  Message[]    @relation("MessageReceiver")
-  createdCommunities  Community[] @relation("Creator")
-  memberOfCommunities CommunityMembership[] @relation("UserCommunityMembership")
-  comments       Comment[]  @relation("Comments")
   following      Following[] @relation("FollowerRelation")
   followingCount Int @default(0)
   followersCount Int @default(0)
   followers      Following[] @relation("FollowingRelation")
-  interestedIn   Matching[] @relation("PersonMatchingRelation")
-  interestedBy   Matching[] @relation("InterestedInMatchingRelation")
-  matchedUsers   String[]
+  posts          Post[]     @relation("UserPosts")
+  likedPosts     Like[]     @relation("UserLikes")
+  comments       Comment[]  @relation("Comments")
+  matcherUser  Match[]    @relation("UserMatcher")
+  matchedByUser Match[]    @relation("UserMatchedBy")
+  matchesAsUserOne Matches[] @relation("MatchesUserOne")
+  matchesAsUserTwo Matches[] @relation("MatchesUserTwo")
+  sentMessages   Message[]  @relation("MessageSender")
+  receivedMessages Message[]@relation("MessageReceiver")
+  createdCommunities Community[] @relation("Creator")
+  memberOfCommunities CommunityMembership[] @relation("UserCommunityMembership")
   createdAt      DateTime   @default(now())
 }
-
 model Community {
   id             String    @id @default(uuid())
   name           String
@@ -103,16 +103,26 @@ model CommunityMembership {
 
   @@unique([userId, communityId])
 }
-
-model Matching {
-  id             String   @id @default(uuid())
-  person         User     @relation("PersonMatchingRelation", fields: [personId], references: [id])
-  personId       String
-  interestedIn   User     @relation("InterestedInMatchingRelation", fields: [interestedInId], references: [id])
-  interestedInId String
-  createdAt      DateTime @default(now())
-  @@unique([personId, interestedInId])
+model Match {
+  id           String   @id @default(uuid())
+  matcherUser  User     @relation("UserMatcher", fields: [matcherUserId], references: [id])
+  matcherUserId String
+  matchedByUser User    @relation("UserMatchedBy", fields: [matchedByUserId], references: [id])
+  matchedByUserId String
+  createdAt    DateTime @default(now())
+  @@unique([matcherUserId, matchedByUserId])
 }
+
+model Matches {
+  id       String @id @default(uuid())
+  userOne  User   @relation("MatchesUserOne", fields: [userOneId], references: [id])
+  userOneId String
+  userTwo  User   @relation("MatchesUserTwo", fields: [userTwoId], references: [id])
+  userTwoId String
+  createdAt DateTime @default(now())
+  @@unique([userOneId, userTwoId])
+}
+
 model Message {
   id         String   @id @default(uuid())
   sender     User     @relation("MessageSender", fields: [senderId], references: [id])

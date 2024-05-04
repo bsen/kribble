@@ -169,7 +169,7 @@ export const CreateCommunityComponent = () => {
                   }}
                   className="w-full border border-neutral-200 resize-none focus:outline-none p-2 text-primarytextcolor rounded-lg"
                   placeholder="Write description for your community"
-                  maxLength={100}
+                  maxLength={120}
                 />
               </div>
               <div className="flex w-full justify-center">

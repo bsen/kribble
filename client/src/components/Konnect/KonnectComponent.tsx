@@ -96,7 +96,7 @@ export const KonnectComponent = () => {
         <div className="w-full mb-5 flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>
-              {matchingState ? (
+              {matchingState && !loadingState ? (
                 <button
                   onClick={() => {
                     setMatchingState(false);
@@ -108,7 +108,7 @@ export const KonnectComponent = () => {
                   />
                 </button>
               ) : (
-                ""
+                "‎"
               )}
             </div>
             <div>Konnect</div>
@@ -149,20 +149,19 @@ export const KonnectComponent = () => {
                     </div>
 
                     <div className="flex items-center py-2 justify-center gap-5 w-full">
-                      <div className="bg-neutral-800 w-[36%] lg:w-[25%] font-ubuntu font-normal text-base  py-2 rounded-full active:bg-neutral-700 flex justify-center">
-                        <button onClick={searchPeople}>
-                          <div className="flex items-center text-white justify-evenly">
-                            <div>Pass</div>
-                          </div>
-                        </button>
-                      </div>
-                      <div className="bg-blue-500 w-[36%] lg:w-[25%] font-ubuntu font-normal text-base  py-2 rounded-full active:bg-blue-600 flex justify-center">
-                        <button onClick={match}>
-                          <div className="flex text-white items-center justify-evenly">
-                            <div>Connect</div>
-                          </div>
-                        </button>
-                      </div>
+                      <button
+                        onClick={searchPeople}
+                        className="bg-neutral-800 w-[36%] lg:w-[25%] font-ubuntu font-normal text-base  py-2 rounded-full active:bg-neutral-700 flex items-center text-white justify-evenly"
+                      >
+                        <div>Pass</div>
+                      </button>
+
+                      <button
+                        onClick={match}
+                        className=" bg-blue-500 w-[36%] lg:w-[25%] font-ubuntu font-normal text-base  py-2 rounded-full active:bg-blue-600 flex text-white items-center justify-evenly"
+                      >
+                        <div>Connect</div>
+                      </button>
                     </div>
                   </div>
                 </div>

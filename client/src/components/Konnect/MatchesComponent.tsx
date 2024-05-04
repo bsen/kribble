@@ -5,6 +5,12 @@ import EmailIcon from "@mui/icons-material/Email";
 import axios from "axios";
 import { MessagesComponent } from "./MessagesComponent";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+interface User {
+  id: string;
+  name: string;
+  username: string;
+  image: string;
+}
 
 export const MatchesComponent = () => {
   const token = localStorage.getItem("token");
@@ -16,14 +22,6 @@ export const MatchesComponent = () => {
     image: "",
     id: "",
   });
-
-  interface User {
-    id: string;
-    name: string;
-    username: string;
-    image: string;
-  }
-
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
 
   async function getMatchesDetails() {
@@ -34,9 +32,7 @@ export const MatchesComponent = () => {
         { token }
       );
       setLoadingState(false);
-      if (response.data.status === 200) {
-        setMatchedUsers(response.data.message);
-      }
+      setMatchedUsers(response.data.data);
     } catch (error) {}
   }
 
@@ -99,22 +95,20 @@ export const MatchesComponent = () => {
                     .slice()
                     .reverse()
                     .map((user, index) => (
-                      <div
+                      <button
                         key={index}
+                        onClick={() => {
+                          parentToChild(
+                            user.username,
+                            user.name,
+                            user.image,
+                            user.id
+                          );
+                          setMessageState(true);
+                        }}
                         className="flex w-full lg:w-[80%] bg-white  border border-neutral-100 shadow-sm rounded-xl  items-center justify-between  gap-4 mt-4"
                       >
-                        <button
-                          onClick={() => {
-                            parentToChild(
-                              user.username,
-                              user.name,
-                              user.image,
-                              user.id
-                            );
-                            setMessageState(true);
-                          }}
-                          className="w-full  m-2 flex justify-between items-center"
-                        >
+                        <div className="w-full  m-2 flex justify-between items-center">
                           <div className="flex gap-2 justify-center items-center">
                             <img
                               src={user.image ? user.image : "/user.png"}
@@ -131,8 +125,8 @@ export const MatchesComponent = () => {
                               </div>
                             </div>
                           </div>
-                        </button>
-                      </div>
+                        </div>
+                      </button>
                     ))
                 ) : (
                   <p className="text-center w-full font-mono my-2 text-primarytextcolor">

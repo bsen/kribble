@@ -156,6 +156,26 @@ communityRouter.post("/create-community", async (c) => {
         message: "Failed to create a new community",
       });
     }
+    const communityMembership = await prisma.communityMembership.create({
+      data: {
+        userId: findUser.id,
+        communityId: createCommunity.id,
+      },
+    });
+    const membersCountIncrease = await prisma.community.update({
+      where: {
+        id: createCommunity.id,
+      },
+      data: {
+        membersCount: { increment: 1 },
+      },
+    });
+    if (!communityMembership || !membersCountIncrease) {
+      return c.json({
+        status: 400,
+        message: "Server error to add the creator in community",
+      });
+    }
     return c.json({
       status: 200,
       message: "Successfully created a new community",
@@ -239,13 +259,22 @@ communityRouter.post("/one-community-data", async (c) => {
       image: true,
       membersCount: true,
       postsCount: true,
+      creatorId: true,
+      creator: { select: { username: true } },
     },
   });
 
   if (!findCommunityData) {
     return c.json({ status: 404, message: "No community found" });
   }
-
+  if (findUser.id === findCommunityData.creatorId) {
+    return c.json({
+      status: 200,
+      data: findCommunityData,
+      joined: true,
+      creator: true,
+    });
+  }
   const checkJoinedStatus = await prisma.communityMembership.findUnique({
     where: {
       userId_communityId: {
@@ -260,7 +289,7 @@ communityRouter.post("/one-community-data", async (c) => {
       status: 200,
       data: findCommunityData,
       joined: false,
-      currentUser: findUser.username,
+      creator: false,
     });
   }
 
@@ -268,7 +297,7 @@ communityRouter.post("/one-community-data", async (c) => {
     status: 200,
     data: findCommunityData,
     joined: true,
-    currentUser: findUser.username,
+    creator: false,
   });
 });
 communityRouter.post("/join-leave-community", async (c) => {
@@ -381,12 +410,7 @@ communityRouter.post("/create-community-full-post", async (c) => {
     data.append(
       "file",
       blob,
-      "community-post" +
-        "-" +
-        findCommunity.name +
-        userData.username +
-        ":" +
-        userId.id
+      "community-post" + "-" + findCommunity.name + userData.username
     );
 
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
@@ -422,13 +446,19 @@ communityRouter.post("/create-community-full-post", async (c) => {
       });
 
       if (!createPost || !countInc) {
-        return c.json({ status: 403, message: "Failed to create the post" });
+        return c.json({
+          status: 403,
+          message: "Failed to create the community post",
+        });
       }
     } else {
       console.error("No variants found in the response.");
     }
 
-    return c.json({ status: 200, message: "Post created successfully" });
+    return c.json({
+      status: 200,
+      message: "Community post created successfully",
+    });
   } catch (error) {
     return c.json({ status: 400, message: "Try again later, Network error" });
   }
@@ -469,11 +499,192 @@ communityRouter.post("/create-community-text-post", async (c) => {
     });
 
     if (!createPost || !countInc) {
-      return c.json({ status: 403, message: "Failed to create the post" });
+      return c.json({
+        status: 403,
+        message: "Failed to create the community post",
+      });
     }
 
-    return c.json({ status: 200, message: "Post created successfully" });
+    return c.json({
+      status: 200,
+      message: "Pommunity post created successfully",
+    });
   } catch (error) {
     return c.json({ status: 400, message: "Try again later, Network error" });
+  }
+});
+
+communityRouter.post("/update-details", async (c) => {
+  try {
+    const formData = await c.req.formData();
+    const file = formData.get("image");
+    const token = formData.get("token");
+    const communityId = formData.get("id");
+    const newDescription = formData.get("description");
+    const newCategory = formData.get("category");
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    console.log(file);
+    if (
+      typeof token !== "string" ||
+      typeof communityId !== "string" ||
+      typeof newDescription !== "string" ||
+      typeof newCategory !== "string"
+    ) {
+      return c.json({ status: 400, message: "Invalid data or token" });
+    }
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized user" });
+    }
+    if (!file) {
+      try {
+        const updateDetails = await prisma.community.update({
+          where: { id: communityId },
+          data: {
+            description: newDescription,
+            category: newCategory,
+          },
+        });
+        if (!updateDetails) {
+          return c.json({
+            status: 400,
+            message: "Community profile updation failed",
+          });
+        }
+        return c.json({
+          status: 200,
+          mesgage: "Community profile updated successfuly",
+        });
+      } catch (error) {
+        return c.json({
+          status: 500,
+          message: "Community profile updation failed",
+        });
+      }
+    }
+    const data = new FormData();
+    const blob = new Blob([file]);
+    data.append("file", blob, "comunity-profile-picture" + "-" + communityId);
+    console.log(data);
+    const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${c.env.CLOUDFLARE_IMGAES_API_TOKEN}`,
+      },
+      body: data,
+    });
+    console.log(response);
+    const imgUrl = (await response.json()) as {
+      result: { variants: string[] };
+    };
+    if (
+      imgUrl.result &&
+      imgUrl.result.variants &&
+      imgUrl.result.variants.length > 0
+    ) {
+      const variantUrl = imgUrl.result.variants[0];
+      const success = await prisma.community.update({
+        where: { id: communityId },
+        data: {
+          description: newDescription,
+          category: newCategory,
+          image: variantUrl,
+        },
+      });
+      console.log(success);
+
+      if (!success) {
+        return c.json({
+          status: 403,
+          message: "Failed to create update community profile photo",
+        });
+      }
+    } else {
+      console.error("No variants found in the response.");
+    }
+    return c.json({
+      status: 200,
+      message: "Community profile updated successfuly",
+    });
+  } catch (error) {
+    console.log(error);
+    return c.json({
+      status: 500,
+      message: "Community profile photo updation failed",
+    });
+  }
+});
+communityRouter.post("/delete-community-post", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const postId = body.deletingPostId;
+    const communityId = body.id;
+
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
+
+    const findCommunity = await prisma.community.findUnique({
+      where: { id: communityId },
+      select: { creatorId: true },
+    });
+
+    if (!findCommunity) {
+      return c.json({ status: 400, message: "No community found" });
+    }
+
+    if (findCommunity.creatorId === findUser.id) {
+      const deleteLikes = await prisma.like.deleteMany({
+        where: {
+          postId: postId,
+        },
+      });
+
+      const deleteComments = await prisma.comment.deleteMany({
+        where: {
+          postId: postId,
+        },
+      });
+
+      const deletePost = await prisma.post.delete({
+        where: {
+          id: postId,
+        },
+      });
+
+      const updateCount = await prisma.community.update({
+        where: {
+          id: communityId,
+        },
+        data: {
+          postsCount: { decrement: 1 },
+        },
+      });
+
+      if (!deletePost || !deleteLikes || !deleteComments || !updateCount) {
+        return c.json({ status: 403, message: "Post deletion failed" });
+      }
+
+      return c.json({ status: 200, message: "Post deleted successfully" });
+    }
+
+    return c.json({
+      status: 403,
+      message: "Post can't be deleted by other parties",
+    });
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 400 });
   }
 });
