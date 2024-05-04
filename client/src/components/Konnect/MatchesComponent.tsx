@@ -5,6 +5,12 @@ import EmailIcon from "@mui/icons-material/Email";
 import axios from "axios";
 import { MessagesComponent } from "./MessagesComponent";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+interface User {
+  id: string;
+  name: string;
+  username: string;
+  image: string;
+}
 
 export const MatchesComponent = () => {
   const token = localStorage.getItem("token");
@@ -16,14 +22,6 @@ export const MatchesComponent = () => {
     image: "",
     id: "",
   });
-
-  interface User {
-    id: string;
-    name: string;
-    username: string;
-    image: string;
-  }
-
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
 
   async function getMatchesDetails() {

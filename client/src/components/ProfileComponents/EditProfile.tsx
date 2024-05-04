@@ -3,12 +3,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Logout } from "../Auth/Logout";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../config";
-import { Loading } from "../Loading";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 export const EditProfile = () => {
   const token = localStorage.getItem("token");
-  const [loadingState, setLoadingState] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [bio, setBio] = useState("");
   const [name, setName] = useState("");
   const [website, setWebsite] = useState("");
@@ -42,7 +42,7 @@ export const EditProfile = () => {
         { token, username }
       );
       setUserData(response.data.message);
-      setLoadingState(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -110,12 +110,12 @@ export const EditProfile = () => {
       formdata.append("interest", newInterest);
       formdata.append("token", token ? token : "");
 
-      setLoadingState(true);
+      setIsLoading(true);
       await axios.post(
         `${BACKEND_URL}/api/server/v1/user/profile-update`,
         formdata
       );
-      setLoadingState(false);
+      setIsLoading(false);
       setProfileImg(null);
       setPreviewImage("");
       setBio("");
@@ -133,15 +133,20 @@ export const EditProfile = () => {
       {logOutState ? (
         <Logout />
       ) : (
-        <div className="h-screen bg-background/80 text-blakc flex justify-center items-center">
-          {loadingState ? (
-            <Loading />
+        <div
+          style={{ height: "calc(100vh - 56px)" }}
+          className="bg-background/80 text-blakc flex justify-center items-center"
+        >
+          {isLoading ? (
+            <div className="text-center my-5">
+              <CircularProgress />
+            </div>
           ) : (
             <div className="bg-background w-[85%]   border border-neutral-200 p-4 rounded-lg flex flex-col gap-4">
               <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
                 <button
                   onClick={() => {
-                    window.location.reload();
+                    history.go(-1);
                   }}
                 >
                   <CloseIcon className="text-primarytextcolor" />
