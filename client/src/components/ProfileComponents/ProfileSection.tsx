@@ -327,56 +327,64 @@ export const ProfileSection: React.FC = () => {
                   </div>
                   {currentUser == username ? (
                     <div className="flex my-2 flex-col items-start gap-2">
-                      <button
-                        onClick={() => {
-                          navigate("/create/post");
-                        }}
-                      >
-                        <div
+                      <div className="flex justify-between items-center gap-2">
+                        <button
+                          onClick={() => {
+                            navigate("/create/post");
+                          }}
+                        >
+                          <div
+                            className={
+                              "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                            }
+                          >
+                            <AddIcon sx={{ fontSize: 20 }} />
+                            <p>Post</p>
+                          </div>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            navigate("/create/community");
+                          }}
+                        >
+                          <div
+                            className={
+                              "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                            }
+                          >
+                            <AddIcon sx={{ fontSize: 20 }} />
+                            <p>Community</p>
+                          </div>
+                        </button>
+                      </div>
+
+                      <div className="flex justify-between items-center gap-2">
+                        <button
+                          onClick={() => {
+                            navigate("/comments");
+                          }}
                           className={
                             "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
                           }
                         >
-                          <AddIcon sx={{ fontSize: 20 }} />
-                          <p>Post</p>
-                        </div>
-                      </button>
-                      <button
-                        onClick={() => {
-                          navigate("/create/community");
-                        }}
-                      >
-                        <div
+                          Comments
+                        </button>
+                        <button
+                          onClick={() => {
+                            navigate("/my-communities");
+                          }}
                           className={
                             "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
                           }
                         >
-                          <AddIcon sx={{ fontSize: 20 }} />
-                          <p>Community</p>
-                        </div>
-                      </button>
+                          My communites
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     ""
                   )}
-
-                  <div className="flex mt-2 justify-start items-center gap-2">
-                    <button className="text-sm font-ubuntu font-semibold text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full">
-                      Posts
-                    </button>
-                    {currentUser === username ? (
-                      <button
-                        onClick={() => {
-                          navigate("/comments");
-                        }}
-                        className="text-sm font-ubuntu font-semibold text-secondarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
-                      >
-                        Comments
-                      </button>
-                    ) : (
-                      ""
-                    )}
-                  </div>
                 </div>
               )}
 
@@ -437,19 +445,17 @@ export const ProfileSection: React.FC = () => {
                                 · {post.createdAt.slice(0, 10)}
                               </div>
                             </div>
-                            <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                            <div className="text-primarytextcolor mb-2 text-sm lg:text-base font-light">
                               {post.content}
                             </div>
-                            <div>
+                            {post.image && (
                               <img
                                 src={post.image}
-                                className="max-h-[80vh] my-2 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
+                                className="max-h-[80vh] mb-2 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
                               />
-                            </div>
-                            <div>
-                              <div className="flex gap-2 text-neutral-600"></div>
-                            </div>
-                            <div className="flex mt-3 justify-start gap-5 items-center text-sm text-neutral-500">
+                            )}
+
+                            <div className="flex  justify-start gap-5 items-center text-sm text-neutral-500">
                               <div
                                 className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                                 onClick={() => handleLike(post.id)}

@@ -13,7 +13,7 @@ interface Communities {
   membersCount: string;
   image: string;
 }
-export const CommunitesComponent = () => {
+export const CommunitiesComponent = () => {
   const token = localStorage.getItem("token");
   const [communityData, setCommunityData] = useState<{
     communities: Communities[];

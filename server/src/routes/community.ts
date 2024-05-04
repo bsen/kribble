@@ -688,3 +688,99 @@ communityRouter.post("/delete-community-post", async (c) => {
     return c.json({ status: 400 });
   }
 });
+
+communityRouter.post("/one-user-communities", async (c) => {
+  try {
+    const body = await c.req.json();
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
+    const cursor = body.cursor || null;
+    const take = 15;
+    const allCommunities = await prisma.community.findMany({
+      where: { creatorId: findUser.id },
+      select: {
+        id: true,
+        image: true,
+        name: true,
+        category: true,
+        description: true,
+        membersCount: true,
+      },
+      orderBy: {
+        membersCount: "asc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: take + 1,
+    });
+
+    const hasMore = allCommunities.length > take;
+    const communities = hasMore ? allCommunities.slice(0, -1) : allCommunities;
+    const nextCursor = hasMore
+      ? allCommunities[allCommunities.length - 1].id
+      : null;
+
+    return c.json({ status: 200, data: communities, nextCursor });
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 400 });
+  }
+});
+
+communityRouter.post("delete-community", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const communityId = body.communityId;
+
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const userId = await verify(token, c.env.JWT_SECRET);
+
+    const findUser = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+    });
+
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
+    const deleteCommunityPosts = await prisma.post.deleteMany({
+      where: {
+        communityId: communityId,
+      },
+    });
+    const deleteAssociatedMemberships =
+      await prisma.communityMembership.deleteMany({
+        where: {
+          communityId: communityId,
+        },
+      });
+    const deleteCommunity = await prisma.community.delete({
+      where: {
+        id: communityId,
+        creatorId: findUser.id,
+      },
+    });
+
+    if (
+      !deleteCommunityPosts ||
+      !deleteAssociatedMemberships ||
+      !deleteCommunity
+    ) {
+      return c.json({ status: 400, message: "Community deletion failed" });
+    }
+    return c.json({ status: 200, message: "Community deletion successful" });
+  } catch (error) {
+    console.log(error);
+  }
+});
