@@ -360,7 +360,7 @@ export const CommunityProfile: React.FC = () => {
                                 ""
                               )}
                             </div>
-                            <div className="flex gap-2 items-center">
+                            <div className="flex mb-2 gap-2 items-center">
                               <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
                                 @{post.creator.username}
                               </div>
@@ -369,13 +369,13 @@ export const CommunityProfile: React.FC = () => {
                                 · {post.createdAt.slice(0, 10)}
                               </div>
                             </div>
-                            <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
+                            <div className="text-primarytextcolor text-sm lg:text-base font-light">
                               {post.content}
                             </div>
                             <div>
                               <img
                                 src={post.image}
-                                className="max-h-[80vh]  max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
+                                className="max-h-[80vh] my-2 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
                               />
                             </div>
                             <div>

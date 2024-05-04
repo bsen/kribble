@@ -12,7 +12,6 @@ export const konnectRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-
 konnectRouter.post("/users-for-match", async (c) => {
   try {
     const body = await c.req.json();
@@ -23,45 +22,45 @@ konnectRouter.post("/users-for-match", async (c) => {
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
-    const userData = await prisma.user.findUnique({
+    const findUser = await prisma.user.findUnique({
       where: {
         id: userId.id,
       },
     });
 
-    if (!userData) {
+    if (!findUser) {
       return c.json({ status: 404, message: "User not found" });
     }
 
-    const userInterests = await prisma.matching.findMany({
+    const userMatcherIds = await prisma.match.findMany({
       where: {
-        personId: userId.id,
+        matcherUserId: userId.id,
       },
       select: {
-        interestedInId: true,
+        matchedByUserId: true,
       },
     });
 
-    const interestedUserIds = userInterests.map(
-      (interest) => interest.interestedInId
+    const matchedByUserIds = userMatcherIds.map(
+      (match) => match.matchedByUserId
     );
 
     let matchedUser = null;
 
-    const totalMaleUsers = await prisma.user.count({
+    const totalUsers = await prisma.user.count({
       where: {
         gender: gender,
         id: {
-          notIn: interestedUserIds,
+          notIn: matchedByUserIds,
         },
       },
     });
-    const randomOffset = Math.floor(Math.random() * totalMaleUsers);
+    const randomOffset = Math.floor(Math.random() * totalUsers);
     matchedUser = await prisma.user.findMany({
       where: {
         gender: gender,
         id: {
-          notIn: interestedUserIds,
+          notIn: matchedByUserIds,
           not: userId.id,
         },
       },
@@ -83,109 +82,116 @@ konnectRouter.post("/users-for-match", async (c) => {
     return c.json({ status: 500, message: "Internal Server Error" });
   }
 });
-
 konnectRouter.post("/match-people", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
     const otherPersonsId = body.otherPersonsId;
-
     const userId = await verify(token, c.env.JWT_SECRET);
-
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-
-    const alreadyLiked = await prisma.matching.findFirst({
+    const findUser = await prisma.user.findUnique({
       where: {
-        personId: userId.id,
-        interestedInId: otherPersonsId,
+        id: userId.id,
       },
     });
-    if (alreadyLiked) {
+
+    if (!findUser) {
+      return c.json({ status: 404, message: "User not found" });
+    }
+
+    const alreadyMatched = await prisma.match.findUnique({
+      where: {
+        matcherUserId_matchedByUserId: {
+          matcherUserId: findUser.id,
+          matchedByUserId: otherPersonsId,
+        },
+      },
+    });
+
+    if (alreadyMatched) {
       return c.json({
         status: 400,
-        message: "user already have shown interest in this person",
+        message: "User has already shown interest in this person",
       });
     }
-    const checkDateMatch = await prisma.matching.findFirst({
+    const otherPersonMatch = await prisma.match.findUnique({
       where: {
-        personId: otherPersonsId,
-        interestedInId: userId.id,
+        matcherUserId_matchedByUserId: {
+          matcherUserId: otherPersonsId,
+          matchedByUserId: findUser.id,
+        },
       },
     });
-    if (checkDateMatch) {
-      await prisma.user.update({
-        where: { id: userId.id },
+
+    if (otherPersonMatch) {
+      const createMatches = await prisma.matches.create({
         data: {
-          matchedUsers: { push: otherPersonsId },
+          userOneId: findUser.id,
+          userTwoId: otherPersonsId,
         },
       });
 
-      await prisma.user.update({
-        where: { id: otherPersonsId },
-        data: {
-          matchedUsers: { push: userId.id },
-        },
-      });
+      if (!createMatches) {
+        return c.json({ status: 404, message: "Network error" });
+      }
+
+      return c.json({ status: 200, message: "Successful match!" });
     }
 
-    const createMatch = await prisma.matching.create({
+    const createMatch = await prisma.match.create({
       data: {
-        personId: userId.id,
-        interestedInId: otherPersonsId,
+        matcherUserId: findUser.id,
+        matchedByUserId: otherPersonsId,
       },
     });
+
     if (!createMatch) {
-      return c.json({ status: 404, message: "network error" });
+      return c.json({ status: 404, message: "Network error" });
     }
-    return c.json({ status: 200 });
+
+    return c.json({ status: 200, message: "Match request sent" });
   } catch (error) {
     console.log(error);
     return c.json({ status: 404 });
   }
 });
-
 konnectRouter.post("/user-matches", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const findDates = await prisma.user.findUnique({
+    const findUser = await prisma.user.findUnique({
       where: {
         id: userId.id,
       },
+    });
+    if (!findUser) {
+      return c.json({ status: 404, message: "User not found" });
+    }
+    console.log(findUser);
+    const userMatches = await prisma.matches.findMany({
+      where: {
+        userOneId: findUser.id,
+      },
       select: {
-        matchedUsers: true,
+        userTwo: {
+          select: { id: true, name: true, username: true, image: true },
+        },
       },
     });
-    if (!findDates) {
-      return c.json({ status: 404, message: "user not found or auth error" });
-    }
 
-    const userPromises = findDates.matchedUsers.map(async (userId) => {
-      const userDetails = await prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
-        select: {
-          id: true,
-          name: true,
-          username: true,
-          image: true,
-        },
-      });
-      return userDetails;
+    return c.json({
+      status: 200,
+      data: userMatches,
+      message: "Matches found",
     });
-
-    const userMatchData = await Promise.all(userPromises);
-
-    return c.json({ status: 200, message: userMatchData });
   } catch (error) {
-    console.error("Error fetching user details:", error);
+    console.error("Error fetching user matches:", error);
     return c.json({ status: 500, message: "Internal Server Error" });
   }
 });

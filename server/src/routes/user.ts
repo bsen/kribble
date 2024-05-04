@@ -62,7 +62,6 @@ userRouter.post("/user-profile-data", async (c) => {
         interest: true,
         followersCount: true,
         followingCount: true,
-        matchedUsers: true,
       },
     });
     if (!person) {
