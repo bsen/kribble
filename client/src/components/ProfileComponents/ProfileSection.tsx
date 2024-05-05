@@ -159,11 +159,6 @@ export const ProfileSection: React.FC = () => {
 
   const handleLike = async (postId: string) => {
     try {
-      const details = { postId, token };
-      await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
-        details
-      );
       setPostData((prevData) => ({
         ...prevData,
         posts: prevData.posts.map((post) =>
@@ -179,8 +174,30 @@ export const ProfileSection: React.FC = () => {
         ) as Post[],
         nextCursor: prevData.nextCursor,
       }));
+
+      const details = { postId, token };
+      await axios.post(
+        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
+        details
+      );
     } catch (error) {
       console.log(error);
+
+      setPostData((prevData) => ({
+        ...prevData,
+        posts: prevData.posts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                isLiked: !post.isLiked,
+                likesCount: post.isLiked
+                  ? parseInt(post.likesCount) + 1
+                  : parseInt(post.likesCount) - 1,
+              }
+            : post
+        ) as Post[],
+        nextCursor: prevData.nextCursor,
+      }));
     }
   };
 
