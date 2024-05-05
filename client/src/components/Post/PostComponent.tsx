@@ -189,9 +189,9 @@ export const PostComponent = () => {
             <div className="px-4 py-2 border-b border-neutral-200 flex justify-center items-center">
               <div className="w-full">
                 <textarea
-                  rows={3}
-                  className={`w-full border border-neutral-100 p-2 focus:outline-none rounded-xl  ${
-                    popup ? "border border-rose-200" : ""
+                  rows={4}
+                  className={`w-full resize-none no-scrollbar border  border-neutral-100 px-2 py-1 focus:outline-none rounded-xl  ${
+                    popup ? "border border-rose-400" : ""
                   }`}
                   wrap="soft"
                   onChange={(e) => {
@@ -204,7 +204,7 @@ export const PostComponent = () => {
                 <div className="flex justify-end">
                   <button
                     onClick={createComment}
-                    className="text-white text-base py-1 px-6 rounded-full bg-blue-500"
+                    className="text-white text-base py-1 px-6 rounded-full bg-neutral-800"
                   >
                     Post
                   </button>

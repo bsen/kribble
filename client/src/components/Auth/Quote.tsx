@@ -34,13 +34,10 @@ export const Quote = () => {
             students.
           </div>
         </div>
-        {usersCount ? (
-          <div className=" text-white font-normal text-3xl my-5 font-ubuntu ">
-            Joined by {usersCount}k +
-          </div>
-        ) : (
-          "‎"
-        )}
+
+        <div className=" text-white font-normal text-3xl my-5 font-ubuntu ">
+          {usersCount ? <div> Joined by {usersCount}k + </div> : <div> ‎ </div>}
+        </div>
 
         <div className="lg:hidden text-left">
           <button

@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
 import { z } from "zod";
+import bcrypt from "bcryptjs";
 export const authRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -12,7 +13,7 @@ export const authRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-const nameSchema = z.string().max(30);
+const nameSchema = z.string().max(20);
 const usernameSchema = z.string().max(20);
 const emailSchema = z.string().email();
 const genderSchema = z.string();
@@ -77,13 +78,15 @@ authRouter.post("/signup", async (c) => {
     if (username) {
       return c.json({ status: 401, message: "This Userame is already taken" });
     }
+    const hashedPassword = await bcrypt.hash(body.password, 12);
+
     const user = await prisma.user.create({
       data: {
         name: body.name,
         username: body.username,
         email: body.email,
         gender: body.gender,
-        password: body.password,
+        password: hashedPassword,
       },
     });
     if (!user) {
@@ -110,25 +113,34 @@ authRouter.post("/login", async (c) => {
         message: "Invalid email address and password",
       });
     }
-    console.log(emailRes);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
-    const user = await prisma.user.findFirst({
+    const findUser = await prisma.user.findFirst({
       where: {
         email: body.email,
-        password: body.password,
       },
     });
 
-    if (!user) {
+    if (!findUser) {
       return c.json({
         status: 401,
-        message: "User not found, Please check your email and password",
+        message: "User not found, Please check your email",
       });
     }
-    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
+    const isPasswordValid = await bcrypt.compare(
+      body.password,
+      findUser.password
+    );
+
+    if (!isPasswordValid) {
+      return c.json({
+        status: 401,
+        message: "Invalid email or password",
+      });
+    }
+    const jwt = await sign({ id: findUser.id }, c.env.JWT_SECRET);
     return c.json({ status: 200, token: jwt, message: "Login successful" });
   } catch (error) {
     console.log(error);

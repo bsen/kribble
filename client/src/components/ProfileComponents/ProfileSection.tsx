@@ -125,22 +125,31 @@ export const ProfileSection: React.FC = () => {
       getAllPosts(postData.nextCursor, false);
     }
   };
-  async function followUser() {
-    setLoadingState(true);
+  const followUser = async () => {
     try {
+      setIsFollowing((prevState) => !prevState);
+      setUserData((prevData) => ({
+        ...prevData,
+        followersCount: isFollowing
+          ? (parseInt(prevData.followersCount) - 1).toString()
+          : (parseInt(prevData.followersCount) + 1).toString(),
+      }));
       const details = { username, token };
       await axios.post(
         `${BACKEND_URL}/api/server/v1/user/follow-unfollow`,
         details
       );
-
-      await getData();
-      setLoadingState(false);
     } catch (error) {
       console.log(error);
+      setIsFollowing((prevState) => !prevState);
+      setUserData((prevData) => ({
+        ...prevData,
+        followersCount: isFollowing
+          ? (parseInt(prevData.followersCount) + 1).toString()
+          : (parseInt(prevData.followersCount) - 1).toString(),
+      }));
     }
-  }
-
+  };
   const deletePost = async () => {
     try {
       setLoadingState(true);
@@ -159,11 +168,6 @@ export const ProfileSection: React.FC = () => {
 
   const handleLike = async (postId: string) => {
     try {
-      const details = { postId, token };
-      await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
-        details
-      );
       setPostData((prevData) => ({
         ...prevData,
         posts: prevData.posts.map((post) =>
@@ -179,8 +183,30 @@ export const ProfileSection: React.FC = () => {
         ) as Post[],
         nextCursor: prevData.nextCursor,
       }));
+
+      const details = { postId, token };
+      await axios.post(
+        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
+        details
+      );
     } catch (error) {
       console.log(error);
+
+      setPostData((prevData) => ({
+        ...prevData,
+        posts: prevData.posts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                isLiked: !post.isLiked,
+                likesCount: post.isLiked
+                  ? parseInt(post.likesCount) + 1
+                  : parseInt(post.likesCount) - 1,
+              }
+            : post
+        ) as Post[],
+        nextCursor: prevData.nextCursor,
+      }));
     }
   };
 
