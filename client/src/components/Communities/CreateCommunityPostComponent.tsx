@@ -163,7 +163,7 @@ export const CreateCommunityPostComponent = () => {
                 </button>
               </div>
               <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
-                {popup ? popup : ""}
+                {popup ? popup : <div>‎</div>}
               </div>
             </div>
           </div>

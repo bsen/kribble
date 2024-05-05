@@ -205,7 +205,7 @@ export const EditCommunity: React.FC<{ communityData: CommunityData }> = (
               />
             </div>
             <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
-              {popup ? popup : ""}
+              {popup ? popup : <div>‎</div>}
             </div>
           </div>
         )}
