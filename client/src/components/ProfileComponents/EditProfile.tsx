@@ -265,8 +265,8 @@ export const EditProfile = () => {
               <div>
                 <div className="text-primarytextcolor">Bio</div>
                 <textarea
-                  rows={4}
-                  className="w-full p-2  rounded-lg border border-neutral-200"
+                  rows={2}
+                  className="w-full px-2 py-1 resize-none no-scrollbar rounded-lg border border-neutral-200"
                   defaultValue={userData.bio}
                   wrap="soft"
                   maxLength={150}

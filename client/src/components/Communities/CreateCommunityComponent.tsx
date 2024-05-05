@@ -162,14 +162,15 @@ export const CreateCommunityComponent = () => {
                 <div className="font-semibold m-1 text-primarytextcolor">
                   Description
                 </div>
-                <input
+                <textarea
+                  rows={2}
                   value={description}
                   onChange={(e) => {
                     setDescription(e.target.value);
                   }}
-                  className="w-full border border-neutral-200 resize-none focus:outline-none p-2 text-primarytextcolor rounded-lg"
+                  className="w-full border border-neutral-200 resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
                   placeholder="Write description for your community"
-                  maxLength={120}
+                  maxLength={150}
                 />
               </div>
               <div className="flex w-full justify-center">

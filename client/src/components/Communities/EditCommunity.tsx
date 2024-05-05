@@ -196,9 +196,9 @@ export const EditCommunity: React.FC<{ communityData: CommunityData }> = (
               <textarea
                 rows={2}
                 defaultValue={description}
-                className="w-full p-2  rounded-lg border border-neutral-200"
+                className="w-full px-2 py-1 rounded-lg border border-neutral-200"
                 wrap="soft"
-                maxLength={120}
+                maxLength={150}
                 onChange={(e) => {
                   setNewDescription(e.target.value);
                 }}

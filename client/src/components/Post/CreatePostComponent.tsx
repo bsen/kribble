@@ -147,7 +147,7 @@ export const CreatePostComponent = () => {
                 value={post}
                 onChange={handlePostChange}
                 rows={4}
-                className="w-full my-4 border border-neutral-200 resize-none focus:outline-none p-2 text-primarytextcolor rounded-lg"
+                className="w-full my-4 border border-neutral-200 resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
                 placeholder="Write your thoughts..."
                 wrap="soft"
                 minLength={10}
