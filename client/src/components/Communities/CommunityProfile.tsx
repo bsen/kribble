@@ -90,15 +90,28 @@ export const CommunityProfile: React.FC = () => {
 
   const handleJoinCommunity = async () => {
     try {
-      setLoadingState(true);
+      setIsJoined((prevState) => !prevState);
+      setCommunityData((prevData) => ({
+        ...prevData,
+        membersCount: isJoined
+          ? (parseInt(prevData.membersCount) - 1).toString()
+          : (parseInt(prevData.membersCount) + 1).toString(),
+      }));
+
       await axios.post(
         `${BACKEND_URL}/api/server/v1/community/join-leave-community`,
         { token, name }
       );
-      getCommunityData();
-      setLoadingState(false);
     } catch (error) {
       console.log(error);
+
+      setIsJoined((prevState) => !prevState);
+      setCommunityData((prevData) => ({
+        ...prevData,
+        membersCount: isJoined
+          ? (parseInt(prevData.membersCount) + 1).toString()
+          : (parseInt(prevData.membersCount) - 1).toString(),
+      }));
     }
   };
 

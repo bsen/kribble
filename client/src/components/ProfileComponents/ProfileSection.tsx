@@ -125,22 +125,31 @@ export const ProfileSection: React.FC = () => {
       getAllPosts(postData.nextCursor, false);
     }
   };
-  async function followUser() {
-    setLoadingState(true);
+  const followUser = async () => {
     try {
+      setIsFollowing((prevState) => !prevState);
+      setUserData((prevData) => ({
+        ...prevData,
+        followersCount: isFollowing
+          ? (parseInt(prevData.followersCount) - 1).toString()
+          : (parseInt(prevData.followersCount) + 1).toString(),
+      }));
       const details = { username, token };
       await axios.post(
         `${BACKEND_URL}/api/server/v1/user/follow-unfollow`,
         details
       );
-
-      await getData();
-      setLoadingState(false);
     } catch (error) {
       console.log(error);
+      setIsFollowing((prevState) => !prevState);
+      setUserData((prevData) => ({
+        ...prevData,
+        followersCount: isFollowing
+          ? (parseInt(prevData.followersCount) + 1).toString()
+          : (parseInt(prevData.followersCount) - 1).toString(),
+      }));
     }
-  }
-
+  };
   const deletePost = async () => {
     try {
       setLoadingState(true);
