@@ -42,6 +42,7 @@ export const ProfileSection: React.FC = () => {
   const [deleteState, setDeleteState] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const postsScrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isFollowUserLoading, setIsFollowUserLoading] = useState(false);
   const [userData, setUserData] = useState<{
     name: string;
     username: string;
@@ -127,6 +128,7 @@ export const ProfileSection: React.FC = () => {
   };
   const followUser = async () => {
     try {
+      setIsFollowUserLoading(true);
       setIsFollowing((prevState) => !prevState);
       setUserData((prevData) => ({
         ...prevData,
@@ -148,6 +150,8 @@ export const ProfileSection: React.FC = () => {
           ? (parseInt(prevData.followersCount) + 1).toString()
           : (parseInt(prevData.followersCount) - 1).toString(),
       }));
+    } finally {
+      setIsFollowUserLoading(false);
     }
   };
   const deletePost = async () => {
@@ -278,7 +282,12 @@ export const ProfileSection: React.FC = () => {
                               <div className="flex my-2 gap-4 justify-between items-center">
                                 <button
                                   onClick={followUser}
-                                  className="bg-neutral-800 text-background px-4 py-1 text-sm rounded-full font-ubuntu"
+                                  disabled={isFollowUserLoading}
+                                  className={`text-background px-4 py-1 text-sm rounded-full font-ubuntu ${
+                                    isFollowUserLoading
+                                      ? "bg-neutral-500"
+                                      : "bg-neutral-800"
+                                  }`}
                                 >
                                   <div>
                                     {isFollowing ? (
