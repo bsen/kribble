@@ -130,7 +130,7 @@ export const CommentsComponent = () => {
                     <Link to={`/post/${comment.postId}`}>
                       <OpenInNewIcon
                         sx={{ fontSize: 20 }}
-                        className="text-blue-500"
+                        className="text-indigo-500"
                       />
                     </Link>
                     {comment.createdAt.slice(0, 10)}{" "}

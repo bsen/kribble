@@ -36,14 +36,14 @@ export const DropDown = () => {
             sx={{ fontSize: 30 }}
             className={`${
               location.pathname === "/home"
-                ? "text-blue-500"
+                ? "text-indigo-500"
                 : "text-primarytextcolor"
             }`}
           />
           <p
             className={`text-lg font-medium ${
               location.pathname === "/home"
-                ? "text-blue-500"
+                ? "text-indigo-500"
                 : "text-primarytextcolor"
             }`}
           >
@@ -58,14 +58,14 @@ export const DropDown = () => {
               sx={{ fontSize: 30 }}
               className={`${
                 location.pathname === `/communities`
-                  ? "text-blue-500"
+                  ? "text-indigo-500"
                   : "text-primarytextcolor"
               }`}
             />
             <p
               className={`text-lg font-medium  ${
                 location.pathname === `/communities`
-                  ? "text-blue-500"
+                  ? "text-indigo-500"
                   : "text-primarytextcolor"
               }`}
             >
@@ -81,14 +81,14 @@ export const DropDown = () => {
               sx={{ fontSize: 30 }}
               className={`${
                 location.pathname === `/konnect`
-                  ? "text-blue-500"
+                  ? "text-indigo-500"
                   : "text-primarytextcolor"
               }`}
             />
             <p
               className={`text-lg font-medium  ${
                 location.pathname === `/konnect`
-                  ? "text-blue-500"
+                  ? "text-indigo-500"
                   : "text-primarytextcolor"
               }`}
             >
@@ -105,14 +105,14 @@ export const DropDown = () => {
               sx={{ fontSize: 30 }}
               className={`${
                 location.pathname === `/${currentUser}`
-                  ? "text-blue-500"
+                  ? "text-indigo-500"
                   : "text-primarytextcolor"
               }`}
             />
             <p
               className={`text-lg font-medium  ${
                 location.pathname === `/${currentUser}`
-                  ? "text-blue-500"
+                  ? "text-indigo-500"
                   : "text-primarytextcolor"
               }`}
             >

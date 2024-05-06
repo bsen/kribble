@@ -40,14 +40,14 @@ export const Buttons = () => {
               sx={{ fontSize: 30 }}
               className={`${
                 location.pathname === "/home"
-                  ? "text-blue-500"
+                  ? "text-indigo-500"
                   : "text-primarytextcolor"
               }`}
             />
             <p
               className={`text-lg font-medium max-lg:hidden ${
                 location.pathname === "/home"
-                  ? "text-blue-500"
+                  ? "text-indigo-500"
                   : "text-primarytextcolor"
               }`}
             >
@@ -62,14 +62,14 @@ export const Buttons = () => {
                 sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === `/communities`
-                    ? "text-blue-500"
+                    ? "text-indigo-500"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
                   location.pathname === `/communities`
-                    ? "text-blue-500"
+                    ? "text-indigo-500"
                     : "text-primarytextcolor"
                 }`}
               >
@@ -85,14 +85,14 @@ export const Buttons = () => {
                 sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === `/konnect`
-                    ? "text-blue-500"
+                    ? "text-indigo-500"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
                   location.pathname === `/konnect`
-                    ? "text-blue-500"
+                    ? "text-indigo-500"
                     : "text-primarytextcolor"
                 }`}
               >
@@ -109,14 +109,14 @@ export const Buttons = () => {
                 sx={{ fontSize: 30 }}
                 className={`${
                   location.pathname === `/${currentUser}`
-                    ? "text-blue-500"
+                    ? "text-indigo-500"
                     : "text-primarytextcolor"
                 }`}
               />
               <p
                 className={`text-lg font-medium max-lg:hidden ${
                   location.pathname === `/${currentUser}`
-                    ? "text-blue-500"
+                    ? "text-indigo-500"
                     : "text-primarytextcolor"
                 }`}
               >

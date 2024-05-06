@@ -158,7 +158,7 @@ export const KonnectComponent = () => {
 
                       <button
                         onClick={match}
-                        className=" bg-blue-500 w-[36%] lg:w-[25%] font-ubuntu font-normal text-base  py-2 rounded-full active:bg-blue-600 flex text-white items-center justify-evenly"
+                        className=" bg-indigo-500 w-[36%] lg:w-[25%] font-ubuntu font-normal text-base  py-2 rounded-full active:bg-indigo-500 flex text-white items-center justify-evenly"
                       >
                         <div>Connect</div>
                       </button>
@@ -171,7 +171,7 @@ export const KonnectComponent = () => {
                     <div className="w-full flex justify-center items-center">
                       <PeopleAltIcon
                         sx={{ fontSize: 60 }}
-                        className="text-blue-500 p-1 rounded-full"
+                        className="text-indigo-500 p-1 rounded-full"
                       />
                     </div>
                     <div className="text-center font-semibold font-ubuntu px-6 my-3  text-xl text-primarytextcolor">
@@ -194,8 +194,8 @@ export const KonnectComponent = () => {
                       className={`p-1 rounded-full
                     ${
                       selectGender == "male"
-                        ? "text-blue-500 border border-blue-500 bg-blue-100"
-                        : "text-blue-500 border border-blue-500"
+                        ? "text-indigo-500 border border-indigo-500 bg-indigo-100"
+                        : "text-indigo-500 border border-indigo-500"
                     }`}
                     >
                       <MaleIcon sx={{ fontSize: 35 }} />
@@ -216,7 +216,7 @@ export const KonnectComponent = () => {
                   </div>
                   <div className="w-full gap-5 flex items-center flex-col justify-center">
                     <button
-                      className="text-background  rounded-full  bg-blue-500 text-sm lg:text-lg py-2 px-4 font-ubuntu  active:bg-blue-800"
+                      className="text-background  rounded-full  bg-indigo-500 text-sm lg:text-lg py-2 px-4 font-ubuntu  active:bg-indigo-800"
                       onClick={searchPeople}
                     >
                       Start Connecting

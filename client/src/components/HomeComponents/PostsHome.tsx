@@ -230,13 +230,13 @@ export const PostsHome = () => {
 
                         <Link
                           to={`/post/${post.id}`}
-                          className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
+                          className="flex bg-indigo-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                         >
                           <ChatBubbleOutlineRoundedIcon
                             sx={{ fontSize: 18 }}
-                            className="text-blue-500"
+                            className="text-indigo-500"
                           />
-                          <div className="text-base text-blue-500">
+                          <div className="text-base text-indigo-500">
                             {post.commentsCount}
                           </div>
                         </Link>
@@ -255,7 +255,7 @@ export const PostsHome = () => {
 
         {isLoading && (
           <div className="text-center my-5">
-            <CircularProgress />
+            <CircularProgress color="inherit" />
           </div>
         )}
       </div>
