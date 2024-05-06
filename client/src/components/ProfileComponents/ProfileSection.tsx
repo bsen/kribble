@@ -274,7 +274,7 @@ export const ProfileSection: React.FC = () => {
                                 onClick={() => {
                                   setProfileEditingState(true);
                                 }}
-                                className="text-left text-white bg-primarytextcolor font-ubuntu font-light rounded-full px-3 py-1 text-sm"
+                                className="text-left text-white bg-primarytextcolor font-ubuntu rounded-full px-3 py-1 text-sm"
                               >
                                 Edit profile
                               </button>
@@ -283,17 +283,23 @@ export const ProfileSection: React.FC = () => {
                                 <button
                                   onClick={followUser}
                                   disabled={isFollowUserLoading}
-                                  className={`text-background px-4 py-1 text-sm rounded-full font-ubuntu ${
-                                    isFollowUserLoading
-                                      ? "bg-neutral-600"
-                                      : "bg-neutral-800"
-                                  }`}
+                                  className="text-background  py-1 text-sm rounded-full font-ubuntu bg-neutral-800 relative"
                                 >
-                                  <div>
-                                    {isFollowing ? (
-                                      <div>Unfollow</div>
+                                  <div className="flex items-center justify-center w-20 h-full">
+                                    {isFollowUserLoading ? (
+                                      <CircularProgress
+                                        size="20px"
+                                        className="text-sm"
+                                        color="inherit"
+                                      />
                                     ) : (
-                                      <div>Follow</div>
+                                      <div>
+                                        {isFollowing ? (
+                                          <div>Unfollow</div>
+                                        ) : (
+                                          <div>Follow</div>
+                                        )}
+                                      </div>
                                     )}
                                   </div>
                                 </button>
@@ -338,7 +344,7 @@ export const ProfileSection: React.FC = () => {
                       {userData.bio ? userData.bio : "bio"}
                     </div>
 
-                    <div className="text-sm text-blue-500 font-light hover:underline">
+                    <div className="text-sm text-indigo-500 font-light hover:underline">
                       <a
                         href={`${
                           userData.website &&
@@ -515,14 +521,14 @@ export const ProfileSection: React.FC = () => {
                                   {post.likesCount}
                                 </div>
                               </div>
-                              <div className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer">
+                              <div className="flex bg-indigo-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer">
                                 <Link to={`/post/${post.id}`}>
                                   <ChatBubbleOutlineRoundedIcon
                                     sx={{ fontSize: 18 }}
-                                    className="text-blue-500"
+                                    className="text-indigo-500"
                                   />
                                 </Link>
-                                <div className="text-base text-blue-500">
+                                <div className="text-base text-indigo-500">
                                   {post.commentsCount}
                                 </div>
                               </div>
@@ -543,7 +549,7 @@ export const ProfileSection: React.FC = () => {
 
           {isLoading && (
             <div className="text-center my-5">
-              <CircularProgress />
+              <CircularProgress color="inherit" />
             </div>
           )}
         </div>

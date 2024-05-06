@@ -46,6 +46,7 @@ export const CommunityProfile: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
   const [isCreator, setIsCreator] = useState(Boolean);
   const [isJoined, setIsJoined] = useState(false);
+  const [isJoiningLoading, setIsJoiningLoading] = useState(false);
   const [communityPostDeletionState, setCommunityPostDeletionState] =
     useState(false);
   const [deletingPostId, setDeletingPostId] = useState("");
@@ -90,6 +91,7 @@ export const CommunityProfile: React.FC = () => {
 
   const handleJoinCommunity = async () => {
     try {
+      setIsJoiningLoading(true);
       setIsJoined((prevState) => !prevState);
       setCommunityData((prevData) => ({
         ...prevData,
@@ -98,13 +100,13 @@ export const CommunityProfile: React.FC = () => {
           : (parseInt(prevData.membersCount) + 1).toString(),
       }));
 
+      const details = { token, name };
       await axios.post(
         `${BACKEND_URL}/api/server/v1/community/join-leave-community`,
-        { token, name }
+        details
       );
     } catch (error) {
       console.log(error);
-
       setIsJoined((prevState) => !prevState);
       setCommunityData((prevData) => ({
         ...prevData,
@@ -112,6 +114,8 @@ export const CommunityProfile: React.FC = () => {
           ? (parseInt(prevData.membersCount) + 1).toString()
           : (parseInt(prevData.membersCount) - 1).toString(),
       }));
+    } finally {
+      setIsJoiningLoading(false);
     }
   };
 
@@ -294,17 +298,28 @@ export const CommunityProfile: React.FC = () => {
                             );
                             setCommunityEditingState(true);
                           }}
-                          className="text-left text-white bg-primarytextcolor font-ubuntu font-light rounded-full px-3 py-1 text-sm"
+                          className="text-left text-white bg-primarytextcolor font-ubuntu rounded-full px-3 py-1 text-sm"
                         >
                           Edit profile
                         </button>
                       ) : (
                         <button
                           onClick={handleJoinCommunity}
-                          className="text-left text-white bg-primarytextcolor font-ubuntu font-light rounded-full px-3 py-1 text-sm"
+                          disabled={isJoiningLoading}
+                          className="text-left text-white bg-primarytextcolor font-ubuntu rounded-full py-1 text-sm relative"
                         >
-                          <div>
-                            {isJoined ? <div>Joined</div> : <div>Join</div>}
+                          <div className="flex items-center justify-center w-20 h-full">
+                            {isJoiningLoading ? (
+                              <CircularProgress
+                                size="20px"
+                                className="text-sm"
+                                color="inherit"
+                              />
+                            ) : (
+                              <div>
+                                {isJoined ? <div>Joined</div> : <div>Join</div>}
+                              </div>
+                            )}
                           </div>
                         </button>
                       )}
@@ -436,13 +451,13 @@ export const CommunityProfile: React.FC = () => {
 
                               <Link
                                 to={`/post/${post.id}`}
-                                className="flex bg-blue-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
+                                className="flex bg-indigo-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                               >
                                 <ChatBubbleOutlineRoundedIcon
                                   sx={{ fontSize: 18 }}
-                                  className="text-blue-500"
+                                  className="text-indigo-500"
                                 />
-                                <div className="text-base text-blue-500">
+                                <div className="text-base text-indigo-500">
                                   {post.commentsCount}
                                 </div>
                               </Link>
@@ -461,7 +476,7 @@ export const CommunityProfile: React.FC = () => {
 
               {isLoading && (
                 <div className="text-center my-5">
-                  <CircularProgress />
+                  <CircularProgress color="inherit" />
                 </div>
               )}
             </div>
