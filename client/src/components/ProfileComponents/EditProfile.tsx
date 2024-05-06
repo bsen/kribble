@@ -139,7 +139,7 @@ export const EditProfile = () => {
         >
           {isLoading ? (
             <div className="text-center my-5">
-              <CircularProgress />
+              <CircularProgress color="inherit" />
             </div>
           ) : (
             <div className="bg-background w-[85%]   border border-neutral-200 p-4 rounded-lg flex flex-col gap-4">

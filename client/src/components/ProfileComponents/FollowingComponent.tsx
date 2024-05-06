@@ -109,7 +109,7 @@ export const FollowingComponent = () => {
         )}
         {isLoading && (
           <div className="text-center my-5">
-            <CircularProgress />
+            <CircularProgress color="inherit" />
           </div>
         )}
       </div>

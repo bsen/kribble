@@ -117,7 +117,7 @@ export const KonnectComponent = () => {
         <div>
           {loadingState ? (
             <div className="my-10 bg-background flex justify-center items-center w-full">
-              <CircularProgress />
+              <CircularProgress color="inherit" />
             </div>
           ) : (
             <div className=" flex flex-col items-center justify-center">

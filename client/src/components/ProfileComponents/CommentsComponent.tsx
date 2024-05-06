@@ -159,7 +159,7 @@ export const CommentsComponent = () => {
           )}
           {isLoadingComments && (
             <div className="text-center my-5">
-              <CircularProgress />
+              <CircularProgress color="inherit" />
             </div>
           )}
         </div>
