@@ -10,13 +10,11 @@ export const Quote = () => {
       const response = await axios.get(
         `${BACKEND_URL}/api/server/v1/auth/users-count`
       );
-      setUsersCount(response.data.message);
+      setUsersCount(response.data.data);
     } catch (error) {
       console.log(error);
     }
   }
-  console.log(usersCount);
-
   useEffect(() => {
     getUsersCount();
   }, []);
@@ -36,7 +34,11 @@ export const Quote = () => {
         </div>
 
         <div className=" text-white font-normal text-3xl my-5 font-ubuntu ">
-          {usersCount ? <div> Joined by {usersCount}k + </div> : <div> ‎ </div>}
+          {usersCount ? (
+            <div> Joined by {Number(usersCount) + 1000} </div>
+          ) : (
+            <div> ‎ </div>
+          )}
         </div>
 
         <div className="lg:hidden text-left">

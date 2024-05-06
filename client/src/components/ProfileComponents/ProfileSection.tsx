@@ -285,7 +285,7 @@ export const ProfileSection: React.FC = () => {
                                   disabled={isFollowUserLoading}
                                   className={`text-background px-4 py-1 text-sm rounded-full font-ubuntu ${
                                     isFollowUserLoading
-                                      ? "bg-neutral-500"
+                                      ? "bg-neutral-600"
                                       : "bg-neutral-800"
                                   }`}
                                 >

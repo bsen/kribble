@@ -155,9 +155,13 @@ authRouter.get("/users-count", async (c) => {
     }).$extends(withAccelerate());
     const users = await prisma.user.count({});
     if (!users) {
-      return c.json({ status: 400, message: "Failed to fetch users count" });
+      return c.json({
+        status: 400,
+        message: "Failed to fetch users count",
+        data: 0,
+      });
     }
-    return c.json({ status: 200, message: users });
+    return c.json({ status: 200, message: "Fetched users count", data: users });
   } catch (error) {
     console.log(error);
   }
