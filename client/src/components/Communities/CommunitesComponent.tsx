@@ -2,7 +2,6 @@ import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { NavBar } from "../HomeComponents/NavBar";
 import { BACKEND_URL } from "../../config";
 
 interface Communities {
@@ -62,12 +61,10 @@ export const CommunitiesComponent = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar pt-14"
+        className="h-screen overflow-y-auto no-scrollbar py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
-
         {communityData.communities.length > 0 ? (
           communityData.communities.map((community, index) => (
             <div

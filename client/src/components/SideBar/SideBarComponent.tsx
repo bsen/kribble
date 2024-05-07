@@ -33,8 +33,8 @@ export const SideBarComponent = () => {
       <div className="flex bg-white flex-col justify-between h-screen border-r border-neutral-200">
         <div className="flex flex-col justify-center items-center">
           <div className="flex flex-col items-start">
-            <div className="bg-gradient-to-r from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text text-4xl mt-4 font-ubuntu">
-              Kribble
+            <div className="bg-gradient-to-r from-violet-500 to-orange-500  text-transparent bg-clip-text text-4xl mt-4 font-ubuntu">
+              kribble
             </div>
             <button
               onClick={() => {
