@@ -1,4 +1,4 @@
-import { SideBar } from "../components/SideBar/SideBar";
+import { SideBarComponent } from "../components/SideBar/SideBarComponent";
 import { PostsHome } from "../components/HomeComponents/PostsHome";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
@@ -47,7 +47,7 @@ export const Home = () => {
       ) : (
         <>
           <div className="w-[25%] max-lg:hidden">
-            <SideBar />
+            <SideBarComponent />
           </div>
           <div className="w-full lg:w-[45%]">
             <PostsHome />

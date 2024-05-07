@@ -9,7 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
 
-export const SideBar = () => {
+export const SideBarComponent = () => {
   const token = localStorage.getItem("token");
   const location = useLocation();
   const navigate = useNavigate();
