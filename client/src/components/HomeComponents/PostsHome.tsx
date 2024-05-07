@@ -1,10 +1,9 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import { NavBar } from "./NavBar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 interface Post {
@@ -29,6 +28,12 @@ interface Post {
 
 export const PostsHome = () => {
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const [userImage, setUserImage] = useState("");
+  const [trendingComponent, setTrendingComponent] = useState(true);
+  const [currentUser, setCurrentUser] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [postData, setPostData] = useState<{
     posts: Post[];
     nextCursor: string | null;
@@ -36,9 +41,6 @@ export const PostsHome = () => {
     posts: [],
     nextCursor: null,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   async function getAllPosts(cursor?: string) {
     try {
       setIsLoading(true);
@@ -56,10 +58,26 @@ export const PostsHome = () => {
       setIsLoading(false);
     }
   }
-
+  async function getFollowingPost(cursor?: string) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/server/v1/post/user-following-posts`,
+        { token, cursor }
+      );
+      setPostData({
+        posts: [...postData.posts, ...response.data.data],
+        nextCursor: response.data.nextCursor,
+      });
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
   useEffect(() => {
-    getAllPosts();
-  }, []);
+    trendingComponent ? getAllPosts() : getFollowingPost();
+  }, [trendingComponent]);
 
   const handleScroll = () => {
     if (
@@ -116,15 +134,65 @@ export const PostsHome = () => {
       }));
     }
   };
+  async function getUser() {
+    const response = await axios.post(
+      `${BACKEND_URL}/api/server/v1/user/current-user`,
+      { token }
+    );
+
+    setUserImage(response.data.image);
+    setCurrentUser(response.data.data);
+  }
+
+  console.log(userImage, currentUser);
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py- lg:py-14"
+        className="h-screen overflow-y-auto no-scrollbar py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
+        <div className="top-0  border-b border-neutral-200  bg-white fixed w-full lg:w-[45%]">
+          <div className="w-full h-14 flex justify-around items-center">
+            <button
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              <div className="lg:hidden bg-gradient-to-r from-indigo-500 to-orange-500  text-transparent bg-clip-text text-2xl font-ubuntu">
+                kr
+              </div>
+            </button>
+
+            <button
+              className={` h-full flex items-center text-neutral-600 text-base font-ubuntu ${
+                trendingComponent ? "border-b-2 border-indigo-500" : ""
+              }`}
+              onClick={() => setTrendingComponent(true)}
+            >
+              Trending
+            </button>
+            <button
+              className={` h-full flex items-center text-neutral-600 text-base font-ubuntu ${
+                trendingComponent ? "" : "border-b-2 border-indigo-500"
+              }`}
+              onClick={() => setTrendingComponent(false)}
+            >
+              Following
+            </button>
+            <Link to={`/${currentUser}`}>
+              <img
+                src={userImage ? userImage : "/user.png"}
+                alt="Profile"
+                className="lg:hidden w-7 h-7 border border-neutral-50 rounded-full"
+              />
+            </Link>
+          </div>
+        </div>
         <div>
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (

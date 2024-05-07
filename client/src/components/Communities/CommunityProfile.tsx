@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import { NavBar } from "../HomeComponents/NavBar";
 import AddIcon from "@mui/icons-material/Add";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -265,13 +264,10 @@ export const CommunityProfile: React.FC = () => {
             </div>
           ) : (
             <div
-              className="h-screen overflow-y-auto no-scrollbar py-14 lg:py-0"
+              className="h-screen overflow-y-auto no-scrollbar pt-5"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
-              <div className="lg:hidden">
-                <NavBar />
-              </div>
               {communityEditingState ? (
                 <div className="absolute w-full lg:w-[45%]">
                   <EditCommunity communityData={communityData} />

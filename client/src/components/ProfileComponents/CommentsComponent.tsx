@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { NavBar } from "../HomeComponents/NavBar";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../config";
 
@@ -114,13 +113,10 @@ export const CommentsComponent = () => {
         </div>
       ) : (
         <div
-          className="h-screen overflow-y-auto no-scrollbar py-14 lg:py-0"
+          className="h-screen overflow-y-auto no-scrollbar py-14"
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
-          <div className="lg:hidden">
-            <NavBar />
-          </div>
           {commentsData.comments.length > 0 ? (
             commentsData.comments.map((comment, index) => (
               <div

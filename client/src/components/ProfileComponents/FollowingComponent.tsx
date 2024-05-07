@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { NavBar } from "../HomeComponents/NavBar";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../config";
 interface FollowingsData {
@@ -71,7 +70,6 @@ export const FollowingComponent = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
         {followingsData.followings.length > 0 ? (
           followingsData.followings.map((followingObj) => (
             <div

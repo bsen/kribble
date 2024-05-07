@@ -10,7 +10,6 @@ import { EditProfile } from "./EditProfile";
 import { BACKEND_URL } from "../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { NavBar } from "../HomeComponents/NavBar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface Post {
@@ -248,11 +247,10 @@ export const ProfileSection: React.FC = () => {
             </div>
           ) : (
             <div
-              className="overflow-y-auto no-scrollbar py-14"
+              className="overflow-y-auto no-scrollbar pt-5"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
-              <NavBar />
               {profileEditingState ? (
                 <div className="absolute w-full lg:w-[45%]">
                   <EditProfile />

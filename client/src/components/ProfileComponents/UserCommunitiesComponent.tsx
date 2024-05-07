@@ -2,7 +2,6 @@ import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { NavBar } from "../HomeComponents/NavBar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { BACKEND_URL } from "../../config";
 import { Loading } from "../Loading";
@@ -140,10 +139,6 @@ export const UserCommunitiesComponent = () => {
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
-              <div className="lg:hidden">
-                <NavBar />
-              </div>
-
               {communityData.communities.length > 0 ? (
                 communityData.communities.map((community, index) => (
                   <div

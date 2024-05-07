@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 import { string } from "zod";
+import { poweredBy } from "hono/powered-by";
 
 export const postRouter = new Hono<{
   Bindings: {
@@ -49,23 +50,6 @@ postRouter.post("/home-all-posts", async (c) => {
         },
         createdAt: true,
         commentsCount: true,
-      },
-      where: {
-        OR: [
-          { communityId: null },
-          {
-            community: {
-              members: {
-                some: {
-                  userId: findUser.id,
-                },
-              },
-            },
-          },
-        ],
-      },
-      orderBy: {
-        createdAt: "desc",
       },
       cursor: cursor ? { id: cursor } : undefined,
       take: take + 1,
@@ -151,6 +135,112 @@ postRouter.post("/user-all-posts", async (c) => {
     const hasMore = userposts.length > take;
     const posts = hasMore ? userposts.slice(0, -1) : userposts;
     const nextCursor = hasMore ? userposts[userposts.length - 1].id : null;
+
+    const postsWithLikedState = await Promise.all(
+      posts.map(async (post) => {
+        const isLiked = await prisma.like.findUnique({
+          where: {
+            userId_postId: {
+              userId: findUser.id,
+              postId: post.id,
+            },
+          },
+        });
+        return {
+          ...post,
+          isLiked: isLiked ? true : false,
+        };
+      })
+    );
+
+    return c.json({ status: 200, posts: postsWithLikedState, nextCursor });
+  } catch (error) {
+    console.log(error);
+    return c.json({ status: 400 });
+  }
+});
+postRouter.post("/user-following-posts", async (c) => {
+  try {
+    const body = await c.req.json();
+    const username = body.username;
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorized Main User" });
+    }
+    const profileUser = await prisma.user.findUnique({
+      where: { username: username },
+    });
+    if (!profileUser) {
+      return c.json({ status: 401, message: "Unauthorized Other User" });
+    }
+    const cursor = body.cursor || null;
+    const take = 10;
+
+    const followingPosts = await prisma.post.findMany({
+      where: {
+        OR: [
+          {
+            creator: {
+              followers: {
+                some: {
+                  followerId: findUser.id,
+                },
+              },
+            },
+          },
+          {
+            community: {
+              members: {
+                some: {
+                  userId: findUser.id,
+                },
+              },
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        image: true,
+        content: true,
+        likesCount: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
+        community: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+        createdAt: true,
+        commentsCount: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: take + 1,
+    });
+    if (!followingPosts) {
+      return c.json({ status: 400, message: "posts not found" });
+    }
+
+    const hasMore = followingPosts.length > take;
+    const posts = hasMore ? followingPosts.slice(0, -1) : followingPosts;
+    const nextCursor = hasMore
+      ? followingPosts[followingPosts.length - 1].id
+      : null;
 
     const postsWithLikedState = await Promise.all(
       posts.map(async (post) => {

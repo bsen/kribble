@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
-import { NavBar } from "../HomeComponents/NavBar";
 
 export const KonnectComponent = () => {
   const token = localStorage.getItem("token");
@@ -91,8 +90,7 @@ export const KonnectComponent = () => {
 
   return (
     <>
-      <div className=" pt-16">
-        <NavBar />
+      <div className=" pt-5">
         <div className="w-full mb-5 flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>
