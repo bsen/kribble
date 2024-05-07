@@ -1,6 +1,5 @@
 import { SideBar } from "../components/SideBar/SideBar";
 import { Suggestions } from "../components/Communities/Suggestions";
-
 import { KonnectComponent } from "../components/Konnect/KonnectComponent";
 export const Konnect = () => {
   return (

@@ -20,8 +20,7 @@ export const SideBar = () => {
       `${BACKEND_URL}/api/server/v1/user/current-user`,
       { token }
     );
-    console.log(response.data.data);
-    console.log(response.data.image);
+
     setCurrentUser(response.data.data);
   }
 

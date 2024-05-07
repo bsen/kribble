@@ -1,6 +1,7 @@
 import { SideBar } from "../components/SideBar/SideBar";
 import { Suggestions } from "../components/Communities/Suggestions";
 import { MatchesComponent } from "../components/Konnect/MatchesComponent";
+
 export const Matches = () => {
   return (
     <div className="flex justify-between bg-white">

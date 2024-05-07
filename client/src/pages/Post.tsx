@@ -1,5 +1,5 @@
-import { PostComponent } from "../components/Post/PostComponent";
 import { SideBar } from "../components/SideBar/SideBar";
+import { PostComponent } from "../components/Post/PostComponent";
 import { Suggestions } from "../components/Communities/Suggestions";
 export const Post = () => {
   return (
