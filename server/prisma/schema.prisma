@@ -34,6 +34,8 @@ model User {
   memberOfCommunities CommunityMembership[] @relation("UserCommunityMembership")
   taggedOnPosts     TaggingOnPost[] @relation("UserTagOnPost")
   taggedOnComments  TaggingOnComment[] @relation("UserTagOnComment")
+writtenSecretNotes   SecretNotes[]         @relation("WriterOfSecretNotes")
+  receivedSecretNotes  SecretNotes[]         @relation("ReceiverOfSecretNotes")
   createdAt      DateTime   @default(now())
 }
 model Community {
@@ -158,4 +160,14 @@ model Message {
   receiverId String
   message    String
   createdAt  DateTime @default(now())
+}
+
+model SecretNotes {
+  id        String   @id @default(uuid())
+  content   String
+  writer    User?    @relation("WriterOfSecretNotes", fields: [writerId], references: [id])
+  writerId  String?
+  receiver  User     @relation("ReceiverOfSecretNotes", fields: [receiverId], references: [id])
+  receiverId String
+  createdAt DateTime @default(now())
 }
