@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
-export const DropDown = () => {
+export const BottomBar = () => {
   const token = localStorage.getItem("token");
   const location = useLocation();
   const navigate = useNavigate();

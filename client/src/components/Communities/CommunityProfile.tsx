@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import { SearchBox } from "../HomeComponents/SearchBar";
+import { NavBar } from "../HomeComponents/NavBar";
 import AddIcon from "@mui/icons-material/Add";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -256,7 +256,7 @@ export const CommunityProfile: React.FC = () => {
                       setDeletingPostId("");
                       setCommunityPostDeletionState(false);
                     }}
-                    className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+                    className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
                   >
                     Cancel
                   </button>
@@ -265,11 +265,13 @@ export const CommunityProfile: React.FC = () => {
             </div>
           ) : (
             <div
-              className="h-screen overflow-y-auto no-scrollbar py-14"
+              className="h-screen overflow-y-auto no-scrollbar py-14 lg:py-0"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
-              <SearchBox />
+              <div className="lg:hidden">
+                <NavBar />
+              </div>
               {communityEditingState ? (
                 <div className="absolute w-full lg:w-[45%]">
                   <EditCommunity communityData={communityData} />

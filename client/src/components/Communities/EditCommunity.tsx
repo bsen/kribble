@@ -99,14 +99,14 @@ export const EditCommunity: React.FC<{ communityData: CommunityData }> = (
     <>
       <div
         style={{ height: "calc(100vh - 56px)" }}
-        className=" bg-background/80 text-blakc flex justify-center items-center"
+        className=" bg-white/80 text-blakc flex justify-center items-center"
       >
         {isLoading ? (
           <div className="text-center my-5">
             <CircularProgress color="inherit" />
           </div>
         ) : (
-          <div className="bg-background w-[85%] border border-neutral-200 p-4 rounded-lg flex flex-col gap-4">
+          <div className="bg-white w-[85%] border border-neutral-200 p-4 rounded-lg flex flex-col gap-4">
             <div className="w-ful flex justify-between">
               <div className="flex justify-center items-center">
                 <div className="absolute text-primarytextcolor z-50">

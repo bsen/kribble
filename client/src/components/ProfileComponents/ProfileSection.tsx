@@ -10,7 +10,7 @@ import { EditProfile } from "./EditProfile";
 import { BACKEND_URL } from "../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { SearchBox } from "../HomeComponents/SearchBar";
+import { NavBar } from "../HomeComponents/NavBar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface Post {
@@ -239,7 +239,7 @@ export const ProfileSection: React.FC = () => {
                       setDeleteState(false);
                       setPostDeleteId("");
                     }}
-                    className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+                    className="text-black bg-stone-50 hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
                   >
                     Cancel
                   </button>
@@ -252,7 +252,7 @@ export const ProfileSection: React.FC = () => {
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
-              <SearchBox />
+              <NavBar />
               {profileEditingState ? (
                 <div className="absolute w-full lg:w-[45%]">
                   <EditProfile />

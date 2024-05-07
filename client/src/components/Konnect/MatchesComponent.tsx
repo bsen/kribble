@@ -119,7 +119,7 @@ export const MatchesComponent = () => {
                           <img
                             src={user.image || "/user.png"}
                             alt="Profile"
-                            className="h-10 w-10 bg-background rounded-full"
+                            className="h-10 w-10 bg-white rounded-full"
                           />
                           <div className="flex flex-col items-start">
                             <div className="text-primarytextcolor text-sm lg:text-lg  font-semibold">

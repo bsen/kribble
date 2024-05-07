@@ -82,7 +82,7 @@ export const CreateCommunityComponent = () => {
         <Loading />
       ) : (
         <div className="h-screen flex justify-center items-center px-5 lg:px-0">
-          <div className="w-full max-w-md my-5 rounded-lg bg-background">
+          <div className="w-full max-w-md my-5 rounded-lg bg-white">
             <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
               <div>
                 <button onClick={handleClose}>

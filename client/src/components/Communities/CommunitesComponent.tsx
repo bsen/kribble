@@ -2,7 +2,7 @@ import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { SearchBox } from "../HomeComponents/SearchBar";
+import { NavBar } from "../HomeComponents/NavBar";
 import { BACKEND_URL } from "../../config";
 
 interface Communities {
@@ -66,19 +66,19 @@ export const CommunitiesComponent = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <SearchBox />
+        <NavBar />
 
         {communityData.communities.length > 0 ? (
           communityData.communities.map((community, index) => (
             <div
               key={index}
-              className="border-b hover:bg-neutral-50 border-neutral-200 p-3 bg-white"
+              className="border-b hover:bg-white border-neutral-200 p-3 bg-white"
             >
               <Link to={`/community/${community.name}`}>
                 <div className="flex justify-between gap-2">
                   <div className="flex gap-2 ">
                     <img
-                      className="h-10 w-10 rounded-full bg-neutral-50"
+                      className="h-10 w-10 rounded-full bg-white"
                       src={community.image ? community.image : "/group.png"}
                     />
                     <div className="flex flex-col w-full">

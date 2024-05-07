@@ -1,12 +1,12 @@
-import { Sidebar } from "../components/SideBar/Sidebar";
+import { SideBarComponent } from "../components/SideBar/SideBarComponent";
 import { CreateCommunityComponent } from "../components/Communities/CreateCommunityComponent";
 import { Suggestions } from "../components/Communities/Suggestions";
 
 export const CreateCommunity = () => {
   return (
-    <div className="flex justify-between bg-background">
+    <div className="flex justify-between bg-white">
       <div className="w-[25%] max-lg:hidden">
-        <Sidebar />
+        <SideBarComponent />
       </div>
       <div className="w-full lg:w-[45%] h-screen overflow-y-auto no-scrollbar">
         <CreateCommunityComponent />

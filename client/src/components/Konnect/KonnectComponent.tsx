@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
-import { SearchBox } from "../HomeComponents/SearchBar";
+import { NavBar } from "../HomeComponents/NavBar";
 
 export const KonnectComponent = () => {
   const token = localStorage.getItem("token");
@@ -92,7 +92,7 @@ export const KonnectComponent = () => {
   return (
     <>
       <div className=" pt-16">
-        <SearchBox />
+        <NavBar />
         <div className="w-full mb-5 flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>
@@ -111,12 +111,11 @@ export const KonnectComponent = () => {
                 "‎"
               )}
             </div>
-            <div>Konnect</div>
           </div>
         </div>
         <div>
           {loadingState ? (
-            <div className="my-10 bg-background flex justify-center items-center w-full">
+            <div className="my-10 bg-white flex justify-center items-center w-full">
               <CircularProgress color="inherit" />
             </div>
           ) : (
@@ -175,7 +174,7 @@ export const KonnectComponent = () => {
                       />
                     </div>
                     <div className="text-center font-semibold font-ubuntu px-6 my-3  text-xl text-primarytextcolor">
-                      Start Connecting with Kribble{" "}
+                      Start Connecting with Konnect{" "}
                     </div>
                     <div className="text-secondarytextcolor font-normal text-sm">
                       1. Your profile picture, bio and interest will be used for
@@ -214,7 +213,7 @@ export const KonnectComponent = () => {
                       <FemaleIcon sx={{ fontSize: 35 }} />
                     </button>
                   </div>
-                  <div className="w-full gap-5 flex items-center flex-col justify-center">
+                  <div className="w-full text-white gap-5 flex items-center flex-col justify-center">
                     <button
                       className="text-background  rounded-full  bg-indigo-500 text-sm lg:text-lg py-2 px-4 font-ubuntu  active:bg-indigo-800"
                       onClick={searchPeople}
