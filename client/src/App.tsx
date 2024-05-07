@@ -15,6 +15,7 @@ import { Community } from "./pages/Community";
 import { Comments } from "./pages/Comments";
 import { UserCommunities } from "./pages/UserCommunities";
 import { CreateCommunityPost } from "./pages/CreateCommunityPost";
+import { Search } from "./pages/Search";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -85,6 +86,10 @@ function App() {
           <Route
             path="/my-communities"
             element={<ProtectedRoute element={<UserCommunities />} />}
+          />
+          <Route
+            path="/search"
+            element={<ProtectedRoute element={<Search />} />}
           />
         </Routes>
       </BrowserRouter>

@@ -174,7 +174,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
           value={sendingmessage}
           onChange={(e) => setSendingMessage(e.target.value)}
           placeholder="Message..."
-          className="w-[80%] h-10 rounded-full border border-neutral-100 px-4 bg-neutral-50 focus:outline-none"
+          className="w-[80%] h-10 rounded-full border border-neutral-100 px-4 bg-white focus:outline-none"
           ref={inputRef}
           onKeyDown={handleKeyDown}
         />

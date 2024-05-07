@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { SearchBox } from "../HomeComponents/SearchBar";
+import { NavBar } from "../HomeComponents/NavBar";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../config";
 interface FollowingsData {
@@ -71,16 +71,16 @@ export const FollowingComponent = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <SearchBox />
+        <NavBar />
         {followingsData.followings.length > 0 ? (
           followingsData.followings.map((followingObj) => (
             <div
               key={followingObj.id}
-              className="border-b hover:bg-neutral-50 border-neutral-200 p-3 bg-white"
+              className="border-b hover:bg-white border-neutral-200 p-3 bg-white"
             >
               <div className="flex justify-start items-center gap-2">
                 <img
-                  className="h-10 w-10 rounded-full bg-neutral-50"
+                  className="h-10 w-10 rounded-full bg-white"
                   src={
                     followingObj.following.image
                       ? followingObj.following.image

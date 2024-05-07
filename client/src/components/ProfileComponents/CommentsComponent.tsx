@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { SearchBox } from "../HomeComponents/SearchBar";
+import { NavBar } from "../HomeComponents/NavBar";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../config";
 
@@ -105,7 +105,7 @@ export const CommentsComponent = () => {
                   setDeleteCommentId("");
                   setDeleteCommentPostId("");
                 }}
-                className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+                className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
               >
                 Cancel
               </button>
@@ -114,16 +114,18 @@ export const CommentsComponent = () => {
         </div>
       ) : (
         <div
-          className="h-screen overflow-y-auto no-scrollbar py-14"
+          className="h-screen overflow-y-auto no-scrollbar py-14 lg:py-0"
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
-          <SearchBox />
+          <div className="lg:hidden">
+            <NavBar />
+          </div>
           {commentsData.comments.length > 0 ? (
             commentsData.comments.map((comment, index) => (
               <div
                 key={index}
-                className="border-b border-neutral-200 p-4 hover:bg-neutral-50"
+                className="border-b border-neutral-200 p-4 hover:bg-white"
               >
                 <div className="flex flex-col gap-2 ">
                   <div className="text-primarytextcolor w-max flex items-center justify-between gap-2 text-sm font-light">

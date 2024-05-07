@@ -32,6 +32,8 @@ model User {
   receivedMessages Message[]@relation("MessageReceiver")
   createdCommunities Community[] @relation("Creator")
   memberOfCommunities CommunityMembership[] @relation("UserCommunityMembership")
+  taggedOnPosts     TaggingOnPost[] @relation("UserTagOnPost")
+  taggedOnComments  TaggingOnComment[] @relation("UserTagOnComment")
   createdAt      DateTime   @default(now())
 }
 model Community {
@@ -61,6 +63,7 @@ model Post {
   community      Community? @relation("CommunityPosts", fields: [communityId], references: [id])
   communityId    String?
   commentsCount  Int         @default(0)
+  taggedUsers    TaggingOnPost[]  @relation("PostUserTags")
   createdAt      DateTime   @default(now())
 }
 model Like {
@@ -81,7 +84,31 @@ model Comment {
   creatorId      String
   post           Post     @relation("PostComments", fields: [postId], references: [id])
   postId         String
+  taggedUsers    TaggingOnComment[] @relation("CommentUserTags")
   createdAt      DateTime @default(now())
+}
+
+
+model TaggingOnPost {
+  id        String   @id @default(uuid())
+  post      Post     @relation("PostUserTags",fields: [postId], references: [id])
+  postId    String
+  user      User     @relation("UserTagOnPost", fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+}
+
+model TaggingOnComment {
+  id         String   @id @default(uuid())
+  comment    Comment  @relation("CommentUserTags",fields: [commentId], references: [id])
+  commentId  String
+  user       User     @relation("UserTagOnComment", fields: [userId], references: [id])
+  userId     String
+  createdAt  DateTime @default(now())
+
+  @@unique([commentId, userId])
 }
 
 model Following {

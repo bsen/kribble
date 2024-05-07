@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import { SearchBox } from "./SearchBar";
+import { NavBar } from "./NavBar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 interface Post {
@@ -120,11 +120,11 @@ export const PostsHome = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-14"
+        className="h-screen overflow-y-auto no-scrollbar py- lg:py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <SearchBox />
+        <NavBar />
         <div>
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (

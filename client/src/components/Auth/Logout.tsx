@@ -7,7 +7,7 @@ export const Logout = () => {
     navigate("/login");
   }
   return (
-    <div className="h-screen w-full absolute bg-background/90 flex justify-center items-center">
+    <div className="h-screen w-full absolute bg-white/90 flex justify-center items-center">
       <div className="text-primarytextcolor text-lg font-ubuntu font-semibold">
         Do you really want to logout?
         <div className="flex justify-evenly my-5">

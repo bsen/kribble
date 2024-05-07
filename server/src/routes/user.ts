@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { decode, jwt, sign, verify } from "hono/jwt";
+import { verify } from "hono/jwt";
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -24,12 +24,13 @@ userRouter.post("/current-user", async (c) => {
       where: { id: userId.id },
       select: {
         username: true,
+        image: true,
       },
     });
     if (!person) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
-    return c.json({ status: 200, data: person.username });
+    return c.json({ status: 200, data: person.username, image: person.image });
   } catch (error) {
     return c.json({ status: 400 });
   }

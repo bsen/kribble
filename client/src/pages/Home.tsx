@@ -1,4 +1,4 @@
-import { Sidebar } from "../components/SideBar/Sidebar";
+import { SideBar } from "../components/SideBar/SideBar";
 import { PostsHome } from "../components/HomeComponents/PostsHome";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
@@ -28,7 +28,7 @@ export const Home = () => {
     }
   }
   return (
-    <div className="flex justify-between bg-background">
+    <div className="flex justify-between bg-white">
       {errorState ? (
         <div className="text-primarytextcolor h-screen w-full font-lg font-ubuntu font-semibold flex justify-center items-center">
           <div className="flex flex-col items-center gap-5">
@@ -47,7 +47,7 @@ export const Home = () => {
       ) : (
         <>
           <div className="w-[25%] max-lg:hidden">
-            <Sidebar />
+            <SideBar />
           </div>
           <div className="w-full lg:w-[45%]">
             <PostsHome />

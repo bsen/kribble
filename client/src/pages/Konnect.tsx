@@ -1,12 +1,12 @@
-import { Sidebar } from "../components/SideBar/Sidebar";
+import { SideBar } from "../components/SideBar/SideBar";
 import { Suggestions } from "../components/Communities/Suggestions";
 
 import { KonnectComponent } from "../components/Konnect/KonnectComponent";
 export const Konnect = () => {
   return (
-    <div className="lg:flex justify-between bg-background">
+    <div className="lg:flex justify-between bg-white">
       <div className="w-[25%] max-lg:hidden">
-        <Sidebar />
+        <SideBar />
       </div>
       <div className="w-full lg:w-[45%]">
         <KonnectComponent />

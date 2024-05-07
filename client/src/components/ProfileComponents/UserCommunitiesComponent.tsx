@@ -2,7 +2,7 @@ import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { SearchBox } from "../HomeComponents/SearchBar";
+import { NavBar } from "../HomeComponents/NavBar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { BACKEND_URL } from "../../config";
 import { Loading } from "../Loading";
@@ -124,7 +124,7 @@ export const UserCommunitiesComponent = () => {
                       setCommunityId("");
                       setDeletingState(false);
                     }}
-                    className="text-black bg-background hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+                    className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
                   >
                     Cancel
                   </button>
@@ -140,7 +140,9 @@ export const UserCommunitiesComponent = () => {
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
-              <SearchBox />
+              <div className="lg:hidden">
+                <NavBar />
+              </div>
 
               {communityData.communities.length > 0 ? (
                 communityData.communities.map((community, index) => (
@@ -151,7 +153,7 @@ export const UserCommunitiesComponent = () => {
                     <div className="flex gap-2 justify-between items-start">
                       <div className="flex gap-2 items-start">
                         <img
-                          className="h-10 w-10 rounded-full bg-neutral-50"
+                          className="h-10 w-10 rounded-full bg-white"
                           src={community.image ? community.image : "/group.png"}
                         />
 
