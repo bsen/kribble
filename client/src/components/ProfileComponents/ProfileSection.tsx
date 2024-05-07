@@ -281,7 +281,7 @@ export const ProfileSection: React.FC = () => {
                                 <button
                                   onClick={followUser}
                                   disabled={isFollowUserLoading}
-                                  className="text-background  py-1 text-sm rounded-full font-ubuntu bg-neutral-800 relative"
+                                  className="text-background text-white  py-1 text-sm rounded-full font-ubuntu bg-neutral-800 relative"
                                 >
                                   <div className="flex items-center justify-center w-20 h-full">
                                     {isFollowUserLoading ? (
