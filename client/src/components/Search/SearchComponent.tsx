@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { BACKEND_URL } from "../../config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 
 interface User {
@@ -16,6 +16,7 @@ interface Community {
 }
 
 export const SearchComponent = () => {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [search, setSearch] = useState("");
   const [isSearching, setIsSearching] = useState(false);

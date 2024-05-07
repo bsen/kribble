@@ -1,17 +1,15 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
+import { BACKEND_URL } from "../../config";
 export const NavBar = () => {
   const navigate = useNavigate();
-  const [dropdown, setDropdown] = useState(false);
   const token = localStorage.getItem("token");
   const [userImage, setUserImage] = useState("");
   const [currentUser, setCurrentUser] = useState("");
-
   async function getUser() {
     const response = await axios.post(
       `${BACKEND_URL}/api/server/v1/user/current-user`,
@@ -48,7 +46,7 @@ export const NavBar = () => {
           >
             <input
               type="text"
-              onChange={(e) => setSearch(e.target.value)}
+              disabled
               placeholder="Search"
               className="w-full h-full bg-neutral-100 focus:outline-none"
             />
