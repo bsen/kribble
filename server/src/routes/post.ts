@@ -51,6 +51,9 @@ postRouter.post("/home-all-posts", async (c) => {
         createdAt: true,
         commentsCount: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
       cursor: cursor ? { id: cursor } : undefined,
       take: take + 1,
     });

@@ -109,7 +109,6 @@ export const PostsHome = () => {
         ) as Post[],
         nextCursor: prevData.nextCursor,
       }));
-
       const details = { postId, token };
       await axios.post(
         `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
@@ -235,22 +234,23 @@ export const PostsHome = () => {
                       )}
                     </div>
                     <div className="w-[80%]">
-                      {post.community ? (
-                        <Link to={`/community/${post.community.name}`}>
-                          {post.community && (
+                      <div className="w-fit">
+                        {post.community ? (
+                          <Link to={`/community/${post.community.name}`}>
+                            {post.community && (
+                              <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                                c/ {post.community.name}
+                              </div>
+                            )}
+                          </Link>
+                        ) : (
+                          <Link to={`/${post.creator.username}`}>
                             <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                              c/ {post.community.name}
+                              {post.creator.name}
                             </div>
-                          )}
-                        </Link>
-                      ) : (
-                        <Link to={`/${post.creator.username}`}>
-                          <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                            {post.creator.name}
-                          </div>
-                        </Link>
-                      )}
-
+                          </Link>
+                        )}
+                      </div>
                       <div className="flex mb-2 gap-2 items-center">
                         <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
                           @{post.creator.username}
@@ -275,21 +275,23 @@ export const PostsHome = () => {
                           className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                           onClick={() => handleLike(post.id)}
                         >
-                          {post.isLiked ? (
-                            <FavoriteIcon
-                              sx={{
-                                fontSize: 18,
-                              }}
-                              className="text-rose-500"
-                            />
-                          ) : (
-                            <FavoriteBorderIcon
-                              sx={{
-                                fontSize: 18,
-                              }}
-                              className="text-rose-500"
-                            />
-                          )}
+                          <div>
+                            {post.isLiked ? (
+                              <FavoriteIcon
+                                sx={{
+                                  fontSize: 18,
+                                }}
+                                className="text-rose-500"
+                              />
+                            ) : (
+                              <FavoriteBorderIcon
+                                sx={{
+                                  fontSize: 18,
+                                }}
+                                className="text-rose-500"
+                              />
+                            )}
+                          </div>
 
                           <div className="text-base text-rose-500">
                             {post.likesCount}

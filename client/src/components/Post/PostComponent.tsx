@@ -134,7 +134,7 @@ export const PostComponent = () => {
       ) : (
         <>
           <div
-            className="h-screen overflow-y-auto no-scrollbar"
+            className="h-screen overflow-y-auto no-scrollbar py-14"
             onScroll={handleScroll}
             ref={scrollContainerRef}
           >
@@ -175,7 +175,7 @@ export const PostComponent = () => {
                   {postData.image ? (
                     <img
                       src={postData.image}
-                      className="max-w-[80%]   rounded-lg border border-neutral-200"
+                      className="max-h-[60vh]   rounded-lg border border-neutral-200"
                     />
                   ) : (
                     ""
@@ -190,7 +190,7 @@ export const PostComponent = () => {
               <div className="w-full">
                 <textarea
                   rows={4}
-                  className={`w-full resize-none no-scrollbar border  border-neutral-100 px-2 py-1 focus:outline-none rounded-xl  ${
+                  className={`w-full resize-none no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
                     popup ? "border border-rose-400" : ""
                   }`}
                   wrap="soft"
