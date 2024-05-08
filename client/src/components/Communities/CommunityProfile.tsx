@@ -264,7 +264,7 @@ export const CommunityProfile: React.FC = () => {
             </div>
           ) : (
             <div
-              className="h-screen overflow-y-auto no-scrollbar pt-5"
+              className="h-screen overflow-y-auto no-scrollbar py-14"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
@@ -304,9 +304,9 @@ export const CommunityProfile: React.FC = () => {
                         <button
                           onClick={handleJoinCommunity}
                           disabled={isJoiningLoading}
-                          className="text-left text-white bg-primarytextcolor font-ubuntu rounded-full py-1 text-sm relative"
+                          className="text-left text-white w-20 h-8 bg-primarytextcolor font-ubuntu rounded-full text-sm relative"
                         >
-                          <div className="flex items-center justify-center w-20 h-full">
+                          <div className="flex items-center justify-center">
                             {isJoiningLoading ? (
                               <CircularProgress
                                 size="20px"

@@ -247,7 +247,7 @@ export const ProfileSection: React.FC = () => {
             </div>
           ) : (
             <div
-              className="overflow-y-auto no-scrollbar pt-5"
+              className="overflow-y-auto no-scrollbar py-14"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
@@ -281,12 +281,12 @@ export const ProfileSection: React.FC = () => {
                                 <button
                                   onClick={followUser}
                                   disabled={isFollowUserLoading}
-                                  className="text-background text-white  py-1 text-sm rounded-full font-ubuntu bg-neutral-800 relative"
+                                  className="text-background text-white w-20 h-8  text-sm rounded-full font-ubuntu bg-neutral-800 relative"
                                 >
-                                  <div className="flex items-center justify-center w-20 h-full">
+                                  <div className="flex items-center justify-center">
                                     {isFollowUserLoading ? (
                                       <CircularProgress
-                                        size="20px"
+                                        size="15px"
                                         className="text-sm"
                                         color="inherit"
                                       />

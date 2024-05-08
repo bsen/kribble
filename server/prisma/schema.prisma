@@ -34,10 +34,21 @@ model User {
   memberOfCommunities CommunityMembership[] @relation("UserCommunityMembership")
   taggedOnPosts     TaggingOnPost[] @relation("UserTagOnPost")
   taggedOnComments  TaggingOnComment[] @relation("UserTagOnComment")
-writtenSecretNotes   SecretNotes[]         @relation("WriterOfSecretNotes")
+  writtenSecretNotes   SecretNotes[]         @relation("WriterOfSecretNotes")
   receivedSecretNotes  SecretNotes[]         @relation("ReceiverOfSecretNotes")
   createdAt      DateTime   @default(now())
 }
+
+model Following {
+  id           String   @id @default(uuid())
+  follower     User     @relation("FollowerRelation", fields: [followerId], references: [id])
+  followerId   String
+  following    User     @relation("FollowingRelation", fields: [followingId], references: [id])
+  followingId  String
+  createdAt    DateTime @default(now())
+  @@unique([followerId, followingId])
+}
+
 model Community {
   id             String    @id @default(uuid())
   name           String
@@ -53,12 +64,24 @@ model Community {
   createdAt      DateTime  @default(now())
 }
 
+model CommunityMembership {
+  id           String   @id @default(uuid())
+  user         User     @relation("UserCommunityMembership", fields: [userId], references: [id])
+  userId       String
+  community    Community @relation("CommunityMembership", fields: [communityId], references: [id])
+  communityId  String
+  joinedAt     DateTime @default(now())
+
+  @@unique([userId, communityId])
+}
+
 model Post {
   id             String     @id @default(uuid())
   image          String?
   content        String
   creator        User       @relation("UserPosts", fields: [creatorId], references: [id])
   creatorId      String
+  anonymity      Boolean @default(false)
   likes          Like[]     @relation("PostLikes")
   likesCount     Int        @default(0)
   comments       Comment[]  @relation("PostComments")
@@ -68,6 +91,19 @@ model Post {
   taggedUsers    TaggingOnPost[]  @relation("PostUserTags")
   createdAt      DateTime   @default(now())
 }
+
+model Comment {
+  id             String   @id @default(uuid())
+  content        String
+  creator        User     @relation("Comments", fields: [creatorId], references: [id])
+  creatorId      String
+  anonymity      Boolean @default(false)
+  post           Post     @relation("PostComments", fields: [postId], references: [id])
+  postId         String
+  taggedUsers    TaggingOnComment[] @relation("CommentUserTags")
+  createdAt      DateTime @default(now())
+}
+
 model Like {
   id        String    @id @default(uuid())
   user      User     @relation("UserLikes", fields: [userId], references: [id])
@@ -78,18 +114,6 @@ model Like {
 
   @@unique([userId, postId])
 }
-
-model Comment {
-  id             String   @id @default(uuid())
-  content        String
-  creator        User     @relation("Comments", fields: [creatorId], references: [id])
-  creatorId      String
-  post           Post     @relation("PostComments", fields: [postId], references: [id])
-  postId         String
-  taggedUsers    TaggingOnComment[] @relation("CommentUserTags")
-  createdAt      DateTime @default(now())
-}
-
 
 model TaggingOnPost {
   id        String   @id @default(uuid())
@@ -111,26 +135,6 @@ model TaggingOnComment {
   createdAt  DateTime @default(now())
 
   @@unique([commentId, userId])
-}
-
-model Following {
-  id           String   @id @default(uuid())
-  follower     User     @relation("FollowerRelation", fields: [followerId], references: [id])
-  followerId   String
-  following    User     @relation("FollowingRelation", fields: [followingId], references: [id])
-  followingId  String
-  createdAt    DateTime @default(now())
-  @@unique([followerId, followingId])
-}
-model CommunityMembership {
-  id           String   @id @default(uuid())
-  user         User     @relation("UserCommunityMembership", fields: [userId], references: [id])
-  userId       String
-  community    Community @relation("CommunityMembership", fields: [communityId], references: [id])
-  communityId  String
-  joinedAt     DateTime @default(now())
-
-  @@unique([userId, communityId])
 }
 model Match {
   id           String   @id @default(uuid())
