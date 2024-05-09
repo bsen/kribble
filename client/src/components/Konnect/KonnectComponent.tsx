@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
+import { BottomBar } from "../Mobile/BottomBar";
 
 export const KonnectComponent = () => {
   const token = localStorage.getItem("token");
@@ -90,21 +91,24 @@ export const KonnectComponent = () => {
 
   return (
     <>
-      <div className=" pt-5">
+      <div>
         <div className="w-full mb-5 flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>
               {matchingState && !loadingState ? (
-                <button
-                  onClick={() => {
-                    setMatchingState(false);
-                  }}
-                >
-                  <ArrowBackIosNewRoundedIcon
-                    className="text-primarytextcolor rounded-full border  py-1 hover:bg-neutral-100"
-                    sx={{ fontSize: 35 }}
-                  />
-                </button>
+                <div className="flex gap-4 items-center">
+                  <button
+                    onClick={() => {
+                      setMatchingState(false);
+                    }}
+                  >
+                    <ArrowBackIosNewRoundedIcon
+                      className="text-primarytextcolor rounded-full border  py-1 hover:bg-neutral-100"
+                      sx={{ fontSize: 35 }}
+                    />
+                  </button>
+                  <div>konnect</div>
+                </div>
               ) : (
                 "‎"
               )}
@@ -113,7 +117,7 @@ export const KonnectComponent = () => {
         </div>
         <div>
           {loadingState ? (
-            <div className="my-10 bg-white flex justify-center items-center w-full">
+            <div className="my-5 bg-white flex justify-center items-center w-full">
               <CircularProgress color="inherit" />
             </div>
           ) : (
@@ -229,6 +233,7 @@ export const KonnectComponent = () => {
                   <div className="text-rose-500 my-5 font-ubuntu font-light text-center text-sm">
                     {popup ? popup : <div>‎</div>}
                   </div>
+                  <BottomBar />
                 </div>
               )}
             </div>

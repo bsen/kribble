@@ -6,7 +6,6 @@ import axios from "axios";
 import { Loading } from "../Loading";
 import Switch from "@mui/material/Switch";
 import { BACKEND_URL } from "../../config";
-
 export const CreatePostComponent = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
@@ -71,13 +70,13 @@ export const CreatePostComponent = () => {
       if (postImage) {
         formData.append("image", postImage);
         const response = await axios.post(
-          `http://localhost:8787/api/server/v1/post/create-full-post`,
+          `${BACKEND_URL}/api/server/v1/post/create-full-post`,
           formData
         );
         setPopup(response.data.message);
       } else {
         const response = await axios.post(
-          `http://localhost:8787/api/server/v1/post/create-text-post`,
+          `${BACKEND_URL}/api/server/v1/post/create-text-post`,
           { token, post, anonymity }
         );
         setPopup(response.data.message);

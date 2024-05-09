@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { BACKEND_URL } from "../../config";
 import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import { BottomBar } from "../Mobile/BottomBar";
 
 interface User {
   username: string;
@@ -51,7 +52,7 @@ export const SearchComponent = () => {
       <div className="w-full px-4 border-b border-neutral-200 bg-white h-14 flex justify-between items-center">
         <button
           disabled={true}
-          className="h-10 mx-auto w-[50%] lg:w-[75%] flex px-4 justify-between items-center border border-neutral-100 bg-neutral-100 rounded-full"
+          className="h-10 mx-auto w-[75%] flex px-4 justify-between items-center border border-neutral-100 bg-neutral-100 rounded-full"
           onClick={() => navigate("/search")}
         >
           <input
@@ -131,6 +132,7 @@ export const SearchComponent = () => {
           </div>
         )}
       </div>
+      <BottomBar />
     </div>
   );
 };

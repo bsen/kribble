@@ -84,7 +84,7 @@ function App() {
             element={<ProtectedRoute element={<Following />} />}
           />
           <Route
-            path="/my-communities"
+            path="/created-communities"
             element={<ProtectedRoute element={<UserCommunities />} />}
           />
           <Route

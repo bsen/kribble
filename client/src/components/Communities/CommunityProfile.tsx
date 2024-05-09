@@ -10,6 +10,8 @@ import { CircularProgress } from "@mui/material";
 import { EditCommunity } from "./EditCommunity";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Loading } from "../Loading";
+import { CommonNavBar } from "../Mobile/CommonNavBar";
+import { BottomBar } from "../Mobile/BottomBar";
 interface CommunityData {
   id: string;
   name: string;
@@ -268,6 +270,7 @@ export const CommunityProfile: React.FC = () => {
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
+              <CommonNavBar />
               {communityEditingState ? (
                 <div className="absolute w-full lg:w-[45%]">
                   <EditCommunity communityData={communityData} />
@@ -477,6 +480,7 @@ export const CommunityProfile: React.FC = () => {
                   <CircularProgress color="inherit" />
                 </div>
               )}
+              <BottomBar />
             </div>
           )}
         </div>

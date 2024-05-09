@@ -11,6 +11,8 @@ import { BACKEND_URL } from "../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { CommonNavBar } from "../Mobile/CommonNavBar";
+import { BottomBar } from "../Mobile/BottomBar";
 
 interface Post {
   id: string;
@@ -251,6 +253,7 @@ export const ProfileSection: React.FC = () => {
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
+              <CommonNavBar />
               {profileEditingState ? (
                 <div className="absolute w-full lg:w-[45%]">
                   <EditProfile />
@@ -366,6 +369,38 @@ export const ProfileSection: React.FC = () => {
                   </div>
                   {currentUser == username ? (
                     <div className="flex my-2 flex-col items-start gap-2">
+                      <button
+                        onClick={() => {
+                          navigate("/comments");
+                        }}
+                        className={
+                          "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                        }
+                      >
+                        My comments
+                      </button>
+                      <div className="flex justify-between items-center gap-2">
+                        <button
+                          onClick={() => {
+                            navigate("/created-communities");
+                          }}
+                          className={
+                            "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                          }
+                        >
+                          Created communites
+                        </button>
+                        <button
+                          onClick={() => {
+                            navigate("/my-communities");
+                          }}
+                          className={
+                            "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                          }
+                        >
+                          Joined communites
+                        </button>
+                      </div>
                       <div className="flex justify-between items-center gap-2">
                         <button
                           onClick={() => {
@@ -395,29 +430,6 @@ export const ProfileSection: React.FC = () => {
                             <AddIcon sx={{ fontSize: 20 }} />
                             <p>Community</p>
                           </div>
-                        </button>
-                      </div>
-
-                      <div className="flex justify-between items-center gap-2">
-                        <button
-                          onClick={() => {
-                            navigate("/comments");
-                          }}
-                          className={
-                            "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
-                          }
-                        >
-                          Comments
-                        </button>
-                        <button
-                          onClick={() => {
-                            navigate("/my-communities");
-                          }}
-                          className={
-                            "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
-                          }
-                        >
-                          My communites
                         </button>
                       </div>
                     </div>
@@ -541,13 +553,13 @@ export const ProfileSection: React.FC = () => {
                     No posts found.
                   </div>
                 )}
+                {isLoading && (
+                  <div className="text-center my-5">
+                    <CircularProgress color="inherit" />
+                  </div>
+                )}
               </div>
-            </div>
-          )}
-
-          {isLoading && (
-            <div className="text-center my-5">
-              <CircularProgress color="inherit" />
+              <BottomBar />
             </div>
           )}
         </div>

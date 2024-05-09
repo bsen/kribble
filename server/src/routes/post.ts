@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
-import { string } from "zod";
+import { boolean, string } from "zod";
 import { poweredBy } from "hono/powered-by";
 
 export const postRouter = new Hono<{
@@ -311,7 +311,7 @@ postRouter.post("/create-full-post", async (c) => {
     const post = formData.get("post");
     const token = formData.get("token");
     const anonymity = formData.get("anonymity");
-    console.log(anonymity);
+    let anonymityBollean;
     if (
       typeof post !== "string" ||
       typeof token !== "string" ||
@@ -330,14 +330,15 @@ postRouter.post("/create-full-post", async (c) => {
     if (!file) {
       return c.json({ status: 400, message: "No image provided" });
     }
+    if (anonymity === "false") {
+      anonymityBollean = false;
+    }
+    if (anonymity === "true") {
+      anonymityBollean = true;
+    }
     const data = new FormData();
     const blob = new Blob([file]);
-    data.append(
-      "file",
-      blob,
-      "post" + "-" + userData.username + ":" + userId.id
-    );
-
+    data.append("file", blob, "postby:" + userId.id);
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
       headers: {
@@ -358,11 +359,11 @@ postRouter.post("/create-full-post", async (c) => {
       const success = await prisma.post.create({
         data: {
           content: post,
+          anonymity: anonymityBollean,
           creator: { connect: { id: userId.id } },
           image: variantUrl,
         },
       });
-
       if (!success) {
         return c.json({ status: 403, message: "Failed to create the post" });
       }
