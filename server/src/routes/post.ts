@@ -310,8 +310,13 @@ postRouter.post("/create-full-post", async (c) => {
     const file = formData.get("image");
     const post = formData.get("post");
     const token = formData.get("token");
-
-    if (typeof post !== "string" || typeof token !== "string") {
+    const anonymity = formData.get("anonymity");
+    console.log(anonymity);
+    if (
+      typeof post !== "string" ||
+      typeof token !== "string" ||
+      typeof anonymity !== "string"
+    ) {
       return c.json({ status: 400, message: "Invalid post or token" });
     }
     const prisma = new PrismaClient({
@@ -376,6 +381,7 @@ postRouter.post("/create-text-post", async (c) => {
     const body = await c.req.json();
     const post = body.post;
     const token = body.token;
+    const anonymity = body.anonymity;
     const userId = await verify(token, c.env.JWT_SECRET);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
@@ -388,10 +394,10 @@ postRouter.post("/create-text-post", async (c) => {
     const createPost = await prisma.post.create({
       data: {
         content: post,
+        anonymity: anonymity,
         creator: { connect: { id: userId.id } },
       },
     });
-
     if (!createPost) {
       return c.json({ status: 403, message: "Failed to create the post" });
     }
