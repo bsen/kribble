@@ -5,6 +5,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../config";
+import { CommonNavBar } from "../Mobile/CommonNavBar";
 
 interface Comment {
   id: string;
@@ -117,6 +118,7 @@ export const CommentsComponent = () => {
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
+          <CommonNavBar />
           {commentsData.comments.length > 0 ? (
             commentsData.comments.map((comment, index) => (
               <div

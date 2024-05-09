@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../config";
+import { CommonNavBar } from "../Mobile/CommonNavBar";
 interface FollowingsData {
   id: string;
   following: Following;
@@ -70,6 +71,7 @@ export const FollowingComponent = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
+        <CommonNavBar />
         {followingsData.followings.length > 0 ? (
           followingsData.followings.map((followingObj) => (
             <div

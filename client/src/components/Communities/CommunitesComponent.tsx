@@ -3,6 +3,8 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
+import { CommonNavBar } from "../Mobile/CommonNavBar";
+import { BottomBar } from "../Mobile/BottomBar";
 
 interface Communities {
   id: string;
@@ -61,10 +63,11 @@ export const CommunitiesComponent = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-0"
+        className="h-screen overflow-y-auto no-scrollbar py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
+        <CommonNavBar />
         {communityData.communities.length > 0 ? (
           communityData.communities.map((community, index) => (
             <div
@@ -107,6 +110,7 @@ export const CommunitiesComponent = () => {
             <CircularProgress color="inherit" />
           </div>
         )}
+        <BottomBar />
       </div>
     </>
   );

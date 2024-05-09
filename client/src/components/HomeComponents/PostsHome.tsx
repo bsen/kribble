@@ -6,6 +6,7 @@ import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { BottomBar } from "../Mobile/BottomBar";
 interface Post {
   id: string;
   creator: {
@@ -155,8 +156,8 @@ export const PostsHome = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <div className="top-0  border-b border-neutral-200  bg-white fixed w-full lg:w-[45%]">
-          <div className="w-full h-14 flex justify-around items-center">
+        <div className="top-0  h-14 shadow-sm  bg-white/95 fixed w-full lg:w-[45%]">
+          <div className="w-full h-full flex justify-around items-center">
             <button
               onClick={() => {
                 navigate("/home");
@@ -197,7 +198,7 @@ export const PostsHome = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="border-b border-neutral-200 p-3 bg-white"
+                className="border-b border-neutral-200 p-4 bg-white"
               >
                 <div>
                   <div className="flex gap-2">
@@ -322,6 +323,7 @@ export const PostsHome = () => {
             </div>
           )}
         </div>
+        <BottomBar />
 
         {isLoading && (
           <div className="text-center my-5">
