@@ -173,7 +173,7 @@ export const PostsHome = () => {
               onClick={() => {
                 navigate(`/${currentUser}`);
               }}
-              className="flex gap-2 bg-indigo-50 border border-indigo-100 px-2 py-1 rounded-lg items-center text-sm font-normal text-neutral-800"
+              className="flex gap-2 bg-indigo-100 px-2 py-1 rounded-lg items-center text-sm font-light text-indigo-600"
             >
               <img
                 src={userImage ? userImage : "/user.png"}
@@ -189,16 +189,20 @@ export const PostsHome = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-2 border border-neutral-100 rounded-md p-4 bg-white"
+                className="my-2 p-4 border hover:bg-white/50 border-neutral-100 rounded-md bg-white"
+                onClick={() => navigate(`/post/${post.id}`)}
               >
                 <div className="flex gap-2">
                   <div>
                     {post.community ? (
                       <div>
                         {post.community && (
-                          <Link
-                            to={`/community/${post.community.name}`}
-                            className="flex gap-2  mt-2 text-neutral-600"
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/community/${post.community.name}`);
+                            }}
+                            className="flex gap-2 mt-2 text-neutral-600"
                           >
                             {post.community && (
                               <img
@@ -207,19 +211,24 @@ export const PostsHome = () => {
                                 alt="Community"
                               />
                             )}
-                          </Link>
+                          </div>
                         )}
                       </div>
                     ) : (
                       <>
                         {post.creator.image && !post.anonymity ? (
-                          <Link to={`/${post.creator.username}`}>
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/${post.creator.username}`);
+                            }}
+                          >
                             <img
                               src={post.creator.image}
                               alt="Profile"
                               className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
                             />
-                          </Link>
+                          </div>
                         ) : (
                           <img
                             src="/user.png"
@@ -230,16 +239,21 @@ export const PostsHome = () => {
                       </>
                     )}
                   </div>
-                  <div className="w-[80%]">
+                  <div className="w-full">
                     <div className="w-fit flex gap-2 items-center">
                       {post.community ? (
-                        <Link to={`/community/${post.community.name}`}>
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/community/${post.community.name}`);
+                          }}
+                        >
                           {post.community && (
                             <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
                               c/ {post.community.name}
                             </div>
                           )}
-                        </Link>
+                        </div>
                       ) : (
                         <>
                           {post.anonymity ? (
@@ -247,11 +261,15 @@ export const PostsHome = () => {
                               {post.creator.username}
                             </div>
                           ) : (
-                            <Link to={`/${post.creator.username}`}>
-                              <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                                {post.creator.username}
-                              </div>
-                            </Link>
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/${post.creator.username}`);
+                              }}
+                              className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
+                            >
+                              {post.creator.username}
+                            </div>
                           )}
                         </>
                       )}
@@ -263,30 +281,34 @@ export const PostsHome = () => {
                     {post.image && (
                       <img
                         src={post.image}
-                        className="max-h-[80vh] mt-4 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
+                        className="mt-4 max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
                       />
                     )}
+
                     <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
                       {post.content}
                     </div>
 
-                    <div className="flex  justify-start gap-5 items-center text-sm text-neutral-500">
+                    <div className="flex justify-start gap-5 items-center text-sm text-neutral-500">
                       <button
                         className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
-                        onClick={() => handleLike(post.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLike(post.id);
+                        }}
                       >
                         <div>
                           {post.isLiked ? (
                             <FavoriteIcon
                               sx={{
-                                fontSize: 18,
+                                fontSize: 20,
                               }}
                               className="text-rose-500"
                             />
                           ) : (
                             <FavoriteBorderIcon
                               sx={{
-                                fontSize: 18,
+                                fontSize: 20,
                               }}
                               className="text-rose-500"
                             />
@@ -303,7 +325,7 @@ export const PostsHome = () => {
                         className="flex bg-indigo-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
                       >
                         <ChatBubbleOutlineRoundedIcon
-                          sx={{ fontSize: 18 }}
+                          sx={{ fontSize: 20 }}
                           className="text-indigo-500"
                         />
                         <div className="text-base text-indigo-500">
@@ -319,7 +341,7 @@ export const PostsHome = () => {
             <div className="text-center font-ubuntu my-5 text-primarytextcolor">
               No posts found.
             </div>
-          )}
+          )}{" "}
         </div>
         <BottomBar />
 

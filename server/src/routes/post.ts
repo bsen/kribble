@@ -38,7 +38,7 @@ postRouter.post("/user-all-posts", async (c) => {
     const take = 10;
 
     const userposts = await prisma.post.findMany({
-      where: { creatorId: profileUser?.id },
+      where: { creatorId: profileUser?.id, anonymity: false },
       select: {
         id: true,
         image: true,
@@ -48,7 +48,6 @@ postRouter.post("/user-all-posts", async (c) => {
           select: {
             id: true,
             username: true,
-            name: true,
             image: true,
           },
         },

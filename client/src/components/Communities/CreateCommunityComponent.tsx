@@ -81,7 +81,7 @@ export const CreateCommunityComponent = () => {
       {loadingState ? (
         <Loading />
       ) : (
-        <div className="h-screen flex justify-center items-center px-5 lg:px-0">
+        <div className="h-screen bg-white flex justify-center items-center px-5 lg:px-0">
           <div className="w-full max-w-md my-5 rounded-lg bg-white">
             <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
               <div>
