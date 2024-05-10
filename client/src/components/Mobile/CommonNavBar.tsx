@@ -3,7 +3,7 @@ import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRound
 export const CommonNavBar = () => {
   return (
     <>
-      <div className="top-0 h-14 shadow-sm  bg-white/95 fixed w-full lg:w-[45%]">
+      <div className="top-0 h-14 shadow-sm  bg-white/95 fixed w-full lg:w-[50%]">
         <div className="h-full w-full flex justify-start items-center px-4">
           <button
             onClick={() => {

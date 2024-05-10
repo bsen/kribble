@@ -154,11 +154,11 @@ export const PostsHome = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-14  lg:py-"
+        className="h-screen overflow-y-auto no-scrollbar py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <div className="top-0 rounded-b-lg h-14 shadow-sm  bg-white/80 fixed w-full lg:w-[50%]">
+        <div className="top-0 rounded-b-md h-14 shadow-sm  bg-white/80 fixed w-full lg:w-[50%]">
           <div className="w-full h-full flex justify-between px-5 items-center">
             <button
               onClick={() => {

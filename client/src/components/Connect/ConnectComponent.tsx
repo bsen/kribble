@@ -91,7 +91,7 @@ export const ConnectComponent = () => {
 
   return (
     <>
-      <div className="bg-white h-screen">
+      <div className="bg-white h-screen border-l border-r border-neutral-100">
         <div className="w-full mb-5 flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>

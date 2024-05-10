@@ -133,20 +133,17 @@ export const EditProfile = () => {
       {logOutState ? (
         <Logout />
       ) : (
-        <div
-          style={{ height: "calc(100vh - 56px)" }}
-          className="bg-white/80 text-blakc flex justify-center items-center"
-        >
+        <div className="bg-white/80 h-screen text-blakc flex justify-center items-center">
           {isLoading ? (
             <div className="text-center my-5">
               <CircularProgress color="inherit" />
             </div>
           ) : (
-            <div className="bg-white w-[85%]   border border-neutral-200 p-4 rounded-lg flex flex-col gap-4">
-              <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
+            <div className="bg-white w-[85%]   border border-neutral-100 p-4 rounded-lg flex flex-col gap-4">
+              <div className="flex justify-between items-center border-b border-neutral-100 pb-4">
                 <button
                   onClick={() => {
-                    history.go(-1);
+                    window.location.reload();
                   }}
                 >
                   <CloseIcon className="text-primarytextcolor" />
@@ -204,7 +201,7 @@ export const EditProfile = () => {
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
-                  className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-200"
+                  className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-100"
                 />
               </div>
               <div>
@@ -216,13 +213,13 @@ export const EditProfile = () => {
                   onChange={(e) => {
                     setWebsite(e.target.value);
                   }}
-                  className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-200"
+                  className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-100"
                 />
               </div>
               <div>
                 <div className="text-primarytextcolor">Interest</div>
                 <select
-                  className="h-10 w-full rounded-lg px-2 text-secondarytextcolor border border-neutral-200 appearance-none"
+                  className="h-10 w-full rounded-lg px-2 text-secondarytextcolor border border-neutral-100 appearance-none"
                   onChange={(e) => setInterest(e.target.value)}
                   defaultValue={userData.interest}
                 >
@@ -266,7 +263,7 @@ export const EditProfile = () => {
                 <div className="text-primarytextcolor">Bio</div>
                 <textarea
                   rows={2}
-                  className="w-full px-2 py-1 resize-none no-scrollbar rounded-lg border border-neutral-200"
+                  className="w-full px-2 py-1 resize-none no-scrollbar rounded-lg border border-neutral-100"
                   defaultValue={userData.bio}
                   wrap="soft"
                   maxLength={150}
