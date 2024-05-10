@@ -2,8 +2,6 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
-import { boolean, string } from "zod";
-import { poweredBy } from "hono/powered-by";
 
 export const postRouter = new Hono<{
   Bindings: {
@@ -14,75 +12,8 @@ export const postRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-postRouter.post("/home-all-posts", async (c) => {
-  try {
-    const body = await c.req.json();
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
-    if (!findUser) {
-      return c.json({ status: 401, message: "Unauthorized" });
-    }
-    const cursor = body.cursor || null;
-    const take = 10;
-    const allPosts = await prisma.post.findMany({
-      select: {
-        id: true,
-        image: true,
-        content: true,
-        likesCount: true,
-        creator: {
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            image: true,
-          },
-        },
-        community: {
-          select: {
-            name: true,
-            image: true,
-          },
-        },
-        createdAt: true,
-        commentsCount: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      cursor: cursor ? { id: cursor } : undefined,
-      take: take + 1,
-    });
 
-    const hasMore = allPosts.length > take;
-    const posts = hasMore ? allPosts.slice(0, -1) : allPosts;
-    const nextCursor = hasMore ? allPosts[allPosts.length - 1].id : null;
-    const postsWithLikedState = await Promise.all(
-      posts.map(async (post) => {
-        const isLiked = await prisma.like.findUnique({
-          where: {
-            userId_postId: {
-              userId: findUser.id,
-              postId: post.id,
-            },
-          },
-        });
-        return {
-          ...post,
-          isLiked: isLiked ? true : false,
-        };
-      })
-    );
-    return c.json({ status: 200, data: postsWithLikedState, nextCursor });
-  } catch (error) {
-    console.log(error);
-    return c.json({ status: 400 });
-  }
-});
+//////////////// USER'S POSTS ////////////////////////////////
 
 postRouter.post("/user-all-posts", async (c) => {
   try {
@@ -107,7 +38,7 @@ postRouter.post("/user-all-posts", async (c) => {
     const take = 10;
 
     const userposts = await prisma.post.findMany({
-      where: { creatorId: profileUser?.id },
+      where: { creatorId: profileUser?.id, anonymity: false },
       select: {
         id: true,
         image: true,
@@ -117,7 +48,6 @@ postRouter.post("/user-all-posts", async (c) => {
           select: {
             id: true,
             username: true,
-            name: true,
             image: true,
           },
         },
@@ -162,112 +92,9 @@ postRouter.post("/user-all-posts", async (c) => {
     return c.json({ status: 400 });
   }
 });
-postRouter.post("/user-following-posts", async (c) => {
-  try {
-    const body = await c.req.json();
-    const username = body.username;
-    const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
-    if (!findUser) {
-      return c.json({ status: 401, message: "Unauthorized Main User" });
-    }
-    const profileUser = await prisma.user.findUnique({
-      where: { username: username },
-    });
-    if (!profileUser) {
-      return c.json({ status: 401, message: "Unauthorized Other User" });
-    }
-    const cursor = body.cursor || null;
-    const take = 10;
 
-    const followingPosts = await prisma.post.findMany({
-      where: {
-        OR: [
-          {
-            creator: {
-              followers: {
-                some: {
-                  followerId: findUser.id,
-                },
-              },
-            },
-          },
-          {
-            community: {
-              members: {
-                some: {
-                  userId: findUser.id,
-                },
-              },
-            },
-          },
-        ],
-      },
-      select: {
-        id: true,
-        image: true,
-        content: true,
-        likesCount: true,
-        creator: {
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            image: true,
-          },
-        },
-        community: {
-          select: {
-            name: true,
-            image: true,
-          },
-        },
-        createdAt: true,
-        commentsCount: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      cursor: cursor ? { id: cursor } : undefined,
-      take: take + 1,
-    });
-    if (!followingPosts) {
-      return c.json({ status: 400, message: "posts not found" });
-    }
+//////////////// GETTING ONE POST'S DATA ////////////////////////////////
 
-    const hasMore = followingPosts.length > take;
-    const posts = hasMore ? followingPosts.slice(0, -1) : followingPosts;
-    const nextCursor = hasMore
-      ? followingPosts[followingPosts.length - 1].id
-      : null;
-
-    const postsWithLikedState = await Promise.all(
-      posts.map(async (post) => {
-        const isLiked = await prisma.like.findUnique({
-          where: {
-            userId_postId: {
-              userId: findUser.id,
-              postId: post.id,
-            },
-          },
-        });
-        return {
-          ...post,
-          isLiked: isLiked ? true : false,
-        };
-      })
-    );
-
-    return c.json({ status: 200, posts: postsWithLikedState, nextCursor });
-  } catch (error) {
-    console.log(error);
-    return c.json({ status: 400 });
-  }
-});
 postRouter.post("/one-post-data", async (c) => {
   try {
     const body = await c.req.json();
@@ -304,6 +131,9 @@ postRouter.post("/one-post-data", async (c) => {
     console.log(error);
   }
 });
+
+//////////////// CREATING FULL POST ////////////////////////////////
+
 postRouter.post("/create-full-post", async (c) => {
   try {
     const formData = await c.req.formData();
@@ -377,6 +207,8 @@ postRouter.post("/create-full-post", async (c) => {
   }
 });
 
+//////////////// CREATING TEXT POST ////////////////////////////////
+
 postRouter.post("/create-text-post", async (c) => {
   try {
     const body = await c.req.json();
@@ -408,6 +240,9 @@ postRouter.post("/create-text-post", async (c) => {
     return c.json({ status: 400, message: "Try again later, Network error" });
   }
 });
+
+//////////////// DELETING POST ////////////////////////////////
+
 postRouter.post("/delete-post", async (c) => {
   try {
     const body = await c.req.json();
@@ -449,6 +284,8 @@ postRouter.post("/delete-post", async (c) => {
     return c.json({ status: 400 });
   }
 });
+
+//////////////// POST LIKING AND UNLIKING ////////////////////////////////
 
 postRouter.post("/post-like-unlike", async (c) => {
   try {

@@ -6,7 +6,7 @@ import axios from "axios";
 import { Loading } from "../Loading";
 import Switch from "@mui/material/Switch";
 import { BACKEND_URL } from "../../config";
-export const CreatePostComponent = () => {
+export const PostCreate = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [post, setPost] = useState("");
@@ -95,7 +95,7 @@ export const CreatePostComponent = () => {
       {loadingState ? (
         <Loading />
       ) : (
-        <div className="h-screen flex justify-center items-center px-5 lg:px-0">
+        <div className="h-screen bg-white flex justify-center items-center px-5 lg:px-0">
           <div className="w-full max-w-md my-5 rounded-lg bg-white">
             <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
               <div>
@@ -155,18 +155,16 @@ export const CreatePostComponent = () => {
                 minLength={10}
                 maxLength={300}
               />
-              <div className="flex flex-col items-start mb-2">
-                <div>
-                  <Switch
-                    onClick={() => {
-                      setAnonymity((prevState) => !prevState);
-                    }}
-                    checked={anonymity}
-                  />
-                  <label className="text-neutral-600 text-base font-ubuntu font-normal">
-                    Post anonymously
-                  </label>
-                </div>
+              <div className="flex  items-center mb-2">
+                <Switch
+                  onClick={() => {
+                    setAnonymity((prevState) => !prevState);
+                  }}
+                  checked={anonymity}
+                />
+                <label className="text-neutral-600 text-base font-ubuntu font-normal">
+                  Post anonymously
+                </label>
               </div>
               <div className="flex w-full justify-center">
                 <button

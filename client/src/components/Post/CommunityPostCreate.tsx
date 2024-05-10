@@ -5,14 +5,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading";
+import Switch from "@mui/material/Switch";
 import { BACKEND_URL } from "../../config";
 
-export const CreateCommunityPostComponent = () => {
+export const CommunityPostCreate = () => {
   const { name } = useParams();
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [post, setPost] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+  const [anonymity, setAnonymity] = useState(false);
   const [postImage, setPostImage] = useState<File | null>(null);
   const [popup, setPopup] = useState("");
 
@@ -64,6 +66,7 @@ export const CreateCommunityPostComponent = () => {
     try {
       setLoadingState(true);
       const formData = new FormData();
+      formData.append("anonymity", String(anonymity));
       formData.append("post", post);
       formData.append("communityName", name || "");
       formData.append("token", token || "");
@@ -77,7 +80,7 @@ export const CreateCommunityPostComponent = () => {
       } else {
         const response = await axios.post(
           `${BACKEND_URL}/api/server/v1/community/create-community-text-post`,
-          { communityName: name, token, post }
+          { communityName: name, token, post, anonymity }
         );
         setPopup(response.data.message);
       }
@@ -95,7 +98,7 @@ export const CreateCommunityPostComponent = () => {
       {loadingState ? (
         <Loading />
       ) : (
-        <div className="h-screen flex justify-center items-center px-5 lg:px-0">
+        <div className="h-screen bg-white flex justify-center items-center px-5 lg:px-0">
           <div className="w-full max-w-md my-5 rounded-lg bg-white">
             <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
               <div>
@@ -154,6 +157,17 @@ export const CreateCommunityPostComponent = () => {
                 wrap="soft"
                 maxLength={300}
               />
+              <div className="flex  items-center mb-2">
+                <Switch
+                  onClick={() => {
+                    setAnonymity((prevState) => !prevState);
+                  }}
+                  checked={anonymity}
+                />
+                <label className="text-neutral-600 text-base font-ubuntu font-normal">
+                  Post anonymously
+                </label>
+              </div>
               <div className="flex w-full justify-center">
                 <button
                   onClick={createCommunityPost}
@@ -161,6 +175,17 @@ export const CreateCommunityPostComponent = () => {
                 >
                   Post
                 </button>
+              </div>
+
+              <div className="text-sm text-neutral-800 my-2 text-center">
+                {anonymity ? (
+                  <div>
+                    In anonymous posts, only the content is displayed. User
+                    identities remain hidden to other users.
+                  </div>
+                ) : (
+                  <div>‎</div>
+                )}
               </div>
               <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
                 {popup ? popup : <div>‎</div>}

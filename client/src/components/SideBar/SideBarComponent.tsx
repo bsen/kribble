@@ -1,132 +1,93 @@
-import HomeIcon from "@mui/icons-material/Home";
-import PersonIcon from "@mui/icons-material/Person";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddIcon from "@mui/icons-material/Add";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
-import JoinInnerIcon from "@mui/icons-material/JoinInner";
-import SearchIcon from "@mui/icons-material/Search";
-import axios from "axios";
-import { BACKEND_URL } from "../../config";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 export const SideBarComponent = () => {
-  const token = localStorage.getItem("token");
   const location = useLocation();
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState("");
-
-  async function getUser() {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/user/current-user`,
-      { token }
-    );
-
-    setCurrentUser(response.data.data);
-  }
-
-  useEffect(() => {
-    getUser();
-  }, []);
 
   return (
     <>
-      <div className="flex bg-white flex-col justify-between h-screen border-r border-neutral-200">
-        <div className="flex flex-col justify-center items-center">
-          <div className="flex flex-col items-start">
-            <div className="bg-gradient-to-r from-violet-500 to-orange-500  text-transparent bg-clip-text text-4xl mt-4 font-ubuntu">
-              kribble
-            </div>
-            <button
-              onClick={() => {
-                navigate("/home");
-              }}
-            >
-              <div
-                className={`mt-4 flex items-center justify-center gap-2 text-lg font-medium max-lg:hidden ${
-                  location.pathname === "/home"
-                    ? "text-indigo-500"
-                    : "text-primarytextcolor"
-                }`}
-              >
-                <HomeIcon sx={{ fontSize: 30 }} />
-                <div>Home</div>
-              </div>
-            </button>
-            <button>
-              <Link to={`/communities`}>
-                <div
-                  className={`mt-4 flex items-center justify-center gap-2 text-lg font-medium max-lg:hidden ${
-                    location.pathname === `/communities`
-                      ? "text-indigo-500"
-                      : "text-primarytextcolor"
-                  }`}
-                >
-                  <GroupsRoundedIcon sx={{ fontSize: 30 }} />
-                  <div>Communities</div>
-                </div>
-              </Link>
-            </button>
-
-            <button>
-              <Link to={`/konnect`}>
-                <div
-                  className={`mt-4 flex items-center justify-center gap-2 text-lg font-medium max-lg:hidden ${
-                    location.pathname === `/konnect`
-                      ? "text-indigo-500"
-                      : "text-primarytextcolor"
-                  }`}
-                >
-                  <JoinInnerIcon sx={{ fontSize: 30 }} />
-                  <div>Konnect</div>
-                </div>
-              </Link>
-            </button>
-
-            <button>
-              <Link to={`/${currentUser}`}>
-                <div
-                  className={`mt-4 flex items-center justify-center gap-2 text-lg font-medium max-lg:hidden ${
-                    location.pathname === `/${currentUser}`
-                      ? "text-indigo-500"
-                      : "text-primarytextcolor"
-                  }`}
-                >
-                  <PersonIcon sx={{ fontSize: 30 }} />
-                  <div>Profile</div>
-                </div>
-              </Link>
-            </button>
-            <button
-              onClick={() => {
-                navigate("/search");
-              }}
-            >
-              <div
-                className={`mt-4 flex items-center justify-center gap-2 text-lg font-medium max-lg:hidden ${
-                  location.pathname === "/search"
-                    ? "text-indigo-500"
-                    : "text-primarytextcolor"
-                }`}
-              >
-                <SearchIcon sx={{ fontSize: 30 }} />
-                <div>Search</div>
-              </div>
-            </button>
-            <button
-              onClick={() => {
-                navigate("/create/post");
-              }}
-              className="mt-10"
-            >
-              <div className="px-6 py-1 rounded-full bg-neutral-800 flex items-center justify-center gap-2 text-lg font-medium  text-white">
-                <AddIcon sx={{ fontSize: 30 }} />
-                <p>Post</p>
-              </div>
-            </button>
+      <div className="flex bg-white flex-col items-center py-2 justify-between h-screen border-r border-neutral-100">
+        <div className="h-[45vh] w-[70%] flex flex-col justify-evenly items-start">
+          <div
+            onClick={() => {
+              navigate("/home");
+            }}
+            className="bg-gradient-to-r from-violet-500 to-orange-500  text-transparent bg-clip-text text-4xl font-ubuntu"
+          >
+            kribble
           </div>
+
+          <button
+            onClick={() => {
+              navigate("/home");
+            }}
+            className={`w-full h-10 px-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+              location.pathname === "/home"
+                ? "text-indigo-600"
+                : "text-neutral-800"
+            }`}
+          >
+            <HomeOutlinedIcon sx={{ fontSize: 25 }} />
+            <div>Home</div>
+          </button>
+          <button
+            onClick={() => {
+              navigate("/communities");
+            }}
+            className={`w-full h-10 px-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+              location.pathname === "/communities"
+                ? "text-indigo-600"
+                : "text-neutral-800"
+            }`}
+          >
+            <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
+            <div>Communities</div>
+          </button>
+
+          <button
+            onClick={() => {
+              navigate("/connect");
+            }}
+            className={`w-full h-10 px-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+              location.pathname === "/connect"
+                ? "text-indigo-600"
+                : "text-neutral-800"
+            }`}
+          >
+            <AllInclusiveIcon sx={{ fontSize: 25 }} />
+            <div>Connect</div>
+          </button>
+          <button
+            onClick={() => {
+              navigate("/search");
+            }}
+            className={`w-full h-10 px-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+              location.pathname === "/search"
+                ? "text-indigo-600"
+                : "text-neutral-800"
+            }`}
+          >
+            <SearchOutlinedIcon sx={{ fontSize: 25 }} />
+            <div>Search</div>
+          </button>
+          <button
+            onClick={() => {
+              navigate("/create/post");
+            }}
+            className={
+              "w-full h-10 px-4 rounded-md  bg-indigo-500 text-white flex items-center justify-start gap-2 text-base font-light"
+            }
+          >
+            <AddIcon sx={{ fontSize: 25 }} />
+            <div>Post</div>
+          </button>
         </div>
-        <div className="text-sm text-center py-2 font-ubuntu font-normal text-secondarytextcolor">
-          © 2024 kribble Ltd
+        <div className="text-xs text-center py-2 font-ubuntu font-light text-neutral-600">
+          © 2024 kribble, a Sen production
         </div>
       </div>
     </>

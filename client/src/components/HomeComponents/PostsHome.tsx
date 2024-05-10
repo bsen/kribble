@@ -6,13 +6,14 @@ import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { BottomBar } from "../Mobile/BottomBar";
+import { BottomBar } from "../Bars/BottomBar";
+import { NavBar } from "../Bars/NavBar";
+
 interface Post {
   id: string;
   creator: {
     id: string;
     username: string;
-    name: string;
     image: string | null;
   };
   community: {
@@ -24,15 +25,13 @@ interface Post {
   createdAt: string;
   commentsCount: string;
   likesCount: string;
+  anonymity: string;
   isLiked: boolean;
 }
 
 export const PostsHome = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const [userImage, setUserImage] = useState("");
-  const [trendingComponent, setTrendingComponent] = useState(true);
-  const [currentUser, setCurrentUser] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [postData, setPostData] = useState<{
@@ -42,11 +41,12 @@ export const PostsHome = () => {
     posts: [],
     nextCursor: null,
   });
-  async function getAllPosts(cursor?: string) {
+
+  async function getFeedPosts(cursor?: string) {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/home-all-posts`,
+        `${BACKEND_URL}/api/server/v1/feed/posts`,
         { token, cursor }
       );
       setPostData({
@@ -59,26 +59,10 @@ export const PostsHome = () => {
       setIsLoading(false);
     }
   }
-  async function getFollowingPost(cursor?: string) {
-    try {
-      setIsLoading(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/user-following-posts`,
-        { token, cursor }
-      );
-      setPostData({
-        posts: [...postData.posts, ...response.data.data],
-        nextCursor: response.data.nextCursor,
-      });
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  }
+
   useEffect(() => {
-    trendingComponent ? getAllPosts() : getFollowingPost();
-  }, [trendingComponent]);
+    getFeedPosts();
+  }, []);
 
   const handleScroll = () => {
     if (
@@ -89,7 +73,7 @@ export const PostsHome = () => {
       postData.nextCursor &&
       !isLoading
     ) {
-      getAllPosts(postData.nextCursor);
+      getFeedPosts(postData.nextCursor);
     }
   };
 
@@ -134,20 +118,24 @@ export const PostsHome = () => {
       }));
     }
   };
-  async function getUser() {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/user/current-user`,
-      { token }
-    );
 
-    setUserImage(response.data.image);
-    setCurrentUser(response.data.data);
-  }
-
-  console.log(userImage, currentUser);
-  useEffect(() => {
-    getUser();
-  }, []);
+  const getTimeDifference = (createdAt: string) => {
+    const currentDate = new Date();
+    const postDate = new Date(createdAt);
+    const timeDifference = currentDate.getTime() - postDate.getTime();
+    const hoursDifference = Math.floor(timeDifference / (1000 * 3600));
+    const daysDifference = Math.floor(hoursDifference / 24);
+    if (daysDifference >= 30) {
+      return postDate.toDateString();
+    } else if (daysDifference >= 1) {
+      return `${daysDifference}d ago`;
+    } else if (hoursDifference >= 1) {
+      return `${hoursDifference}h ago`;
+    } else {
+      const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+      return `${minutesDifference}m ago`;
+    }
+  };
 
   return (
     <>
@@ -156,162 +144,155 @@ export const PostsHome = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <div className="top-0  h-14 shadow-sm  bg-white/95 fixed w-full lg:w-[45%]">
-          <div className="w-full h-full flex justify-around items-center">
-            <button
-              onClick={() => {
-                navigate("/home");
-              }}
-            >
-              <div className="lg:hidden bg-gradient-to-r from-indigo-500 to-orange-500  text-transparent bg-clip-text text-2xl font-ubuntu">
-                kr
-              </div>
-            </button>
-
-            <button
-              className={` h-full flex items-center text-neutral-600 text-base font-ubuntu ${
-                trendingComponent ? "border-b-2 border-indigo-500" : ""
-              }`}
-              onClick={() => setTrendingComponent(true)}
-            >
-              Trending
-            </button>
-            <button
-              className={` h-full flex items-center text-neutral-600 text-base font-ubuntu ${
-                trendingComponent ? "" : "border-b-2 border-indigo-500"
-              }`}
-              onClick={() => setTrendingComponent(false)}
-            >
-              Following
-            </button>
-            <Link to={`/${currentUser}`}>
-              <img
-                src={userImage ? userImage : "/user.png"}
-                alt="Profile"
-                className="lg:hidden w-7 h-7 border border-neutral-50 rounded-full"
-              />
-            </Link>
-          </div>
-        </div>
+        <NavBar />
         <div>
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="border-b border-neutral-200 p-4 bg-white"
+                className="my-2 p-4 border hover:bg-white/50 border-neutral-100 rounded-md bg-white"
+                onClick={() => navigate(`/post/${post.id}`)}
               >
-                <div>
-                  <div className="flex gap-2">
-                    <div>
+                <div className="flex gap-2">
+                  <div>
+                    {post.community ? (
+                      <div>
+                        {post.community && (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/community/${post.community.name}`);
+                            }}
+                            className="flex gap-2 mt-2 text-neutral-600"
+                          >
+                            {post.community && (
+                              <img
+                                src={post.community.image || "/group.png"}
+                                className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                                alt="Community"
+                              />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        {post.creator.image && !post.anonymity ? (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/${post.creator.username}`);
+                            }}
+                          >
+                            <img
+                              src={post.creator.image}
+                              alt="Profile"
+                              className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                            />
+                          </div>
+                        ) : (
+                          <img
+                            src="/user.png"
+                            alt="Anonymous"
+                            className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                          />
+                        )}
+                      </>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <div className="w-fit flex gap-2 items-center">
                       {post.community ? (
-                        <div>
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/community/${post.community.name}`);
+                          }}
+                        >
                           {post.community && (
-                            <Link
-                              to={`/community/${post.community.name}`}
-                              className="flex gap-2  mt-2 text-neutral-600"
-                            >
-                              {post.community && (
-                                <img
-                                  src={post.community.image || "/group.png"}
-                                  className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
-                                  alt="Community"
-                                />
-                              )}
-                            </Link>
+                            <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                              c/ {post.community.name}
+                            </div>
                           )}
                         </div>
                       ) : (
-                        <Link to={`/${post.creator.username}`}>
-                          <img
-                            src={
-                              post.creator.image
-                                ? post.creator.image
-                                : "/user.png"
-                            }
-                            alt="Profile"
-                            className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
-                          />
-                        </Link>
-                      )}
-                    </div>
-                    <div className="w-[80%]">
-                      <div className="w-fit">
-                        {post.community ? (
-                          <Link to={`/community/${post.community.name}`}>
-                            {post.community && (
-                              <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                                c/ {post.community.name}
-                              </div>
-                            )}
-                          </Link>
-                        ) : (
-                          <Link to={`/${post.creator.username}`}>
-                            <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                              {post.creator.name}
+                        <>
+                          {post.anonymity ? (
+                            <div className="text-primarytextcolor text-sm lg:text-base d font-semibold">
+                              {post.creator.username}
                             </div>
-                          </Link>
-                        )}
-                      </div>
-                      <div className="flex mb-2 gap-2 items-center">
-                        <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                          @{post.creator.username}
-                        </div>
-
-                        <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                          · {post.createdAt.slice(0, 10)}
-                        </div>
-                      </div>
-                      <div className="text-primarytextcolor mb-2 text-sm lg:text-base font-light">
-                        {post.content}
-                      </div>
-                      {post.image && (
-                        <img
-                          src={post.image}
-                          className="max-h-[80vh] mb-2 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
-                        />
+                          ) : (
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/${post.creator.username}`);
+                              }}
+                              className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
+                            >
+                              {post.creator.username}
+                            </div>
+                          )}
+                        </>
                       )}
-
-                      <div className="flex  justify-start gap-5 items-center text-sm text-neutral-500">
-                        <button
-                          className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
-                          onClick={() => handleLike(post.id)}
-                        >
-                          <div>
-                            {post.isLiked ? (
-                              <FavoriteIcon
-                                sx={{
-                                  fontSize: 18,
-                                }}
-                                className="text-rose-500"
-                              />
-                            ) : (
-                              <FavoriteBorderIcon
-                                sx={{
-                                  fontSize: 18,
-                                }}
-                                className="text-rose-500"
-                              />
-                            )}
-                          </div>
-
-                          <div className="text-base text-rose-500">
-                            {post.likesCount}
-                          </div>
-                        </button>
-
-                        <Link
-                          to={`/post/${post.id}`}
-                          className="flex bg-indigo-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
-                        >
-                          <ChatBubbleOutlineRoundedIcon
-                            sx={{ fontSize: 18 }}
-                            className="text-indigo-500"
-                          />
-                          <div className="text-base text-indigo-500">
-                            {post.commentsCount}
-                          </div>
-                        </Link>
+                      <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                        · {getTimeDifference(post.createdAt)}
                       </div>
+                    </div>
+
+                    {post.image && (
+                      <img
+                        src={post.image}
+                        className="mt-4 max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                      />
+                    )}
+
+                    <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
+                      {post.content}
+                    </div>
+
+                    <div className="flex justify-start gap-5 items-center text-sm text-neutral-500">
+                      <button
+                        className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLike(post.id);
+                        }}
+                      >
+                        <div>
+                          {post.isLiked ? (
+                            <FavoriteIcon
+                              sx={{
+                                fontSize: 20,
+                              }}
+                              className="text-rose-500"
+                            />
+                          ) : (
+                            <FavoriteBorderIcon
+                              sx={{
+                                fontSize: 20,
+                              }}
+                              className="text-rose-500"
+                            />
+                          )}
+                        </div>
+
+                        <div className="text-base text-rose-500">
+                          {post.likesCount}
+                        </div>
+                      </button>
+
+                      <Link
+                        to={`/post/${post.id}`}
+                        className="flex bg-indigo-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
+                      >
+                        <ChatBubbleOutlineRoundedIcon
+                          sx={{ fontSize: 20 }}
+                          className="text-indigo-500"
+                        />
+                        <div className="text-base text-indigo-500">
+                          {post.commentsCount}
+                        </div>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -321,7 +302,7 @@ export const PostsHome = () => {
             <div className="text-center font-ubuntu my-5 text-primarytextcolor">
               No posts found.
             </div>
-          )}
+          )}{" "}
         </div>
         <BottomBar />
 

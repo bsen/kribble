@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { BACKEND_URL } from "../../config";
 import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import { BottomBar } from "../Mobile/BottomBar";
+import { BottomBar } from "../Bars/BottomBar";
 
 interface User {
   username: string;

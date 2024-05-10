@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../config";
-import { CommonNavBar } from "../Mobile/CommonNavBar";
+import { NavBar } from "../Bars/NavBar";
 interface FollowersData {
   id: string;
   follower: Follower;
@@ -73,7 +73,7 @@ export const FollowersComponent = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <CommonNavBar />
+        <NavBar />
         {followersData.followers.length > 0 ? (
           followersData.followers.map((followersObj) => (
             <div
