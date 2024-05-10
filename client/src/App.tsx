@@ -68,7 +68,7 @@ function App() {
             element={<ProtectedRoute element={<Post />} />}
           />
           <Route
-            path="/konnect"
+            path="/connect"
             element={<ProtectedRoute element={<Konnect />} />}
           />
           <Route
