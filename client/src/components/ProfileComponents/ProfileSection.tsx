@@ -11,7 +11,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { BottomBar } from "../Bars/BottomBar";
-import EditIcon from "@mui/icons-material/Edit";
 import { NavBar } from "../Bars/NavBar";
 
 interface Post {
@@ -285,63 +284,63 @@ export const ProfileSection: React.FC = () => {
                         alt="Profile"
                         className="w-20 h-20 lg:w-24 lg:h-24 border border-neutral-100 rounded-full"
                       />
-                      <div className="w-full flex justify-between items-start">
-                        <div>
-                          <div className="text-base lg:text-xl font-semibold text-primarytextcolor">
-                            {userData.username}
-                          </div>
-                          <div className="text-sm text-secondarytextcolor font-light">
-                            {userData.name}
+                      <div className="w-full">
+                        <div className="flex items-center justify-end">
+                          <div>
+                            {currentUser === username ? (
+                              <button
+                                onClick={() => {
+                                  setProfileEditingState(true);
+                                }}
+                                className="text-left text-white bg-neutral-800 font-light rounded-full px-3 py-1 text-xs"
+                              >
+                                Edit profile
+                              </button>
+                            ) : (
+                              <div className="flex my-2 gap-4 justify-between items-center">
+                                <button
+                                  onClick={followUser}
+                                  disabled={isFollowUserLoading}
+                                  className="text-left text-white bg-neutral-800 font-light rounded-full px-3 py-1 text-xs"
+                                >
+                                  {isFollowUserLoading ? (
+                                    <CircularProgress
+                                      size="15px"
+                                      className="text-sm"
+                                      color="inherit"
+                                    />
+                                  ) : (
+                                    <div>
+                                      {isFollowing ? (
+                                        <div>Unfollow</div>
+                                      ) : (
+                                        <div>Follow</div>
+                                      )}
+                                    </div>
+                                  )}
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </div>
                         <div>
-                          {currentUser === username ? (
-                            <button
-                              onClick={() => {
-                                setProfileEditingState(true);
-                              }}
-                            >
-                              <EditIcon
-                                sx={{ fontSize: 20 }}
-                                className="text-natural-800"
-                              />
-                            </button>
-                          ) : (
-                            <div className="flex my-2 gap-4 justify-between items-center">
-                              <button
-                                onClick={followUser}
-                                disabled={isFollowUserLoading}
-                                className="text-left text-white bg-primarytextcolor font-light rounded-full px-3 py-1 text-xs"
-                              >
-                                {isFollowUserLoading ? (
-                                  <CircularProgress
-                                    size="15px"
-                                    className="text-sm"
-                                    color="inherit"
-                                  />
-                                ) : (
-                                  <div>
-                                    {isFollowing ? (
-                                      <div>Unfollow</div>
-                                    ) : (
-                                      <div>Follow</div>
-                                    )}
-                                  </div>
-                                )}
-                              </button>
-                            </div>
-                          )}
+                          <div className="text-base lg:text-lg  font-semibold text-neutral-800">
+                            {userData.username}
+                          </div>
+                          <div className="text-xs text-secondarytextcolor font-light">
+                            {userData.name}
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div className="flex my-2 text-indigo-600  items-center gap-2 font-ubuntu text-sm">
                       <Link to={`/followers/${username}`}>
-                        <div className="flex gap-1 items-center px-2  bg-indigo-100 rounded-md">
+                        <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
                           {userData.followersCount} Followers
                         </div>
                       </Link>
                       <Link to={`/following/${username}`}>
-                        <div className="flex gap-1 items-center px-2  bg-indigo-100 rounded-md">
+                        <div className="flex gap-1 items-center px-2 py-1/2 bg-indigo-50 rounded-md">
                           {userData.followingCount} Following
                         </div>
                       </Link>
@@ -368,9 +367,6 @@ export const ProfileSection: React.FC = () => {
                         <OpenInNewIcon sx={{ fontSize: 15 }} />
                       </a>
                     </div>
-                    <div className="text-sm text-secondarytextcolor font-light">
-                      {userData.interest ? userData.interest : "interests"}
-                    </div>
 
                     {currentUser == username ? (
                       <div className="flex my-2 flex-col items-start gap-2">
@@ -379,7 +375,7 @@ export const ProfileSection: React.FC = () => {
                             navigate("/comments");
                           }}
                           className={
-                            "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                            "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
                           }
                         >
                           My comments
@@ -390,7 +386,7 @@ export const ProfileSection: React.FC = () => {
                               navigate("/created-communities");
                             }}
                             className={
-                              "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                              "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
                             }
                           >
                             Created communites
@@ -400,7 +396,7 @@ export const ProfileSection: React.FC = () => {
                               navigate("/my-communities");
                             }}
                             className={
-                              "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                              "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
                             }
                           >
                             Joined communites
@@ -414,7 +410,7 @@ export const ProfileSection: React.FC = () => {
                           >
                             <div
                               className={
-                                "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                                "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
                               }
                             >
                               <AddIcon sx={{ fontSize: 20 }} />
@@ -429,7 +425,7 @@ export const ProfileSection: React.FC = () => {
                           >
                             <div
                               className={
-                                "flex justify-between text-sm items-center text-primarytextcolor bg-neutral-100 px-4 py-1 rounded-full"
+                                "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
                               }
                             >
                               <AddIcon sx={{ fontSize: 20 }} />
@@ -470,7 +466,7 @@ export const ProfileSection: React.FC = () => {
                             </div>
                             <div className="w-full">
                               <div className="flex justify-between items-center">
-                                <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                                <div className="text-neutral-800 text-sm lg:text-base hover:underline font-semibold">
                                   {post.creator.username}
                                 </div>
 
@@ -500,7 +496,7 @@ export const ProfileSection: React.FC = () => {
                                   · {getTimeDifference(post.createdAt)}
                                 </div>
                               </div>
-                              <div className="text-primarytextcolor mb-2 text-sm lg:text-base font-light">
+                              <div className="text-neutral-800 mb-2 text-sm lg:text-base font-light">
                                 {post.content}
                               </div>
                               {post.image && (
@@ -559,7 +555,7 @@ export const ProfileSection: React.FC = () => {
                         </div>
                       ))
                     ) : (
-                      <div className="text-center font-ubuntu my-5 text-primarytextcolor">
+                      <div className="text-center font-ubuntu my-5 text-neutral-800">
                         No posts found.
                       </div>
                     )}

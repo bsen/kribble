@@ -276,7 +276,7 @@ export const CommunityProfile: React.FC = () => {
                   <EditCommunity communityData={communityData} />
                 </div>
               ) : (
-                <div className="w-full p-4 flex flex-col items-start border-b border-neutral-200">
+                <div className="w-full bg-white my-2 p-4 rounded-md flex flex-col items-start border border-neutral-100">
                   <div className="flex justify-between w-full items-start">
                     <img
                       src={communityData.image || "/group.png"}
@@ -365,7 +365,7 @@ export const CommunityProfile: React.FC = () => {
                   postData.posts.map((post, index) => (
                     <div
                       key={index}
-                      className="border-b border-neutral-200 p-3 bg-white"
+                      className="my-2 rounded-md border border-neutral-100 p-4 bg-white"
                     >
                       <div>
                         <div className="flex gap-2">

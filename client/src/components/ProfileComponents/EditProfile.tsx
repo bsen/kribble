@@ -15,7 +15,6 @@ export const EditProfile = () => {
   const [profileImg, setProfileImg] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState("");
   const [logOutState, setLogOutState] = useState(false);
-  const [interest, setInterest] = useState("");
   const [popup, setPopup] = useState("");
   const [userData, setUserData] = useState<{
     name: string;
@@ -100,14 +99,12 @@ export const EditProfile = () => {
       let newName = name || userData.name || "";
       let newBio = bio || userData.bio || "bio";
       let newWebsite = website || userData.website || "https://www.kribble.net";
-      let newInterest = interest || userData.interest || "interest";
 
       const formdata = new FormData();
       formdata.append("image", file ? file : "");
       formdata.append("name", newName);
       formdata.append("bio", newBio);
       formdata.append("website", newWebsite);
-      formdata.append("interest", newInterest);
       formdata.append("token", token ? token : "");
 
       setIsLoading(true);
@@ -121,7 +118,6 @@ export const EditProfile = () => {
       setBio("");
       setName("");
       setWebsite("");
-      setInterest("");
       window.location.reload();
     } catch (error) {
       console.log("Error updating profile:", error);
@@ -215,49 +211,6 @@ export const EditProfile = () => {
                   }}
                   className=" h-10 w-full rounded-lg px-2 focus:outline-none border border-neutral-100"
                 />
-              </div>
-              <div>
-                <div className="text-primarytextcolor">Interest</div>
-                <select
-                  className="h-10 w-full rounded-lg px-2 text-secondarytextcolor border border-neutral-100 appearance-none"
-                  onChange={(e) => setInterest(e.target.value)}
-                  defaultValue={userData.interest}
-                >
-                  <option value="" className="text-secondarytextcolor">
-                    Select your interests
-                  </option>
-                  <option value="Outdoor Activities">Outdoor Activities</option>
-                  <option value="Healthy Living">Healthy Living</option>
-
-                  <option value="Art & Creativity">Art & Creativity</option>
-                  <option value="Music & Dance">Music & Dance</option>
-                  <option value="Technology & Innovation">
-                    Technology & Innovation
-                  </option>
-                  <option value="Coding & Development">
-                    Coding & Development
-                  </option>
-                  <option value="Film & Cinema">Film & Cinema</option>
-                  <option value="Literature & Writing">
-                    Literature & Writing
-                  </option>
-                  <option value="Travel & Adventure">Travel & Adventure</option>
-                  <option value="Environmental Conservation">
-                    Environmental Conservation
-                  </option>
-                  <option value="History & Archaeology">
-                    History & Archaeology
-                  </option>
-                  <option value="Fashion & Design">Fashion & Design</option>
-                  <option value="Gaming & eSports">Gaming & eSports</option>
-                  <option value="Photography & Visual Arts">
-                    Photography & Visual Arts
-                  </option>
-                  <option value="Science & Exploration">
-                    Science & Exploration
-                  </option>
-                  <option value="Others">Others</option>
-                </select>
               </div>
               <div>
                 <div className="text-primarytextcolor">Bio</div>
