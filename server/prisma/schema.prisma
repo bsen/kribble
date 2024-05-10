@@ -16,7 +16,6 @@ model User {
   bio            String?
   image          String?
   website        String?
-  interest       String?
   following      Following[] @relation("FollowerRelation")
   followingCount Int @default(0)
   followersCount Int @default(0)
@@ -34,8 +33,6 @@ model User {
   memberOfCommunities CommunityMembership[] @relation("UserCommunityMembership")
   taggedOnPosts     TaggingOnPost[] @relation("UserTagOnPost")
   taggedOnComments  TaggingOnComment[] @relation("UserTagOnComment")
-  writtenSecretNotes   SecretNotes[]         @relation("WriterOfSecretNotes")
-  receivedSecretNotes  SecretNotes[]         @relation("ReceiverOfSecretNotes")
   createdAt      DateTime   @default(now())
 }
 
@@ -54,7 +51,6 @@ model Community {
   name           String
   description    String
   image          String?
-  category       String
   creator        User      @relation("Creator", fields: [creatorId], references: [id])
   creatorId      String
   posts          Post[]    @relation("CommunityPosts")
@@ -164,14 +160,4 @@ model Message {
   receiverId String
   message    String
   createdAt  DateTime @default(now())
-}
-
-model SecretNotes {
-  id        String   @id @default(uuid())
-  content   String
-  writer    User?    @relation("WriterOfSecretNotes", fields: [writerId], references: [id])
-  writerId  String?
-  receiver  User     @relation("ReceiverOfSecretNotes", fields: [receiverId], references: [id])
-  receiverId String
-  createdAt DateTime @default(now())
 }

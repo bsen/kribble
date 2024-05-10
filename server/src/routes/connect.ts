@@ -71,7 +71,6 @@ connectRouter.post("/users-for-match", async (c) => {
         username: true,
         name: true,
         bio: true,
-        interest: true,
         image: true,
       },
     });

@@ -106,7 +106,7 @@ export const EditCommunity: React.FC<{ communityData: CommunityData }> = (
             <CircularProgress color="inherit" />
           </div>
         ) : (
-          <div className="bg-white w-[85%] border border-neutral-200 p-4 rounded-lg flex flex-col gap-4">
+          <div className="bg-white w-[85%] border border-neutral-100 p-4 rounded-lg flex flex-col gap-4">
             <div className="w-ful flex justify-between">
               <div className="flex justify-center items-center">
                 <div className="absolute text-primarytextcolor z-50">
@@ -127,7 +127,7 @@ export const EditCommunity: React.FC<{ communityData: CommunityData }> = (
                   src={
                     previewImage ? previewImage : image ? image : "/group.png"
                   }
-                  className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10"
+                  className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10 border border-neutral-50"
                 />
               </div>
 
@@ -154,7 +154,7 @@ export const EditCommunity: React.FC<{ communityData: CommunityData }> = (
                 onChange={(e) => {
                   setNewCatagory(e.target.value);
                 }}
-                className="h-10 w-full rounded-lg px-2 text-secondarytextcolor border border-neutral-200 appearance-none"
+                className="h-10 w-full rounded-lg px-2 text-secondarytextcolor border border-neutral-100 appearance-none"
               >
                 <option value="category" className="text-secondarytextcolor">
                   Select your category
@@ -196,7 +196,7 @@ export const EditCommunity: React.FC<{ communityData: CommunityData }> = (
               <textarea
                 rows={2}
                 defaultValue={description}
-                className="w-full px-2 py-1 rounded-lg border border-neutral-200"
+                className="w-full px-2 py-1 rounded-lg border border-neutral-100"
                 wrap="soft"
                 maxLength={150}
                 onChange={(e) => {

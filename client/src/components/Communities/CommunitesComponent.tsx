@@ -9,7 +9,6 @@ import { BottomBar } from "../Bars/BottomBar";
 interface Communities {
   id: string;
   name: string;
-  category: string;
   description: string;
   membersCount: string;
   image: string;
@@ -84,9 +83,6 @@ export const CommunitiesComponent = () => {
                     <div className="flex flex-col w-full">
                       <div className="text-primarytextcolor text-base lg:text-lg font-medium font-ubuntu">
                         {community.name}
-                      </div>{" "}
-                      <div className="text-primarytextcolor text-sm  font-normal">
-                        {community.category}
                       </div>
                       <div className="text-primarytextcolor text-sm  font-normal">
                         {community.description}
