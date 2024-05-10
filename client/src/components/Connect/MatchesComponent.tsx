@@ -28,7 +28,7 @@ export const MatchesComponent = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/konnect/user-matches`,
+        `${BACKEND_URL}/api/server/v1/connect/user-matches`,
         { token }
       );
       setLoadingState(false);
@@ -82,7 +82,7 @@ export const MatchesComponent = () => {
                   "p-2 flex justify-evenly items-center text-center w-full"
                 }
               >
-                <Link to={"/konnect"}>
+                <Link to={"/connect"}>
                   <ArrowBackIosNewRoundedIcon
                     className="text-secondarytextcolor rounded-full border  py-1 hover:bg-neutral-100"
                     sx={{ fontSize: 35 }}

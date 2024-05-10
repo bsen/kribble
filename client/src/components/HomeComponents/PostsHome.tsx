@@ -189,7 +189,7 @@ export const PostsHome = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-4 border border-neutral-100 rounded-md p-4 bg-white"
+                className="my-2 border border-neutral-100 rounded-md p-4 bg-white"
               >
                 <div className="flex gap-2">
                   <div>

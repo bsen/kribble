@@ -4,7 +4,7 @@ import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
 import { CreatePost } from "./pages/CreatePost";
-import { Konnect } from "./pages/Konnect";
+import { Connect } from "./pages/Connect";
 import { Post } from "./pages/Post";
 import { Matches } from "./pages/Matches";
 import { Communities } from "./pages/Communities";
@@ -69,7 +69,7 @@ function App() {
           />
           <Route
             path="/connect"
-            element={<ProtectedRoute element={<Konnect />} />}
+            element={<ProtectedRoute element={<Connect />} />}
           />
           <Route
             path="/matches"

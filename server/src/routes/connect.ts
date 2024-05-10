@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 
-export const konnectRouter = new Hono<{
+export const connectRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
@@ -12,7 +12,7 @@ export const konnectRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-konnectRouter.post("/users-for-match", async (c) => {
+connectRouter.post("/users-for-match", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -82,7 +82,7 @@ konnectRouter.post("/users-for-match", async (c) => {
     return c.json({ status: 500, message: "Internal Server Error" });
   }
 });
-konnectRouter.post("/match-people", async (c) => {
+connectRouter.post("/match-people", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -158,7 +158,7 @@ konnectRouter.post("/match-people", async (c) => {
     return c.json({ status: 404 });
   }
 });
-konnectRouter.post("/user-matches", async (c) => {
+connectRouter.post("/user-matches", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -198,7 +198,7 @@ konnectRouter.post("/user-matches", async (c) => {
     return c.json({ status: 500, message: "Internal Server Error" });
   }
 });
-konnectRouter.post("/send-message", async (c) => {
+connectRouter.post("/send-message", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -231,7 +231,7 @@ konnectRouter.post("/send-message", async (c) => {
     console.log(error);
   }
 });
-konnectRouter.post("/get-messages", async (c) => {
+connectRouter.post("/get-messages", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;

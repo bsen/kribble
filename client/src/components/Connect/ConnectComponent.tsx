@@ -9,7 +9,7 @@ import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
 import { BottomBar } from "../Mobile/BottomBar";
 
-export const KonnectComponent = () => {
+export const ConnectComponent = () => {
   const token = localStorage.getItem("token");
 
   const [loadingState, setLoadingState] = useState(false);
@@ -43,7 +43,7 @@ export const KonnectComponent = () => {
     setLoadingState(true);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/konnect/users-for-match`,
+        `${BACKEND_URL}/api/server/v1/connect/users-for-match`,
         { token, gender }
       );
 
@@ -69,7 +69,7 @@ export const KonnectComponent = () => {
     setLoadingState(true);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/konnect/match-people`,
+        `${BACKEND_URL}/api/server/v1/connect/match-people`,
         { token, otherPersonsId }
       );
       setLoadingState(false);
@@ -91,7 +91,7 @@ export const KonnectComponent = () => {
 
   return (
     <>
-      <div>
+      <div className="bg-white h-screen">
         <div className="w-full mb-5 flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
             <div>
@@ -107,7 +107,7 @@ export const KonnectComponent = () => {
                       sx={{ fontSize: 35 }}
                     />
                   </button>
-                  <div>konnect</div>
+                  <div>connect</div>
                 </div>
               ) : (
                 "‎"
@@ -176,7 +176,7 @@ export const KonnectComponent = () => {
                       />
                     </div>
                     <div className="text-center font-semibold font-ubuntu px-6 my-3  text-xl text-primarytextcolor">
-                      Start Connecting with Konnect{" "}
+                      Start Connecting with kribble
                     </div>
                     <div className="text-secondarytextcolor font-normal text-sm">
                       1. Your profile picture, bio and interest will be used for

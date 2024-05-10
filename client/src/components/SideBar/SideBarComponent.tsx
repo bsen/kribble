@@ -11,8 +11,8 @@ export const SideBarComponent = () => {
 
   return (
     <>
-      <div className="flex bg-white flex-col justify-between h-screen border-r border-neutral-100">
-        <div className="h-[45vh] flex px-8 flex-col justify-evenly items-center">
+      <div className="flex bg-white flex-col items-center py-2 justify-between h-screen border-r border-neutral-100">
+        <div className="h-[45vh]  w-[70%] flex flex-col justify-evenly items-center">
           <div className="bg-gradient-to-r from-violet-500 to-orange-500  text-transparent bg-clip-text text-4xl font-ubuntu">
             kribble
           </div>

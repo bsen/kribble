@@ -42,12 +42,12 @@ export const BottomBar = () => {
           </Link>
         </button>
         <button>
-          <Link to={`/konnect`}>
+          <Link to={`/connect`}>
             <div className={"flex items-center justify-center gap-2"}>
               <JoinInnerIcon
                 sx={{ fontSize: 30 }}
                 className={`${
-                  location.pathname === `/konnect`
+                  location.pathname === `/connect`
                     ? "text-indigo-500"
                     : "text-primarytextcolor"
                 }`}
@@ -61,7 +61,7 @@ export const BottomBar = () => {
               <SearchIcon
                 sx={{ fontSize: 30 }}
                 className={`${
-                  location.pathname === `/konnect`
+                  location.pathname === `/connect`
                     ? "text-indigo-500"
                     : "text-primarytextcolor"
                 }`}
