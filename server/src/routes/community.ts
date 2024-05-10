@@ -378,11 +378,13 @@ communityRouter.post("/create-community-full-post", async (c) => {
     const post = formData.get("post");
     const token = formData.get("token");
     const communityName = formData.get("communityName");
-
+    const anonymity = formData.get("anonymity");
+    let anonymityBollean;
     if (
       typeof post !== "string" ||
       typeof token !== "string" ||
-      typeof communityName !== "string"
+      typeof communityName !== "string" ||
+      typeof anonymity !== "string"
     ) {
       return c.json({ status: 400, message: "Invalid post or token" });
     }
@@ -405,12 +407,18 @@ communityRouter.post("/create-community-full-post", async (c) => {
     if (!file) {
       return c.json({ status: 400, message: "No image provided" });
     }
+    if (anonymity === "false") {
+      anonymityBollean = false;
+    }
+    if (anonymity === "true") {
+      anonymityBollean = true;
+    }
     const data = new FormData();
     const blob = new Blob([file]);
     data.append(
       "file",
       blob,
-      "community-post" + "-" + findCommunity.name + userData.username
+      "community:" + findCommunity.id + "postby" + userData.id
     );
 
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
@@ -433,6 +441,7 @@ communityRouter.post("/create-community-full-post", async (c) => {
       const createPost = await prisma.post.create({
         data: {
           content: post,
+          anonymity: anonymityBollean,
           creator: { connect: { id: userId.id } },
           community: { connect: { id: findCommunity.id } },
           image: variantUrl,
@@ -470,6 +479,7 @@ communityRouter.post("/create-community-text-post", async (c) => {
     const post = body.post;
     const token = body.token;
     const communityName = body.communityName;
+    const anonymity = body.anonymity;
     const userId = await verify(token, c.env.JWT_SECRET);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
@@ -487,6 +497,7 @@ communityRouter.post("/create-community-text-post", async (c) => {
     const createPost = await prisma.post.create({
       data: {
         content: post,
+        anonymity: anonymity,
         creator: { connect: { id: userId.id } },
         community: { connect: { id: findCommunity.id } },
       },
@@ -514,7 +525,7 @@ communityRouter.post("/create-community-text-post", async (c) => {
   }
 });
 
-communityRouter.post("/update-details", async (c) => {
+communityRouter.post("/update-community-details", async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get("image");

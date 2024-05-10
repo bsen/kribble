@@ -67,7 +67,6 @@ feedRouter.post("/posts", async (c) => {
           select: {
             id: true,
             username: true,
-            name: true,
             image: true,
           },
         },
@@ -106,13 +105,11 @@ feedRouter.post("/posts", async (c) => {
 
         const creatorDetails = post.anonymity
           ? {
-              username: null,
-              name: "Anonymous post",
+              username: "Anonymous post",
               image: null,
             }
           : {
               username: post.creator.username,
-              name: post.creator.name,
               image: post.creator.image,
             };
 
@@ -139,7 +136,6 @@ feedRouter.post("/posts", async (c) => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-    console.log(sortedSuggestedPosts);
     return c.json({ status: 200, data: sortedSuggestedPosts, nextCursor });
   } catch (error) {
     console.log(error);

@@ -13,7 +13,6 @@ interface Post {
   creator: {
     id: string;
     username: string;
-    name: string;
     image: string | null;
   };
   community: {
@@ -48,7 +47,7 @@ export const PostsHome = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `http://localhost:8787/api/server/v1/feed/posts`,
+        `${BACKEND_URL}/api/server/v1/feed/posts`,
         { token, cursor }
       );
       setPostData({
@@ -134,6 +133,23 @@ export const PostsHome = () => {
   useEffect(() => {
     getUser();
   }, []);
+  const getTimeDifference = (createdAt: string) => {
+    const currentDate = new Date();
+    const postDate = new Date(createdAt);
+    const timeDifference = currentDate.getTime() - postDate.getTime();
+    const hoursDifference = Math.floor(timeDifference / (1000 * 3600));
+    const daysDifference = Math.floor(hoursDifference / 24);
+    if (daysDifference >= 30) {
+      return postDate.toDateString();
+    } else if (daysDifference >= 1) {
+      return `${daysDifference}d ago`;
+    } else if (hoursDifference >= 1) {
+      return `${hoursDifference}h ago`;
+    } else {
+      const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+      return `${minutesDifference}m ago`;
+    }
+  };
 
   return (
     <>
@@ -157,12 +173,14 @@ export const PostsHome = () => {
               onClick={() => {
                 navigate(`/${currentUser}`);
               }}
+              className="flex gap-2 bg-indigo-50 border border-indigo-100 px-2 py-1 rounded-lg items-center text-sm font-normal text-neutral-800"
             >
               <img
                 src={userImage ? userImage : "/user.png"}
                 alt="Profile"
-                className=" w-8 h-8  shadow-sm rounded-full"
+                className=" w-5 h-5  shadow-sm rounded-full"
               />
+              Profile
             </button>
           </div>
         </div>
@@ -213,7 +231,7 @@ export const PostsHome = () => {
                     )}
                   </div>
                   <div className="w-[80%]">
-                    <div className="w-fit">
+                    <div className="w-fit flex gap-2 items-center">
                       {post.community ? (
                         <Link to={`/community/${post.community.name}`}>
                           {post.community && (
@@ -226,38 +244,31 @@ export const PostsHome = () => {
                         <>
                           {post.anonymity ? (
                             <div className="text-primarytextcolor text-sm lg:text-base d font-semibold">
-                              {post.creator.name}
+                              {post.creator.username}
                             </div>
                           ) : (
                             <Link to={`/${post.creator.username}`}>
                               <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                                {post.creator.name}
+                                {post.creator.username}
                               </div>
                             </Link>
                           )}
                         </>
                       )}
-                    </div>
-                    <div className="flex mb-2 gap-2 items-center">
-                      {!post.anonymity && (
-                        <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                          @{post.creator.username}
-                        </div>
-                      )}
-
                       <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                        · {post.createdAt.slice(0, 10)}
+                        · {getTimeDifference(post.createdAt)}
                       </div>
                     </div>
-                    <div className="text-primarytextcolor mb-2 text-sm lg:text-base font-light">
-                      {post.content}
-                    </div>
+
                     {post.image && (
                       <img
                         src={post.image}
-                        className="max-h-[80vh] mb-2 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
+                        className="max-h-[80vh] mt-4 max-w:w-[100%] lg:max-w-[80%] rounded-lg border border-neutral-200"
                       />
                     )}
+                    <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
+                      {post.content}
+                    </div>
 
                     <div className="flex  justify-start gap-5 items-center text-sm text-neutral-500">
                       <button

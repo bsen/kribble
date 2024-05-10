@@ -82,7 +82,7 @@ export const EditCommunity: React.FC<{ communityData: CommunityData }> = (
 
       setIsLoading(true);
       await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/update-details`,
+        `${BACKEND_URL}/api/server/v1/community/update-community-details`,
         formdata
       );
       setIsLoading(false);

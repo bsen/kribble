@@ -2,19 +2,18 @@ import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading";
+import Switch from "@mui/material/Switch";
 import { BACKEND_URL } from "../../config";
-
-export const CreateCommunityPostComponent = () => {
-  const { name } = useParams();
+export const PostCreate = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [post, setPost] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [postImage, setPostImage] = useState<File | null>(null);
   const [popup, setPopup] = useState("");
+  const [anonymity, setAnonymity] = useState(false);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -55,29 +54,30 @@ export const CreateCommunityPostComponent = () => {
     history.go(-1);
   };
 
-  const createCommunityPost = async () => {
+  const createPost = async () => {
     setPopup("");
     if (!post) {
       setPopup("Write something");
       return;
     }
+
     try {
       setLoadingState(true);
       const formData = new FormData();
+      formData.append("anonymity", String(anonymity));
       formData.append("post", post);
-      formData.append("communityName", name || "");
       formData.append("token", token || "");
       if (postImage) {
         formData.append("image", postImage);
         const response = await axios.post(
-          `${BACKEND_URL}/api/server/v1/community/create-community-full-post`,
+          `${BACKEND_URL}/api/server/v1/post/create-full-post`,
           formData
         );
         setPopup(response.data.message);
       } else {
         const response = await axios.post(
-          `${BACKEND_URL}/api/server/v1/community/create-community-text-post`,
-          { communityName: name, token, post }
+          `${BACKEND_URL}/api/server/v1/post/create-text-post`,
+          { token, post, anonymity }
         );
         setPopup(response.data.message);
       }
@@ -106,7 +106,7 @@ export const CreateCommunityPostComponent = () => {
                   />
                 </button>
               </div>
-              <div>Create Post in {name}</div>
+              <div>Create Post</div>
             </div>
             <div>
               {postImage ? (
@@ -149,19 +149,43 @@ export const CreateCommunityPostComponent = () => {
                 value={post}
                 onChange={handlePostChange}
                 rows={4}
-                className="w-full my-4 border border-neutral-200 resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+                className="w-full mt-4 border border-neutral-200 resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
                 placeholder="Write your thoughts..."
                 wrap="soft"
+                minLength={10}
                 maxLength={300}
               />
+              <div className="flex  items-center mb-2">
+                <Switch
+                  onClick={() => {
+                    setAnonymity((prevState) => !prevState);
+                  }}
+                  checked={anonymity}
+                />
+                <label className="text-neutral-600 text-base font-ubuntu font-normal">
+                  Post anonymously
+                </label>
+              </div>
               <div className="flex w-full justify-center">
                 <button
-                  onClick={createCommunityPost}
+                  onClick={createPost}
                   className="bg-black w-full hover:bg-neutral-900 text-white border border-neutral-200 px-6 py-2 rounded-lg"
                 >
                   Post
                 </button>
               </div>
+
+              <div className="text-sm text-neutral-800 my-2 text-center">
+                {anonymity ? (
+                  <div>
+                    In anonymous posts, only the content is displayed. User
+                    identities remain hidden to other users.
+                  </div>
+                ) : (
+                  <div>‎</div>
+                )}
+              </div>
+
               <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
                 {popup ? popup : <div>‎</div>}
               </div>
