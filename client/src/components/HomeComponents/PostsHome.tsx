@@ -6,7 +6,8 @@ import { CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { BottomBar } from "../Mobile/BottomBar";
+import { BottomBar } from "../Bars/BottomBar";
+import { NavBar } from "../Bars/NavBar";
 
 interface Post {
   id: string;
@@ -31,8 +32,6 @@ interface Post {
 export const PostsHome = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const [userImage, setUserImage] = useState("");
-  const [currentUser, setCurrentUser] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [postData, setPostData] = useState<{
@@ -120,19 +119,6 @@ export const PostsHome = () => {
     }
   };
 
-  async function getUser() {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/user/current-user`,
-      { token }
-    );
-
-    setUserImage(response.data.image);
-    setCurrentUser(response.data.data);
-  }
-
-  useEffect(() => {
-    getUser();
-  }, []);
   const getTimeDifference = (createdAt: string) => {
     const currentDate = new Date();
     const postDate = new Date(createdAt);
@@ -158,32 +144,7 @@ export const PostsHome = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <div className="top-0 rounded-b-md h-14 shadow-sm  bg-white/80 fixed w-full lg:w-[50%]">
-          <div className="w-full h-full flex justify-between px-5 items-center">
-            <button
-              onClick={() => {
-                navigate("/home");
-              }}
-            >
-              <div className="lg:hidden bg-gradient-to-r from-indigo-500 to-orange-500  text-transparent bg-clip-text text-3xl font-ubuntu">
-                kribble
-              </div>
-            </button>
-            <button
-              onClick={() => {
-                navigate(`/${currentUser}`);
-              }}
-              className="flex gap-2 bg-indigo-100 px-2 py-1 rounded-lg items-center text-sm font-light text-indigo-600"
-            >
-              <img
-                src={userImage ? userImage : "/user.png"}
-                alt="Profile"
-                className=" w-5 h-5  shadow-sm rounded-full"
-              />
-              Profile
-            </button>
-          </div>
-        </div>
+        <NavBar />
         <div>
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (

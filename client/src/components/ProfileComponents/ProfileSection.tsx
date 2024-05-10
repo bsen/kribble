@@ -10,8 +10,9 @@ import { BACKEND_URL } from "../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { BottomBar } from "../Mobile/BottomBar";
+import { BottomBar } from "../Bars/BottomBar";
 import EditIcon from "@mui/icons-material/Edit";
+import { NavBar } from "../Bars/NavBar";
 
 interface Post {
   id: string;
@@ -276,6 +277,7 @@ export const ProfileSection: React.FC = () => {
                   onScroll={handleScroll}
                   ref={scrollContainerRef}
                 >
+                  <NavBar />
                   <div className="p-4 mt-2 rounded-md border border-neutral-100 bg-white">
                     <div className="flex w-full justify-start items-center gap-2">
                       <img

@@ -6,7 +6,8 @@ import { BACKEND_URL } from "../../config";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
-import { BottomBar } from "../Mobile/BottomBar";
+import { BottomBar } from "../Bars/BottomBar";
+import { NavBar } from "../Bars/NavBar";
 
 export const ConnectComponent = () => {
   const token = localStorage.getItem("token");
@@ -88,6 +89,7 @@ export const ConnectComponent = () => {
 
   return (
     <>
+      <NavBar />
       <div className="bg-white border-l border-r border-neutral-100 h-screen flex flex-col justify-center items-center">
         <div className="w-full mb-5 flex justify-center py-2">
           <div className="text-2xl flex justify-center items-center gap-5 text-primarytextcolor font-ubuntu text-center">
@@ -116,7 +118,7 @@ export const ConnectComponent = () => {
               <CircularProgress color="inherit" />
             </div>
           ) : (
-            <div className="flex w-full flex-col items-center justify-center">
+            <div className="flex w-full px-5 text-center flex-col items-center justify-center">
               {matchingState ? (
                 <div className="w-full flex flex-col justify-center items-center gap-2">
                   <img
@@ -128,12 +130,12 @@ export const ConnectComponent = () => {
                       {matchUserData.username}
                     </div>
                   </div>
-                  <div className="font-normal text-base text-secondarytextcolor m-2 w-full">
-                    {matchUserData.bio ? "bio · " + matchUserData.bio : ""}
-                    <br />
+                  <div className="font-light text-sm text-secondarytextcolor m-2 w-[50%]">
                     {matchUserData.interest
                       ? "interest · " + matchUserData.interest
                       : ""}
+                    <br />
+                    {matchUserData.bio ? "bio · " + matchUserData.bio : ""}
                   </div>
                   <div className="flex items-center py-2 justify-center gap-5 w-full">
                     <button

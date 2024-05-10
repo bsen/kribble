@@ -3,8 +3,8 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import { CommonNavBar } from "../Mobile/CommonNavBar";
-import { BottomBar } from "../Mobile/BottomBar";
+import { NavBar } from "../Bars/NavBar";
+import { BottomBar } from "../Bars/BottomBar";
 
 interface Communities {
   id: string;
@@ -67,7 +67,7 @@ export const CommunitiesComponent = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <CommonNavBar />
+        <NavBar />
         {communityData.communities.length > 0 ? (
           communityData.communities.map((community, index) => (
             <div

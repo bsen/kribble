@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import EmailIcon from "@mui/icons-material/Email";
 import axios from "axios";
 import { MessagesComponent } from "./MessagesComponent";
-import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import { NavBar } from "../Bars/NavBar";
 interface User {
   id: string;
   name: string;
@@ -60,20 +58,8 @@ export const MatchesComponent = () => {
 
   return (
     <>
+      <NavBar />
       <div className="w-full h-screen bg-white flex flex-col">
-        <div className="flex justify-between items-center p-4">
-          <Link to={"/connect"} className="flex items-center gap-2">
-            <ArrowBackIosNewRoundedIcon
-              className="text-secondarytextcolor rounded-full border py-1 hover:bg-neutral-100"
-              sx={{ fontSize: 35 }}
-            />
-            <div className="flex items-center gap-2 font-ubuntu text-lg font-semibold text-primarytextcolor">
-              <EmailIcon sx={{ fontSize: 25 }} className="text-neutral-800" />
-              <p>Matches</p>
-            </div>
-          </Link>
-          {/* Add your logo component here */}
-        </div>
         <div className="flex justify-center items-center flex-col p-5 w-full flex-1 overflow-y-auto no-scrollbar">
           {messageState ? (
             <MessagesComponent

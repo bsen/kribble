@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { BACKEND_URL } from "../../config";
 import { Loading } from "../Loading";
-import { CommonNavBar } from "../Mobile/CommonNavBar";
+import { NavBar } from "../Bars/NavBar";
 
 interface Communities {
   id: string;
@@ -140,7 +140,7 @@ export const UserCommunitiesComponent = () => {
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
-              <CommonNavBar />
+              <NavBar />
               {communityData.communities.length > 0 ? (
                 communityData.communities.map((community, index) => (
                   <div
