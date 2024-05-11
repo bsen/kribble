@@ -59,12 +59,11 @@ export const ProfileSection: React.FC = () => {
       setLoadingState(true);
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/one-community-data`,
+        `${BACKEND_URL}/api/community/profile/data`,
         { token, name }
       );
       setLoadingState(false);
       setCommunityData(response.data.data);
-
       setIsCreator(response.data.creator);
       setIsLoading(false);
     } catch (error) {
@@ -82,7 +81,7 @@ export const ProfileSection: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/community-all-posts`,
+        `${BACKEND_URL}/api/community/post/all/posts`,
         { token, cursor, name }
       );
       setPostData({
@@ -132,10 +131,7 @@ export const ProfileSection: React.FC = () => {
       }));
 
       const details = { postId, token };
-      await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
-        details
-      );
+      await axios.post(`${BACKEND_URL}/api/post/like/like/unlike`, details);
     } catch (error) {
       console.log(error);
 
@@ -159,10 +155,11 @@ export const ProfileSection: React.FC = () => {
   const deleteCommunityPost = async () => {
     setLoadingState(true);
     const id = communityData.id;
-    await axios.post(
-      `${BACKEND_URL}/api/server/v1/community/delete-community-post`,
-      { token, id, deletingPostId }
-    );
+    await axios.post(`${BACKEND_URL}/api/community/post/delete`, {
+      token,
+      id,
+      deletingPostId,
+    });
     setDeletingPostId("");
     setCommunityPostDeletionState(false);
     setLoadingState(false);
@@ -273,7 +270,7 @@ export const ProfileSection: React.FC = () => {
                           <div className="flex flex-col gap-1 py-4 w-full">
                             {post.image && (
                               <img
-                                src={post.image}
+                                src={post.image ? post.image : ""}
                                 className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
                               />
                             )}

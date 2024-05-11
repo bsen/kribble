@@ -1,14 +1,31 @@
 import { Hono } from "hono";
-import { userRouter } from "./routes/user";
-import { postRouter } from "./routes/post";
-import { feedRouter } from "./routes/feed";
-import { authRouter } from "./routes/auth";
-import { connectRouter } from "./routes/connect";
-import { communityRouter } from "./routes/community";
-import { searchRouter } from "./routes/search";
-import { commentRouter } from "./routes/comment";
-
 import { cors } from "hono/cors";
+// USER ROUTERS IMPORT
+import { userAuthRouter } from "./routes/user/auth";
+import { userCommentRouter } from "./routes/user/comment";
+import { userCommunitiesRouter } from "./routes/user/communities";
+import { userFeedRouter } from "./routes/user/feed";
+import { userFollowRouter } from "./routes/user/follow";
+import { userMatchesRouter } from "./routes/user/matches";
+import { userPostRouter } from "./routes/user/post";
+import { userProfileRouter } from "./routes/user/profile";
+// SEARCH ROUTER IMPORT
+import { searchRouter } from "./routes/search/search";
+// POST ROUTERS IMPORT
+import { postRouter } from "./routes/post/post";
+import { postCommentRouter } from "./routes/post/comment";
+import { postLikeRouter } from "./routes/post/like";
+// MESSAGE ROUTER IMPORT
+import { messageRouter } from "./routes/message/message";
+// CONNECT ROUTER IMPORT
+import { connectRouter } from "./routes/connect/match";
+// COMMUNITY ROUTER IMPORT
+import { communitiesRouter } from "./routes/community/communities";
+import { communityCreateRouter } from "./routes/community/create";
+import { communityJoinRouter } from "./routes/community/join";
+import { communityPostRouter } from "./routes/community/post";
+import { communityProfileRouter } from "./routes/community/profile";
+
 const app = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -19,12 +36,30 @@ app.get("/", (c) => {
   return c.text("Hono server is live!");
 });
 app.use("/*", cors());
-app.route("/api/server/v1/user", userRouter);
-app.route("/api/server/v1/post", postRouter);
-app.route("/api/server/v1/feed", feedRouter);
-app.route("/api/server/v1/comment", commentRouter);
-app.route("/api/server/v1/auth", authRouter);
-app.route("/api/server/v1/connect", connectRouter);
-app.route("/api/server/v1/community", communityRouter);
-app.route("/api/server/v1/search", searchRouter);
+// USER ROUTERS
+app.route("/api/user/auth", userAuthRouter);
+app.route("/api/user/feed", userFeedRouter);
+app.route("/api/user/post", userPostRouter);
+app.route("/api/user/profile", userProfileRouter);
+app.route("/api/user/follow", userFollowRouter);
+app.route("/api/user/matches", userMatchesRouter);
+app.route("/api/user/comment", userCommentRouter);
+app.route("/api/user/communities", userCommunitiesRouter);
+// SEARCH ROUTER
+app.route("/api/search", searchRouter);
+// POST ROUTERS
+app.route("/api/post", postRouter);
+app.route("/api/post/like", postLikeRouter);
+app.route("/api/post/comment", postCommentRouter);
+// MESSAGE ROUTER
+app.route("/api/message", messageRouter);
+// CONNECT ROUTER
+app.route("/api/connect", connectRouter);
+// COMMUNITY ROUTER
+app.route("/api/community/communities", communitiesRouter);
+app.route("/api/community/create", communityCreateRouter);
+app.route("/api/community/join", communityJoinRouter);
+app.route("/api/community/post", communityPostRouter);
+app.route("/api/community/profile", communityProfileRouter);
+
 export default app;

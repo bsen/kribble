@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -36,7 +36,7 @@ export const Details: React.FC = () => {
       setLoadingState(true);
 
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/one-community-data`,
+        `${BACKEND_URL}/api/community/profile/data`,
         { token, name }
       );
       setLoadingState(false);
@@ -64,10 +64,7 @@ export const Details: React.FC = () => {
       }));
 
       const details = { token, name };
-      await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/join-leave-community`,
-        details
-      );
+      await axios.post(`${BACKEND_URL}/api/community/join/join/leave`, details);
     } catch (error) {
       console.log(error);
       setIsJoined((prevState) => !prevState);
@@ -131,6 +128,16 @@ export const Details: React.FC = () => {
               <div className="text-lg lg:text-xl  font-semibold text-neutral-800">
                 {communityData.name}
               </div>
+              <div className="flex my-2 text-indigo-600  items-center gap-2 font-ubuntu text-sm">
+                <Link to={`/followers`}>
+                  <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
+                    {communityData.membersCount} Members
+                  </div>
+                </Link>
+                <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
+                  {communityData.postsCount} Posts
+                </div>
+              </div>
             </div>
           </div>
 
@@ -152,23 +159,6 @@ export const Details: React.FC = () => {
             >
               <AddIcon sx={{ fontSize: 20 }} />
               <p>Post</p>
-            </div>
-          </div>
-
-          <div className="flex justify-evenly gap-2 items-center text-sm text-primarytextcolor">
-            <div
-              className={
-                "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
-              }
-            >
-              Members: {communityData.membersCount}
-            </div>
-            <div
-              className={
-                "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
-              }
-            >
-              Posts: {communityData.postsCount}
             </div>
           </div>
         </div>

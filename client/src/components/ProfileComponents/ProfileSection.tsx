@@ -51,10 +51,9 @@ export const ProfileSection: React.FC = () => {
   }, [username]);
 
   async function getUser() {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/user/current-user`,
-      { token }
-    );
+    const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
+      token,
+    });
 
     setCurrentUser(response.data.data);
   }
@@ -70,7 +69,7 @@ export const ProfileSection: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/user-all-posts`,
+        `${BACKEND_URL}/api/user/post/all/posts`,
         { token, cursor, username }
       );
       setPostData((prevData) => ({
@@ -101,7 +100,7 @@ export const ProfileSection: React.FC = () => {
   const deletePost = async () => {
     try {
       setLoadingState(true);
-      await axios.post(`${BACKEND_URL}/api/server/v1/post/delete-post`, {
+      await axios.post(`${BACKEND_URL}/api/user/post/delete`, {
         token,
         postDeleteId,
       });
@@ -133,10 +132,7 @@ export const ProfileSection: React.FC = () => {
       }));
 
       const details = { postId, token };
-      await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
-        details
-      );
+      await axios.post(`${BACKEND_URL}/api/post/like/like/unlike`, details);
     } catch (error) {
       console.log(error);
 

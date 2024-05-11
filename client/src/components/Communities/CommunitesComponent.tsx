@@ -29,7 +29,7 @@ export const CommunitiesComponent = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/all-communities`,
+        `${BACKEND_URL}/api/community/communities/all/communities`,
         { token, cursor }
       );
       setCommunityData({

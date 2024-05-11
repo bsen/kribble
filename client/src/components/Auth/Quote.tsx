@@ -8,7 +8,7 @@ export const Quote = () => {
   async function getUsersCount() {
     try {
       const response = await axios.get(
-        `${BACKEND_URL}/api/server/v1/auth/users-count`
+        `${BACKEND_URL}/api/user/auth/users/count`
       );
       setUsersCount(response.data.data);
     } catch (error) {

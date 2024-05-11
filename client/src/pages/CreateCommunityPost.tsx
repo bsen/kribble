@@ -1,5 +1,5 @@
 import { SideBarComponent } from "../components/SideBar/SideBarComponent";
-import { CommunityPostCreate } from "../components/Post/CommunityPostCreate";
+import { CommunityPost } from "../components/CreatePost/CommunityPost";
 
 export const CreateCommunityPost = () => {
   return (
@@ -8,7 +8,7 @@ export const CreateCommunityPost = () => {
         <SideBarComponent />
       </div>
       <div className="w-full lg:w-[50%]">
-        <CommunityPostCreate />
+        <CommunityPost />
       </div>
       <div className="w-[25%] max-lg:hidden"></div>
     </div>

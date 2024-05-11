@@ -30,7 +30,7 @@ export const Edit = () => {
   const getCommunityData = async () => {
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/one-community-data`,
+        `${BACKEND_URL}/api/community/profile/update`,
         { token, id }
       );
 

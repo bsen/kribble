@@ -39,7 +39,7 @@ export const ConnectComponent = () => {
     setLoadingState(true);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/connect/users-for-match`,
+        `${BACKEND_URL}/api/connect/matchable/users`,
         { token, gender }
       );
 
@@ -64,10 +64,10 @@ export const ConnectComponent = () => {
     const otherPersonsId = matchUserData.id;
     setLoadingState(true);
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/connect/match-people`,
-        { token, otherPersonsId }
-      );
+      const response = await axios.post(`${BACKEND_URL}/api/connect/match`, {
+        token,
+        otherPersonsId,
+      });
       setLoadingState(false);
       searchPeople();
       if (response.data.status == 400) {

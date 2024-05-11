@@ -42,7 +42,7 @@ export const SignupAuth = () => {
 
   async function checkName() {
     const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/auth/username-check`,
+      `${BACKEND_URL}/api/user/auth/username/check`,
       { username }
     );
     if (response.data.status === 101) {
@@ -100,7 +100,7 @@ export const SignupAuth = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/auth/signup`,
+        `${BACKEND_URL}/api/user/auth/signup`,
         userdata
       );
       setLoadingState(false);

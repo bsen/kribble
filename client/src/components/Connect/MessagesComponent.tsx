@@ -29,7 +29,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
 
   async function send() {
     if (sendingmessage.trim()) {
-      await axios.post(`${BACKEND_URL}/api/server/v1/connect/send-message`, {
+      await axios.post(`${BACKEND_URL}/api/message/send`, {
         token,
         message: sendingmessage,
         receiverId: id,
@@ -40,14 +40,11 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   }
 
   async function getMessages() {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/connect/get-messages`,
-      {
-        token,
-        receiverId: id,
-        page: currentPage,
-      }
-    );
+    const response = await axios.post(`${BACKEND_URL}/api/message/get`, {
+      token,
+      receiverId: id,
+      page: currentPage,
+    });
 
     const newSendMessages = response.data.sendMessages
       .filter(

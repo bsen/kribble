@@ -50,10 +50,10 @@ export const PostComponent = () => {
   async function getPost() {
     try {
       setLoadingState(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/one-post-data`,
-        { token, postId }
-      );
+      const response = await axios.post(`${BACKEND_URL}/api/post/data`, {
+        token,
+        postId,
+      });
       setLoadingState(false);
       setPostData(response.data.data);
     } catch (error) {
@@ -65,7 +65,7 @@ export const PostComponent = () => {
     try {
       setIsLoadingComments(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/comment/one-post-comments`,
+        `${BACKEND_URL}/api/post/comment/all/comments`,
         { token, postId, cursor }
       );
       if (cursor) {
@@ -92,7 +92,7 @@ export const PostComponent = () => {
       }
 
       setLoadingState(true);
-      await axios.post(`${BACKEND_URL}/api/server/v1/comment/create-comment`, {
+      await axios.post(`${BACKEND_URL}/api/user/comment/create`, {
         token,
         postId,
         comment,

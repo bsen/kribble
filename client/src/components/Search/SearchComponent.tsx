@@ -26,13 +26,10 @@ export const SearchComponent = () => {
 
   async function SearchText() {
     setIsSearching(true);
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/search/search-all`,
-      {
-        token,
-        search,
-      }
-    );
+    const response = await axios.post(`${BACKEND_URL}/api/search/data`, {
+      token,
+      search,
+    });
     setIsSearching(false);
     setUsers(response.data.users);
     setCommunities(response.data.communities);

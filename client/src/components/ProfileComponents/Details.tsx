@@ -40,7 +40,7 @@ export const Details: React.FC = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/user-profile-data`,
+        `${BACKEND_URL}/api/user/profile/data`,
         { token, username }
       );
       setUserData(response.data.message);
@@ -63,7 +63,7 @@ export const Details: React.FC = () => {
       }));
       const details = { username, token };
       await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/follow-unfollow`,
+        `${BACKEND_URL}/api/user/follow/follow/unfollow`,
         details
       );
     } catch (error) {

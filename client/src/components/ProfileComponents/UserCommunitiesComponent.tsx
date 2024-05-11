@@ -33,7 +33,7 @@ export const UserCommunitiesComponent = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/community/one-user-communities`,
+        `${BACKEND_URL}/api/user/communities/all/communities`,
         { token, cursor }
       );
       setCommunityData({

@@ -13,10 +13,9 @@ export const Home = () => {
   }, []);
   async function User() {
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/current-user`,
-        { token }
-      );
+      const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
+        token,
+      });
 
       if (response.data.status === 401) {
         setErrorState(true);

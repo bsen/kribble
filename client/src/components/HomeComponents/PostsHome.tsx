@@ -45,10 +45,10 @@ export const PostsHome = () => {
   async function getFeedPosts(cursor?: string) {
     try {
       setIsLoading(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/feed/posts`,
-        { token, cursor }
-      );
+      const response = await axios.post(`${BACKEND_URL}/api/user/feed/posts`, {
+        token,
+        cursor,
+      });
       setPostData({
         posts: [...postData.posts, ...response.data.data],
         nextCursor: response.data.nextCursor,
@@ -95,10 +95,7 @@ export const PostsHome = () => {
         nextCursor: prevData.nextCursor,
       }));
       const details = { postId, token };
-      await axios.post(
-        `${BACKEND_URL}/api/server/v1/post/post-like-unlike`,
-        details
-      );
+      await axios.post(`${BACKEND_URL}/api/post/like/like/unlike`, details);
     } catch (error) {
       console.log(error);
       setPostData((prevData) => ({

@@ -1,0 +1,187 @@
+import { Hono } from "hono";
+import { PrismaClient } from "@prisma/client/edge";
+import { withAccelerate } from "@prisma/extension-accelerate";
+import { sign, verify } from "hono/jwt";
+import { date, string, z } from "zod";
+export const communityProfileRouter = new Hono<{
+  Bindings: {
+    DATABASE_URL: string;
+    JWT_SECRET: string;
+    CLOUDFLARE_IMGAES_ACCOUNT_ID: string;
+    CLOUDFLARE_IMGAES_API_TOKEN: string;
+    CLOUDFLARE_IMGAES_POST_URL: string;
+  };
+}>();
+
+communityProfileRouter.post("/data", async (c) => {
+  const body = await c.req.json();
+  const token = body.token;
+  const name = body.name;
+
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const userId = await verify(token, c.env.JWT_SECRET);
+  const findUser = await prisma.user.findUnique({
+    where: {
+      id: userId.id,
+    },
+  });
+
+  if (!findUser) {
+    return c.json({ status: 401, message: "User not authenticated" });
+  }
+
+  const findCommunityData = await prisma.community.findFirst({
+    where: {
+      name: name,
+    },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      image: true,
+      membersCount: true,
+      postsCount: true,
+      creatorId: true,
+      creator: { select: { username: true } },
+    },
+  });
+
+  if (!findCommunityData) {
+    return c.json({ status: 404, message: "No community found" });
+  }
+  if (findUser.id === findCommunityData.creatorId) {
+    return c.json({
+      status: 200,
+      data: findCommunityData,
+      joined: true,
+      creator: true,
+    });
+  }
+  const checkJoinedStatus = await prisma.communityMembership.findUnique({
+    where: {
+      userId_communityId: {
+        userId: findUser.id,
+        communityId: findCommunityData.id,
+      },
+    },
+  });
+
+  if (!checkJoinedStatus) {
+    return c.json({
+      status: 200,
+      data: findCommunityData,
+      joined: false,
+      creator: false,
+    });
+  }
+
+  return c.json({
+    status: 200,
+    data: findCommunityData,
+    joined: true,
+    creator: false,
+  });
+});
+
+communityProfileRouter.post("/update", async (c) => {
+  try {
+    const formData = await c.req.formData();
+    const file = formData.get("image");
+    const token = formData.get("token");
+    const communityId = formData.get("id");
+    const newDescription = formData.get("description");
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    console.log(file);
+    if (
+      typeof token !== "string" ||
+      typeof communityId !== "string" ||
+      typeof newDescription !== "string"
+    ) {
+      return c.json({ status: 400, message: "Invalid data or token" });
+    }
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const userData = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!userData) {
+      return c.json({ status: 401, message: "Unauthorized user" });
+    }
+    if (!file) {
+      try {
+        const updateDetails = await prisma.community.update({
+          where: { id: communityId, creatorId: userData.id },
+          data: {
+            description: newDescription,
+          },
+        });
+        if (!updateDetails) {
+          return c.json({
+            status: 400,
+            message: "Community profile updation failed",
+          });
+        }
+        return c.json({
+          status: 200,
+          mesgage: "Community profile updated successfuly",
+        });
+      } catch (error) {
+        return c.json({
+          status: 500,
+          message: "Community profile updation failed",
+        });
+      }
+    }
+    const data = new FormData();
+    const blob = new Blob([file]);
+    data.append("file", blob, "comunity-profile-picture" + "-" + communityId);
+    console.log(data);
+    const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${c.env.CLOUDFLARE_IMGAES_API_TOKEN}`,
+      },
+      body: data,
+    });
+    console.log(response);
+    const imgUrl = (await response.json()) as {
+      result: { variants: string[] };
+    };
+    if (
+      imgUrl.result &&
+      imgUrl.result.variants &&
+      imgUrl.result.variants.length > 0
+    ) {
+      const variantUrl = imgUrl.result.variants[0];
+      const success = await prisma.community.update({
+        where: { id: communityId },
+        data: {
+          description: newDescription,
+          image: variantUrl,
+        },
+      });
+      console.log(success);
+
+      if (!success) {
+        return c.json({
+          status: 403,
+          message: "Failed to create update community profile photo",
+        });
+      }
+    } else {
+      console.error("No variants found in the response.");
+    }
+    return c.json({
+      status: 200,
+      message: "Community profile updated successfuly",
+    });
+  } catch (error) {
+    console.log(error);
+    return c.json({
+      status: 500,
+      message: "Community profile photo updation failed",
+    });
+  }
+});

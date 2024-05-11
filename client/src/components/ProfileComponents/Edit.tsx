@@ -32,10 +32,9 @@ export const Edit = () => {
 
   async function getData() {
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/current-user`,
-        { token }
-      );
+      const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
+        token,
+      });
 
       setUserData(response.data.editdata);
       setCurrentUser(response.data.data);
@@ -109,10 +108,7 @@ export const Edit = () => {
       formdata.append("token", token ? token : "");
 
       setIsLoading(true);
-      await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/profile/update`,
-        formdata
-      );
+      await axios.post(`${BACKEND_URL}/api/user/profile/update`, formdata);
       setIsLoading(false);
       navigate(`/${currentUser}`);
     } catch (error) {

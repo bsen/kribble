@@ -79,7 +79,7 @@ export const SideBarComponent = () => {
               navigate("/create/post");
             }}
             className={
-              "w-full h-10 px-4 rounded-md  bg-indigo-500 text-white flex items-center justify-start gap-2 text-base font-light"
+              "w-full h-10 px-4 rounded-md  bg-indigo-600 text-white flex items-center justify-start gap-2 text-base font-light"
             }
           >
             <AddIcon sx={{ fontSize: 25 }} />

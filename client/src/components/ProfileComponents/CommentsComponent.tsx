@@ -38,7 +38,7 @@ export const CommentsComponent = () => {
     try {
       setIsLoadingComments(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/comment/user-all-comments`,
+        `${BACKEND_URL}/api/user/comment/all/comments`,
         {
           token,
           cursor,
@@ -72,7 +72,7 @@ export const CommentsComponent = () => {
   const deleteComment = async () => {
     try {
       setIsLoadingComments(true);
-      await axios.post(`${BACKEND_URL}/api/server/v1/comment/delete-comment`, {
+      await axios.post(`${BACKEND_URL}/api/user/comment/delete`, {
         token,
         deleteCommentId,
         deleteCommentPostId,

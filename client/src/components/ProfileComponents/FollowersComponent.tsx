@@ -34,7 +34,7 @@ export const FollowersComponent = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/followers-list`,
+        `${BACKEND_URL}/api/user/follow/followers/list`,
         { token, cursor, username }
       );
       console.log(response.data.data);
