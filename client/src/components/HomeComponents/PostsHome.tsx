@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import { CircularProgress } from "@mui/material";
-import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
+import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { BottomBar } from "../Bars/BottomBar";
@@ -150,8 +150,7 @@ export const PostsHome = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-2 p-4 border hover:bg-white/50 border-neutral-100 rounded-md bg-white"
-                onClick={() => navigate(`/post/${post.id}`)}
+                className="my-2 p-4 border border-neutral-100 rounded-md bg-white"
               >
                 <div className="flex gap-2">
                   <div>
@@ -168,7 +167,7 @@ export const PostsHome = () => {
                             {post.community && (
                               <img
                                 src={post.community.image || "/group.png"}
-                                className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                                className="w-8 h-8 rounded-full"
                                 alt="Community"
                               />
                             )}
@@ -187,20 +186,20 @@ export const PostsHome = () => {
                             <img
                               src={post.creator.image}
                               alt="Profile"
-                              className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                              className="w-8 h-8 rounded-full"
                             />
                           </div>
                         ) : (
                           <img
                             src="/user.png"
                             alt="Anonymous"
-                            className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                            className="w-8 h-8 rounded-full"
                           />
                         )}
                       </>
                     )}
                   </div>
-                  <div className="w-full">
+                  <div className="w-full flex flex-col">
                     <div className="w-fit flex gap-2 items-center">
                       {post.community ? (
                         <div
@@ -238,61 +237,61 @@ export const PostsHome = () => {
                         · {getTimeDifference(post.createdAt)}
                       </div>
                     </div>
+                    <div className="flex flex-col gap-1 py-4 w-full">
+                      {post.image && (
+                        <img
+                          src={post.image}
+                          className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                        />
+                      )}
 
-                    {post.image && (
-                      <img
-                        src={post.image}
-                        className="mt-4 max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
-                      />
-                    )}
-
-                    <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
-                      {post.content}
+                      <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                        {post.content}
+                      </div>
                     </div>
 
-                    <div className="flex justify-start gap-5 items-center text-sm text-neutral-500">
-                      <button
-                        className="flex bg-rose-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLike(post.id);
-                        }}
-                      >
-                        <div>
-                          {post.isLiked ? (
-                            <FavoriteIcon
-                              sx={{
-                                fontSize: 20,
-                              }}
-                              className="text-rose-500"
-                            />
-                          ) : (
-                            <FavoriteBorderIcon
-                              sx={{
-                                fontSize: 20,
-                              }}
-                              className="text-rose-500"
-                            />
-                          )}
+                    <div className=" flex justify-between gap-2 items-center text-sm text-neutral-500">
+                      <div className="flex gap-2 items-center">
+                        <button
+                          className="flex justify-center items-center gap-2 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleLike(post.id);
+                          }}
+                        >
+                          <div>
+                            {post.isLiked ? (
+                              <FavoriteIcon
+                                sx={{
+                                  fontSize: 22,
+                                }}
+                                className="text-rose-500"
+                              />
+                            ) : (
+                              <FavoriteBorderIcon
+                                sx={{
+                                  fontSize: 22,
+                                }}
+                                className="text-rose-500"
+                              />
+                            )}
+                          </div>
+                        </button>
+                        <div className="text-sm text-neutral-600">
+                          {post.likesCount} likes
                         </div>
-
-                        <div className="text-base text-rose-500">
-                          {post.likesCount}
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div onClick={() => navigate(`/post/${post.id}`)}>
+                          <MapsUgcRoundedIcon
+                            sx={{ fontSize: 22 }}
+                            className="text-indigo-500 cursor-pointer"
+                          />
                         </div>
-                      </button>
-
-                      <Link
-                        to={`/post/${post.id}`}
-                        className="flex bg-indigo-50 rounded-lg shadow-sm px-1 justify-center items-center gap-2 cursor-pointer"
-                      >
-                        <ChatBubbleOutlineRoundedIcon
-                          sx={{ fontSize: 20 }}
-                          className="text-indigo-500"
-                        />
-                        <div className="text-base text-indigo-500">
-                          {post.commentsCount}
+                        <div className="text-sm text-neutral-600">
+                          {post.commentsCount} comments
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -302,7 +301,7 @@ export const PostsHome = () => {
             <div className="text-center font-ubuntu my-5 text-primarytextcolor">
               No posts found.
             </div>
-          )}{" "}
+          )}
         </div>
         <BottomBar />
 

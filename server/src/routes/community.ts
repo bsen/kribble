@@ -37,6 +37,7 @@ communityRouter.post("/community-all-posts", async (c) => {
         image: true,
         content: true,
         likesCount: true,
+        anonymity: true,
         creator: {
           select: {
             id: true,
@@ -74,8 +75,21 @@ communityRouter.post("/community-all-posts", async (c) => {
             },
           },
         });
+        const creatorDetails = post.anonymity
+          ? {
+              username: "Anonymous post",
+              image: null,
+            }
+          : {
+              username: post.creator.username,
+              image: post.creator.image,
+            };
         return {
           ...post,
+          creator: {
+            ...post.creator,
+            ...creatorDetails,
+          },
           isLiked: isLiked ? true : false,
         };
       })
@@ -112,15 +126,15 @@ communityRouter.post("/community-name-check", async (c) => {
 communityRouter.post("/create-community", async (c) => {
   try {
     const body = await c.req.json();
-    const { token, name, catagory, description } = body;
-    if (!token || !name || !catagory || !description) {
+    const { token, name, description } = body;
+    if (!token || !name || !description) {
       return c.json({ status: 400, message: "Invalid data" });
     }
     const userId = await verify(token, c.env.JWT_SECRET);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    console.log(name, catagory, description);
+
     const findUser = await prisma.user.findUnique({
       where: {
         id: userId.id,
@@ -146,7 +160,6 @@ communityRouter.post("/create-community", async (c) => {
         creator: { connect: { id: findUser.id } },
         name: name,
         description: description,
-        category: catagory,
       },
     });
 
@@ -204,9 +217,9 @@ communityRouter.post("/all-communities", async (c) => {
         id: true,
         image: true,
         name: true,
-        category: true,
         description: true,
         membersCount: true,
+        postsCount: true,
       },
       orderBy: {
         membersCount: "asc",
@@ -255,7 +268,6 @@ communityRouter.post("/one-community-data", async (c) => {
       id: true,
       name: true,
       description: true,
-      category: true,
       image: true,
       membersCount: true,
       postsCount: true,
@@ -525,14 +537,13 @@ communityRouter.post("/create-community-text-post", async (c) => {
   }
 });
 
-communityRouter.post("/update-community-details", async (c) => {
+communityRouter.post("/update/details", async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get("image");
     const token = formData.get("token");
     const communityId = formData.get("id");
     const newDescription = formData.get("description");
-    const newCategory = formData.get("category");
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -540,8 +551,7 @@ communityRouter.post("/update-community-details", async (c) => {
     if (
       typeof token !== "string" ||
       typeof communityId !== "string" ||
-      typeof newDescription !== "string" ||
-      typeof newCategory !== "string"
+      typeof newDescription !== "string"
     ) {
       return c.json({ status: 400, message: "Invalid data or token" });
     }
@@ -553,10 +563,9 @@ communityRouter.post("/update-community-details", async (c) => {
     if (!file) {
       try {
         const updateDetails = await prisma.community.update({
-          where: { id: communityId },
+          where: { id: communityId, creatorId: userData.id },
           data: {
             description: newDescription,
-            category: newCategory,
           },
         });
         if (!updateDetails) {
@@ -601,7 +610,6 @@ communityRouter.post("/update-community-details", async (c) => {
         where: { id: communityId },
         data: {
           description: newDescription,
-          category: newCategory,
           image: variantUrl,
         },
       });
@@ -720,7 +728,6 @@ communityRouter.post("/one-user-communities", async (c) => {
         id: true,
         image: true,
         name: true,
-        category: true,
         description: true,
         membersCount: true,
       },

@@ -23,14 +23,23 @@ userRouter.post("/current-user", async (c) => {
     const person = await prisma.user.findFirst({
       where: { id: userId.id },
       select: {
+        id: true,
+        name: true,
         username: true,
         image: true,
+        website: true,
+        bio: true,
       },
     });
     if (!person) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
-    return c.json({ status: 200, data: person.username, image: person.image });
+    return c.json({
+      status: 200,
+      data: person.username,
+      image: person.image,
+      editdata: person,
+    });
   } catch (error) {
     return c.json({ status: 400 });
   }
@@ -60,7 +69,6 @@ userRouter.post("/user-profile-data", async (c) => {
         image: true,
         bio: true,
         website: true,
-        interest: true,
         followersCount: true,
         followingCount: true,
       },
@@ -93,7 +101,7 @@ userRouter.post("/user-profile-data", async (c) => {
     return c.json({ status: 500, message: "error while fetching data" });
   }
 });
-userRouter.post("/profile-update", async (c) => {
+userRouter.post("/profile/update", async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get("image");
@@ -101,7 +109,7 @@ userRouter.post("/profile-update", async (c) => {
     const newName = formData.get("name");
     const newBio = formData.get("bio");
     const newWebsite = formData.get("website");
-    const newInterest = formData.get("interest");
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -109,8 +117,7 @@ userRouter.post("/profile-update", async (c) => {
       typeof token !== "string" ||
       typeof newBio !== "string" ||
       typeof newName !== "string" ||
-      typeof newWebsite !== "string" ||
-      typeof newInterest !== "string"
+      typeof newWebsite !== "string"
     ) {
       return c.json({ status: 400, message: "Invalid data or token" });
     }
@@ -127,7 +134,6 @@ userRouter.post("/profile-update", async (c) => {
             name: newName,
             bio: newBio,
             website: newWebsite,
-            interest: newInterest,
           },
         });
         if (!updateProfile) {
@@ -168,7 +174,6 @@ userRouter.post("/profile-update", async (c) => {
           name: newName,
           bio: newBio,
           website: newWebsite,
-          interest: newInterest,
           image: variantUrl,
         },
       });

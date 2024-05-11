@@ -208,7 +208,7 @@ export const ConnectComponent = () => {
                     </button>
                     <Link
                       className="text-background rounded-md bg-neutral-800 text-base py-2 px-4 font-ubuntu active:bg-neutral-800"
-                      to={"/matches"}
+                      to={"/user/matches"}
                     >
                       Browse Matches
                     </Link>

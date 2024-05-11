@@ -9,9 +9,9 @@ import { BottomBar } from "../Bars/BottomBar";
 interface Communities {
   id: string;
   name: string;
-  category: string;
   description: string;
   membersCount: string;
+  postsCount: string;
   image: string;
 }
 export const CommunitiesComponent = () => {
@@ -72,7 +72,7 @@ export const CommunitiesComponent = () => {
           communityData.communities.map((community, index) => (
             <div
               key={index}
-              className="border-b hover:bg-white border-neutral-200 p-3 bg-white"
+              className="my-2 border rounded-md border-neutral-100 p-4 bg-white"
             >
               <Link to={`/community/${community.name}`}>
                 <div className="flex justify-between gap-2">
@@ -84,19 +84,21 @@ export const CommunitiesComponent = () => {
                     <div className="flex flex-col w-full">
                       <div className="text-primarytextcolor text-base lg:text-lg font-medium font-ubuntu">
                         {community.name}
-                      </div>{" "}
-                      <div className="text-primarytextcolor text-sm  font-normal">
-                        {community.category}
                       </div>
                       <div className="text-primarytextcolor text-sm  font-normal">
                         {community.description}
                       </div>
-                      <div className="text-primarytextcolor font-ubuntu  text-sm font-light">
-                        {community.membersCount} members
+                      <div className="flex gap-2 items-center">
+                        <div className="text-indigo-600 font-light  text-sm">
+                          {community.membersCount} members
+                        </div>
+                        <div className="text-indigo-600 font-light  text-sm">
+                          {community.postsCount} posts
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>{" "}
+                </div>
               </Link>
             </div>
           ))

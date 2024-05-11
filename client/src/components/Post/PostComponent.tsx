@@ -1,10 +1,9 @@
-// Client-side code
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import { Loading } from "../Loading";
 import { useEffect, useState, useRef } from "react";
 import { BACKEND_URL } from "../../config";
 import { CircularProgress } from "@mui/material";
+import { NavBar } from "../Bars/NavBar";
 
 interface Comment {
   id: string;
@@ -12,7 +11,6 @@ interface Comment {
   createdAt: string;
   creator: {
     username: string;
-    name: string;
     image: string | null;
   };
 }
@@ -24,7 +22,6 @@ interface PostData {
   createdAt: string;
   creator: {
     username: string;
-    name: string;
     image: string | null;
   };
 }
@@ -45,7 +42,6 @@ export const PostComponent = () => {
     createdAt: "",
     creator: {
       username: "",
-      name: "",
       image: "",
     },
   });
@@ -126,20 +122,35 @@ export const PostComponent = () => {
     getPost();
     getComments();
   }, []);
-
+  const getTimeDifference = (createdAt: string) => {
+    const currentDate = new Date();
+    const postDate = new Date(createdAt);
+    const timeDifference = currentDate.getTime() - postDate.getTime();
+    const hoursDifference = Math.floor(timeDifference / (1000 * 3600));
+    const daysDifference = Math.floor(hoursDifference / 24);
+    if (daysDifference >= 30) {
+      return postDate.toDateString();
+    } else if (daysDifference >= 1) {
+      return `${daysDifference}d ago`;
+    } else if (hoursDifference >= 1) {
+      return `${hoursDifference}h ago`;
+    } else {
+      const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+      return `${minutesDifference}m ago`;
+    }
+  };
   return (
     <>
-      {loadingState ? (
-        <Loading />
-      ) : (
+      {!loadingState && (
         <>
           <div
             className="h-screen overflow-y-auto no-scrollbar py-14"
             onScroll={handleScroll}
             ref={scrollContainerRef}
           >
-            <div className="flex flex-col gap-2  p-4 border-b border-neutral-200 ">
-              <div className="flex gap-2 items-center">
+            <NavBar />
+            <div className="flex items-start mt-2 gap-2 bg-white border border-neutral-100 p-4 rounded-md ">
+              <div>
                 <Link to={`/${postData.creator.username}`}>
                   <img
                     src={
@@ -148,48 +159,40 @@ export const PostComponent = () => {
                         : "/user.png"
                     }
                     alt="Profile"
-                    className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                    className="w-8 h-8  rounded-full"
                   />
                 </Link>
-                <div className="w-[80%]">
+              </div>
+              <div className="w-full">
+                <div className="flex gap-2 items-center">
                   <Link to={`/${postData.creator.username}`}>
                     <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                      {postData.creator.name}
+                      {postData.creator.username}
                     </div>
                   </Link>
-                  <div className="flex gap-2 items-center">
-                    <Link to={`/${postData.creator.username}`}>
-                      <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
-                        @{postData.creator.username}
-                      </div>
-                    </Link>
-                    <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                      · {postData.createdAt.slice(0, 10)}
-                    </div>
+                  <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                    · {getTimeDifference(postData.createdAt)}
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-1 py-4 w-full">
+                  {postData.image && (
+                    <img
+                      src={postData.image}
+                      className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                    />
+                  )}
+
+                  <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                    {postData.content}
                   </div>
                 </div>
               </div>
-
-              <div>
-                <div>
-                  {postData.image ? (
-                    <img
-                      src={postData.image}
-                      className="max-h-[60vh]   rounded-lg border border-neutral-200"
-                    />
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="text-primarytextcolor text-sm lg:text-base my-2 font-light">
-                  {postData.content}
-                </div>
-              </div>
             </div>
-            <div className="px-4 py-2 border-b border-neutral-200 flex justify-center items-center">
+            <div className="bg-white p-2 my-2 rounded-md border border-neutral-100 flex justify-center items-center">
               <div className="w-full">
                 <textarea
-                  rows={4}
+                  rows={3}
                   className={`w-full resize-none no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
                     popup ? "border border-rose-400" : ""
                   }`}
@@ -198,13 +201,13 @@ export const PostComponent = () => {
                     setPopup(false);
                     setComment(e.target.value);
                   }}
-                  maxLength={300}
+                  maxLength={250}
                   placeholder="Post a reply"
                 />
                 <div className="flex justify-end">
                   <button
                     onClick={createComment}
-                    className="text-white text-base py-1 px-6 rounded-full bg-neutral-800"
+                    className="text-white text-base py-1 px-6 rounded-md bg-indigo-600"
                   >
                     Post
                   </button>
@@ -212,7 +215,10 @@ export const PostComponent = () => {
               </div>
             </div>
             {postComments.map((comment) => (
-              <div key={comment.id} className="p-3 border-b border-neutral-200">
+              <div
+                key={comment.id}
+                className="my-2 p-4 border border-neutral-100 rounded-md bg-white"
+              >
                 <div className="flex gap-2">
                   <div>
                     <Link to={`/${comment.creator.username}`}>
@@ -223,30 +229,24 @@ export const PostComponent = () => {
                             : "/user.png"
                         }
                         alt="Profile"
-                        className="w-8 h-8 lg:h-10 lg:w-10 rounded-full"
+                        className="w-8 h-8  rounded-full"
                       />
                     </Link>
                   </div>
-                  <div className="w-[80%]">
-                    <Link to={`/${comment.creator.username}`}>
-                      <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                        {comment.creator.name}
-                      </div>
-                    </Link>
+                  <div className="w-full">
                     <div className="flex gap-2 items-center">
                       <Link to={`/${comment.creator.username}`}>
-                        <div className="text-secondarytextcolor hover:underline text-xs lg:text-sm font-ubuntu">
-                          @{comment.creator.username}
+                        <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                          {comment.creator.username}
                         </div>
                       </Link>
-                      <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                        · {comment.createdAt.slice(0, 10)}
+                      <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                        · {getTimeDifference(comment.createdAt)}
                       </div>
                     </div>
-                    <div className="text-primarytextcolor my-2 text-sm lg:text-base font-light">
+                    <div className="text-primarytextcolor text-sm lg:text-base font-light">
                       {comment.content}
                     </div>
-
                     <div>
                       <div className="flex gap-2 text-neutral-600"></div>
                     </div>
