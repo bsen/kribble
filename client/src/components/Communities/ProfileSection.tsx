@@ -82,7 +82,7 @@ export const ProfileSection: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `http://localhost:8787/api/server/v1/community/community-all-posts`,
+        `${BACKEND_URL}/api/server/v1/community/community-all-posts`,
         { token, cursor, name }
       );
       setPostData({

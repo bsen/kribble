@@ -227,7 +227,7 @@ export const ProfileSection: React.FC = () => {
                       postData.posts.map((post, index) => (
                         <div
                           key={index}
-                          className="my-2 p-4 border hover:bg-white/50 border-neutral-100 rounded-md bg-white"
+                          className="my-2 p-4 border border-neutral-100 rounded-md bg-white"
                         >
                           <div className="flex gap-2">
                             <div>
