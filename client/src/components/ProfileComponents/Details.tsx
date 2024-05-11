@@ -20,7 +20,6 @@ export const Details: React.FC = () => {
     image: string;
     bio: string;
     website: string;
-    interest: string;
     followersCount: string;
     followingCount: string;
   }>({
@@ -29,7 +28,6 @@ export const Details: React.FC = () => {
     image: "",
     bio: "",
     website: "",
-    interest: "",
     followersCount: "",
     followingCount: "",
   });

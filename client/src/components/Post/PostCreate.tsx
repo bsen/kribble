@@ -1,11 +1,13 @@
 import { useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import axios from "axios";
 import { Loading } from "../Loading";
 import Switch from "@mui/material/Switch";
 import { BACKEND_URL } from "../../config";
+import { NavBar } from "../Bars/NavBar";
 export const PostCreate = () => {
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
@@ -95,12 +97,13 @@ export const PostCreate = () => {
       {loadingState ? (
         <Loading />
       ) : (
-        <div className="h-screen bg-white flex justify-center items-center px-5 lg:px-0">
+        <div className="h-screen border-l border-r border-neutral-100 bg-white flex justify-center items-center px-5 lg:px-0">
+          <NavBar />
           <div className="w-full max-w-md my-5 rounded-lg bg-white">
             <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
               <div>
                 <button onClick={handleClose}>
-                  <CloseIcon
+                  <ArrowBackIcon
                     className="bg-neutral-800 p-1 rounded-full text-white"
                     sx={{ fontSize: 30 }}
                   />
@@ -131,7 +134,7 @@ export const PostCreate = () => {
                     htmlFor="image-upload"
                     className="cursor-pointer block text-center"
                   >
-                    <div className="h-20 border-dashed border border-secondarytextcolor rounded-lg gap-2 flex justify-center items-center">
+                    <div className="h-20 border-dashed border border-neutral-200 rounded-lg gap-2 flex justify-center items-center">
                       <div className="text-secondarytextcolor">Add Picture</div>
                       <AddPhotoAlternateIcon className="text-secondarytextcolor" />
                     </div>
@@ -149,7 +152,7 @@ export const PostCreate = () => {
                 value={post}
                 onChange={handlePostChange}
                 rows={4}
-                className="w-full mt-4 border border-neutral-200 resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+                className="w-full mt-4 border border-neutral-100 resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
                 placeholder="Write your thoughts..."
                 wrap="soft"
                 minLength={10}
@@ -169,7 +172,7 @@ export const PostCreate = () => {
               <div className="flex w-full justify-center">
                 <button
                   onClick={createPost}
-                  className="bg-black w-full hover:bg-neutral-900 text-white border border-neutral-200 px-6 py-2 rounded-lg"
+                  className="w-full bg-indigo-600 text-white px-6 py-2 rounded-lg"
                 >
                   Post
                 </button>

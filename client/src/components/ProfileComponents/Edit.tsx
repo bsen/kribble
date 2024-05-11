@@ -22,14 +22,12 @@ export const Edit = () => {
     bio: string;
     image: string;
     website: string;
-    interest: string;
   }>({
     name: "",
     username: "",
     bio: "",
     image: "",
     website: "",
-    interest: "",
   });
 
   async function getData() {

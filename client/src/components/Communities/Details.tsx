@@ -11,7 +11,6 @@ interface CommunityData {
   name: string;
   image: string;
   description: string;
-  category: string;
   membersCount: string;
   postsCount: string;
 }
@@ -29,7 +28,6 @@ export const Details: React.FC = () => {
     name: "",
     image: "",
     description: "",
-    category: "",
     membersCount: "",
     postsCount: "",
   });
@@ -132,9 +130,6 @@ export const Details: React.FC = () => {
               </div>
               <div className="text-lg lg:text-xl  font-semibold text-neutral-800">
                 {communityData.name}
-              </div>
-              <div className="text-neutral-600 text-xs font-light">
-                {communityData.category}
               </div>
             </div>
           </div>
