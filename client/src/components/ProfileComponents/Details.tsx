@@ -94,16 +94,22 @@ export const Details: React.FC = () => {
             <div className="w-full">
               <div className="flex items-center justify-end">
                 <div>
-                  {currentUser === username ? (
-                    <button className="text-left text-white bg-neutral-800 font-light rounded-full px-3 py-1 text-xs">
+                  {currentUser === username && (
+                    <button
+                      onClick={() => {
+                        navigate("/edit/profile");
+                      }}
+                      className="text-left text-white bg-indigo-600 font-light rounded-md px-4 py-1 text-xs"
+                    >
                       Edit profile
                     </button>
-                  ) : (
+                  )}
+                  {currentUser !== username && (
                     <div className="flex my-2 gap-4 justify-between items-center">
                       <button
                         onClick={followUser}
                         disabled={isFollowUserLoading}
-                        className="text-left text-white bg-neutral-800 font-light rounded-full px-3 py-1 text-xs"
+                        className="text-left text-white bg-indigo-600 font-light rounded-md px-4 py-1 text-xs"
                       >
                         {isFollowUserLoading ? (
                           <CircularProgress

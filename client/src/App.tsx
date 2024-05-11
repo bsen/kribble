@@ -16,6 +16,8 @@ import { Comments } from "./pages/Comments";
 import { UserCommunities } from "./pages/UserCommunities";
 import { CreateCommunityPost } from "./pages/CreateCommunityPost";
 import { Search } from "./pages/Search";
+import { EditProfile } from "./pages/EditProfile";
+import { EditCommunity } from "./pages/EditCommunity";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -72,7 +74,7 @@ function App() {
             element={<ProtectedRoute element={<Connect />} />}
           />
           <Route
-            path="/matches"
+            path="/user/matches"
             element={<ProtectedRoute element={<Matches />} />}
           />
           <Route
@@ -84,8 +86,16 @@ function App() {
             element={<ProtectedRoute element={<Following />} />}
           />
           <Route
-            path="/created-communities"
+            path="/user/communities"
             element={<ProtectedRoute element={<UserCommunities />} />}
+          />
+          <Route
+            path="/edit/profile"
+            element={<ProtectedRoute element={<EditProfile />} />}
+          />
+          <Route
+            path="/edit/community/:id"
+            element={<ProtectedRoute element={<EditCommunity />} />}
           />
           <Route
             path="/search"

@@ -24,7 +24,6 @@ export const Details: React.FC = () => {
   const [isCreator, setIsCreator] = useState(Boolean);
   const [isJoined, setIsJoined] = useState(false);
   const [isJoiningLoading, setIsJoiningLoading] = useState(false);
-
   const [communityData, setCommunityData] = useState<CommunityData>({
     id: "",
     name: "",
@@ -84,26 +83,6 @@ export const Details: React.FC = () => {
       setIsJoiningLoading(false);
     }
   };
-
-  const parentToChild = (
-    id: string,
-    name: string,
-    image: string,
-    description: string,
-    category: string,
-    membersCount: string,
-    postsCount: string
-  ) => {
-    setCommunityData({
-      id,
-      name,
-      image,
-      description,
-      category,
-      membersCount,
-      postsCount,
-    });
-  };
   return (
     <>
       {!loadingState && (
@@ -117,28 +96,22 @@ export const Details: React.FC = () => {
             <div className="w-full">
               <div className="flex justify-end items-center">
                 <div>
-                  {isCreator ? (
+                  {isCreator && (
                     <button
                       onClick={() => {
-                        parentToChild(
-                          communityData.id,
-                          communityData.name,
-                          communityData.image,
-                          communityData.description,
-                          communityData.category,
-                          communityData.membersCount,
-                          communityData.postsCount
-                        );
+                        navigate(`/edit/community/${communityData.id}`);
                       }}
-                      className="text-left text-white bg-neutral-800 font-light rounded-full px-3 py-1 text-xs"
+                      className="text-left text-white bg-indigo-600 font-light rounded-md px-4 py-1 text-xs"
                     >
-                      Edit profile
+                      Edit details
                     </button>
-                  ) : (
+                  )}
+
+                  {!isCreator && (
                     <button
                       onClick={handleJoinCommunity}
                       disabled={isJoiningLoading}
-                      className="text-left text-white bg-neutral-800 font-light rounded-full px-3 py-1 text-xs"
+                      className="text-left text-white bg-indigo-600 font-light rounded-md px-4 py-1 text-xs"
                     >
                       <div className="flex items-center justify-center">
                         {isJoiningLoading ? (

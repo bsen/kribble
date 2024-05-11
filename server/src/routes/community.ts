@@ -219,6 +219,7 @@ communityRouter.post("/all-communities", async (c) => {
         name: true,
         description: true,
         membersCount: true,
+        postsCount: true,
       },
       orderBy: {
         membersCount: "asc",
@@ -536,7 +537,7 @@ communityRouter.post("/create-community-text-post", async (c) => {
   }
 });
 
-communityRouter.post("/update-community-details", async (c) => {
+communityRouter.post("/update/details", async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get("image");
