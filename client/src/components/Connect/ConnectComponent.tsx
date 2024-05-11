@@ -21,13 +21,11 @@ export const ConnectComponent = () => {
     id: string;
     username: string;
     bio: string;
-    interest: string;
     image: string;
   }>({
     id: "",
     username: "",
     bio: "",
-    interest: "",
     image: "",
   });
 
@@ -131,10 +129,6 @@ export const ConnectComponent = () => {
                     </div>
                   </div>
                   <div className="font-light text-sm text-secondarytextcolor m-2 w-[50%]">
-                    {matchUserData.interest
-                      ? "interest · " + matchUserData.interest
-                      : ""}
-                    <br />
                     {matchUserData.bio ? "bio · " + matchUserData.bio : ""}
                   </div>
                   <div className="flex items-center py-2 justify-center gap-5 w-full">
@@ -166,8 +160,7 @@ export const ConnectComponent = () => {
                       Start Connecting with kribble
                     </div>
                     <div className="text-secondarytextcolor font-normal text-sm">
-                      1. Your profile picture, bio and interest will be used for
-                      connecting.
+                      1. Your profile picture, bio will be used for connecting.
                       <br />
                       2. You can only exchange messages with people you've been
                       matched with.

@@ -112,7 +112,7 @@ connectRouter.post("/match-people", async (c) => {
     if (alreadyMatched) {
       return c.json({
         status: 400,
-        message: "User has already shown interest in this person",
+        message: "User has already liked this profile",
       });
     }
     const otherPersonMatch = await prisma.match.findUnique({

@@ -10,7 +10,6 @@ import { NavBar } from "../Bars/NavBar";
 interface Communities {
   id: string;
   name: string;
-  category: string;
   description: string;
   membersCount: string;
   image: string;
@@ -161,10 +160,6 @@ export const UserCommunitiesComponent = () => {
                           >
                             {community.name}
                           </Link>
-
-                          <div className="text-primarytextcolor text-sm  font-normal">
-                            {community.category}
-                          </div>
                           <div className="text-primarytextcolor text-sm  font-normal">
                             {community.description}
                           </div>
