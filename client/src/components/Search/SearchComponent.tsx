@@ -26,13 +26,10 @@ export const SearchComponent = () => {
 
   async function SearchText() {
     setIsSearching(true);
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/search/search-all`,
-      {
-        token,
-        search,
-      }
-    );
+    const response = await axios.post(`${BACKEND_URL}/api/search/data`, {
+      token,
+      search,
+    });
     setIsSearching(false);
     setUsers(response.data.users);
     setCommunities(response.data.communities);
@@ -49,7 +46,7 @@ export const SearchComponent = () => {
 
   return (
     <div className="top-0 fixed w-full  lg:w-[45%]">
-      <div className="w-full px-4 border-b border-neutral-200 bg-white h-14 flex justify-between items-center">
+      <div className="w-full px-4 border-b border-neutral-100 bg-white h-14 flex justify-between items-center">
         <button
           disabled={true}
           className="h-10 mx-auto w-[75%] flex px-4 justify-between items-center border border-neutral-100 bg-neutral-100 rounded-full"

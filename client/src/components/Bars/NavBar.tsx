@@ -9,10 +9,9 @@ export const NavBar = () => {
   const [userImage, setUserImage] = useState("");
   const [currentUser, setCurrentUser] = useState("");
   async function getUser() {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/server/v1/user/current-user`,
-      { token }
-    );
+    const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
+      token,
+    });
 
     setUserImage(response.data.image);
     setCurrentUser(response.data.data);

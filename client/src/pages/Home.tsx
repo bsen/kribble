@@ -1,5 +1,5 @@
-import { SideBarComponent } from "../components/SideBar/SideBarComponent";
-import { PostsHome } from "../components/HomeComponents/PostsHome";
+import { SideBar } from "../components/Bars/SideBar";
+import { HomeComponent } from "../components/Home/HomeComponent";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useEffect, useState } from "react";
@@ -13,10 +13,9 @@ export const Home = () => {
   }, []);
   async function User() {
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/server/v1/user/current-user`,
-        { token }
-      );
+      const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
+        token,
+      });
 
       if (response.data.status === 401) {
         setErrorState(true);
@@ -46,10 +45,10 @@ export const Home = () => {
       ) : (
         <>
           <div className="w-[20%] max-lg:hidden">
-            <SideBarComponent />
+            <SideBar />
           </div>
           <div className="w-full lg:w-[50%]">
-            <PostsHome />
+            <HomeComponent />
           </div>
           <div className="w-[25%] max-lg:hidden"></div>
         </>

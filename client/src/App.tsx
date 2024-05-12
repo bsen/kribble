@@ -1,23 +1,23 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { Signup } from "./pages/Signup";
-import { Login } from "./pages/Login";
+import { Signup } from "./pages/User/Auth/Signup";
+import { Login } from "./pages/User/Auth/Login";
 import { Home } from "./pages/Home";
-import { Profile } from "./pages/Profile";
-import { CreatePost } from "./pages/CreatePost";
-import { Connect } from "./pages/Connect";
-import { Post } from "./pages/Post";
-import { Matches } from "./pages/Matches";
-import { Communities } from "./pages/Communities";
-import { Followers } from "./pages/Followers";
-import { Following } from "./pages/Following";
-import { CreateCommunity } from "./pages/CreateCommunity";
-import { Community } from "./pages/Community";
-import { Comments } from "./pages/Comments";
-import { UserCommunities } from "./pages/UserCommunities";
-import { CreateCommunityPost } from "./pages/CreateCommunityPost";
+import { Profile } from "./pages/User/Profile/Profile";
+import { CreatePost } from "./pages/User/Create/CreatePost";
+import { Connect } from "./pages/Connect/Connect/Connect";
+import { Post } from "./pages/Post/Post";
+import { Matches } from "./pages/Connect/Matches/Matches";
+import { Communities } from "./pages/Community/Communities/Communities";
+import { Followers } from "./pages/User/Follow/Followers";
+import { Following } from "./pages/User/Follow/Following";
+import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
+import { Community } from "./pages/Community/Profile/Community";
+import { Comments } from "./pages/User/Comments/Comments";
+import { CreatedCommunities } from "./pages/User/Communities/CreatedCommunities";
+import { CommunityPost } from "./pages/Community/Create/CommunityPost";
 import { Search } from "./pages/Search";
-import { EditProfile } from "./pages/EditProfile";
-import { EditCommunity } from "./pages/EditCommunity";
+import { UpdateProfile } from "./pages/User/Profile/Update";
+import { UpdateCommunity } from "./pages/Community/Profile/Update";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -63,7 +63,7 @@ function App() {
           />
           <Route
             path="/community/:name/post"
-            element={<ProtectedRoute element={<CreateCommunityPost />} />}
+            element={<ProtectedRoute element={<CommunityPost />} />}
           />
           <Route
             path="/post/:postId"
@@ -87,15 +87,15 @@ function App() {
           />
           <Route
             path="/user/communities"
-            element={<ProtectedRoute element={<UserCommunities />} />}
+            element={<ProtectedRoute element={<CreatedCommunities />} />}
           />
           <Route
             path="/edit/profile"
-            element={<ProtectedRoute element={<EditProfile />} />}
+            element={<ProtectedRoute element={<UpdateProfile />} />}
           />
           <Route
             path="/edit/community/:id"
-            element={<ProtectedRoute element={<EditCommunity />} />}
+            element={<ProtectedRoute element={<UpdateCommunity />} />}
           />
           <Route
             path="/search"
