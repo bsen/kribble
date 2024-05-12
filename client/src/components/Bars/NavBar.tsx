@@ -34,7 +34,7 @@ export const NavBar = () => {
             navigate("/home");
           }}
         >
-          <img src="/k.png" className="h-8" />
+          <img src="/logo.png" className="h-8" />
         </div>
       </div>
     </div>

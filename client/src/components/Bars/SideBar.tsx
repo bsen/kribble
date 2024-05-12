@@ -32,9 +32,9 @@ export const SideBar = () => {
             onClick={() => {
               navigate("/home");
             }}
-            className="bg-gradient-to-r from-indigo-500 to-orange-400 text-transparent bg-clip-text text-4xl font-ubuntu"
+            className="bg-gradient-to-r from-indigo-500 via-purple-400 to-violet-500 text-transparent bg-clip-text text-4xl font-ubuntu"
           >
-            kribble
+            friensy
           </div>
 
           <button

@@ -22,7 +22,7 @@ export const Quote = () => {
     <div className="h-screen bg-black w-full flex items-center justify-center px-[10vw] lg:px-[5vw]">
       <div className="grid">
         <div className="w-full flex items-center">
-          <div className="bg-gradient-to-r text-[5rem] font-ubuntu from-violet-500 via-orange-500 to-indigo-500  text-transparent bg-clip-text">
+          <div className="bg-gradient-to-r text-[5rem] font-ubuntu from-indigo-500 via-purple-400 to-violet-500  text-transparent bg-clip-text">
             Kribble
           </div>
         </div>
