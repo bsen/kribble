@@ -55,6 +55,7 @@ userCommentRouter.post("/create", async (c) => {
     const token = body.token;
     const comment = body.comment;
     const postId = body.postId;
+    const anonymity = body.anonymity;
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -73,6 +74,7 @@ userCommentRouter.post("/create", async (c) => {
         content: comment,
         creator: { connect: { id: findUser.id } },
         post: { connect: { id: postId } },
+        anonymity: anonymity,
       },
     });
     if (!createComment) {

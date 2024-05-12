@@ -147,16 +147,14 @@ export const Post = () => {
                 </button>
               </div>
             ) : (
-              <div className="flex justify-end w-full">
+              <div className="flex py-4 bg-white justify-start w-fit rounded-md">
                 <label
                   htmlFor="image-upload"
                   className="cursor-pointer block text-center"
                 >
-                  <div className="font-light w-full px-4 py-1 text-base rounded-lg gap-2 flex justify-center items-center">
-                    <AddPhotoAlternateIcon
-                      sx={{ fontSize: 25 }}
-                      className="text-neutral-600"
-                    />
+                  <div className="font-light text-neutral-600 w-full px-4 py-1 text-base rounded-lg gap-2 flex justify-center items-center">
+                    <AddPhotoAlternateIcon sx={{ fontSize: 25 }} />
+                    add photo
                   </div>
                 </label>
                 <input
@@ -169,27 +167,7 @@ export const Post = () => {
               </div>
             )}
           </div>
-          <div className="w-full bg-white my-4 rounded-md">
-            <textarea
-              value={post}
-              onChange={handlePostChange}
-              rows={4}
-              className="w-full resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
-              placeholder="Write your thoughts..."
-              wrap="soft"
-              maxLength={250}
-            />
-            <div className="flex w-full p-2 justify-end">
-              <button
-                onClick={createCommunityPost}
-                className=" bg-indigo-600 text-white px-4 py-1 rounded-lg"
-              >
-                Post
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white text-center flex flex-col gap-2 p-4 rounded-md">
+          <div className="bg-white my-4 p-4 rounded-md">
             <div className="flex w-full justify-center items-center">
               <Switch
                 color="default"
@@ -214,15 +192,34 @@ export const Post = () => {
                 ""
               )}
             </div>
-
-            {popup ? (
-              <div className="text-red-400 font-light text-center text-xs my-2">
-                {popup}
-              </div>
-            ) : (
-              ""
-            )}
           </div>
+          <div className="w-full bg-white my-4 rounded-md">
+            <textarea
+              value={post}
+              onChange={handlePostChange}
+              rows={4}
+              className="w-full resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+              placeholder="Write your thoughts..."
+              wrap="soft"
+              maxLength={250}
+            />
+            <div className="flex w-full p-2 justify-end">
+              <button
+                onClick={createCommunityPost}
+                className=" bg-indigo-600 text-white px-4 py-1 rounded-lg"
+              >
+                Post
+              </button>
+            </div>
+          </div>
+
+          {popup ? (
+            <div className="text-red-400 font-light text-center text-xs my-2">
+              {popup}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       )}
     </>

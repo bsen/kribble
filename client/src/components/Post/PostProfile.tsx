@@ -4,11 +4,13 @@ import { useEffect, useState, useRef } from "react";
 import { BACKEND_URL } from "../../config";
 import { CircularProgress } from "@mui/material";
 import { NavBar } from "../Bars/NavBar";
+import Switch from "@mui/material/Switch";
 
 interface Comment {
   id: string;
   content: string;
   createdAt: string;
+  anonymity: boolean;
   creator: {
     username: string;
     image: string | null;
@@ -28,6 +30,7 @@ interface PostData {
 
 export const PostProfile = () => {
   const { postId } = useParams();
+  const [anonymity, setAnonymity] = useState(false);
   const token = localStorage.getItem("token");
   const [popup, setPopup] = useState(false);
   const [comment, setComment] = useState<string>("");
@@ -96,6 +99,7 @@ export const PostProfile = () => {
         token,
         postId,
         comment,
+        anonymity,
       });
       setLoadingState(false);
       getComments();
@@ -141,6 +145,7 @@ export const PostProfile = () => {
   };
   return (
     <>
+      {loadingState && <div className="my-4 text-center">Loading ...</div>}
       {!loadingState && (
         <>
           <div
@@ -189,6 +194,33 @@ export const PostProfile = () => {
                 </div>
               </div>
             </div>
+
+            <div className="bg-white my-4 p-4 rounded-md">
+              <div className="flex w-full justify-center items-center">
+                <Switch
+                  color="default"
+                  onClick={() => {
+                    setAnonymity((prevState) => !prevState);
+                  }}
+                  checked={anonymity}
+                />
+                <label className="text-neutral-600 text-sm font-normal">
+                  Hide your identity
+                </label>
+              </div>
+              <div className="text-xs text-neutral-600 text-center">
+                {anonymity ? (
+                  <div>
+                    We prioritize your privacy by keeping user identities
+                    hidden. Let's maintain a safe space by refraining from
+                    inappropriate posts. Remember, violating company policy may
+                    have consequences.
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
             <div className="bg-white p-2 my-2 rounded-md border border-neutral-100 flex justify-center items-center">
               <div className="w-full">
                 <textarea
@@ -221,25 +253,39 @@ export const PostProfile = () => {
               >
                 <div className="flex gap-2">
                   <div>
-                    <Link to={`/${comment.creator.username}`}>
+                    {comment.anonymity ? (
                       <img
-                        src={
-                          comment.creator.image
-                            ? comment.creator.image
-                            : "/user.png"
-                        }
-                        alt="Profile"
-                        className="w-8 h-8  rounded-full"
+                        src="/user.png"
+                        alt="Anonymous"
+                        className="w-8 h-8 rounded-full"
                       />
-                    </Link>
+                    ) : (
+                      <Link to={`/${comment.creator.username}`}>
+                        <img
+                          src={
+                            comment.creator.image
+                              ? comment.creator.image
+                              : "/user.png"
+                          }
+                          alt="Profile"
+                          className="w-8 h-8 rounded-full"
+                        />
+                      </Link>
+                    )}
                   </div>
                   <div className="w-full">
                     <div className="flex gap-2 items-center">
-                      <Link to={`/${comment.creator.username}`}>
-                        <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                      {comment.anonymity ? (
+                        <div className="text-primarytextcolor text-sm lg:text-base font-semibold">
                           {comment.creator.username}
                         </div>
-                      </Link>
+                      ) : (
+                        <Link to={`/${comment.creator.username}`}>
+                          <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                            {comment.creator.username}
+                          </div>
+                        </Link>
+                      )}
                       <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
                         · {getTimeDifference(comment.createdAt)}
                       </div>
