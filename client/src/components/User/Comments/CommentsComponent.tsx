@@ -6,6 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import { NavBar } from "../../Bars/NavBar";
+import { BottomBar } from "../../Bars/BottomBar";
 
 interface Comment {
   id: string;
@@ -83,6 +84,23 @@ export const CommentsComponent = () => {
       console.log(error);
     }
   };
+  const getTimeDifference = (createdAt: string) => {
+    const currentDate = new Date();
+    const postDate = new Date(createdAt);
+    const timeDifference = currentDate.getTime() - postDate.getTime();
+    const hoursDifference = Math.floor(timeDifference / (1000 * 3600));
+    const daysDifference = Math.floor(hoursDifference / 24);
+    if (daysDifference >= 30) {
+      return postDate.toDateString();
+    } else if (daysDifference >= 1) {
+      return `${daysDifference}d ago`;
+    } else if (hoursDifference >= 1) {
+      return `${hoursDifference}h ago`;
+    } else {
+      const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+      return `${minutesDifference}m ago`;
+    }
+  };
   return (
     <>
       {deleteState ? (
@@ -126,14 +144,18 @@ export const CommentsComponent = () => {
                 className="border bg-white my-2 rounded-md border-neutral-100 p-4 hover:bg-white"
               >
                 <div className="flex flex-col gap-2 ">
-                  <div className="text-primarytextcolor w-max flex items-center justify-between gap-2 text-sm font-light">
-                    <Link to={`/post/${comment.postId}`}>
-                      <OpenInNewIcon
-                        sx={{ fontSize: 20 }}
-                        className="text-indigo-500"
-                      />
-                    </Link>
-                    {comment.createdAt.slice(0, 10)}{" "}
+                  <div className="text-primarytextcolor w-full flex items-center justify-between gap-2 text-sm font-light">
+                    <div className="flex gap-2 items-center">
+                      <Link to={`/post/${comment.postId}`}>
+                        <OpenInNewIcon
+                          sx={{ fontSize: 18 }}
+                          className="text-indigo-500"
+                        />
+                      </Link>
+                      <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                        · {getTimeDifference(comment.createdAt)}
+                      </div>
+                    </div>
                     <div className="text-neutral-600">
                       <button
                         onClick={() => {
@@ -162,6 +184,7 @@ export const CommentsComponent = () => {
               <CircularProgress color="inherit" />
             </div>
           )}
+          <BottomBar />
         </div>
       )}
     </>

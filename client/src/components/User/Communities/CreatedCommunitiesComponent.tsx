@@ -6,6 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { BACKEND_URL } from "../../../config";
 import { Loading } from "../../Loading";
 import { NavBar } from "../../Bars/NavBar";
+import { BottomBar } from "../../Bars/BottomBar";
 
 interface Communities {
   id: string;
@@ -14,7 +15,7 @@ interface Communities {
   membersCount: string;
   image: string;
 }
-export const CommunitiesComponent = () => {
+export const CreatedCommunitiesComponent = () => {
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [deletingState, setDeletingState] = useState(false);
@@ -135,7 +136,7 @@ export const CommunitiesComponent = () => {
             </div>
           ) : (
             <div
-              className="h-screen overflow-y-auto no-scrollbar pt-14"
+              className="h-screen overflow-y-auto no-scrollbar py-12"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
@@ -191,6 +192,7 @@ export const CommunitiesComponent = () => {
               )}
             </div>
           )}
+          <BottomBar />
         </div>
       )}
     </>

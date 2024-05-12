@@ -189,7 +189,7 @@ export const Data: React.FC = () => {
               <div className="flex justify-between items-center gap-2">
                 <button
                   onClick={() => {
-                    navigate("/user/communities");
+                    navigate("/user/created/communities");
                   }}
                   className={
                     "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
@@ -199,7 +199,7 @@ export const Data: React.FC = () => {
                 </button>
                 <button
                   onClick={() => {
-                    navigate("/joined/communities");
+                    navigate("/user/joined/communities");
                   }}
                   className={
                     "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
