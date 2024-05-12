@@ -160,3 +160,35 @@ userProfileRouter.post("/update", async (c) => {
     return c.json({ status: 500, message: "profile photo update failed" });
   }
 });
+
+userProfileRouter.post("/edit/data", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const person = await prisma.user.findFirst({
+      where: { id: userId.id },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        image: true,
+        website: true,
+        bio: true,
+      },
+    });
+    if (!person) {
+      return c.json({ status: 401, message: "Unauthorized" });
+    }
+    return c.json({
+      status: 200,
+      data: person.username,
+      editdata: person,
+    });
+  } catch (error) {
+    return c.json({ status: 400 });
+  }
+});

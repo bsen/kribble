@@ -177,7 +177,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
         <button onClick={send}>
           <SendIcon
             sx={{ fontSize: 35 }}
-            className="text-indigo-600 p-1 rounded-full"
+            className="text-indigo-500 p-1 rounded-full"
           />
         </button>
       </div>

@@ -18,6 +18,7 @@ import { CommunityPost } from "./pages/Community/Create/CommunityPost";
 import { Search } from "./pages/Search";
 import { UpdateProfile } from "./pages/User/Profile/Update";
 import { UpdateCommunity } from "./pages/Community/Profile/Update";
+import { JoinedCommunities } from "./pages/User/Communities/JoinedCommunities";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -86,15 +87,19 @@ function App() {
             element={<ProtectedRoute element={<Following />} />}
           />
           <Route
-            path="/user/communities"
+            path="/user/created/communities"
             element={<ProtectedRoute element={<CreatedCommunities />} />}
+          />
+          <Route
+            path="/user/joined/communities"
+            element={<ProtectedRoute element={<JoinedCommunities />} />}
           />
           <Route
             path="/edit/profile"
             element={<ProtectedRoute element={<UpdateProfile />} />}
           />
           <Route
-            path="/edit/community/:id"
+            path="/edit/community/:name"
             element={<ProtectedRoute element={<UpdateCommunity />} />}
           />
           <Route

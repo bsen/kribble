@@ -31,6 +31,7 @@ interface Post {
   createdAt: string;
   commentsCount: string;
   likesCount: string;
+  anonymity: string;
   isLiked: boolean;
 }
 export const ProfileSection: React.FC = () => {
@@ -217,7 +218,7 @@ export const ProfileSection: React.FC = () => {
             </div>
           ) : (
             <div
-              className="h-screen overflow-y-auto no-scrollbar py-14"
+              className="h-screen overflow-y-auto no-scrollbar py-12"
               onScroll={handleScroll}
               ref={scrollContainerRef}
             >
@@ -231,24 +232,50 @@ export const ProfileSection: React.FC = () => {
                       className="my-2 p-4 border border-neutral-100 rounded-md bg-white"
                     >
                       <div className="flex gap-2">
-                        <div>
-                          <img
-                            src={
-                              post.creator.image
-                                ? post.creator.image
-                                : "/user.png"
-                            }
-                            alt="Profile"
-                            className="w-8 h-8 rounded-full"
-                          />
-                        </div>
+                        {post.anonymity ? (
+                          <div>
+                            <img
+                              src={"/user.png"}
+                              alt="unknown"
+                              className="w-8 h-8 rounded-full"
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            onClick={() => {
+                              navigate(`/${post.creator.username}`);
+                            }}
+                          >
+                            <img
+                              src={
+                                post.creator.image
+                                  ? post.creator.image
+                                  : "/user.png"
+                              }
+                              alt="Profile"
+                              className="w-8 h-8 rounded-full"
+                            />
+                          </div>
+                        )}
+
                         <div className="w-full flex flex-col">
                           <div className="w-full flex gap-2 justify-between items-center">
                             <div className="flex gap-2 items-center">
-                              <div className="text-neutral-800 text-sm lg:text-base hover:underline font-semibold">
-                                {post.creator.username}
-                              </div>
-
+                              {post.anonymity ? (
+                                <div className="text-primarytextcolor text-sm lg:text-base  font-semibold">
+                                  {post.creator.username}
+                                </div>
+                              ) : (
+                                <div
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/${post.creator.username}`);
+                                  }}
+                                  className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
+                                >
+                                  {post.creator.username}
+                                </div>
+                              )}
                               <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
                                 · {getTimeDifference(post.createdAt)}
                               </div>

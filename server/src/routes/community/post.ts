@@ -253,7 +253,7 @@ communityPostRouter.post("/all/posts", async (c) => {
         });
         const creatorDetails = post.anonymity
           ? {
-              username: "Anonymous post",
+              username: "unknown",
               image: null,
             }
           : {

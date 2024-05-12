@@ -208,7 +208,7 @@ export const ProfileSection: React.FC = () => {
                 </div>
               ) : (
                 <div
-                  className="overflow-y-auto no-scrollbar py-14"
+                  className="overflow-y-auto no-scrollbar py-12"
                   onScroll={handleScroll}
                   ref={scrollContainerRef}
                 >

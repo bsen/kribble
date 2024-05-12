@@ -88,7 +88,7 @@ export const Data: React.FC = () => {
               <img
                 src={userData.image ? userData.image : "/user.png"}
                 alt="Profile"
-                className="w-20 h-20 lg:w-24 lg:h-24 border border-neutral-100 rounded-full"
+                className="w-16 h-16 lg:w-20 lg:h-20 border border-neutral-100 rounded-full"
               />
             )}
             <div className="w-full">
@@ -99,7 +99,7 @@ export const Data: React.FC = () => {
                       onClick={() => {
                         navigate("/edit/profile");
                       }}
-                      className="text-left text-white bg-indigo-600 font-light rounded-md px-4 py-1 text-xs"
+                      className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
                     >
                       Edit profile
                     </button>
@@ -109,7 +109,7 @@ export const Data: React.FC = () => {
                       <button
                         onClick={followUser}
                         disabled={isFollowUserLoading}
-                        className="text-left text-white bg-indigo-600 font-light rounded-md px-4 py-1 text-xs"
+                        className="text-left text-white bg-indigo-500 font-light rounded-md px-4 py-1 text-sm"
                       >
                         {isFollowUserLoading ? (
                           <CircularProgress
@@ -141,7 +141,7 @@ export const Data: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="flex my-2 text-indigo-600  items-center gap-2 font-ubuntu text-sm">
+          <div className="flex my-2 text-indigo-500  items-center gap-2 font-ubuntu text-sm">
             <Link to={`/followers/${username}`}>
               <div className="flex gap-1 items-center px-2 py-1/2 bg-indigo-50 rounded-md">
                 {userData.followersCount} Followers
@@ -157,7 +157,7 @@ export const Data: React.FC = () => {
             {userData.bio ? userData.bio : "bio"}
           </div>
 
-          <div className="text-sm text-indigo-6000 font-light hover:underline">
+          <div className="text-sm text-indigo-5000 font-light hover:underline">
             <a
               href={`${
                 userData.website &&
@@ -181,7 +181,7 @@ export const Data: React.FC = () => {
                   navigate("/comments");
                 }}
                 className={
-                  "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+                  "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
                 }
               >
                 My comments
@@ -189,20 +189,20 @@ export const Data: React.FC = () => {
               <div className="flex justify-between items-center gap-2">
                 <button
                   onClick={() => {
-                    navigate("/user/communities");
+                    navigate("/user/created/communities");
                   }}
                   className={
-                    "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+                    "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
                   }
                 >
                   Created communites
                 </button>
                 <button
                   onClick={() => {
-                    navigate("/joined/communities");
+                    navigate("/user/joined/communities");
                   }}
                   className={
-                    "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+                    "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
                   }
                 >
                   Joined communites

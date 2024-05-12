@@ -120,11 +120,11 @@ export const Post = () => {
             <div className="flex gap-4 items-center p-4">
               <button onClick={handleClose}>
                 <ArrowBackIcon
-                  className="p-1 bg-indigo-600 text-white rounded-full"
+                  className="p-1 bg-indigo-500 text-white rounded-full"
                   sx={{ fontSize: 35 }}
                 />
               </button>
-              <div className="text-xl flex justify-center items-center gap-5 font-light bg-indigo-50 px-4 rounded-md py-1 text-indigo-600 text-center">
+              <div className="text-xl flex justify-center items-center gap-5 font-light bg-indigo-50 px-4 rounded-md py-1 text-indigo-500 text-center">
                 <div>Create Post</div>
               </div>
             </div>
@@ -187,7 +187,7 @@ export const Post = () => {
                   <div className="flex w-full p-2 justify-end">
                     <button
                       onClick={createPost}
-                      className=" bg-indigo-600 text-white px-4 py-1 rounded-lg"
+                      className=" bg-indigo-500 text-white px-4 py-1 rounded-lg"
                     >
                       Post
                     </button>

@@ -14,7 +14,7 @@ interface CommunityData {
 }
 export const UpdateCommunityComponent = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { name } = useParams();
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [newDescription, setNewDescription] = useState("");
@@ -29,10 +29,9 @@ export const UpdateCommunityComponent = () => {
   const getCommunityData = async () => {
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/community/profile/data`,
-        { token, id }
+        `${BACKEND_URL}/api/community/profile/edit/data`,
+        { token, name }
       );
-
       setCommunityData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -91,18 +90,22 @@ export const UpdateCommunityComponent = () => {
       let imageToUpload;
 
       if (typeof previewImage === "string") {
-        const fileName = "communityImage.jpeg";
-        const fileType = "image/jpeg";
+        try {
+          const fileName = "communityImage.jpeg";
+          const fileType = "image/jpeg";
 
-        const binaryString = atob(previewImage.split(",")[1]);
-        const arrayBuffer = new ArrayBuffer(binaryString.length);
-        const uint8Array = new Uint8Array(arrayBuffer);
-        for (let i = 0; i < binaryString.length; i++) {
-          uint8Array[i] = binaryString.charCodeAt(i);
+          const binaryString = atob(previewImage.split(",")[1]);
+          const arrayBuffer = new ArrayBuffer(binaryString.length);
+          const uint8Array = new Uint8Array(arrayBuffer);
+          for (let i = 0; i < binaryString.length; i++) {
+            uint8Array[i] = binaryString.charCodeAt(i);
+          }
+          const blob = new Blob([uint8Array], { type: fileType });
+
+          imageToUpload = new File([blob], fileName, { type: fileType });
+        } catch (error) {
+          console.error("Error converting Base64 to File:", error);
         }
-        const blob = new Blob([uint8Array], { type: fileType });
-
-        imageToUpload = new File([blob], fileName, { type: fileType });
       } else {
         imageToUpload = previewImage;
       }
@@ -111,7 +114,9 @@ export const UpdateCommunityComponent = () => {
         newDescription || communityData.description || "description";
 
       const formdata = new FormData();
-      formdata.append("image", imageToUpload);
+      if (imageToUpload) {
+        formdata.append("image", imageToUpload);
+      }
       formdata.append("id", communityData.id);
       formdata.append("description", NewDescription);
       formdata.append("token", token ? token : "");
@@ -176,12 +181,11 @@ export const UpdateCommunityComponent = () => {
               </div>
 
               <button onClick={updateCommunity}>
-                <div className="text-white bg-indigo-600 text-base font-light rounded-md py-1 px-4">
+                <div className="text-white bg-indigo-500 text-base font-light rounded-md py-1 px-4">
                   save
                 </div>
               </button>
             </div>
-
             <div>
               <div className="text-primarytextcolor  text-sm font-light">
                 Description

@@ -33,9 +33,12 @@ export const UpdateProfileComponent = () => {
 
   async function getData() {
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
-        token,
-      });
+      const response = await axios.post(
+        `${BACKEND_URL}/api/user/profile/edit/data`,
+        {
+          token,
+        }
+      );
 
       setUserData(response.data.editdata);
       setCurrentUser(response.data.data);
@@ -202,7 +205,7 @@ export const UpdateProfileComponent = () => {
                   </div>
 
                   <button onClick={updateProfile}>
-                    <div className="text-white bg-indigo-600 text-base font-light rounded-md py-1 px-4">
+                    <div className="text-white bg-indigo-500 text-base font-light rounded-md py-1 px-4">
                       save
                     </div>
                   </button>
