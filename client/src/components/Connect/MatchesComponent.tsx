@@ -72,50 +72,55 @@ export const MatchesComponent = () => {
           ) : (
             <>
               {loadingState ? (
-                <div className="text-center font-ubuntu text-primarytextcolor">
+                <div className="text-center font-ubuntu py-4 text-primarytextcolor">
                   <div>Loading ...</div>
                 </div>
               ) : (
                 <>
-                  {matchedUsers.length > 0 ? (
-                    matchedUsers.map((user, index) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          parentToChild(
-                            user.username,
-                            user.name,
-                            user.image || "/user.png",
-                            user.id
-                          );
-                          setMessageState(true);
-                        }}
-                        className="flex w-full  bg-white border border-neutral-100 shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
-                      >
-                        <div className="w-full m-2 flex justify-between items-center">
-                          <div className="flex gap-2 justify-center items-center">
-                            <img
-                              src={user.image || "/user.png"}
-                              alt="Profile"
-                              className="h-10 w-10 bg-white rounded-full"
-                            />
-                            <div className="flex flex-col items-start">
-                              <div className="text-primarytextcolor text-sm lg:text-lg font-semibold">
-                                {user.name}
-                              </div>
-                              <div className="text-secondarytextcolor text-xs font-ubuntu">
-                                @{user.username}
+                  <div className="my-4 bg-white px-4 py-1 text-lg font-light rounded-md">
+                    Matches
+                  </div>
+                  <div className="w-full">
+                    {matchedUsers.length > 0 ? (
+                      matchedUsers.map((user, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            parentToChild(
+                              user.username,
+                              user.name,
+                              user.image || "/user.png",
+                              user.id
+                            );
+                            setMessageState(true);
+                          }}
+                          className="flex w-full  bg-white border border-neutral-100 shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
+                        >
+                          <div className="w-full m-2 flex justify-between items-center">
+                            <div className="flex gap-2 justify-center items-center">
+                              <img
+                                src={user.image || "/user.png"}
+                                alt="Profile"
+                                className="h-10 w-10 bg-white rounded-full"
+                              />
+                              <div className="flex flex-col items-start">
+                                <div className="text-primarytextcolor text-sm lg:text-lg font-semibold">
+                                  {user.name}
+                                </div>
+                                <div className="text-secondarytextcolor text-xs font-ubuntu">
+                                  @{user.username}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </button>
-                    ))
-                  ) : (
-                    <p className="text-center w-full font-mono my-2 text-primarytextcolor">
-                      No matches found
-                    </p>
-                  )}
+                        </button>
+                      ))
+                    ) : (
+                      <p className="text-center w-full font-mono my-2 text-primarytextcolor">
+                        No matches found
+                      </p>
+                    )}
+                  </div>
                 </>
               )}
             </>

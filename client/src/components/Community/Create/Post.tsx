@@ -172,8 +172,8 @@ export const Post = () => {
             <textarea
               value={post}
               onChange={handlePostChange}
-              rows={2}
-              className="w-full mb-4  resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+              rows={4}
+              className="w-full mb-4 shadow-sm resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
               placeholder="Write your thoughts..."
               wrap="soft"
               maxLength={250}

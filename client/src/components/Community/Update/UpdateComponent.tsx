@@ -127,22 +127,27 @@ export const UpdateCommunityComponent = () => {
 
   return (
     <>
-      <div className="h-screen text-neutral-600 flex justify-center items-center">
+      <div className="h-screen text-neutral-600">
         {isLoading ? (
           <div className="text-center my-5">
             <CircularProgress color="inherit" />
           </div>
         ) : (
-          <div className="bg-white w-[85%] border border-neutral-100 p-4 rounded-lg flex flex-col  gap-4">
-            <button
-              className="w-fit flex items-start"
-              onClick={() => {
-                navigate(`/community/${communityData.name}`);
-              }}
-            >
-              <ArrowBackIcon className="text-primarytextcolor" />
-            </button>
-            <div className="w-ful items-end flex justify-between">
+          <div className="bg-white border border-neutral-100 px-4 rounded-lg flex flex-col  gap-4">
+            <div className=" border-b border-neutral-100 py-4">
+              <button
+                className="w-fit flex items-start"
+                onClick={() => {
+                  navigate(`/community/${communityData.name}`);
+                }}
+              >
+                <ArrowBackIcon
+                  sx={{ fontSize: 30 }}
+                  className="text-primarytextcolor"
+                />
+              </button>
+            </div>
+            <div className="w-ful items-start flex justify-between">
               <div className="flex justify-center items-center">
                 <div className="absolute text-primarytextcolor z-50">
                   <button>

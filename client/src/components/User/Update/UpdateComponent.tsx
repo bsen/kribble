@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { Logout } from "../Auth/Logout";
+import { NavBar } from "../../Bars/NavBar";
 export const UpdateProfileComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -137,15 +138,16 @@ export const UpdateProfileComponent = () => {
   }
   return (
     <>
-      <div className="h-screen text-neutral-600 flex justify-center items-center">
+      <div className="h-screen text-neutral-600">
         {isLoading && (
           <div className="text-center my-5">
             <CircularProgress color="inherit" />
           </div>
         )}
-        {logoutState && <Logout />}
+        <div className="w-full">{logoutState && <Logout />}</div>
+
         {!isLoading && (
-          <div className="w-[85%]">
+          <div className="w-full">
             {!logoutState && (
               <div className="bg-white   border border-neutral-100 p-4 rounded-lg flex flex-col gap-4">
                 <div className="flex justify-between items-center border-b border-neutral-100 pb-4">
@@ -154,7 +156,10 @@ export const UpdateProfileComponent = () => {
                       navigate(`/${currentUser}`);
                     }}
                   >
-                    <ArrowBackIcon className="text-primarytextcolor" />
+                    <ArrowBackIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-primarytextcolor"
+                    />
                   </button>
                   <button
                     onClick={() => {

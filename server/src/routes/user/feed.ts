@@ -74,6 +74,11 @@ userFeedRouter.post("/posts", async (c) => {
           select: {
             name: true,
             image: true,
+            creator: {
+              select: {
+                username: true,
+              },
+            },
           },
         },
         createdAt: true,

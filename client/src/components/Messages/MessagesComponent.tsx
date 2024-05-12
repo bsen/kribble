@@ -110,7 +110,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   };
 
   return (
-    <div className="h-screen bg-white  w-full flex flex-col  justify-between">
+    <div className="h-screen border-r border-l border-neutral-100 bg-white  w-full flex flex-col  justify-between">
       <div className="flex shadow-sm p-2 w-full flex-col justify-center items-center">
         <div className="flex justify-start gap-4 w-full p-2">
           <button
@@ -155,15 +155,15 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
               key={index}
               className={`mt-2 max-w-[70%] rounded-lg px-3 py-2 ${
                 message.sender === "self"
-                  ? "bg-indigo-600 text-white self-end"
-                  : "bg-neutral-100 text-secondarytextcolor self-start"
+                  ? "bg-indigo-500 text-white self-end"
+                  : "bg-violet-500 text-white self-start"
               }`}
             >
               {message.message}
             </div>
           ))}
       </div>
-      <div className="border-t bg-white bottom-0 border-neutral-100 gap-4 w-full  lg:w-[50%] flex items-center h-16 fixed justify-center">
+      <div className="bg-neutral-100 bottom-0 gap-4 w-full  lg:w-[50%] flex items-center h-16 fixed justify-center">
         <input
           type="text"
           maxLength={300}
