@@ -86,7 +86,7 @@ export const Data: React.FC = () => {
             <img
               src={communityData.image || "/group.png"}
               alt={communityData.name}
-              className="w-24 rounded-full borderßborder-neutral-50 mb-2"
+              className="lg:w-20 lg:h-20 w-16 h-16 rounded-full borderßborder-neutral-50 mb-2"
             />
             <div className="w-full">
               <div className="flex justify-end items-center">
@@ -94,9 +94,9 @@ export const Data: React.FC = () => {
                   {isCreator && (
                     <button
                       onClick={() => {
-                        navigate(`/edit/community/${communityData.id}`);
+                        navigate(`/edit/community/${communityData.name}`);
                       }}
-                      className="text-left text-white bg-indigo-600 font-light rounded-md px-4 py-1 text-xs"
+                      className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
                     >
                       Edit details
                     </button>
@@ -106,7 +106,7 @@ export const Data: React.FC = () => {
                     <button
                       onClick={handleJoinCommunity}
                       disabled={isJoiningLoading}
-                      className="text-left text-white bg-indigo-600 font-light rounded-md px-4 py-1 text-xs"
+                      className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
                     >
                       <div className="flex items-center justify-center">
                         {isJoiningLoading ? (
@@ -128,7 +128,7 @@ export const Data: React.FC = () => {
               <div className="text-lg lg:text-xl  font-semibold text-neutral-800">
                 {communityData.name}
               </div>
-              <div className="flex my-2 text-indigo-600  items-center gap-2 font-ubuntu text-sm">
+              <div className="flex my-2 text-indigo-500  items-center gap-2 font-ubuntu text-sm">
                 <Link to={`/followers`}>
                   <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
                     {communityData.membersCount} Members
@@ -141,20 +141,21 @@ export const Data: React.FC = () => {
             </div>
           </div>
 
-          <div className="text-sm text-neutral-600 font-light">
+          <div className="text-sm mb-2 text-neutral-600 font-light">
             {communityData.description
               ? communityData.description
               : "description"}
           </div>
 
           <div
+            className="w-full flex justify-start items-center"
             onClick={() => {
               navigate(`/community/${communityData.name}/post`);
             }}
           >
             <div
               className={
-                "flex justify-between my-2 text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+                "flex w-fit justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
               }
             >
               <AddIcon sx={{ fontSize: 20 }} />

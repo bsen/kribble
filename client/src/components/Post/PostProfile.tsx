@@ -239,7 +239,7 @@ export const PostProfile = () => {
                 <div className="flex justify-end">
                   <button
                     onClick={createComment}
-                    className="text-white text-base py-1 px-6 rounded-md bg-indigo-600"
+                    className="text-white text-base py-1 px-6 rounded-md bg-indigo-500"
                   >
                     Post
                   </button>

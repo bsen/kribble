@@ -74,6 +74,9 @@ export const SignupAuth = () => {
       setPopup("Enter a valid username");
       return;
     }
+    if (username === "unknown" || "anonymous") {
+      setPopup("This username cant be taken");
+    }
 
     if (!email) {
       setPopup("Please enter your email address");

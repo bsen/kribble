@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { MessagesComponent } from "../Messages/MessagesComponent";
+import { BottomBar } from "../Bars/BottomBar";
 
 interface User {
   id: string;
@@ -80,7 +81,7 @@ export const MatchesComponent = () => {
                   <div className="my-4 bg-white px-4 py-1 text-lg font-light rounded-md">
                     Matches
                   </div>
-                  <div className="w-full">
+                  <div className="w-full px-2">
                     {matchedUsers.length > 0 ? (
                       matchedUsers.map((user, index) => (
                         <button
@@ -121,6 +122,7 @@ export const MatchesComponent = () => {
                       </p>
                     )}
                   </div>
+                  <BottomBar />
                 </>
               )}
             </>

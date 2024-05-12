@@ -72,11 +72,7 @@ userAuthRouter.post("/verify", async (c) => {
       where: { id: userId.id },
       select: {
         id: true,
-        name: true,
         username: true,
-        image: true,
-        website: true,
-        bio: true,
       },
     });
     if (!person) {
@@ -85,8 +81,6 @@ userAuthRouter.post("/verify", async (c) => {
     return c.json({
       status: 200,
       data: person.username,
-      image: person.image,
-      editdata: person,
     });
   } catch (error) {
     return c.json({ status: 400 });
@@ -120,6 +114,9 @@ userAuthRouter.post("/signup", async (c) => {
 
     if (email) {
       return c.json({ status: 401, message: "This email is already in use" });
+    }
+    if (body.username === "unknown" || "anonymous") {
+      return c.json({ status: 401, message: "This username cant be taken" });
     }
     const username = await prisma.user.findFirst({
       where: {

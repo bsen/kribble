@@ -129,7 +129,7 @@ export const Community = () => {
               <div className="flex w-full justify-center">
                 <button
                   onClick={createCommunity}
-                  className="bg-indigo-600 w-full text-white px-6 py-2 rounded-lg"
+                  className="bg-indigo-500 w-full text-white px-6 py-2 rounded-lg"
                 >
                   Create your community
                 </button>

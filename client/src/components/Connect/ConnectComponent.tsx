@@ -140,7 +140,7 @@ export const ConnectComponent = () => {
                     </button>
                     <button
                       onClick={match}
-                      className=" bg-indigo-600 w-[15%] font-ubuntu font-normal text-base py-2 rounded-full active:bg-indigo-500 flex text-white items-center justify-evenly"
+                      className=" bg-indigo-500 w-[15%] font-ubuntu font-normal text-base py-2 rounded-full active:bg-indigo-500 flex text-white items-center justify-evenly"
                     >
                       <div>Connect</div>
                     </button>

@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, verify } from "hono/jwt";
-import { date, string, z } from "zod";
+
 export const communityProfileRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -96,7 +96,6 @@ communityProfileRouter.post("/update", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    console.log(file);
     if (
       typeof token !== "string" ||
       typeof communityId !== "string" ||
@@ -137,7 +136,6 @@ communityProfileRouter.post("/update", async (c) => {
     const data = new FormData();
     const blob = new Blob([file]);
     data.append("file", blob, "comunity-profile-picture" + "-" + communityId);
-    console.log(data);
     const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
       method: "POST",
       headers: {
@@ -145,7 +143,6 @@ communityProfileRouter.post("/update", async (c) => {
       },
       body: data,
     });
-    console.log(response);
     const imgUrl = (await response.json()) as {
       result: { variants: string[] };
     };
@@ -162,7 +159,6 @@ communityProfileRouter.post("/update", async (c) => {
           image: variantUrl,
         },
       });
-      console.log(success);
 
       if (!success) {
         return c.json({
@@ -183,5 +179,55 @@ communityProfileRouter.post("/update", async (c) => {
       status: 500,
       message: "Community profile photo updation failed",
     });
+  }
+});
+communityProfileRouter.post("/edit/data", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const name = body.name;
+
+    const userId = await verify(token, c.env.JWT_SECRET);
+
+    if (!userId || !userId.id) {
+      return c.json({ status: 401, message: "Invalid token" });
+    }
+
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const findUser = await prisma.user.findUnique({
+      where: {
+        id: userId.id,
+      },
+    });
+
+    if (!findUser) {
+      console.log("User not found");
+      return c.json({ status: 401, message: "Unauthorised" });
+    }
+
+    const community = await prisma.community.findFirst({
+      where: { name, creatorId: findUser.id },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        description: true,
+      },
+    });
+
+    if (!community) {
+      return c.json({ status: 404, message: "Community not found" });
+    }
+
+    return c.json({
+      status: 200,
+      data: community,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return c.json({ status: 500, message: "Internal server error" });
   }
 });

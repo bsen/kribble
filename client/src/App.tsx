@@ -94,7 +94,7 @@ function App() {
             element={<ProtectedRoute element={<UpdateProfile />} />}
           />
           <Route
-            path="/edit/community/:id"
+            path="/edit/community/:name"
             element={<ProtectedRoute element={<UpdateCommunity />} />}
           />
           <Route

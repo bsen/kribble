@@ -137,7 +137,7 @@ export const HomeComponent = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-14"
+        className="h-screen overflow-y-auto no-scrollbar py-12"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
@@ -173,26 +173,22 @@ export const HomeComponent = () => {
                       </div>
                     ) : (
                       <>
-                        {post.creator.image && !post.anonymity ? (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/${post.creator.username}`);
-                            }}
-                          >
-                            <img
-                              src={post.creator.image}
-                              alt="Profile"
-                              className="w-8 h-8 rounded-full"
-                            />
-                          </div>
-                        ) : (
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/${post.creator.username}`);
+                          }}
+                        >
                           <img
-                            src="/user.png"
-                            alt="Anonymous"
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
                             className="w-8 h-8 rounded-full"
                           />
-                        )}
+                        </div>
                       </>
                     )}
                   </div>
@@ -224,21 +220,16 @@ export const HomeComponent = () => {
                       ) : (
                         <>
                           <div className="flex gap-2 items-center">
-                            {post.anonymity ? (
-                              <div className="text-primarytextcolor text-sm lg:text-base  font-semibold">
-                                {post.creator.username}
-                              </div>
-                            ) : (
-                              <div
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigate(`/${post.creator.username}`);
-                                }}
-                                className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
-                              >
-                                {post.creator.username}
-                              </div>
-                            )}
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/${post.creator.username}`);
+                              }}
+                              className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
+                            >
+                              {post.creator.username}
+                            </div>
+
                             <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
                               · {getTimeDifference(post.createdAt)}
                             </div>

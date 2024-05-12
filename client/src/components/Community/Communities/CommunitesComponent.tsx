@@ -89,10 +89,10 @@ export const CommunitiesComponent = () => {
                         {community.description}
                       </div>
                       <div className="flex gap-2 items-center">
-                        <div className="text-indigo-600 font-light  text-sm">
+                        <div className="text-indigo-500 font-light  text-sm">
                           {community.membersCount} members
                         </div>
-                        <div className="text-indigo-600 font-light  text-sm">
+                        <div className="text-indigo-500 font-light  text-sm">
                           {community.postsCount} posts
                         </div>
                       </div>
