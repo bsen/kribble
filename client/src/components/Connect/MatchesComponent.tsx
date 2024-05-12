@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
-import { MessagesComponent } from "./MessagesComponent";
-import { NavBar } from "../Bars/NavBar";
+import { MessagesComponent } from "../Messages/MessagesComponent";
+
 interface User {
   id: string;
   name: string;
@@ -58,9 +58,8 @@ export const MatchesComponent = () => {
 
   return (
     <>
-      <NavBar />
-      <div className="w-full h-screen bg-white flex flex-col">
-        <div className="flex justify-center items-center flex-col p-5 w-full flex-1 overflow-y-auto no-scrollbar">
+      <div className="w-full h-screen flex flex-col">
+        <div className="flex justify-start items-center flex-col  w-full flex-1 overflow-y-auto no-scrollbar">
           {messageState ? (
             <MessagesComponent
               otherUser={{
@@ -91,7 +90,7 @@ export const MatchesComponent = () => {
                           );
                           setMessageState(true);
                         }}
-                        className="flex w-full lg:w-[80%] bg-white border border-neutral-100 shadow-sm rounded-xl items-center justify-between gap-4 mt-4"
+                        className="flex w-full  bg-white border border-neutral-100 shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
                       >
                         <div className="w-full m-2 flex justify-between items-center">
                           <div className="flex gap-2 justify-center items-center">
