@@ -163,14 +163,14 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
             </div>
           ))}
       </div>
-      <div className="bg-neutral-100 bottom-0 gap-4 w-full  lg:w-[50%] flex items-center h-16 fixed justify-center">
+      <div className="bg-white bottom-0 gap-4 w-full border border-neutral-100 lg:w-[50%] flex items-center h-16 fixed justify-center">
         <input
           type="text"
           maxLength={300}
           value={sendingmessage}
           onChange={(e) => setSendingMessage(e.target.value)}
           placeholder="Message..."
-          className="w-[80%] h-10 rounded-full border border-neutral-100 px-4 bg-white focus:outline-none"
+          className="w-[80%] h-10 bg-neutral-100 border-t rounded-full px-4 focus:outline-none"
           ref={inputRef}
           onKeyDown={handleKeyDown}
         />

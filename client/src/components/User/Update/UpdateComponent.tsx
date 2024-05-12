@@ -6,7 +6,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { Logout } from "../Auth/Logout";
-import { NavBar } from "../../Bars/NavBar";
 export const UpdateProfileComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");

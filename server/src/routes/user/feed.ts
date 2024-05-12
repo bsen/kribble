@@ -12,24 +12,30 @@ export const userFeedRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-
 userFeedRouter.post("/posts", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
     const userId = await verify(token, c.env.JWT_SECRET);
-    console.log(userId);
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
     const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+
     if (!findUser) {
       return c.json({ status: 401, message: "Unauthorized Main User" });
     }
 
     const cursor = body.cursor || null;
     const take = 10;
+
+    const followingCount = await prisma.following.count({
+      where: {
+        followerId: findUser.id,
+      },
+    });
 
     const UserFeedPosts = await prisma.post.findMany({
       where: {
@@ -42,6 +48,7 @@ userFeedRouter.post("/posts", async (c) => {
                 },
               },
             },
+            anonymity: false,
           },
           {
             community: {
@@ -54,6 +61,15 @@ userFeedRouter.post("/posts", async (c) => {
           },
           {
             creatorId: findUser.id,
+          },
+          {
+            community: {
+              posts: {
+                some: {
+                  anonymity: true,
+                },
+              },
+            },
           },
         ],
       },
@@ -74,11 +90,6 @@ userFeedRouter.post("/posts", async (c) => {
           select: {
             name: true,
             image: true,
-            creator: {
-              select: {
-                username: true,
-              },
-            },
           },
         },
         createdAt: true,
@@ -91,11 +102,49 @@ userFeedRouter.post("/posts", async (c) => {
       take: take + 1,
     });
 
-    const hasMore = UserFeedPosts.length > take;
-    const feedPosts = hasMore ? UserFeedPosts.slice(0, -1) : UserFeedPosts;
-    const nextCursor = hasMore
-      ? UserFeedPosts[UserFeedPosts.length - 1].id
-      : null;
+    const randomPosts =
+      followingCount < 10
+        ? await prisma.post.findMany({
+            where: {
+              NOT: {
+                id: {
+                  in: UserFeedPosts.map((post) => post.id),
+                },
+              },
+            },
+            select: {
+              id: true,
+              image: true,
+              content: true,
+              likesCount: true,
+              anonymity: true,
+              creator: {
+                select: {
+                  id: true,
+                  username: true,
+                  image: true,
+                },
+              },
+              community: {
+                select: {
+                  name: true,
+                  image: true,
+                },
+              },
+              createdAt: true,
+              commentsCount: true,
+            },
+            take: 10,
+            orderBy: {
+              createdAt: "desc",
+            },
+          })
+        : [];
+    const allPosts = [...UserFeedPosts, ...randomPosts];
+
+    const hasMore = allPosts.length > take;
+    const feedPosts = hasMore ? allPosts.slice(0, -1) : allPosts;
+    const nextCursor = hasMore ? allPosts[allPosts.length - 1].id : null;
 
     const postsWithLikedState = await Promise.all(
       feedPosts.map(async (post) => {
@@ -110,7 +159,7 @@ userFeedRouter.post("/posts", async (c) => {
 
         const creatorDetails = post.anonymity
           ? {
-              username: "Anonymous post",
+              username: "unknown",
               image: null,
             }
           : {
@@ -141,6 +190,7 @@ userFeedRouter.post("/posts", async (c) => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
+
     return c.json({ status: 200, data: sortedSuggestedPosts, nextCursor });
   } catch (error) {
     console.log(error);

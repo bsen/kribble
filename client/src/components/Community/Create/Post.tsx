@@ -117,8 +117,8 @@ export const Post = () => {
       {loadingState ? (
         <Loading />
       ) : (
-        <div className="h-screen border-l border-r border-neutral-100 bg-white flex flex-col justify-center items-center">
-          <div className="flex gap-4 items-center mt-5">
+        <div className="w-full">
+          <div className="flex gap-4 items-center p-4">
             <button onClick={handleClose}>
               <ArrowBackIcon
                 className="p-1 bg-indigo-600 text-white rounded-full"
@@ -126,25 +126,25 @@ export const Post = () => {
               />
             </button>
             <div className="text-xl flex justify-center items-center gap-5 font-light bg-indigo-50 px-4 rounded-md py-1 text-indigo-600 text-center">
-              <div>Create Post in {name}</div>
+              <div>Create Post</div>
             </div>
           </div>
-          <div className="w-full px-2 h-full max-w-md my-5 rounded-lg flex flex-col justify-center">
+          <div className="w-full h-full rounded-lg flex flex-col justify-center">
             {previewImage ? (
-              <div className="flex justify-center items-center">
+              <div className="flex rounded-md bg-white p-4 justify-start items-end gap-2">
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="max-w:w-[100%] lg:max-w-[50%] rounded-md border border-neutral-100"
+                />
                 <button
                   onClick={() => {
                     setPreviewImage("");
                   }}
-                  className="absolute p-1 bg-white text-black rounded-full"
+                  className="bg-white text-black rounded-full"
                 >
                   <DeleteIcon sx={{ fontSize: 25 }} />
                 </button>
-                <img
-                  src={previewImage}
-                  alt="Preview"
-                  className=" h-auto rounded-lg border border-neutral-100"
-                />
               </div>
             ) : (
               <div className="flex justify-end w-full">
@@ -152,7 +152,7 @@ export const Post = () => {
                   htmlFor="image-upload"
                   className="cursor-pointer block text-center"
                 >
-                  <div className="font-light w-fit px-4 py-1 text-base rounded-lg gap-2 flex justify-center items-center">
+                  <div className="font-light w-full px-4 py-1 text-base rounded-lg gap-2 flex justify-center items-center">
                     <AddPhotoAlternateIcon
                       sx={{ fontSize: 25 }}
                       className="text-neutral-600"
@@ -168,17 +168,29 @@ export const Post = () => {
                 />
               </div>
             )}
-
+          </div>
+          <div className="w-full bg-white my-4 rounded-md">
             <textarea
               value={post}
               onChange={handlePostChange}
               rows={4}
-              className="w-full mb-4 shadow-sm resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+              className="w-full resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
               placeholder="Write your thoughts..."
               wrap="soft"
               maxLength={250}
             />
-            <div className="flex w-full items-center">
+            <div className="flex w-full p-2 justify-end">
+              <button
+                onClick={createCommunityPost}
+                className=" bg-indigo-600 text-white px-4 py-1 rounded-lg"
+              >
+                Post
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white text-center flex flex-col gap-2 p-4 rounded-md">
+            <div className="flex w-full justify-center items-center">
               <Switch
                 color="default"
                 onClick={() => {
@@ -187,39 +199,29 @@ export const Post = () => {
                 checked={anonymity}
               />
               <label className="text-neutral-600 text-sm font-normal">
-                Post anonymously
+                Hide your identity
               </label>
             </div>
-            <div className="my-4">
-              <div className="text-xs text-neutral-600 text-center">
-                {anonymity ? (
-                  <div>
-                    We prioritize your privacy by keeping user identities
-                    hidden. Let's maintain a safe space by refraining from
-                    inappropriate posts. Remember, violating company policy may
-                    have consequences.
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-
-              {popup ? (
-                <div className="text-red-400 font-light text-center text-xs my-2">
-                  {popup}
+            <div className="text-xs text-neutral-600 text-center">
+              {anonymity ? (
+                <div>
+                  We prioritize your privacy by keeping user identities hidden.
+                  Let's maintain a safe space by refraining from inappropriate
+                  posts. Remember, violating company policy may have
+                  consequences.
                 </div>
               ) : (
                 ""
               )}
             </div>
-            <div className="flex w-full justify-center">
-              <button
-                onClick={createCommunityPost}
-                className="w-full bg-indigo-600 text-white px-6 py-2 rounded-lg"
-              >
-                Post
-              </button>
-            </div>
+
+            {popup ? (
+              <div className="text-red-400 font-light text-center text-xs my-2">
+                {popup}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       )}

@@ -143,7 +143,7 @@ export const Data: React.FC = () => {
           </div>
           <div className="flex my-2 text-indigo-600  items-center gap-2 font-ubuntu text-sm">
             <Link to={`/followers/${username}`}>
-              <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
+              <div className="flex gap-1 items-center px-2 py-1/2 bg-indigo-50 rounded-md">
                 {userData.followersCount} Followers
               </div>
             </Link>
@@ -157,7 +157,7 @@ export const Data: React.FC = () => {
             {userData.bio ? userData.bio : "bio"}
           </div>
 
-          <div className="text-sm text-indigo-500 font-light hover:underline">
+          <div className="text-sm text-indigo-6000 font-light hover:underline">
             <a
               href={`${
                 userData.website &&
@@ -181,7 +181,7 @@ export const Data: React.FC = () => {
                   navigate("/comments");
                 }}
                 className={
-                  "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                  "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
                 }
               >
                 My comments
@@ -192,7 +192,7 @@ export const Data: React.FC = () => {
                     navigate("/user/communities");
                   }}
                   className={
-                    "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                    "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
                   }
                 >
                   Created communites
@@ -202,7 +202,7 @@ export const Data: React.FC = () => {
                     navigate("/joined/communities");
                   }}
                   className={
-                    "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                    "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
                   }
                 >
                   Joined communites
@@ -216,7 +216,7 @@ export const Data: React.FC = () => {
                 >
                   <div
                     className={
-                      "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                      "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
                     }
                   >
                     <AddIcon sx={{ fontSize: 20 }} />
@@ -231,7 +231,7 @@ export const Data: React.FC = () => {
                 >
                   <div
                     className={
-                      "flex justify-between text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                      "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
                     }
                   >
                     <AddIcon sx={{ fontSize: 20 }} />

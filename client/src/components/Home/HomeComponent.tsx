@@ -199,40 +199,52 @@ export const HomeComponent = () => {
                   <div className="w-full flex flex-col">
                     <div className="w-fit flex gap-2 items-center">
                       {post.community ? (
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/community/${post.community.name}`);
-                          }}
-                        >
-                          {post.community && (
-                            <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                              c/ {post.community.name}
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <>
-                          {post.anonymity ? (
-                            <div className="text-primarytextcolor text-sm lg:text-base d font-semibold">
-                              {post.creator.username}
-                            </div>
-                          ) : (
+                        <div>
+                          <div className="flex gap-2 items-center">
                             <div
                               onClick={(e) => {
                                 e.stopPropagation();
-                                navigate(`/${post.creator.username}`);
+                                navigate(`/community/${post.community.name}`);
                               }}
-                              className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
                             >
-                              {post.creator.username}
+                              {post.community && (
+                                <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                                  c/ {post.community.name}
+                                </div>
+                              )}
                             </div>
-                          )}
+                            <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
+                          </div>
+                          <div className="text-neutral-600 text-xs  font-light">
+                            by {post.creator.username}
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex gap-2 items-center">
+                            {post.anonymity ? (
+                              <div className="text-primarytextcolor text-sm lg:text-base  font-semibold">
+                                {post.creator.username}
+                              </div>
+                            ) : (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/${post.creator.username}`);
+                                }}
+                                className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
+                              >
+                                {post.creator.username}
+                              </div>
+                            )}
+                            <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
+                          </div>
                         </>
                       )}
-                      <div className="text-secondarytextcolor text-xs lg:text-sm font-ubuntu">
-                        · {getTimeDifference(post.createdAt)}
-                      </div>
                     </div>
                     <div className="flex flex-col gap-1 py-4 w-full">
                       {post.image && (

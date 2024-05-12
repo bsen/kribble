@@ -154,7 +154,7 @@ export const Data: React.FC = () => {
           >
             <div
               className={
-                "flex justify-between my-2 text-sm items-center text-neutral-800 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                "flex justify-between my-2 text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
               }
             >
               <AddIcon sx={{ fontSize: 20 }} />

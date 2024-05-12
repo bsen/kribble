@@ -115,37 +115,38 @@ export const Post = () => {
       {loadingState ? (
         <Loading />
       ) : (
-        <div className="h-screen border-l border-r border-neutral-100 bg-white flex flex-col items-center ">
-          <div className="flex gap-4 items-center mt-5">
-            <button onClick={handleClose}>
-              <ArrowBackIcon
-                className="p-1 bg-indigo-600 text-white rounded-full"
-                sx={{ fontSize: 35 }}
-              />
-            </button>
-            <div className="text-xl flex justify-center items-center gap-5 font-light bg-indigo-50 px-4 rounded-md py-1 text-indigo-600 text-center">
-              <div>Create Post</div>
-            </div>
-          </div>
-
-          <div className="w-full px-2 h-full max-w-md my-4 rounded-lg flex flex-col justify-center items-center">
-            {previewImage ? (
-              <div className="flex justify-center items-center">
-                <button
-                  onClick={() => {
-                    setPreviewImage("");
-                    setShowCaptionInput(false);
-                    setShowPostButton(false);
-                  }}
-                  className="absolute p-1 bg-white text-black rounded-full"
-                >
-                  <DeleteIcon sx={{ fontSize: 25 }} />
-                </button>
-                <img
-                  src={previewImage}
-                  alt="Preview"
-                  className=" h-auto rounded-lg border border-neutral-100"
+        <div>
+          <div className="w-full">
+            <div className="flex gap-4 items-center p-4">
+              <button onClick={handleClose}>
+                <ArrowBackIcon
+                  className="p-1 bg-indigo-600 text-white rounded-full"
+                  sx={{ fontSize: 35 }}
                 />
+              </button>
+              <div className="text-xl flex justify-center items-center gap-5 font-light bg-indigo-50 px-4 rounded-md py-1 text-indigo-600 text-center">
+                <div>Create Post</div>
+              </div>
+            </div>
+            {previewImage ? (
+              <div className="w-[100%] bg-white p-4 rounded-md">
+                <div className="flex justify-start gap-2 items-end">
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className="max-w:w-[100%] lg:max-w-[50%] rounded-md border border-neutral-100"
+                  />
+                  <button
+                    onClick={() => {
+                      setPreviewImage("");
+                      setShowCaptionInput(false);
+                      setShowPostButton(false);
+                    }}
+                    className="text-black rounded-full"
+                  >
+                    <DeleteIcon sx={{ fontSize: 25 }} />
+                  </button>
+                </div>
               </div>
             ) : (
               <div>
@@ -153,7 +154,7 @@ export const Post = () => {
                   htmlFor="image-upload"
                   className="cursor-pointer block text-center"
                 >
-                  <div className="h-[20vw] w-[20vw] bg-neutral-50 border-dashed border border-neutral-100 rounded-lg gap-2 flex justify-center items-center">
+                  <div className="h-[50vh] w-full rounded-md bg-white border border-neutral-100  gap-2 flex justify-center items-center">
                     <AddPhotoAlternateIcon
                       sx={{ fontSize: 40 }}
                       className="text-neutral-600"
@@ -169,32 +170,34 @@ export const Post = () => {
                 />
               </div>
             )}
+          </div>
+          <div className="my-4">
             {showCaptionInput && (
-              <textarea
-                value={caption}
-                onChange={(e) => setCaption(e.target.value)}
-                rows={4}
-                className="w-full shadow-sm mb-4 resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
-                placeholder="Write some captions..."
-                wrap="soft"
-                maxLength={250}
-              />
-            )}
-
-            {showPostButton && (
-              <div className="flex w-full justify-center">
-                <button
-                  onClick={createPost}
-                  className="w-full bg-indigo-600 text-white px-6 py-2 rounded-lg"
-                >
-                  Post
-                </button>
+              <div className=" shadow-sm bg-white  rounded-md">
+                <textarea
+                  value={caption}
+                  onChange={(e) => setCaption(e.target.value)}
+                  rows={4}
+                  className="w-full resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+                  placeholder="Write some captions..."
+                  wrap="soft"
+                  maxLength={250}
+                />
+                {showPostButton && (
+                  <div className="flex w-full p-2 justify-end">
+                    <button
+                      onClick={createPost}
+                      className=" bg-indigo-600 text-white px-4 py-1 rounded-lg"
+                    >
+                      Post
+                    </button>
+                  </div>
+                )}
               </div>
             )}
-
-            <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
-              {popup ? popup : <div>‎</div>}
-            </div>
+          </div>
+          <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
+            {popup ? popup : <div>‎</div>}
           </div>
         </div>
       )}
