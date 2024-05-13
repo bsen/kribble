@@ -121,7 +121,7 @@ export const ConnectComponent = () => {
                 <div className="w-full flex flex-col justify-center items-center gap-2">
                   <img
                     src={matchUserData.image ? matchUserData.image : "user.png"}
-                    className="rounded-xl max-w-[40%] border border-neutral-100 p-2"
+                    className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
                   />
                   <div>
                     <div className="text-primarytextcolor text-base font-medium font-ubuntu">

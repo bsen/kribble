@@ -14,10 +14,14 @@ export const SideBar = () => {
   const token = localStorage.getItem("token");
   const [currentUser, setCurrentUser] = useState("");
   async function getUser() {
-    const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
-      token,
-    });
-    setCurrentUser(response.data.data);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
+        token,
+      });
+      setCurrentUser(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {

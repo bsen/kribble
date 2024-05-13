@@ -108,6 +108,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
       send();
     }
   };
+  
 
   return (
     <div className="h-screen border-r border-l border-neutral-100 bg-white  w-full flex flex-col  justify-between">

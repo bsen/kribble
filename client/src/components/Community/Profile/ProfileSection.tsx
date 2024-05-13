@@ -11,7 +11,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Loading } from "../../Loading";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
-import { Data } from "./Data";
+import { CommunityData } from "./CommunityData";
 interface CommunityData {
   id: string;
 }
@@ -223,7 +223,7 @@ export const ProfileSection: React.FC = () => {
               ref={scrollContainerRef}
             >
               <NavBar />
-              <Data />
+              <CommunityData />
               <div>
                 {postData.posts.length > 0 ? (
                   postData.posts.map((post, index) => (

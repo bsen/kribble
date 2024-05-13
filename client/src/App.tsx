@@ -19,6 +19,7 @@ import { Search } from "./pages/Search";
 import { UpdateProfile } from "./pages/User/Profile/Update";
 import { UpdateCommunity } from "./pages/Community/Profile/Update";
 import { JoinedCommunities } from "./pages/User/Communities/JoinedCommunities";
+import { NotFound } from "./pages/NotFound";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -106,6 +107,7 @@ function App() {
             path="/search"
             element={<ProtectedRoute element={<Search />} />}
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>

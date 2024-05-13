@@ -15,7 +15,7 @@ interface CommunityData {
   postsCount: string;
 }
 
-export const Data: React.FC = () => {
+export const CommunityData: React.FC = () => {
   const { name } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -84,9 +84,8 @@ export const Data: React.FC = () => {
         <div className="w-full bg-white my-2 p-4 rounded-md flex flex-col items-start border border-neutral-100">
           <div className="flex justify-between w-full items-center gap-2">
             <img
-              src={communityData.image || "/group.png"}
-              alt={communityData.name}
-              className="lg:w-20 lg:h-20 w-16 h-16 rounded-full borderßborder-neutral-50 mb-2"
+              src={communityData.image ? communityData.image : "/group.png"}
+              className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-neutral-50 mb-2"
             />
             <div className="w-full">
               <div className="flex justify-end items-center">

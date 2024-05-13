@@ -31,7 +31,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate("/home");
           }}
-          className={` rounded-md  flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/home"
               ? "text-indigo-500 text-lg"
               : "text-neutral-800"
@@ -56,7 +56,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate("/connect");
           }}
-          className={` rounded-md  flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/connect"
               ? "text-indigo-500 text-lg"
               : "text-neutral-800"
@@ -68,7 +68,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate(`/${currentUser}`);
           }}
-          className={` rounded-md  flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === `/${currentUser}`
               ? "text-indigo-500 text-lg"
               : "text-neutral-800"
@@ -80,7 +80,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate("/search");
           }}
-          className={` rounded-md  flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/search"
               ? "text-indigo-500 text-lg"
               : "text-neutral-800"

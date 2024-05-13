@@ -68,8 +68,8 @@ export const SearchComponent = () => {
             <div className="bg-white">
               {users.map((user) => (
                 <Link to={`/${user.username}`} key={user.username}>
-                  <div className="flex border-b border-neutral-100 gap-2 py-2 items-center px-4 hover:bg-neutral-100">
-                    <div className=" text-sm font-medium text-primarytextcolor">
+                  <div className="flex border my-2 bg-white rounded-md border-neutral-100 py-2 gap-2 items-center px-4 hover:bg-neutral-100">
+                    <div className=" text-sm font-normal text-primarytextcolor">
                       u/
                     </div>
                     <div>
@@ -80,7 +80,7 @@ export const SearchComponent = () => {
                       />
                     </div>
 
-                    <div className="text-primarytextcolor text-lg  font-semibold">
+                    <div className="text-primarytextcolor text-base  font-normal">
                       {user.name}
                     </div>
 
@@ -94,8 +94,8 @@ export const SearchComponent = () => {
             <div>
               {communities.map((community) => (
                 <Link to={`/${community.name}`} key={community.name}>
-                  <div className="flex border-b border-neutral-100 py-2 gap-2 items-center px-4 hover:bg-neutral-100">
-                    <div className=" text-sm font-medium text-primarytextcolor">
+                  <div className="flex border my-2 bg-white rounded-md border-neutral-100 py-2 gap-2 items-center px-4 hover:bg-neutral-100">
+                    <div className=" text-sm font-normal text-primarytextcolor">
                       c/
                     </div>
                     <div>
@@ -106,7 +106,7 @@ export const SearchComponent = () => {
                       />
                     </div>
                     <div className="items-center">
-                      <div className="text-primarytextcolor text-lg  font-semibold">
+                      <div className="text-primarytextcolor text-base  font-normal">
                         {community.name}
                       </div>
                     </div>
