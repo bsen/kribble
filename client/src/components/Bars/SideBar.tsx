@@ -14,10 +14,14 @@ export const SideBar = () => {
   const token = localStorage.getItem("token");
   const [currentUser, setCurrentUser] = useState("");
   async function getUser() {
-    const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
-      token,
-    });
-    setCurrentUser(response.data.data);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
+        token,
+      });
+      setCurrentUser(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -32,9 +36,9 @@ export const SideBar = () => {
             onClick={() => {
               navigate("/home");
             }}
-            className="bg-gradient-to-r from-indigo-500 to-orange-400 text-transparent bg-clip-text text-4xl font-ubuntu"
+            className="bg-gradient-to-r from-indigo-500 via-purple-400 to-violet-500 text-transparent bg-clip-text text-4xl font-ubuntu"
           >
-            kribble
+            friensy
           </div>
 
           <button

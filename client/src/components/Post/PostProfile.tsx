@@ -195,7 +195,22 @@ export const PostProfile = () => {
               </div>
             </div>
 
-            <div className="bg-white my-4 p-4 rounded-md">
+            <div className="bg-white p-2 my-2 rounded-md border border-neutral-100 flex justify-center items-center">
+              <textarea
+                rows={3}
+                className={`w-full resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+                  popup ? "border border-rose-400" : ""
+                }`}
+                wrap="soft"
+                onChange={(e) => {
+                  setPopup(false);
+                  setComment(e.target.value);
+                }}
+                maxLength={250}
+                placeholder="Post a reply"
+              />
+            </div>
+            <div className="bg-white my-4 px-4 py-2 rounded-md">
               <div className="flex w-full justify-center items-center">
                 <Switch
                   color="default"
@@ -221,30 +236,13 @@ export const PostProfile = () => {
                 )}
               </div>
             </div>
-            <div className="bg-white p-2 my-2 rounded-md border border-neutral-100 flex justify-center items-center">
-              <div className="w-full">
-                <textarea
-                  rows={3}
-                  className={`w-full resize-none no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
-                    popup ? "border border-rose-400" : ""
-                  }`}
-                  wrap="soft"
-                  onChange={(e) => {
-                    setPopup(false);
-                    setComment(e.target.value);
-                  }}
-                  maxLength={250}
-                  placeholder="Post a reply"
-                />
-                <div className="flex justify-end">
-                  <button
-                    onClick={createComment}
-                    className="text-white text-base py-1 px-6 rounded-md bg-indigo-500"
-                  >
-                    Post
-                  </button>
-                </div>
-              </div>
+            <div className="flex justify-end">
+              <button
+                onClick={createComment}
+                className="text-white text-base py-1 px-6 rounded-md bg-indigo-500"
+              >
+                Post
+              </button>
             </div>
             {postComments.map((comment) => (
               <div

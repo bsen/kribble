@@ -63,7 +63,7 @@ export const CommunitiesComponent = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-14"
+        className="h-screen overflow-y-auto no-scrollbar py-12"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >

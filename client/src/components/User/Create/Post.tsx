@@ -130,19 +130,21 @@ export const Post = () => {
             </div>
             {previewImage ? (
               <div className="w-[100%] bg-white p-4 rounded-md">
-                <div className="flex justify-start gap-2 items-end">
-                  <img
-                    src={previewImage}
-                    alt="Preview"
-                    className="max-w:w-[100%] lg:max-w-[50%] rounded-md border border-neutral-100"
-                  />
+                <div className="flex flex-col items-center">
+                  <div className="flex justify-center gap-2 items-end">
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      className="max-w:w-[80%] lg:max-w-[50%] rounded-md border border-neutral-100"
+                    />
+                  </div>
                   <button
                     onClick={() => {
                       setPreviewImage("");
                       setShowCaptionInput(false);
                       setShowPostButton(false);
                     }}
-                    className="text-black rounded-full"
+                    className="text-black mt-2 rounded-full"
                   >
                     <DeleteIcon sx={{ fontSize: 25 }} />
                   </button>
@@ -154,10 +156,10 @@ export const Post = () => {
                   htmlFor="image-upload"
                   className="cursor-pointer block text-center"
                 >
-                  <div className="h-[50vh] w-full rounded-md bg-white border border-neutral-100  gap-2 flex justify-center items-center">
+                  <div className="h-[20vh] w-full rounded-md bg-white border border-neutral-100  gap-2 flex justify-center items-center">
                     <AddPhotoAlternateIcon
                       sx={{ fontSize: 40 }}
-                      className="text-neutral-600"
+                      className="text-neutral-800"
                     />
                   </div>
                 </label>
@@ -173,27 +175,31 @@ export const Post = () => {
           </div>
           <div className="my-4">
             {showCaptionInput && (
-              <div className=" shadow-sm bg-white  rounded-md">
-                <textarea
-                  value={caption}
-                  onChange={(e) => setCaption(e.target.value)}
-                  rows={4}
-                  className="w-full resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
-                  placeholder="Write some captions..."
-                  wrap="soft"
-                  maxLength={250}
-                />
-                {showPostButton && (
-                  <div className="flex w-full p-2 justify-end">
-                    <button
-                      onClick={createPost}
-                      className=" bg-indigo-500 text-white px-4 py-1 rounded-lg"
-                    >
-                      Post
-                    </button>
-                  </div>
-                )}
-              </div>
+              <>
+                <div className=" shadow-sm bg-white  rounded-md">
+                  <textarea
+                    value={caption}
+                    onChange={(e) => setCaption(e.target.value)}
+                    rows={3}
+                    className="w-full overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+                    placeholder="Write some captions..."
+                    wrap="soft"
+                    maxLength={250}
+                  />
+                </div>
+                <div>
+                  {showPostButton && (
+                    <div className="flex w-full p-2 justify-end">
+                      <button
+                        onClick={createPost}
+                        className=" bg-indigo-500 text-white px-4 py-1 rounded-lg"
+                      >
+                        Post
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </div>
           <div className="text-red-400 font-ubuntu font-light text-center text-sm my-2">
