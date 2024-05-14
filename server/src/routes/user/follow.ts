@@ -37,7 +37,6 @@ userFollowRouter.post("/follow/unfollow", async (c) => {
     if (!otherUser) {
       return c.json({ status: 404, error: "User not found" });
     }
-    console.log(currentUser, otherUser);
     const isFollowing = await prisma.following.findUnique({
       where: {
         followerId_followingId: {
@@ -138,7 +137,7 @@ userFollowRouter.post("/following/list", async (c) => {
         following: {
           select: {
             id: true,
-            name: true,
+            fullname: true,
             username: true,
             image: true,
           },
@@ -193,7 +192,7 @@ userFollowRouter.post("/followers/list", async (c) => {
         follower: {
           select: {
             id: true,
-            name: true,
+            fullname: true,
             username: true,
             image: true,
           },

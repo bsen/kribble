@@ -40,7 +40,6 @@ postCommentRouter.post("/all/comments", async (c) => {
         creator: {
           select: {
             username: true,
-            name: true,
             image: true,
           },
         },
@@ -67,7 +66,6 @@ postCommentRouter.post("/all/comments", async (c) => {
           }
         : {
             username: comment.creator.username,
-            name: comment.creator.name,
             image: comment.creator.image,
           };
 

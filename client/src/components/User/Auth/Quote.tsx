@@ -1,23 +1,5 @@
 import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
-import { BACKEND_URL } from "../../../config";
-import axios from "axios";
-import { useEffect, useState } from "react";
-
 export const Quote = () => {
-  const [usersCount, setUsersCount] = useState("");
-  async function getUsersCount() {
-    try {
-      const response = await axios.get(
-        `${BACKEND_URL}/api/user/auth/users/count`
-      );
-      setUsersCount(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  useEffect(() => {
-    getUsersCount();
-  }, []);
   return (
     <div className="h-screen bg-black w-full flex items-center justify-center px-[10vw] lg:px-[5vw]">
       <div className="grid">
@@ -31,14 +13,6 @@ export const Quote = () => {
             Join the exclusive social media platform built just for college
             students.
           </div>
-        </div>
-
-        <div className=" text-white font-normal text-3xl my-5 font-ubuntu ">
-          {usersCount ? (
-            <div> Joined by {Number(usersCount) + 1000} </div>
-          ) : (
-            <div> ‎ </div>
-          )}
         </div>
 
         <div className="lg:hidden text-left">

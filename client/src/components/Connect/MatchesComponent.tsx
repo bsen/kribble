@@ -27,7 +27,7 @@ export const MatchesComponent = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/user/matches/all/matches`,
+        `${BACKEND_URL}/api/user/connections/all/connections`,
         { token }
       );
       setLoadingState(false);
@@ -117,9 +117,9 @@ export const MatchesComponent = () => {
                         </button>
                       ))
                     ) : (
-                      <p className="text-center w-full font-mono my-2 text-primarytextcolor">
+                      <div className="text-neutral-600 my-5  font-light text-center text-lg">
                         No matches found
-                      </p>
+                      </div>
                     )}
                   </div>
                   <BottomBar />

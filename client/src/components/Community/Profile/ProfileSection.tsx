@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
@@ -8,7 +8,6 @@ import { CircularProgress } from "@mui/material";
 import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Loading } from "../../Loading";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
 import { CommunityData } from "./CommunityData";
@@ -37,6 +36,7 @@ interface Post {
 export const ProfileSection: React.FC = () => {
   const { name } = useParams();
   const navigate = useNavigate();
+  const [error, setError] = useState<Error | null>(null);
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [loadingState, setLoadingState] = useState(false);
@@ -68,7 +68,7 @@ export const ProfileSection: React.FC = () => {
       setIsCreator(response.data.creator);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      setError(error as Error);
     }
   };
 
@@ -91,7 +91,7 @@ export const ProfileSection: React.FC = () => {
       });
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      setError(error as Error);
       setIsLoading(false);
     }
   }
@@ -113,46 +113,50 @@ export const ProfileSection: React.FC = () => {
     }
   };
 
-  const handleLike = async (postId: string) => {
-    try {
-      setPostData((prevData) => ({
-        ...prevData,
-        posts: prevData.posts.map((post) =>
-          post.id === postId
-            ? {
-                ...post,
-                isLiked: !post.isLiked,
-                likesCount: post.isLiked
-                  ? parseInt(post.likesCount) - 1
-                  : parseInt(post.likesCount) + 1,
-              }
-            : post
-        ) as Post[],
-        nextCursor: prevData.nextCursor,
-      }));
+  const handleLike = useCallback(
+    async (postId: string) => {
+      try {
+        setPostData((prevData) => ({
+          ...prevData,
+          posts: prevData.posts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  isLiked: !post.isLiked,
+                  likesCount: post.isLiked
+                    ? parseInt(post.likesCount) - 1
+                    : parseInt(post.likesCount) + 1,
+                }
+              : post
+          ) as Post[],
+          nextCursor: prevData.nextCursor,
+        }));
 
-      const details = { postId, token };
-      await axios.post(`${BACKEND_URL}/api/post/like/like/unlike`, details);
-    } catch (error) {
-      console.log(error);
+        const details = { postId, token };
+        await axios.post(`${BACKEND_URL}/api/post/like/like/unlike`, details);
+      } catch (error) {
+        setError(error as Error);
 
-      setPostData((prevData) => ({
-        ...prevData,
-        posts: prevData.posts.map((post) =>
-          post.id === postId
-            ? {
-                ...post,
-                isLiked: !post.isLiked,
-                likesCount: post.isLiked
-                  ? parseInt(post.likesCount) + 1
-                  : parseInt(post.likesCount) - 1,
-              }
-            : post
-        ) as Post[],
-        nextCursor: prevData.nextCursor,
-      }));
-    }
-  };
+        setPostData((prevData) => ({
+          ...prevData,
+          posts: prevData.posts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  isLiked: !post.isLiked,
+                  likesCount: post.isLiked
+                    ? parseInt(post.likesCount) + 1
+                    : parseInt(post.likesCount) - 1,
+                }
+              : post
+          ) as Post[],
+          nextCursor: prevData.nextCursor,
+        }));
+      }
+    },
+    [token]
+  );
+
   const deleteCommunityPost = async () => {
     setLoadingState(true);
     const id = communityData.id;
@@ -184,197 +188,206 @@ export const ProfileSection: React.FC = () => {
       return `${minutesDifference}m ago`;
     }
   };
+
+  if (loadingState) {
+    return (
+      <div className="text-center my-10">
+        <CircularProgress color="inherit" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center my-10 text-red-500 font-semibold">
+        An error occurred: {error.message}
+      </div>
+    );
+  }
+  if (communityPostDeletionState) {
+    return (
+      <div className="w-full bg-white border-l border-r border-neutral-100 h-screen flex justify-center items-center">
+        <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
+          Do you really want to delete the post
+          <div className="text-xs font-light text-neutral-600">
+            note you can not get back the deleted item!
+          </div>
+          <div className="flex gap-5">
+            <button
+              onClick={deleteCommunityPost}
+              className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => {
+                setDeletingPostId("");
+                setCommunityPostDeletionState(false);
+              }}
+              className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
-      {loadingState ? (
-        <Loading />
-      ) : (
-        <div className="h-screen flex flex-col">
-          {communityPostDeletionState ? (
-            <div className="w-full bg-white border-l border-r border-neutral-100 h-screen flex justify-center items-center">
-              <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
-                Do you really want to delete the post
-                <div className="text-xs font-light text-neutral-600">
-                  note you can not get back the deleted item!
-                </div>
-                <div className="flex gap-5">
-                  <button
-                    onClick={deleteCommunityPost}
-                    className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    onClick={() => {
-                      setDeletingPostId("");
-                      setCommunityPostDeletionState(false);
-                    }}
-                    className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div
-              className="h-screen overflow-y-auto no-scrollbar py-12"
-              onScroll={handleScroll}
-              ref={scrollContainerRef}
-            >
-              <NavBar />
-              <CommunityData />
-              <div>
-                {postData.posts.length > 0 ? (
-                  postData.posts.map((post, index) => (
+      <div
+        className="h-screen overflow-y-auto no-scrollbar py-12"
+        onScroll={handleScroll}
+        ref={scrollContainerRef}
+      >
+        <NavBar />
+        <CommunityData />
+        <div>
+          {postData.posts.length > 0 ? (
+            postData.posts.map((post, index) => (
+              <div
+                key={index}
+                className="my-2 p-4 border border-neutral-100 rounded-md bg-white"
+              >
+                <div className="flex gap-2">
+                  {post.anonymity ? (
+                    <div>
+                      <img
+                        src={"/user.png"}
+                        alt="unknown"
+                        className="w-8 h-8 rounded-full"
+                      />
+                    </div>
+                  ) : (
                     <div
-                      key={index}
-                      className="my-2 p-4 border border-neutral-100 rounded-md bg-white"
+                      onClick={() => {
+                        navigate(`/${post.creator.username}`);
+                      }}
                     >
-                      <div className="flex gap-2">
+                      <img
+                        src={
+                          post.creator.image ? post.creator.image : "/user.png"
+                        }
+                        alt="Profile"
+                        className="w-8 h-8 rounded-full"
+                      />
+                    </div>
+                  )}
+
+                  <div className="w-full flex flex-col">
+                    <div className="w-full flex gap-2 justify-between items-center">
+                      <div className="flex gap-2 items-center">
                         {post.anonymity ? (
-                          <div>
-                            <img
-                              src={"/user.png"}
-                              alt="unknown"
-                              className="w-8 h-8 rounded-full"
-                            />
+                          <div className="text-primarytextcolor text-sm lg:text-base  font-semibold">
+                            {post.creator.username}
                           </div>
                         ) : (
                           <div
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
                               navigate(`/${post.creator.username}`);
                             }}
+                            className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
                           >
-                            <img
-                              src={
-                                post.creator.image
-                                  ? post.creator.image
-                                  : "/user.png"
-                              }
-                              alt="Profile"
-                              className="w-8 h-8 rounded-full"
-                            />
+                            {post.creator.username}
                           </div>
                         )}
+                        <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                          · {getTimeDifference(post.createdAt)}
+                        </div>
+                      </div>
+                      {isCreator && (
+                        <button
+                          onClick={() => {
+                            setDeletingPostId(post.id);
+                            setCommunityPostDeletionState(true);
+                          }}
+                        >
+                          <MoreVertIcon
+                            sx={{ fontSize: 20 }}
+                            className="text-neutral-600"
+                          />
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-1 py-4 w-full">
+                      {post.image && (
+                        <img
+                          src={post.image ? post.image : ""}
+                          className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                        />
+                      )}
 
-                        <div className="w-full flex flex-col">
-                          <div className="w-full flex gap-2 justify-between items-center">
-                            <div className="flex gap-2 items-center">
-                              {post.anonymity ? (
-                                <div className="text-primarytextcolor text-sm lg:text-base  font-semibold">
-                                  {post.creator.username}
-                                </div>
-                              ) : (
-                                <div
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigate(`/${post.creator.username}`);
-                                  }}
-                                  className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold"
-                                >
-                                  {post.creator.username}
-                                </div>
-                              )}
-                              <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
-                                · {getTimeDifference(post.createdAt)}
-                              </div>
-                            </div>
-                            {isCreator && (
-                              <button
-                                onClick={() => {
-                                  setDeletingPostId(post.id);
-                                  setCommunityPostDeletionState(true);
+                      <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                        {post.content}
+                      </div>
+                    </div>
+                    <div className=" flex justify-between gap-2 items-center text-sm text-neutral-500">
+                      <div className="flex gap-2 items-center">
+                        <button
+                          className="flex justify-center items-center gap-2 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleLike(post.id);
+                          }}
+                        >
+                          <div>
+                            {post.isLiked ? (
+                              <FavoriteIcon
+                                sx={{
+                                  fontSize: 22,
                                 }}
-                              >
-                                <MoreVertIcon
-                                  sx={{ fontSize: 20 }}
-                                  className="text-neutral-600"
-                                />
-                              </button>
-                            )}
-                          </div>
-                          <div className="flex flex-col gap-1 py-4 w-full">
-                            {post.image && (
-                              <img
-                                src={post.image ? post.image : ""}
-                                className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                                className="text-rose-500"
+                              />
+                            ) : (
+                              <FavoriteBorderIcon
+                                sx={{
+                                  fontSize: 22,
+                                }}
+                                className="text-rose-500"
                               />
                             )}
-
-                            <div className="text-primarytextcolor text-sm lg:text-base font-light">
-                              {post.content}
-                            </div>
                           </div>
-                          <div className=" flex justify-between gap-2 items-center text-sm text-neutral-500">
-                            <div className="flex gap-2 items-center">
-                              <button
-                                className="flex justify-center items-center gap-2 cursor-pointer"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleLike(post.id);
-                                }}
-                              >
-                                <div>
-                                  {post.isLiked ? (
-                                    <FavoriteIcon
-                                      sx={{
-                                        fontSize: 22,
-                                      }}
-                                      className="text-rose-500"
-                                    />
-                                  ) : (
-                                    <FavoriteBorderIcon
-                                      sx={{
-                                        fontSize: 22,
-                                      }}
-                                      className="text-rose-500"
-                                    />
-                                  )}
-                                </div>
-                              </button>
-                              <div className="text-sm text-neutral-600">
-                                {post.likesCount} likes
-                              </div>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                              <div onClick={() => navigate(`/post/${post.id}`)}>
-                                <MapsUgcRoundedIcon
-                                  sx={{ fontSize: 22 }}
-                                  className="text-indigo-500 cursor-pointer"
-                                />
-                              </div>
-                              <div className="text-sm text-neutral-600">
-                                {post.commentsCount} comments
-                              </div>
-                            </div>
-                          </div>
+                        </button>
+                        <div className="text-sm text-neutral-600">
+                          {post.likesCount} likes
+                        </div>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div onClick={() => navigate(`/post/${post.id}`)}>
+                          <MapsUgcRoundedIcon
+                            sx={{ fontSize: 22 }}
+                            className="text-indigo-500 cursor-pointer"
+                          />
+                        </div>
+                        <div className="text-sm text-neutral-600">
+                          {post.commentsCount} comments
                         </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="text-center font-ubuntu my-5 text-neutral-800">
-                    No posts found.
                   </div>
-                )}
-                {isLoading && (
-                  <div className="text-center my-5">
-                    <CircularProgress color="inherit" />
-                  </div>
-                )}
-              </div>
-
-              {isLoading && (
-                <div className="text-center my-5">
-                  <CircularProgress color="inherit" />
                 </div>
-              )}
-              <BottomBar />
+              </div>
+            ))
+          ) : (
+            <div className="text-neutral-600 my-5  font-light text-center text-lg">
+              No posts found
+            </div>
+          )}
+          {isLoading && (
+            <div className="text-center my-5">
+              <CircularProgress color="inherit" />
             </div>
           )}
         </div>
-      )}
+
+        {isLoading && (
+          <div className="text-center my-5">
+            <CircularProgress color="inherit" />
+          </div>
+        )}
+        <BottomBar />
+      </div>
     </>
   );
 };

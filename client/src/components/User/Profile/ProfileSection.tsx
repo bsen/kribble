@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useContext,
+} from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
@@ -10,6 +16,7 @@ import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
 import { BottomBar } from "../../Bars/BottomBar";
 import { NavBar } from "../../Bars/NavBar";
 import { UserData } from "./UserData";
+import { UserContext } from "../Context/UserContext";
 
 interface Post {
   id: string;
@@ -30,10 +37,10 @@ interface ProfileSectionProps {}
 
 export const ProfileSection: React.FC<ProfileSectionProps> = () => {
   const { username } = useParams();
+  const { currentUser } = useContext(UserContext);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [loadingState, setLoadingState] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [postDeleteId, setPostDeleteId] = useState("");
   const [deleteState, setDeleteState] = useState(false);
@@ -47,25 +54,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     posts: [],
     nextCursor: null,
   });
-
-  useEffect(() => {
-    getAllPosts(null, true);
-  }, [username]);
-
-  const getUser = useCallback(async () => {
-    try {
-      const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
-        token,
-      });
-      setCurrentUser(response.data.data);
-    } catch (error) {
-      setError(error as Error);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    getUser();
-  }, [getUser]);
 
   const getAllPosts = useCallback(
     async (cursor: string | null | undefined, truncate: boolean) => {
@@ -89,6 +77,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     },
     [token, username]
   );
+  useEffect(() => {
+    getAllPosts(null, true);
+  }, [username]);
 
   const handleScroll = useCallback(() => {
     const postsScrollContainer = postsScrollContainerRef.current;
@@ -188,7 +179,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
         <div className="flex flex-col gap-4 text-base items-center font-ubuntu font-semibold">
           Do you really want to delete the post
           <span className="text-xs font-light text-neutral-600">
-            note you can not get back the deleted item!
+            note that you can not get back the deleted post!
           </span>
           <div className="flex gap-5">
             <button
@@ -242,7 +233,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             className="overflow-y-auto no-scrollbar touch-action-none"
             ref={postsScrollContainerRef}
           >
-            {postData.posts.length > 0 ? (
+            {postData.posts &&
               postData.posts.map((post, index) => (
                 <div
                   key={index}
@@ -342,19 +333,13 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                     </div>
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="text-center font-ubuntu my-5 text-neutral-800">
-                No posts found.
-              </div>
-            )}
+              ))}
             {isLoading && (
               <div className="text-center my-5">
                 <CircularProgress color="inherit" />
               </div>
             )}
           </div>
-
           <BottomBar />
         </div>
       </div>

@@ -218,7 +218,6 @@ communityPostRouter.post("/all/posts", async (c) => {
           select: {
             id: true,
             username: true,
-            name: true,
             image: true,
           },
         },

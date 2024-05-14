@@ -19,6 +19,7 @@ userProfileRouter.post("/data", async (c) => {
     const token = body.token;
     const username = body.username;
     const userId = await verify(token, c.env.JWT_SECRET);
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -32,7 +33,7 @@ userProfileRouter.post("/data", async (c) => {
       where: { username: username },
       select: {
         id: true,
-        name: true,
+        fullname: true,
         username: true,
         image: true,
         bio: true,
@@ -75,17 +76,16 @@ userProfileRouter.post("/update", async (c) => {
     const formData = await c.req.formData();
     const file = formData.get("image");
     const token = formData.get("token");
-    const newName = formData.get("name");
+    const newFullName = formData.get("fullname");
     const newBio = formData.get("bio");
     const newWebsite = formData.get("website");
-
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
     if (
       typeof token !== "string" ||
       typeof newBio !== "string" ||
-      typeof newName !== "string" ||
+      typeof newFullName !== "string" ||
       typeof newWebsite !== "string"
     ) {
       return c.json({ status: 400, message: "Invalid data or token" });
@@ -100,7 +100,7 @@ userProfileRouter.post("/update", async (c) => {
         const updateProfile = await prisma.user.update({
           where: { id: userId.id },
           data: {
-            name: newName,
+            fullname: newFullName,
             bio: newBio,
             website: newWebsite,
           },
@@ -140,13 +140,12 @@ userProfileRouter.post("/update", async (c) => {
       const success = await prisma.user.update({
         where: { id: userId.id },
         data: {
-          name: newName,
+          fullname: newFullName,
           bio: newBio,
           website: newWebsite,
           image: variantUrl,
         },
       });
-
       if (!success) {
         return c.json({ status: 403, message: "failed to create new post" });
       }
@@ -161,7 +160,7 @@ userProfileRouter.post("/update", async (c) => {
   }
 });
 
-userProfileRouter.post("/edit/data", async (c) => {
+userProfileRouter.post("/data/editting", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -173,7 +172,7 @@ userProfileRouter.post("/edit/data", async (c) => {
       where: { id: userId.id },
       select: {
         id: true,
-        name: true,
+        fullname: true,
         username: true,
         image: true,
         website: true,

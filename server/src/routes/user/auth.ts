@@ -13,10 +13,9 @@ export const userAuthRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
-const nameSchema = z.string().max(20);
+const fullNameSchema = z.string().max(20);
 const usernameSchema = z.string().max(20);
 const emailSchema = z.string().email();
-const genderSchema = z.string();
 const passwordSchema = z.string().min(6);
 
 userAuthRouter.post("/username/check", async (c) => {
@@ -32,29 +31,10 @@ userAuthRouter.post("/username/check", async (c) => {
       },
     });
     if (checkUsername) {
-      return c.json({ status: 101 });
+      return c.json({ status: 101, message: "Username is already in use" });
     } else {
-      return c.json({ status: 102 });
+      return c.json({ status: 102, message: "" });
     }
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-userAuthRouter.get("/users/count", async (c) => {
-  try {
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    const users = await prisma.user.count({});
-    if (!users) {
-      return c.json({
-        status: 400,
-        message: "Failed to fetch users count",
-        data: 0,
-      });
-    }
-    return c.json({ status: 200, message: "Fetched users count", data: users });
   } catch (error) {
     console.log(error);
   }
@@ -76,7 +56,7 @@ userAuthRouter.post("/verify", async (c) => {
       },
     });
     if (!person) {
-      return c.json({ status: 401, message: "Unauthorized" });
+      return c.json({ status: 401, message: "Not verified" });
     }
     return c.json({
       status: 200,
@@ -86,22 +66,21 @@ userAuthRouter.post("/verify", async (c) => {
     return c.json({ status: 400 });
   }
 });
+
 userAuthRouter.post("/signup", async (c) => {
   try {
     const body = await c.req.json();
-    const nameRes = nameSchema.safeParse(body.name);
+    const fullnameRes = fullNameSchema.safeParse(body.fullname);
     const usernameRes = usernameSchema.safeParse(body.username);
     const emailRes = emailSchema.safeParse(body.email);
-    const genderRes = genderSchema.safeParse(body.gender);
     const passwordRes = passwordSchema.safeParse(body.password);
     if (
-      !nameRes.success ||
+      !fullnameRes.success ||
       !usernameRes.success ||
       !emailRes.success ||
-      !passwordRes.success ||
-      !genderRes.success
+      !passwordRes.success
     ) {
-      return c.json({ status: 400, message: "Invalid user inputs" });
+      return c.json({ status: 400, message: "Invalid inputs" });
     }
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
@@ -112,11 +91,10 @@ userAuthRouter.post("/signup", async (c) => {
       },
     });
 
-    if (email) {
-      return c.json({ status: 401, message: "This email is already in use" });
-    }
-    if (body.username === "unknown" || "anonymous") {
-      return c.json({ status: 401, message: "This username cant be taken" });
+    if (body.username === "unknown" || body.username === "anonymous") {
+      return c.json({
+        message: "This username can't be taken",
+      });
     }
     const username = await prisma.user.findFirst({
       where: {
@@ -124,27 +102,34 @@ userAuthRouter.post("/signup", async (c) => {
       },
     });
     if (username) {
-      return c.json({ status: 401, message: "This Userame is already taken" });
+      return c.json({ message: "Username is already in use" });
     }
+    if (email) {
+      return c.json({ message: "Email is already in use" });
+    }
+
     const hashedPassword = await bcrypt.hash(body.password, 12);
 
-    const user = await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
-        name: body.name,
+        fullname: body.fullname,
         username: body.username,
         email: body.email,
-        gender: body.gender,
         password: hashedPassword,
       },
     });
-    if (!user) {
+    if (!newUser) {
       return c.json({
-        status: 401,
         message: "signup failed",
       });
     }
-    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-    return c.json({ status: 200, token: jwt, message: "Signup successful" });
+    const jwt = await sign({ id: newUser.id }, c.env.JWT_SECRET);
+    return c.json({
+      status: 200,
+      username: newUser.username,
+      token: jwt,
+      message: "Signup successful",
+    });
   } catch (error) {
     return c.json({ status: 400, message: "Signup failed" });
   }
@@ -189,7 +174,12 @@ userAuthRouter.post("/login", async (c) => {
       });
     }
     const jwt = await sign({ id: findUser.id }, c.env.JWT_SECRET);
-    return c.json({ status: 200, token: jwt, message: "Login successful" });
+    return c.json({
+      status: 200,
+      username: findUser.username,
+      token: jwt,
+      message: "Login successful",
+    });
   } catch (error) {
     console.log(error);
     return c.json({ status: 400, message: "Login failed" });

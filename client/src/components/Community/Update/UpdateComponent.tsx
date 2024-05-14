@@ -129,83 +129,81 @@ export const UpdateCommunityComponent = () => {
       console.log("Error updating community:", error);
     }
   }
-
+  if (isLoading) {
+    return (
+      <div className="h-screen bg-white w-full flex justify-center items-center">
+        <CircularProgress color="inherit" />
+      </div>
+    );
+  }
   return (
     <>
-      <div className="h-screen text-neutral-600">
-        {isLoading ? (
-          <div className="text-center my-5">
-            <CircularProgress color="inherit" />
-          </div>
-        ) : (
-          <div className="bg-white border border-neutral-100 px-4 rounded-lg flex flex-col  gap-4">
-            <div className=" border-b border-neutral-100 py-4">
-              <button
-                className="w-fit flex items-start"
-                onClick={() => {
-                  navigate(`/community/${communityData.name}`);
-                }}
-              >
-                <ArrowBackIcon
-                  sx={{ fontSize: 30 }}
-                  className="text-primarytextcolor"
+      <div className="bg-white h-screen border-l border-r border-neutral-100 px-4 flex flex-col gap-4">
+        <div className=" border-b border-neutral-100 py-4">
+          <button
+            className="w-fit flex items-start"
+            onClick={() => {
+              navigate(`/community/${communityData.name}`);
+            }}
+          >
+            <ArrowBackIcon
+              sx={{ fontSize: 30 }}
+              className="text-primarytextcolor"
+            />
+          </button>
+        </div>
+        <div className="w-ful items-start flex justify-between">
+          <div className="flex justify-center items-center">
+            <div className="absolute text-primarytextcolor z-50">
+              <button>
+                <label htmlFor="image-upload" className="cursor-pointer ">
+                  <CameraAltRoundedIcon className="bg-white/50 p-1 rounded-full" />
+                </label>
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
                 />
               </button>
             </div>
-            <div className="w-ful items-start flex justify-between">
-              <div className="flex justify-center items-center">
-                <div className="absolute text-primarytextcolor z-50">
-                  <button>
-                    <label htmlFor="image-upload" className="cursor-pointer ">
-                      <CameraAltRoundedIcon className="bg-white/50 p-1 rounded-full" />
-                    </label>
-                    <input
-                      id="image-upload"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                  </button>
-                </div>
-                <img
-                  src={
-                    previewImage
-                      ? previewImage
-                      : communityData.image
-                      ? communityData.image
-                      : "/group.png"
-                  }
-                  className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10 border border-neutral-50"
-                />
-              </div>
+            <img
+              src={
+                previewImage
+                  ? previewImage
+                  : communityData.image
+                  ? communityData.image
+                  : "/group.png"
+              }
+              className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10 border border-neutral-50"
+            />
+          </div>
 
-              <button onClick={updateCommunity}>
-                <div className="text-white bg-indigo-500 text-base font-light rounded-md py-1 px-4">
-                  save
-                </div>
-              </button>
+          <button onClick={updateCommunity}>
+            <div className="text-white bg-indigo-500 text-base font-light rounded-md py-1 px-4">
+              save
             </div>
-            <div>
-              <div className="text-primarytextcolor  text-sm font-light">
-                Description
-              </div>
-              <textarea
-                rows={2}
-                className="w-full px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-neutral-100"
-                defaultValue={communityData.description}
-                wrap="soft"
-                maxLength={150}
-                onChange={(e) => {
-                  setNewDescription(e.target.value);
-                }}
-              />
-            </div>
-            <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
-              {popup ? popup : <div>‎</div>}
-            </div>
+          </button>
+        </div>
+        <div>
+          <div className="text-primarytextcolor  text-sm font-light">
+            Description
           </div>
-        )}
+          <textarea
+            rows={2}
+            className="w-full px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-neutral-100"
+            defaultValue={communityData.description}
+            wrap="soft"
+            maxLength={150}
+            onChange={(e) => {
+              setNewDescription(e.target.value);
+            }}
+          />
+        </div>
+        <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
+          {popup ? popup : <div>‎</div>}
+        </div>
       </div>
     </>
   );
