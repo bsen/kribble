@@ -4,6 +4,7 @@ import { BACKEND_URL } from "../../../config";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { NavBar } from "../../Bars/NavBar";
+import { CircularProgress } from "@mui/material";
 
 export const Community = () => {
   const token = localStorage.getItem("token");

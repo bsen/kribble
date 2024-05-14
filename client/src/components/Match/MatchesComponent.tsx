@@ -25,7 +25,7 @@ export const MatchesComponent = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `http://localhost:8787/api/user/connections/all/connections`,
+        `${BACKEND_URL}/api/user/connections/all/connections`,
         { token }
       );
       setLoadingState(false);
