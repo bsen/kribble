@@ -8,7 +8,7 @@ export const Signup = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token != null) {
-      navigate("/home");
+      navigate("/");
     }
   }, []);
   return (

@@ -4,35 +4,23 @@ import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { BACKEND_URL } from "../../config";
-
+import { useContext } from "react";
+import { UserContext } from "../User/Context/UserContext";
+useContext;
 export const BottomBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const [currentUser, setCurrentUser] = useState("");
-  async function getUser() {
-    const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
-      token,
-    });
-    setCurrentUser(response.data.data);
-  }
-
-  useEffect(() => {
-    getUser();
-  }, []);
+  const { currentUser } = useContext(UserContext);
 
   return (
     <>
       <div className="lg:hidden bottom-0  h-12 flex items-center justify-evenly border-t border-neutral-100  rounded-t-md  bg-white fixed w-full lg:w-[50%]">
         <button
           onClick={() => {
-            navigate("/home");
+            navigate("/");
           }}
           className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
-            location.pathname === "/home"
+            location.pathname === "/"
               ? "text-indigo-500 text-lg"
               : "text-neutral-800"
           }`}

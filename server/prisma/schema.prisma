@@ -8,10 +8,10 @@ datasource db {
 }
 model User {
   id             String     @id @default(uuid())
-  name           String
+  fullname       String
   email          String     @unique
   username       String     @unique
-  gender         String
+  gender         String?
   password       String
   bio            String?
   image          String?
@@ -23,10 +23,10 @@ model User {
   posts          Post[]     @relation("UserPosts")
   likedPosts     Like[]     @relation("UserLikes")
   comments       Comment[]  @relation("Comments")
-  matcherUser  Match[]    @relation("UserMatcher")
-  matchedByUser Match[]    @relation("UserMatchedBy")
-  matchesAsUserOne Matches[] @relation("MatchesUserOne")
-  matchesAsUserTwo Matches[] @relation("MatchesUserTwo")
+  connectMainUser  Connect[]    @relation("MainUser")
+  connectOtherUser Connect[]    @relation("OtherUser")
+  ConnectionsMainUser Connections[] @relation("ConnectionsMainUser")
+  ConnectionsOtherUser Connections[] @relation("ConnectionsOtherUser")
   sentMessages   Message[]  @relation("MessageSender")
   receivedMessages Message[]@relation("MessageReceiver")
   createdCommunities Community[] @relation("Creator")
@@ -50,6 +50,7 @@ model Community {
   id             String    @id @default(uuid())
   name           String
   description    String
+  type           String?
   image          String?
   creator        User      @relation("Creator", fields: [creatorId], references: [id])
   creatorId      String
@@ -132,24 +133,24 @@ model TaggingOnComment {
 
   @@unique([commentId, userId])
 }
-model Match {
+model Connect {
   id           String   @id @default(uuid())
-  matcherUser  User     @relation("UserMatcher", fields: [matcherUserId], references: [id])
-  matcherUserId String
-  matchedByUser User    @relation("UserMatchedBy", fields: [matchedByUserId], references: [id])
-  matchedByUserId String
+  mainUser     User     @relation("MainUser", fields: [mainUserId], references: [id])
+  mainUserId   String
+  otherUser    User     @relation("OtherUser", fields: [otherUserId], references: [id])
+  otherUserId  String
   createdAt    DateTime @default(now())
-  @@unique([matcherUserId, matchedByUserId])
+  @@unique([mainUserId, otherUserId])
 }
 
-model Matches {
+model Connections {
   id       String @id @default(uuid())
-  userOne  User   @relation("MatchesUserOne", fields: [userOneId], references: [id])
-  userOneId String
-  userTwo  User   @relation("MatchesUserTwo", fields: [userTwoId], references: [id])
-  userTwoId String
+  mainUser  User   @relation("ConnectionsMainUser", fields: [mainUserId], references: [id])
+  mainUserId String
+  otherUser User   @relation("ConnectionsOtherUser", fields: [otherUserId], references: [id])
+  otherUserId String
   createdAt DateTime @default(now())
-  @@unique([userOneId, userTwoId])
+  @@unique([mainUserId, otherUserId])
 }
 
 model Message {

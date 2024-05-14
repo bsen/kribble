@@ -5,28 +5,13 @@ import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { BACKEND_URL } from "../../config";
+import { useContext } from "react";
+import { UserContext } from "../User/Context/UserContext";
+
 export const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const [currentUser, setCurrentUser] = useState("");
-  async function getUser() {
-    try {
-      const response = await axios.post(`${BACKEND_URL}/api/user/auth/verify`, {
-        token,
-      });
-      setCurrentUser(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    getUser();
-  }, []);
+  const { currentUser, isLoading } = useContext(UserContext);
 
   return (
     <>
@@ -34,7 +19,7 @@ export const SideBar = () => {
         <div className="h-[50vh] w-[75%] flex flex-col  items-center justify-evenly">
           <div
             onClick={() => {
-              navigate("/home");
+              navigate("/");
             }}
             className="bg-gradient-to-r from-indigo-500 via-purple-400 to-violet-500 text-transparent bg-clip-text text-4xl font-ubuntu"
           >
@@ -43,10 +28,10 @@ export const SideBar = () => {
 
           <button
             onClick={() => {
-              navigate("/home");
+              navigate("/");
             }}
             className={`w-full h-10 px-4 my-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
-              location.pathname === "/home"
+              location.pathname === "/"
                 ? "text-indigo-500 text-lg"
                 : "text-neutral-800"
             }`}
@@ -82,6 +67,7 @@ export const SideBar = () => {
             <div>Connect</div>
           </button>
           <button
+            disabled={isLoading}
             onClick={() => {
               navigate(`/${currentUser}`);
             }}

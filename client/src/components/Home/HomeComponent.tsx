@@ -298,8 +298,8 @@ export const HomeComponent = () => {
               </div>
             ))
           ) : (
-            <div className="text-center font-ubuntu my-5 text-primarytextcolor">
-              No posts found.
+            <div className="text-neutral-600 my-5  font-light text-center text-lg">
+              No posts found
             </div>
           )}
         </div>

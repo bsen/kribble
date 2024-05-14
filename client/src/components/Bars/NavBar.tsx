@@ -8,7 +8,7 @@ export const NavBar = () => {
       <div className="w-full h-full flex justify-center items-center">
         <div
           onClick={() => {
-            navigate("/home");
+            navigate("/");
           }}
         >
           <img src="/logo.png" className="h-8" />

@@ -40,7 +40,6 @@ postCommentRouter.post("/all/comments", async (c) => {
         creator: {
           select: {
             username: true,
-            name: true,
             image: true,
           },
         },
@@ -62,12 +61,10 @@ postCommentRouter.post("/all/comments", async (c) => {
       const creatorDetails = comment.anonymity
         ? {
             username: "unknown",
-            name: "unknown",
             image: null,
           }
         : {
             username: comment.creator.username,
-            name: comment.creator.name,
             image: comment.creator.image,
           };
 

@@ -18,6 +18,8 @@ interface CommunityData {
 export const CommunityData: React.FC = () => {
   const { name } = useParams();
   const navigate = useNavigate();
+  const [error, setError] = useState<Error | null>(null);
+
   const token = localStorage.getItem("token");
   const [loadingState, setLoadingState] = useState(false);
   const [isCreator, setIsCreator] = useState(Boolean);
@@ -44,7 +46,7 @@ export const CommunityData: React.FC = () => {
       setIsCreator(response.data.creator);
       setIsJoined(response.data.joined);
     } catch (error) {
-      console.log(error);
+      setError(error as Error);
     }
   };
 
@@ -66,7 +68,7 @@ export const CommunityData: React.FC = () => {
       const details = { token, name };
       await axios.post(`${BACKEND_URL}/api/community/join/join/leave`, details);
     } catch (error) {
-      console.log(error);
+      setError(error as Error);
       setIsJoined((prevState) => !prevState);
       setCommunityData((prevData) => ({
         ...prevData,
@@ -78,91 +80,106 @@ export const CommunityData: React.FC = () => {
       setIsJoiningLoading(false);
     }
   };
+
+  if (error) {
+    return (
+      <div className="text-center my-10 text-red-500 font-semibold">
+        An error occurred: {error.message}
+      </div>
+    );
+  }
+
+  if (loadingState) {
+    return (
+      <div className="text-neutral-600 my-5  font-light text-center text-lg">
+        Loading ...
+      </div>
+    );
+  }
+
   return (
     <>
-      {!loadingState && (
-        <div className="w-full bg-white my-2 p-4 rounded-md flex flex-col items-start border border-neutral-100">
-          <div className="flex justify-between w-full items-center gap-2">
-            <img
-              src={communityData.image ? communityData.image : "/group.png"}
-              className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-neutral-50 mb-2"
-            />
-            <div className="w-full">
-              <div className="flex justify-end items-center">
-                <div>
-                  {isCreator && (
-                    <button
-                      onClick={() => {
-                        navigate(`/edit/community/${communityData.name}`);
-                      }}
-                      className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
-                    >
-                      Edit details
-                    </button>
-                  )}
+      <div className="w-full bg-white my-2 p-4 rounded-md flex flex-col items-start border border-neutral-100">
+        <div className="flex justify-between w-full items-center gap-2">
+          <img
+            src={communityData.image ? communityData.image : "/group.png"}
+            className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-neutral-50 mb-2"
+          />
+          <div className="w-full">
+            <div className="flex justify-end items-center">
+              <div>
+                {isCreator && (
+                  <button
+                    onClick={() => {
+                      navigate(`/edit/community/${communityData.name}`);
+                    }}
+                    className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
+                  >
+                    Edit details
+                  </button>
+                )}
 
-                  {!isCreator && (
-                    <button
-                      onClick={handleJoinCommunity}
-                      disabled={isJoiningLoading}
-                      className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
-                    >
-                      <div className="flex items-center justify-center">
-                        {isJoiningLoading ? (
-                          <CircularProgress
-                            size="20px"
-                            className="text-sm"
-                            color="inherit"
-                          />
-                        ) : (
-                          <div>
-                            {isJoined ? <div>Joined</div> : <div>Join</div>}
-                          </div>
-                        )}
-                      </div>
-                    </button>
-                  )}
-                </div>
-              </div>
-              <div className="text-lg lg:text-xl  font-semibold text-neutral-800">
-                {communityData.name}
-              </div>
-              <div className="flex my-2 text-indigo-500  items-center gap-2 font-ubuntu text-sm">
-                <Link to={`/followers`}>
-                  <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
-                    {communityData.membersCount} Members
-                  </div>
-                </Link>
-                <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
-                  {communityData.postsCount} Posts
-                </div>
+                {!isCreator && (
+                  <button
+                    onClick={handleJoinCommunity}
+                    disabled={isJoiningLoading}
+                    className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
+                  >
+                    <div className="flex items-center justify-center">
+                      {isJoiningLoading ? (
+                        <CircularProgress
+                          size="20px"
+                          className="text-sm"
+                          color="inherit"
+                        />
+                      ) : (
+                        <div>
+                          {isJoined ? <div>Joined</div> : <div>Join</div>}
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                )}
               </div>
             </div>
-          </div>
-
-          <div className="text-sm mb-2 text-neutral-600 font-light">
-            {communityData.description
-              ? communityData.description
-              : "description"}
-          </div>
-
-          <div
-            className="w-full flex justify-start items-center"
-            onClick={() => {
-              navigate(`/community/${communityData.name}/post`);
-            }}
-          >
-            <div
-              className={
-                "flex w-fit justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
-              }
-            >
-              <AddIcon sx={{ fontSize: 20 }} />
-              <p>Post</p>
+            <div className="text-lg lg:text-xl  font-semibold text-neutral-800">
+              {communityData.name}
+            </div>
+            <div className="flex my-2 text-indigo-500  items-center gap-2 font-ubuntu text-sm">
+              <Link to={`/followers`}>
+                <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
+                  {communityData.membersCount} Members
+                </div>
+              </Link>
+              <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
+                {communityData.postsCount} Posts
+              </div>
             </div>
           </div>
         </div>
-      )}
+
+        <div className="text-sm mb-2 text-neutral-600 font-light">
+          {communityData.description
+            ? communityData.description
+            : "description"}
+        </div>
+
+        <div
+          className="w-full flex justify-start items-center"
+          onClick={() => {
+            navigate(`/community/${communityData.name}/post`);
+          }}
+        >
+          <div
+            className={
+              "flex w-fit justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+            }
+          >
+            <AddIcon sx={{ fontSize: 20 }} />
+            <p>Post</p>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

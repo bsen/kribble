@@ -103,8 +103,8 @@ export const CommunitiesComponent = () => {
             </div>
           ))
         ) : (
-          <div className="text-center font-ubuntu my-5 text-primarytextcolor">
-            No communities found.
+          <div className="text-neutral-600 my-5  font-light text-center text-lg">
+            No communities found
           </div>
         )}
         {isLoading && (

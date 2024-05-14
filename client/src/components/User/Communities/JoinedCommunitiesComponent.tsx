@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
-import { Loading } from "../../Loading";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
 
@@ -62,62 +61,56 @@ export const JoinedCommunitiesComponent = () => {
 
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div>
-          <div
-            className="h-screen overflow-y-auto no-scrollbar py-12"
-            onScroll={handleScroll}
-            ref={scrollContainerRef}
-          >
-            <NavBar />
-            {communityData.communities.length > 0 ? (
-              communityData.communities.map((community, index) => (
-                <div
-                  key={index}
-                  className="border my-2 rounded-md border-neutral-100 p-4 bg-white"
-                >
-                  <div className="flex gap-2 justify-between items-start">
-                    <div className="flex gap-2 items-start">
-                      <img
-                        className="h-10 w-10 rounded-full bg-white"
-                        src={community.image ? community.image : "/group.png"}
-                      />
+      <div
+        className="h-screen overflow-y-auto no-scrollbar py-12"
+        onScroll={handleScroll}
+        ref={scrollContainerRef}
+      >
+        <NavBar />
+        {communityData.communities.length > 0 ? (
+          communityData.communities.map((community, index) => (
+            <div
+              key={index}
+              className="border my-2 rounded-md border-neutral-100 p-4 bg-white"
+            >
+              <div className="flex gap-2 justify-between items-start">
+                <div className="flex gap-2 items-start">
+                  <img
+                    className="h-10 w-10 rounded-full bg-white"
+                    src={community.image ? community.image : "/group.png"}
+                  />
 
-                      <div className="flex flex-col w-full">
-                        <Link
-                          to={`/community/${community.name}`}
-                          className="text-primarytextcolor w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
-                        >
-                          {community.name}
-                        </Link>
-                        <div className="text-primarytextcolor text-sm  font-normal">
-                          {community.description}
-                        </div>
-                        <div className="text-primarytextcolor font-ubuntu  text-sm font-light">
-                          {community.membersCount} members
-                        </div>
-                      </div>
+                  <div className="flex flex-col w-full">
+                    <Link
+                      to={`/community/${community.name}`}
+                      className="text-primarytextcolor w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
+                    >
+                      {community.name}
+                    </Link>
+                    <div className="text-primarytextcolor text-sm  font-normal">
+                      {community.description}
+                    </div>
+                    <div className="text-primarytextcolor font-ubuntu  text-sm font-light">
+                      {community.membersCount} members
                     </div>
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="text-center font-ubuntu my-5 text-primarytextcolor">
-                No communities found.
               </div>
-            )}
-            {isLoading && (
-              <div className="text-center my-5">
-                <CircularProgress color="inherit" />
-              </div>
-            )}
+            </div>
+          ))
+        ) : (
+          <div className="text-center font-ubuntu my-5 text-primarytextcolor">
+            No communities found.
           </div>
+        )}
+        {isLoading && (
+          <div className="text-center my-5">
+            <CircularProgress color="inherit" />
+          </div>
+        )}
+      </div>
 
-          <BottomBar />
-        </div>
-      )}
+      <BottomBar />
     </>
   );
 };

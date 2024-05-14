@@ -118,11 +118,11 @@ export const SearchComponent = () => {
         ) : (
           <div>
             {isSearching ? (
-              <div className="text-sm my-4 font-ubuntu font-normal text-center text-secondarytextcolor">
+              <div className="text-neutral-600 my-5  font-light text-center text-lg">
                 Searching
               </div>
             ) : (
-              <div className="text-sm my-4 font-ubuntu font-normal text-center text-secondarytextcolor">
+              <div className="text-neutral-600 my-5  font-light text-center text-lg">
                 Search result not found
               </div>
             )}

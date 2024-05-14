@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 
-export const userMatchesRouter = new Hono<{
+export const userConnectionsRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
@@ -13,7 +13,7 @@ export const userMatchesRouter = new Hono<{
   };
 }>();
 
-userMatchesRouter.post("/all/matches", async (c) => {
+userConnectionsRouter.post("/all/connections", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -27,29 +27,30 @@ userMatchesRouter.post("/all/matches", async (c) => {
       },
     });
     if (!findUser) {
-      return c.json({ status: 404, message: "User not found" });
+      return c.json({ status: 404, message: "Not verified" });
     }
-
-    const userMatches = await prisma.matches.findMany({
+    const userConnections = await prisma.connections.findMany({
       where: {
-        userOneId: findUser.id,
+        mainUserId: findUser.id,
       },
       select: {
-        userTwo: {
-          select: { id: true, name: true, username: true, image: true },
+        otherUser: {
+          select: { id: true, fullname: true, username: true, image: true },
         },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
+    if (!userConnections) {
+      return c.json({ status: 404, message: "No connection found" });
+    }
     return c.json({
       status: 200,
-      data: userMatches,
-      message: "Matches found",
+      data: userConnections,
+      message: "Connections found",
     });
   } catch (error) {
-    console.error("Error fetching user matches:", error);
     return c.json({ status: 500, message: "Internal Server Error" });
   }
 });
