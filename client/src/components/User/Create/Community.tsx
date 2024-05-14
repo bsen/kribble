@@ -4,6 +4,7 @@ import { BACKEND_URL } from "../../../config";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { NavBar } from "../../Bars/NavBar";
+import { CircularProgress } from "@mui/material";
 
 export const Community = () => {
   const token = localStorage.getItem("token");
@@ -76,8 +77,8 @@ export const Community = () => {
   };
   if (isLoading) {
     return (
-      <div className="text-neutral-600 my-5  font-light text-center text-lg">
-        Loading ...
+      <div className="h-screen bg-white w-full flex justify-center items-center">
+        <CircularProgress color="inherit" />
       </div>
     );
   }

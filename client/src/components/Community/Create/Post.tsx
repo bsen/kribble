@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { BACKEND_URL } from "../../../config";
+import { CircularProgress } from "@mui/material";
 
 export const Post = () => {
   const { name } = useParams();
@@ -113,8 +114,8 @@ export const Post = () => {
   };
   if (isLoading) {
     return (
-      <div className="text-neutral-600 my-5  font-light text-center text-lg">
-        Loading ...
+      <div className="h-screen bg-white w-full flex justify-center items-center">
+        <CircularProgress color="inherit" />
       </div>
     );
   }

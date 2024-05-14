@@ -18,7 +18,7 @@ import { postLikeRouter } from "./routes/post/like";
 // MESSAGE ROUTER IMPORT
 import { messageRouter } from "./routes/message/message";
 // CONNECT ROUTER IMPORT
-import { connectRouter } from "./routes/connect/connect";
+import { matchRouter } from "./routes/match/match";
 // COMMUNITY ROUTER IMPORT
 import { communitiesRouter } from "./routes/community/communities";
 import { communityCreateRouter } from "./routes/community/create";
@@ -54,7 +54,7 @@ app.route("/api/post/comment", postCommentRouter);
 // MESSAGE ROUTER
 app.route("/api/message", messageRouter);
 // CONNECT ROUTER
-app.route("/api/connect", connectRouter);
+app.route("/api/match", matchRouter);
 // COMMUNITY ROUTER
 app.route("/api/community/communities", communitiesRouter);
 app.route("/api/community/create", communityCreateRouter);

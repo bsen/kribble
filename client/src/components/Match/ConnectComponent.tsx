@@ -15,7 +15,9 @@ interface UserData {
 
 export const ConnectComponent: React.FC = () => {
   const token = localStorage.getItem("token");
-  const [matchUserData, setMatchUserData] = useState<UserData | null>(null);
+  const [matchableUserData, setMatchableUserData] = useState<UserData | null>(
+    null
+  );
   const [popup, setPopup] = useState<string>("");
 
   useEffect(() => {
@@ -27,13 +29,13 @@ export const ConnectComponent: React.FC = () => {
     try {
       setPopup("Searching ...");
       const response = await axios.post(
-        `${BACKEND_URL}/api/connect/connectable/users`,
+        `${BACKEND_URL}/api/match/matchable/users`,
         { token }
       );
       setPopup("");
       if (response.data.status === 200 && Array.isArray(response.data.user)) {
         if (response.data.user.length > 0) {
-          setMatchUserData(response.data.user[0]);
+          setMatchableUserData(response.data.user[0]);
         } else {
           setPopup("No users found for connecting, Please try again later.");
         }
@@ -46,14 +48,13 @@ export const ConnectComponent: React.FC = () => {
     }
   };
   const match = async () => {
-    setPopup("Connect ...");
-
+    setPopup("Creating connection ...");
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/connect/create/connection`,
+        `${BACKEND_URL}/api/match/create/connection`,
         {
           token,
-          otherPersonsId: matchUserData?.id,
+          recipientId: matchableUserData?.id,
         }
       );
       if (response.data.status === 400) {
@@ -88,18 +89,18 @@ export const ConnectComponent: React.FC = () => {
               {popup}
             </div>
           )}
-          {matchUserData && !popup && (
+          {matchableUserData && !popup && (
             <div className="w-full flex flex-col justify-center items-center gap-2">
               <img
-                src={matchUserData.image || "user.png"}
+                src={matchableUserData.image || "user.png"}
                 className="w-[80%] md:max-w-[50%] rounded-full border border-neutral-100"
                 alt="User"
               />
               <div className="text-primarytextcolor text-base font-medium font-ubuntu">
-                {matchUserData.username}
+                {matchableUserData.username}
               </div>
               <div className="font-light text-center text-sm text-secondarytextcolor m-2 w-[50%]">
-                {matchUserData.bio ? "bio · " + matchUserData.bio : ""}
+                {matchableUserData.bio ? matchableUserData.bio : ""}
               </div>
               <div className="flex items-center py-2 justify-center gap-5 w-full">
                 <button

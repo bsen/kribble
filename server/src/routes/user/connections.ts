@@ -21,36 +21,48 @@ userConnectionsRouter.post("/all/connections", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+
     const findUser = await prisma.user.findUnique({
       where: {
         id: userId.id,
       },
     });
+
     if (!findUser) {
       return c.json({ status: 404, message: "Not verified" });
     }
-    const userConnections = await prisma.connections.findMany({
+
+    const userMatches = await prisma.profileMatch.findMany({
       where: {
-        mainUserId: findUser.id,
+        initiatorId: findUser.id,
+        isConfirmed: true,
       },
       select: {
-        otherUser: {
-          select: { id: true, fullname: true, username: true, image: true },
+        recipient: {
+          select: {
+            id: true,
+            fullname: true,
+            username: true,
+            image: true,
+          },
         },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
-    if (!userConnections) {
-      return c.json({ status: 404, message: "No connection found" });
+
+    if (!userMatches) {
+      return c.json({ status: 404, message: "No matches found" });
     }
+
     return c.json({
       status: 200,
-      data: userConnections,
-      message: "Connections found",
+      data: userMatches,
+      message: "Matches found",
     });
   } catch (error) {
+    console.error(error);
     return c.json({ status: 500, message: "Internal Server Error" });
   }
 });

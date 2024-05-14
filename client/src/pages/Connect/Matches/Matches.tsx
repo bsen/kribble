@@ -1,5 +1,5 @@
 import { SideBar } from "../../../components/Bars/SideBar";
-import { MatchesComponent } from "../../../components/Connect/MatchesComponent";
+import { MatchesComponent } from "../../../components/Match/MatchesComponent";
 
 export const Matches = () => {
   return (

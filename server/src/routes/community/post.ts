@@ -145,7 +145,7 @@ communityPostRouter.post("/delete", async (c) => {
     }
 
     if (findCommunity.creatorId === findUser.id) {
-      const deleteLikes = await prisma.like.deleteMany({
+      const deleteLikes = await prisma.postLike.deleteMany({
         where: {
           postId: postId,
         },
@@ -242,7 +242,7 @@ communityPostRouter.post("/all/posts", async (c) => {
     const nextCursor = hasMore ? allPosts[allPosts.length - 1].id : null;
     const postsWithLikedState = await Promise.all(
       posts.map(async (post) => {
-        const isLiked = await prisma.like.findUnique({
+        const isLiked = await prisma.postLike.findUnique({
           where: {
             userId_postId: {
               userId: findUser.id,

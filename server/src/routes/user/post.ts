@@ -87,7 +87,7 @@ userPostRouter.post("/delete", async (c) => {
       return c.json({ status: 401, message: "Unauthorized" });
     }
 
-    const deleteLikes = await prisma.like.deleteMany({
+    const deleteLikes = await prisma.postLike.deleteMany({
       where: {
         postId: postId,
       },
@@ -171,7 +171,7 @@ userPostRouter.post("/all/posts", async (c) => {
 
     const postsWithLikedState = await Promise.all(
       posts.map(async (post) => {
-        const isLiked = await prisma.like.findUnique({
+        const isLiked = await prisma.postLike.findUnique({
           where: {
             userId_postId: {
               userId: findUser.id,

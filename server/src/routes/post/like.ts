@@ -31,7 +31,7 @@ postLikeRouter.post("/like/unlike", async (c) => {
       return c.json({ status: 401, message: "User not authenticated" });
     }
 
-    const findLike = await prisma.like.findUnique({
+    const findLike = await prisma.postLike.findUnique({
       where: {
         userId_postId: {
           userId: findUser.id,
@@ -40,7 +40,7 @@ postLikeRouter.post("/like/unlike", async (c) => {
       },
     });
     if (!findLike) {
-      const createLike = await prisma.like.create({
+      const createLike = await prisma.postLike.create({
         data: {
           userId: findUser.id,
           postId: postId,
@@ -66,7 +66,7 @@ postLikeRouter.post("/like/unlike", async (c) => {
         message: "User liked the post successfully",
       });
     } else {
-      const deleteLike = await prisma.like.delete({
+      const deleteLike = await prisma.postLike.delete({
         where: {
           userId_postId: {
             userId: findUser.id,
