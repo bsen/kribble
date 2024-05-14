@@ -74,6 +74,13 @@ export const Community = () => {
   const handleClose = () => {
     history.go(-1);
   };
+  if (isLoading) {
+    return (
+      <div className="text-neutral-600 my-5  font-light text-center text-lg">
+        Loading ...
+      </div>
+    );
+  }
 
   return (
     <>
