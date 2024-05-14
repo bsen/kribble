@@ -54,11 +54,32 @@ connectRouter.post("/connectable/users", async (c) => {
 
     const likedByIds = likedUserIds.map((like) => like.mainUserId);
 
+    const connectedUserIds = await prisma.connections.findMany({
+      where: {
+        OR: [
+          {
+            mainUserId: userId.id,
+          },
+          {
+            otherUserId: userId.id,
+          },
+        ],
+      },
+      select: {
+        mainUserId: true,
+        otherUserId: true,
+      },
+    });
+
+    const connectedIds = connectedUserIds.flatMap((user) => [
+      user.mainUserId,
+      user.otherUserId,
+    ]);
+
     const suggestedUsers = await prisma.user.findMany({
       where: {
         id: {
-          notIn: connectById,
-          not: userId.id,
+          notIn: [...connectedIds, ...connectById, userId.id],
         },
       },
       take: 5,
@@ -77,7 +98,6 @@ connectRouter.post("/connectable/users", async (c) => {
         image: true,
       },
     });
-    console.log(suggestedUsers);
     return c.json({ status: 200, user: suggestedUsers });
   } catch (error) {
     console.error(error);
@@ -103,7 +123,6 @@ connectRouter.post("/create/connection", async (c) => {
     if (!findUser) {
       return c.json({ status: 404, message: "Not verified" });
     }
-
     const alreadyLiked = await prisma.connect.findUnique({
       where: {
         mainUserId_otherUserId: {
@@ -126,14 +145,40 @@ connectRouter.post("/create/connection", async (c) => {
         },
       },
     });
-
     if (otherPersonLike) {
+      const existingConnection = await prisma.connections.findFirst({
+        where: {
+          OR: [
+            {
+              mainUserId: findUser.id,
+              otherUserId: otherPersonsId,
+            },
+            {
+              mainUserId: otherPersonsId,
+              otherUserId: findUser.id,
+            },
+          ],
+        },
+      });
+
+      if (existingConnection) {
+        return c.json({ status: 400, message: "Connection already exists" });
+      }
+
+      const createOtherConnect = await prisma.connect.create({
+        data: {
+          mainUserId: findUser.id,
+          otherUserId: otherPersonsId,
+        },
+      });
+
       const createFirstConnections = await prisma.connections.create({
         data: {
           mainUserId: findUser.id,
           otherUserId: otherPersonsId,
         },
       });
+
       const createSecondConnections = await prisma.connections.create({
         data: {
           mainUserId: otherPersonsId,
@@ -141,12 +186,17 @@ connectRouter.post("/create/connection", async (c) => {
         },
       });
 
-      if (!createFirstConnections || !createSecondConnections) {
+      if (
+        !createFirstConnections ||
+        !createSecondConnections ||
+        !createOtherConnect
+      ) {
         return c.json({
           status: 404,
-          message: "Conection failed, Network error",
+          message: "Connection failed, Network error",
         });
       }
+
       return c.json({ status: 200, message: "Connection successful" });
     }
 

@@ -24,12 +24,13 @@ export const ConnectComponent: React.FC = () => {
   }, []);
 
   const searchPeople = async () => {
-    setPopup("Searching ...");
     try {
+      setPopup("Searching ...");
       const response = await axios.post(
         `${BACKEND_URL}/api/connect/connectable/users`,
         { token }
       );
+      setPopup("");
       if (response.data.status === 200 && Array.isArray(response.data.user)) {
         if (response.data.user.length > 0) {
           setMatchUserData(response.data.user[0]);
@@ -91,13 +92,13 @@ export const ConnectComponent: React.FC = () => {
             <div className="w-full flex flex-col justify-center items-center gap-2">
               <img
                 src={matchUserData.image || "user.png"}
-                className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                className="w-[80%] md:max-w-[50%] rounded-full border border-neutral-100"
                 alt="User"
               />
               <div className="text-primarytextcolor text-base font-medium font-ubuntu">
                 {matchUserData.username}
               </div>
-              <div className="font-light text-sm text-secondarytextcolor m-2 w-[50%]">
+              <div className="font-light text-center text-sm text-secondarytextcolor m-2 w-[50%]">
                 {matchUserData.bio ? "bio · " + matchUserData.bio : ""}
               </div>
               <div className="flex items-center py-2 justify-center gap-5 w-full">
