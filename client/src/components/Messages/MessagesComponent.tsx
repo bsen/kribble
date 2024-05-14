@@ -5,7 +5,6 @@ import { BACKEND_URL } from "../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface User {
-  name: string;
   username: string;
   image: string;
   id: string;
@@ -19,7 +18,7 @@ interface Message {
 
 export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   const token = localStorage.getItem("token");
-  const { username, name, image, id } = props.otherUser;
+  const { username, image, id } = props.otherUser;
   const [sendingmessage, setSendingMessage] = useState("");
   const [sendMessages, setSendMessages] = useState<Message[]>([]);
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([]);
@@ -108,7 +107,6 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
       send();
     }
   };
-  
 
   return (
     <div className="h-screen border-r border-l border-neutral-100 bg-white  w-full flex flex-col  justify-between">
@@ -129,14 +127,10 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
             <img
               src={image ? image : "/user.pmg"}
               className="h-10 w-10 rounded-full"
-              alt={name}
             />
             <div>
               <div className="text-base font-semibold text-primarytextcolor">
-                {name}
-              </div>
-              <div className="text-sm text-secondarytextcolor font-light">
-                @{username}
+                {username}
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { SideBar } from "../../../components/Bars/SideBar";
-import { ConnectComponent } from "../../../components/Connect/ConnectComponent";
+import { ConnectComponent } from "../../../components/Match/ConnectComponent";
 
 export const Connect = () => {
   return (

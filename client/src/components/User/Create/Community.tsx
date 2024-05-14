@@ -76,8 +76,8 @@ export const Community = () => {
   };
   if (isLoading) {
     return (
-      <div className="text-neutral-600 my-5  font-light text-center text-lg">
-        Loading ...
+      <div className="h-screen bg-white w-full flex justify-center items-center">
+        <CircularProgress color="inherit" />
       </div>
     );
   }

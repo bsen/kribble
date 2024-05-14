@@ -148,7 +148,7 @@ userFeedRouter.post("/posts", async (c) => {
 
     const postsWithLikedState = await Promise.all(
       feedPosts.map(async (post) => {
-        const isLiked = await prisma.like.findUnique({
+        const isLiked = await prisma.postLike.findUnique({
           where: {
             userId_postId: {
               userId: findUser.id,

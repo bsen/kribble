@@ -205,7 +205,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
   if (loadingState) {
     return (
-      <div className="text-center my-10">
+      <div className="h-screen bg-white w-full flex justify-center items-center">
         <CircularProgress color="inherit" />
       </div>
     );

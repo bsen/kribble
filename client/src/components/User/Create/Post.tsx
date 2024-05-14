@@ -111,7 +111,7 @@ export const Post = () => {
   }, [caption]);
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center">
+      <div className="h-screen bg-white w-full flex justify-center items-center">
         <CircularProgress color="inherit" />
       </div>
     );

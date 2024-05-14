@@ -6,7 +6,6 @@ import { BottomBar } from "../Bars/BottomBar";
 
 interface User {
   id: string;
-  name: string;
   username: string;
   image: string;
 }
@@ -17,7 +16,6 @@ export const MatchesComponent = () => {
   const [messageState, setMessageState] = useState(false);
   const [otherUser, setOtherUser] = useState<User>({
     id: "",
-    name: "",
     username: "",
     image: "",
   });
@@ -27,7 +25,7 @@ export const MatchesComponent = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/user/connections/all/connections`,
+        `http://localhost:8787/api/user/connections/all/connections`,
         { token }
       );
       setLoadingState(false);
@@ -48,13 +46,8 @@ export const MatchesComponent = () => {
     getMatchesDetails();
   }, []);
   console.log(matchedUsers);
-  const parentToChild = (
-    username: string,
-    name: string,
-    image: string,
-    id: string
-  ) => {
-    setOtherUser({ username, name, image, id });
+  const parentToChild = (username: string, image: string, id: string) => {
+    setOtherUser({ username, image, id });
   };
 
   return (
@@ -65,7 +58,6 @@ export const MatchesComponent = () => {
             <MessagesComponent
               otherUser={{
                 username: otherUser.username,
-                name: otherUser.name,
                 image: otherUser.image,
                 id: otherUser.id,
               }}
@@ -89,7 +81,6 @@ export const MatchesComponent = () => {
                           onClick={() => {
                             parentToChild(
                               user.username,
-                              user.name,
                               user.image || "/user.png",
                               user.id
                             );
@@ -106,10 +97,7 @@ export const MatchesComponent = () => {
                               />
                               <div className="flex flex-col items-start">
                                 <div className="text-primarytextcolor text-sm lg:text-lg font-semibold">
-                                  {user.name}
-                                </div>
-                                <div className="text-secondarytextcolor text-xs font-ubuntu">
-                                  @{user.username}
+                                  {user.username}
                                 </div>
                               </div>
                             </div>
