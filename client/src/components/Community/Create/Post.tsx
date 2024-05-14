@@ -4,8 +4,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
-import Switch from "@mui/material/Switch";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { BACKEND_URL } from "../../../config";
 
 export const Post = () => {
@@ -112,10 +111,17 @@ export const Post = () => {
       setIsLoading(false);
     }
   };
+  if (isLoading) {
+    return (
+      <div className="text-neutral-600 my-5  font-light text-center text-lg">
+        Loading ...
+      </div>
+    );
+  }
   return (
     <>
-      <div className="w-full">
-        <div className="flex gap-4 items-center p-4">
+      <div className="w-full bg-white p-4 rounded-md">
+        <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon
               className="p-1 bg-indigo-500 text-white rounded-full"
@@ -174,45 +180,36 @@ export const Post = () => {
             value={post}
             onChange={handlePostChange}
             rows={3}
-            className="w-full overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+            className="w-full border border-neutral-100 overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
             placeholder="Write your thoughts..."
             wrap="soft"
             maxLength={250}
           />
         </div>
 
-        <div className="bg-white my-4 px-4 py-2 rounded-md">
-          <div className="flex w-full justify-center items-center">
-            <Switch
-              color="default"
+        <div className="flex w-full my-2 justify-between">
+          <div className="flex gap-2 text-xs text-neutral-600 w-fit justify-center items-center">
+            <div
               onClick={() => {
                 setAnonymity((prevState) => !prevState);
               }}
-              checked={anonymity}
-            />
-            <label className="text-neutral-600 text-sm font-normal">
-              Hide your identity
-            </label>
+            >
+              <VisibilityOffIcon
+                className={`${
+                  anonymity ? "text-indigo-500" : "text-neutral-600"
+                }`}
+              />
+            </div>
+            {anonymity ? "Your identity will be hidden" : "Hide your identity"}
           </div>
-          <div className="text-xs text-neutral-600 text-center">
-            {anonymity ? (
-              <div>
-                We prioritize your privacy by keeping user identities hidden.
-                Let's maintain a safe space by refraining from inappropriate
-                posts. Remember, violating company policy may have consequences.
-              </div>
-            ) : (
-              ""
-            )}
+          <div>
+            <button
+              onClick={createCommunityPost}
+              className="text-white text-base py-1 px-6 rounded-md bg-indigo-500"
+            >
+              Post
+            </button>
           </div>
-        </div>
-        <div className="flex w-full p-2 justify-end">
-          <button
-            onClick={createCommunityPost}
-            className=" bg-indigo-500 text-white px-4 py-1 rounded-lg"
-          >
-            Post
-          </button>
         </div>
         {popup ? (
           <div className="text-red-400 font-light text-center text-xs my-2">

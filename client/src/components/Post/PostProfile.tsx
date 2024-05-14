@@ -4,8 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { BACKEND_URL } from "../../config";
 import { CircularProgress } from "@mui/material";
 import { NavBar } from "../Bars/NavBar";
-import Switch from "@mui/material/Switch";
-
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 interface Comment {
   id: string;
   content: string;
@@ -154,95 +153,90 @@ export const PostProfile = () => {
             ref={scrollContainerRef}
           >
             <NavBar />
-            <div className="flex items-start mt-2 gap-2 bg-white border border-neutral-100 p-4 rounded-md ">
-              <div>
-                <Link to={`/${postData.creator.username}`}>
-                  <img
-                    src={
-                      postData.creator.image
-                        ? postData.creator.image
-                        : "/user.png"
-                    }
-                    alt="Profile"
-                    className="w-8 h-8  rounded-full"
-                  />
-                </Link>
-              </div>
-              <div className="w-full">
-                <div className="flex gap-2 items-center">
+            <div className="bg-white p-4 rounded-md">
+              <div className="flex items-start gap-2 ">
+                <div>
                   <Link to={`/${postData.creator.username}`}>
-                    <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
-                      {postData.creator.username}
-                    </div>
-                  </Link>
-                  <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
-                    · {getTimeDifference(postData.createdAt)}
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-1 py-4 w-full">
-                  {postData.image && (
                     <img
-                      src={postData.image}
-                      className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                      src={
+                        postData.creator.image
+                          ? postData.creator.image
+                          : "/user.png"
+                      }
+                      alt="Profile"
+                      className="w-8 h-8  rounded-full"
                     />
-                  )}
+                  </Link>
+                </div>
+                <div className="w-full">
+                  <div className="flex gap-2 items-center">
+                    <Link to={`/${postData.creator.username}`}>
+                      <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                        {postData.creator.username}
+                      </div>
+                    </Link>
+                    <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                      · {getTimeDifference(postData.createdAt)}
+                    </div>
+                  </div>
 
-                  <div className="text-primarytextcolor text-sm lg:text-base font-light">
-                    {postData.content}
+                  <div className="flex flex-col gap-1 py-4 w-full">
+                    {postData.image && (
+                      <img
+                        src={postData.image}
+                        className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                      />
+                    )}
+
+                    <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                      {postData.content}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="bg-white p-2 my-2 rounded-md border border-neutral-100 flex justify-center items-center">
-              <textarea
-                rows={3}
-                className={`w-full resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
-                  popup ? "border border-rose-400" : ""
-                }`}
-                wrap="soft"
-                onChange={(e) => {
-                  setPopup(false);
-                  setComment(e.target.value);
-                }}
-                maxLength={250}
-                placeholder="Post a reply"
-              />
-            </div>
-            <div className="bg-white my-4 px-4 py-2 rounded-md">
-              <div className="flex w-full justify-center items-center">
-                <Switch
-                  color="default"
-                  onClick={() => {
-                    setAnonymity((prevState) => !prevState);
+              <div className="bg-white  flex justify-center items-center">
+                <textarea
+                  rows={3}
+                  className={`w-full border border-neutral-100 resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+                    popup ? "border border-rose-400" : ""
+                  }`}
+                  wrap="soft"
+                  onChange={(e) => {
+                    setPopup(false);
+                    setComment(e.target.value);
                   }}
-                  checked={anonymity}
+                  maxLength={250}
+                  placeholder="Post a reply"
                 />
-                <label className="text-neutral-600 text-sm font-normal">
-                  Hide your identity
-                </label>
               </div>
-              <div className="text-xs text-neutral-600 text-center">
-                {anonymity ? (
-                  <div>
-                    We prioritize your privacy by keeping user identities
-                    hidden. Let's maintain a safe space by refraining from
-                    inappropriate posts. Remember, violating company policy may
-                    have consequences.
+
+              <div className="flex w-full my-2 justify-between">
+                <div className="flex gap-2 text-xs text-neutral-600 w-fit justify-center items-center">
+                  <div
+                    onClick={() => {
+                      setAnonymity((prevState) => !prevState);
+                    }}
+                  >
+                    <VisibilityOffIcon
+                      className={`${
+                        anonymity ? "text-indigo-500" : "text-neutral-600"
+                      }`}
+                    />
                   </div>
-                ) : (
-                  ""
-                )}
+                  {anonymity
+                    ? "Your identity will be hidden"
+                    : "Hide your identity"}
+                </div>
+                <div>
+                  <button
+                    onClick={createComment}
+                    className="text-white text-base py-1 px-4 rounded-md bg-indigo-500"
+                  >
+                    Comment
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="flex justify-end">
-              <button
-                onClick={createComment}
-                className="text-white text-base py-1 px-6 rounded-md bg-indigo-500"
-              >
-                Post
-              </button>
             </div>
             {postComments.map((comment) => (
               <div

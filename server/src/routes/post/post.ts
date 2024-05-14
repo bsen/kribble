@@ -35,7 +35,6 @@ postRouter.post("/data", async (c) => {
           select: {
             id: true,
             username: true,
-            name: true,
             image: true,
           },
         },

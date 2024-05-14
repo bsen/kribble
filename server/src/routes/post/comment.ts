@@ -61,7 +61,6 @@ postCommentRouter.post("/all/comments", async (c) => {
       const creatorDetails = comment.anonymity
         ? {
             username: "unknown",
-            name: "unknown",
             image: null,
           }
         : {
