@@ -16,7 +16,7 @@ export const SideBar = () => {
   return (
     <>
       <div className="flex bg-white flex-col items-center py-2 justify-between h-screen border-r border-neutral-100">
-        <div className="h-[50vh] w-[75%] flex flex-col  items-center justify-evenly">
+        <div className="w-[75%] flex flex-col  items-center">
           <div
             onClick={() => {
               navigate("/");
@@ -30,7 +30,7 @@ export const SideBar = () => {
             onClick={() => {
               navigate("/");
             }}
-            className={`w-full h-10 px-4 my-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+            className={`w-full h-10 px-4 mt-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
               location.pathname === "/"
                 ? "text-indigo-500 text-lg"
                 : "text-neutral-800"
@@ -43,7 +43,7 @@ export const SideBar = () => {
             onClick={() => {
               navigate("/communities");
             }}
-            className={`w-full h-10 px-4 my-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+            className={`w-full h-10 px-4 mt-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
               location.pathname === "/communities"
                 ? "text-indigo-500 text-lg"
                 : "text-neutral-800"
@@ -55,23 +55,23 @@ export const SideBar = () => {
 
           <button
             onClick={() => {
-              navigate("/connect");
+              navigate("/matching");
             }}
-            className={`w-full h-10 px-4 my-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
-              location.pathname === "/connect"
+            className={`w-full h-10 px-4 mt-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+              location.pathname === "/matching"
                 ? "text-indigo-500 text-lg"
                 : "text-neutral-800"
             }`}
           >
             <AllInclusiveIcon sx={{ fontSize: 25 }} />
-            <div>Connect</div>
+            <div>Matching</div>
           </button>
           <button
             disabled={isLoading}
             onClick={() => {
               navigate(`/${currentUser}`);
             }}
-            className={`w-full h-10 px-4 my-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+            className={`w-full h-10 px-4 mt-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
               location.pathname === `/${currentUser}`
                 ? "text-indigo-500 text-lg"
                 : "text-neutral-800"
@@ -84,7 +84,7 @@ export const SideBar = () => {
             onClick={() => {
               navigate("/search");
             }}
-            className={`w-full h-10 px-4 my-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
+            className={`w-full h-10 px-4 mt-4 border border-indigo-100 rounded-md bg-indigo-50 flex items-center justify-start gap-2 text-base font-light  ${
               location.pathname === "/search"
                 ? "text-indigo-500 text-lg"
                 : "text-neutral-800"
@@ -99,7 +99,7 @@ export const SideBar = () => {
               navigate("/create/post");
             }}
             className={
-              "w-full h-10 px-4 my-2 rounded-md  bg-indigo-500 text-white flex items-center justify-start gap-2 text-base font-light"
+              "w-full h-10 px-4 mt-4 rounded-md  bg-indigo-500 text-white flex items-center justify-start gap-2 text-base font-light"
             }
           >
             <AddIcon sx={{ fontSize: 25 }} />

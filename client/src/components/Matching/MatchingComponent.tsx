@@ -13,7 +13,7 @@ interface UserData {
   image: string;
 }
 
-export const ConnectComponent: React.FC = () => {
+export const MatchingComponent: React.FC = () => {
   const token = localStorage.getItem("token");
   const [matchableUserData, setMatchableUserData] = useState<UserData | null>(
     null

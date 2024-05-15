@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { BACKEND_URL } from "../../config";
+import { BACKEND_URL } from "../../../config";
 import axios from "axios";
-import { MessagesComponent } from "../Messages/MessagesComponent";
-import { BottomBar } from "../Bars/BottomBar";
+import { MessagesComponent } from "../../Messages/MessagesComponent";
+import { BottomBar } from "../../Bars/BottomBar";
 
 interface User {
   id: string;
   username: string;
-  image: string;
+  image: string | null;
+}
+
+interface MatchData {
+  initiatorId: string;
+  initiator: User;
 }
 
 export const MatchesComponent = () => {
@@ -17,7 +22,7 @@ export const MatchesComponent = () => {
   const [otherUser, setOtherUser] = useState<User>({
     id: "",
     username: "",
-    image: "",
+    image: null,
   });
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
 
@@ -25,13 +30,13 @@ export const MatchesComponent = () => {
     try {
       setLoadingState(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/user/connections/all/connections`,
+        `${BACKEND_URL}/api/user/matches/all/matches`,
         { token }
       );
       setLoadingState(false);
       if (response.data.data && response.data.data.length > 0) {
         const matchedUsersData = response.data.data.map(
-          (item: { userTwo: User }) => item.userTwo
+          (match: MatchData) => match.initiator
         );
         setMatchedUsers(matchedUsersData);
       } else {
@@ -45,8 +50,12 @@ export const MatchesComponent = () => {
   useEffect(() => {
     getMatchesDetails();
   }, []);
-  console.log(matchedUsers);
-  const parentToChild = (username: string, image: string, id: string) => {
+
+  const parentToChild = (
+    username: string,
+    image: string | null,
+    id: string
+  ) => {
     setOtherUser({ username, image, id });
   };
 
@@ -65,12 +74,12 @@ export const MatchesComponent = () => {
           ) : (
             <>
               {loadingState ? (
-                <div className="text-center font-ubuntu py-4 text-primarytextcolor">
+                <div className="text-neutral-600 my-5  font-light text-center text-base">
                   <div>Loading ...</div>
                 </div>
               ) : (
                 <>
-                  <div className="my-4 bg-white px-4 py-1 text-lg font-light rounded-md">
+                  <div className="my-4 text-white bg-indigo-500 px-4 py-1 text-sm font-light rounded-md">
                     Matches
                   </div>
                   <div className="w-full px-2">
@@ -79,14 +88,10 @@ export const MatchesComponent = () => {
                         <button
                           key={index}
                           onClick={() => {
-                            parentToChild(
-                              user.username,
-                              user.image || "/user.png",
-                              user.id
-                            );
+                            parentToChild(user.username, user.image, user.id);
                             setMessageState(true);
                           }}
-                          className="flex w-full  bg-white border border-neutral-100 shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
+                          className="flex w-full  bg-white shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
                         >
                           <div className="w-full m-2 flex justify-between items-center">
                             <div className="flex gap-2 justify-center items-center">

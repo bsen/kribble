@@ -4,9 +4,9 @@ import { Login } from "./pages/User/Auth/Login";
 import { Home } from "./pages/Home/Home";
 import { Profile } from "./pages/User/Profile/Profile";
 import { CreatePost } from "./pages/User/Create/CreatePost";
-import { Connect } from "./pages/Connect/Connect/Connect";
+import { Matching } from "./pages/Matching/Matching";
 import { Post } from "./pages/Post/Post";
-import { Matches } from "./pages/Connect/Matches/Matches";
+import { Matches } from "./pages/User/Matches/Matches";
 import { Communities } from "./pages/Community/Communities/Communities";
 import { Followers } from "./pages/User/Follow/Followers";
 import { Following } from "./pages/User/Follow/Following";
@@ -39,7 +39,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route
-              path="/:username/"
+              path="/:username"
               element={<ProtectedRoute element={<Profile />} />}
             />
             <Route
@@ -63,7 +63,7 @@ function App() {
               element={<ProtectedRoute element={<CreatePost />} />}
             />
             <Route
-              path="/community/:name/post"
+              path="/:name/create/post/"
               element={<ProtectedRoute element={<CommunityPost />} />}
             />
             <Route
@@ -71,27 +71,27 @@ function App() {
               element={<ProtectedRoute element={<Post />} />}
             />
             <Route
-              path="/connect"
-              element={<ProtectedRoute element={<Connect />} />}
+              path="/matching"
+              element={<ProtectedRoute element={<Matching />} />}
             />
             <Route
-              path="/user/matches"
+              path="/matches"
               element={<ProtectedRoute element={<Matches />} />}
             />
             <Route
-              path="/followers/:username"
+              path="/:username/followers"
               element={<ProtectedRoute element={<Followers />} />}
             />
             <Route
-              path="/following/:username"
+              path="/:username/following"
               element={<ProtectedRoute element={<Following />} />}
             />
             <Route
-              path="/user/created/communities"
+              path="/created/communities"
               element={<ProtectedRoute element={<CreatedCommunities />} />}
             />
             <Route
-              path="/user/joined/communities"
+              path="/joined/communities"
               element={<ProtectedRoute element={<JoinedCommunities />} />}
             />
             <Route

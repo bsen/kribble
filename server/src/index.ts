@@ -6,7 +6,7 @@ import { userCommentRouter } from "./routes/user/comment";
 import { userCommunitiesRouter } from "./routes/user/communities";
 import { userFeedRouter } from "./routes/user/feed";
 import { userFollowRouter } from "./routes/user/follow";
-import { userConnectionsRouter } from "./routes/user/connections";
+import { userMatchesRouter } from "./routes/user/matches";
 import { userPostRouter } from "./routes/user/post";
 import { userProfileRouter } from "./routes/user/profile";
 // SEARCH ROUTER IMPORT
@@ -42,7 +42,7 @@ app.route("/api/user/feed", userFeedRouter);
 app.route("/api/user/post", userPostRouter);
 app.route("/api/user/profile", userProfileRouter);
 app.route("/api/user/follow", userFollowRouter);
-app.route("/api/user/connections", userConnectionsRouter);
+app.route("/api/user/matches", userMatchesRouter);
 app.route("/api/user/comment", userCommentRouter);
 app.route("/api/user/communities", userCommunitiesRouter);
 // SEARCH ROUTER
