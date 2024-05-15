@@ -92,18 +92,18 @@ export const UserData: React.FC = () => {
 
   if (loadingState) {
     return (
-      <div className="text-neutral-600 my-5  font-light text-center text-lg">
+      <div className="text-texttwo my-5  font-light text-center text-lg">
         Loading ...
       </div>
     );
   }
 
   return (
-    <div className="p-4 mt-2 rounded-md border border-neutral-100 bg-white">
+    <div className="p-4 mt-2 rounded-md border border-bordermain bg-bgmain">
       <div className="flex w-full justify-start items-center gap-2">
         <img
           src={userData.image ? userData.image : "/user.png"}
-          className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-neutral-50 mb-2"
+          className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-bordermain mb-2"
         />
 
         <div className="w-full">
@@ -114,7 +114,7 @@ export const UserData: React.FC = () => {
                   onClick={() => {
                     navigate("/edit/profile");
                   }}
-                  className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
+                  className="text-left text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                 >
                   Edit
                 </button>
@@ -124,7 +124,7 @@ export const UserData: React.FC = () => {
                   <button
                     onClick={followUser}
                     disabled={isFollowUserLoading}
-                    className="text-left flex justify-center items-center text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left flex justify-center items-center text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     {isFollowUserLoading ? (
                       <CircularProgress
@@ -143,32 +143,32 @@ export const UserData: React.FC = () => {
             </div>
           </div>
           <div>
-            <div className="text-base lg:text-lg font-semibold text-neutral-800">
+            <div className="text-base lg:text-lg font-semibold text-textmain">
               {userData.username}
             </div>
-            <div className="text-xs text-neutral-600 font-light">
+            <div className="text-xs text-texttwo font-light">
               {userData.fullname}
             </div>
           </div>
         </div>
       </div>
-      <div className="flex my-2 text-indigo-500 items-center gap-2 font-ubuntu text-sm">
+      <div className="flex my-2 text-indigomain items-center gap-2 font-ubuntu text-sm">
         <Link to={`/${username}/followers`}>
-          <div className="flex gap-1 items-center px-2 py-1/2 bg-indigo-50 rounded-md">
+          <div className="flex gap-1 items-center px-2 py-1/2 bg-bgtwo rounded-md">
             {userData.followersCount} Followers
           </div>
         </Link>
         <Link to={`/${username}/following`}>
-          <div className="flex gap-1 items-center px-2 py-1/2 bg-indigo-50 rounded-md">
+          <div className="flex gap-1 items-center px-2 py-1/2 bg-bgtwo rounded-md">
             {userData.followingCount} Following
           </div>
         </Link>
       </div>
-      <div className="text-sm text-neutral-600 font-light">
+      <div className="text-sm text-texttwo font-light">
         {userData.bio ? userData.bio : "bio"}
       </div>
 
-      <div className="text-sm text-indigo-5000 font-light hover:underline">
+      <div className="text-sm text-indigomain0 font-light hover:underline">
         <a
           href={`${
             userData.website &&
@@ -194,7 +194,7 @@ export const UserData: React.FC = () => {
                 navigate("/matches");
               }}
               className={
-                "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-texttwo font-light bg-bgtwo px-4 py-1 rounded-full"
               }
             >
               Matches
@@ -204,7 +204,7 @@ export const UserData: React.FC = () => {
                 navigate("/comments");
               }}
               className={
-                "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-texttwo font-light bg-bgtwo px-4 py-1 rounded-full"
               }
             >
               Comments
@@ -216,7 +216,7 @@ export const UserData: React.FC = () => {
                 navigate("/created/communities");
               }}
               className={
-                "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-texttwo font-light bg-bgtwo px-4 py-1 rounded-full"
               }
             >
               Created communites
@@ -226,7 +226,7 @@ export const UserData: React.FC = () => {
                 navigate("/joined/communities");
               }}
               className={
-                "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-texttwo font-light bg-bgtwo px-4 py-1 rounded-full"
               }
             >
               Joined communites
@@ -240,7 +240,7 @@ export const UserData: React.FC = () => {
             >
               <div
                 className={
-                  "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+                  "flex justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
                 }
               >
                 <AddIcon sx={{ fontSize: 20 }} />
@@ -255,7 +255,7 @@ export const UserData: React.FC = () => {
             >
               <div
                 className={
-                  "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+                  "flex justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
                 }
               >
                 <AddIcon sx={{ fontSize: 20 }} />

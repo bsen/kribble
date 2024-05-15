@@ -91,7 +91,7 @@ export const CommunityData: React.FC = () => {
 
   if (loadingState) {
     return (
-      <div className="text-neutral-600 my-5  font-light text-center text-lg">
+      <div className="text-texttwo my-5  font-light text-center text-lg">
         Loading ...
       </div>
     );
@@ -99,11 +99,11 @@ export const CommunityData: React.FC = () => {
 
   return (
     <>
-      <div className="w-full bg-white my-2 p-4 rounded-md flex flex-col items-start border border-neutral-100">
+      <div className="w-full bg-bgmain my-2 p-4 rounded-md flex flex-col items-start border border-bordermain">
         <div className="flex justify-between w-full items-center gap-2">
           <img
             src={communityData.image ? communityData.image : "/group.png"}
-            className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-neutral-50 mb-2"
+            className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-bordermain mb-2"
           />
           <div className="w-full">
             <div className="flex justify-end items-center">
@@ -113,7 +113,7 @@ export const CommunityData: React.FC = () => {
                     onClick={() => {
                       navigate(`/edit/community/${communityData.name}`);
                     }}
-                    className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     Edit details
                   </button>
@@ -123,7 +123,7 @@ export const CommunityData: React.FC = () => {
                   <button
                     onClick={handleJoinCommunity}
                     disabled={isJoiningLoading}
-                    className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     <div className="flex items-center justify-center">
                       {isJoiningLoading ? (
@@ -142,23 +142,23 @@ export const CommunityData: React.FC = () => {
                 )}
               </div>
             </div>
-            <div className="text-lg lg:text-xl  font-semibold text-neutral-800">
+            <div className="text-lg lg:text-xl  font-semibold text-textmain">
               {communityData.name}
             </div>
-            <div className="flex my-2 text-indigo-500  items-center gap-2 font-ubuntu text-sm">
+            <div className="flex my-2 text-indigomain  items-center gap-2 font-ubuntu text-sm">
               <Link to={`/followers`}>
-                <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
+                <div className="flex gap-1 items-center px-2 py-1/2  bg-bgtwo rounded-md">
                   {communityData.membersCount} Members
                 </div>
               </Link>
-              <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
+              <div className="flex gap-1 items-center px-2 py-1/2  bg-bgtwo rounded-md">
                 {communityData.postsCount} Posts
               </div>
             </div>
           </div>
         </div>
 
-        <div className="text-sm mb-2 text-neutral-600 font-light">
+        <div className="text-sm mb-2 text-texttwo font-light">
           {communityData.description
             ? communityData.description
             : "description"}
@@ -172,7 +172,7 @@ export const CommunityData: React.FC = () => {
         >
           <div
             className={
-              "flex w-fit justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+              "flex w-fit justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
             }
           >
             <AddIcon sx={{ fontSize: 20 }} />

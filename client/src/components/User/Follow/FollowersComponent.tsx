@@ -77,11 +77,11 @@ export const FollowersComponent = () => {
           followersData.followers.map((followersObj) => (
             <div
               key={followersObj.id}
-              className="border my-2 rounded-md border-neutral-100 p-4 bg-white"
+              className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
             >
               <div className="flex justify-start items-center gap-2">
                 <img
-                  className="h-10 w-10 rounded-full bg-white"
+                  className="h-10 w-10 rounded-full bg-bgmain"
                   src={
                     followersObj.follower.image
                       ? followersObj.follower.image
@@ -90,12 +90,12 @@ export const FollowersComponent = () => {
                 />
                 <div>
                   <Link to={`/${followersObj.follower.username}`}>
-                    <div className="text-primarytextcolor text-lg font-ubuntu">
+                    <div className="text-textmain text-lg font-ubuntu">
                       {followersObj.follower.username}
                     </div>
                   </Link>
                   <Link to={`/${followersObj.follower.username}`}>
-                    <div className="text-primarytextcolor text-sm font-light font-ubuntu">
+                    <div className="text-textmain text-sm font-light font-ubuntu">
                       @{followersObj.follower.name}
                     </div>
                   </Link>
@@ -104,7 +104,7 @@ export const FollowersComponent = () => {
             </div>
           ))
         ) : (
-          <div className="text-neutral-600 my-5  font-light text-center text-lg">
+          <div className="text-texttwo my-5  font-light text-center text-lg">
             No followers found.
           </div>
         )}

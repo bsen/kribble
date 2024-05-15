@@ -74,12 +74,12 @@ export const MatchesComponent = () => {
           ) : (
             <>
               {loadingState ? (
-                <div className="text-neutral-600 my-5  font-light text-center text-base">
+                <div className="text-texttwo my-5  font-light text-center text-base">
                   <div>Loading ...</div>
                 </div>
               ) : (
                 <>
-                  <div className="my-4 text-white bg-indigo-500 px-4 py-1 text-sm font-light rounded-md">
+                  <div className="my-4 text-textmain bg-indigomain px-4 py-1 text-sm font-light rounded-md">
                     Matches
                   </div>
                   <div className="w-full px-2">
@@ -91,17 +91,17 @@ export const MatchesComponent = () => {
                             parentToChild(user.username, user.image, user.id);
                             setMessageState(true);
                           }}
-                          className="flex w-full  bg-white shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
+                          className="flex w-full  bg-bgmain shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
                         >
                           <div className="w-full m-2 flex justify-between items-center">
                             <div className="flex gap-2 justify-center items-center">
                               <img
                                 src={user.image || "/user.png"}
                                 alt="Profile"
-                                className="h-10 w-10 bg-white rounded-full"
+                                className="h-10 w-10 bg-bgmain rounded-full"
                               />
                               <div className="flex flex-col items-start">
-                                <div className="text-primarytextcolor text-sm lg:text-lg font-semibold">
+                                <div className="text-textmain text-sm lg:text-lg font-semibold">
                                   {user.username}
                                 </div>
                               </div>
@@ -110,7 +110,7 @@ export const MatchesComponent = () => {
                         </button>
                       ))
                     ) : (
-                      <div className="text-neutral-600 my-5  font-light text-center text-lg">
+                      <div className="text-texttwo my-5  font-light text-center text-lg">
                         No matches found
                       </div>
                     )}

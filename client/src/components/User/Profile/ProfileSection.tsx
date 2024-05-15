@@ -175,16 +175,16 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
   if (deleteState) {
     return (
-      <div className="w-full bg-white border-l border-r border-neutral-100 h-screen flex justify-center items-center">
+      <div className="w-full bg-bgmain border-l border-r border-bordermain h-screen flex justify-center items-center">
         <div className="flex flex-col gap-4 text-base items-center font-ubuntu font-semibold">
           Do you really want to delete the post
-          <span className="text-xs font-light text-neutral-600">
+          <span className="text-xs font-light text-texttwo">
             note that you can not get back the deleted post!
           </span>
           <div className="flex gap-5">
             <button
               onClick={deletePost}
-              className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1 rounded-full"
+              className="text-textmain bg-red-500 hover:bg-red-400 font-semibold px-4 py-1 rounded-full"
             >
               Delete
             </button>
@@ -205,7 +205,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
   if (loadingState) {
     return (
-      <div className="h-screen bg-white w-full flex justify-center items-center">
+      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
         <CircularProgress color="inherit" />
       </div>
     );
@@ -237,7 +237,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
               postData.posts.map((post, index) => (
                 <div
                   key={index}
-                  className="my-2 p-4 border border-neutral-100 rounded-md bg-white"
+                  className="my-2 p-4 border border-bordermain rounded-md bg-bgmain"
                 >
                   <div className="flex gap-2">
                     <div>
@@ -252,11 +252,11 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                     <div className="w-full flex flex-col">
                       <div className="w-full flex gap-2 justify-between items-center">
                         <div className="flex gap-2 items-center">
-                          <div className="text-neutral-800 text-sm lg:text-base hover:underline font-semibold">
+                          <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
                             {post.creator.username}
                           </div>
 
-                          <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
                             · {getTimeDifference(post.createdAt)}
                           </div>
                         </div>
@@ -270,7 +270,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           >
                             <MoreVertIcon
                               sx={{ fontSize: 20 }}
-                              className="text-neutral-600"
+                              className="text-texttwo"
                             />
                           </button>
                         )}
@@ -279,11 +279,11 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                         {post.image && (
                           <img
                             src={post.image}
-                            className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                            className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-bordermain"
                           />
                         )}
 
-                        <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                        <div className="text-textmain text-sm lg:text-base font-light">
                           {post.content}
                         </div>
                       </div>
@@ -302,19 +302,19 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                                   sx={{
                                     fontSize: 22,
                                   }}
-                                  className="text-rose-500"
+                                  className="text-rosemain"
                                 />
                               ) : (
                                 <FavoriteBorderIcon
                                   sx={{
                                     fontSize: 22,
                                   }}
-                                  className="text-rose-500"
+                                  className="text-rosemain"
                                 />
                               )}
                             </div>
                           </button>
-                          <div className="text-sm text-neutral-600">
+                          <div className="text-sm text-texttwo">
                             {post.likesCount} likes
                           </div>
                         </div>
@@ -322,10 +322,10 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           <div onClick={() => navigate(`/post/${post.id}`)}>
                             <MapsUgcRoundedIcon
                               sx={{ fontSize: 22 }}
-                              className="text-indigo-500 cursor-pointer"
+                              className="text-indigomain cursor-pointer"
                             />
                           </div>
-                          <div className="text-sm text-neutral-600">
+                          <div className="text-sm text-texttwo">
                             {post.commentsCount} comments
                           </div>
                         </div>

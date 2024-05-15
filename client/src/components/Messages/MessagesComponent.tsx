@@ -109,7 +109,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   };
 
   return (
-    <div className="h-screen border-r border-l border-neutral-100 bg-white  w-full flex flex-col  justify-between">
+    <div className="h-screen border-r border-l border-bordermain bg-bgmain  w-full flex flex-col  justify-between">
       <div className="flex shadow-sm p-2 w-full flex-col justify-center items-center">
         <div className="flex justify-start gap-4 w-full p-2">
           <button
@@ -118,7 +118,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
             }}
           >
             <ArrowBackIcon
-              className="text-neutral-600 rounded-full  py-1"
+              className="text-texttwo rounded-full  py-1"
               sx={{ fontSize: 35 }}
             />
           </button>
@@ -129,7 +129,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
               className="h-10 w-10 rounded-full"
             />
             <div>
-              <div className="text-base font-semibold text-primarytextcolor">
+              <div className="text-base font-semibold text-textmain">
                 {username}
               </div>
             </div>
@@ -150,15 +150,15 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
               key={index}
               className={`mt-2 max-w-[70%] rounded-lg px-3 py-2 ${
                 message.sender === "self"
-                  ? "bg-indigo-500 text-white self-end"
-                  : "bg-violet-500 text-white self-start"
+                  ? "bg-indigomain text-textmain self-end"
+                  : "bg-violet-500 text-textmain self-start"
               }`}
             >
               {message.message}
             </div>
           ))}
       </div>
-      <div className="bg-white bottom-0 gap-4 w-full border border-neutral-100 lg:w-[50%] flex items-center h-16 fixed justify-center">
+      <div className="bg-bgmain bottom-0 gap-4 w-full border border-bordermain lg:w-[50%] flex items-center h-16 fixed justify-center">
         <input
           type="text"
           maxLength={300}
@@ -172,7 +172,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
         <button onClick={send}>
           <SendIcon
             sx={{ fontSize: 35 }}
-            className="text-indigo-500 p-1 rounded-full"
+            className="text-indigomain p-1 rounded-full"
           />
         </button>
       </div>

@@ -111,7 +111,7 @@ export const Post = () => {
   }, [caption]);
   if (isLoading) {
     return (
-      <div className="h-screen bg-white w-full flex justify-center items-center">
+      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
         <CircularProgress color="inherit" />
       </div>
     );
@@ -119,15 +119,15 @@ export const Post = () => {
 
   return (
     <>
-      <div className="bg-white flex flex-col  justify-between p-4 items-center  h-screen border-l border-r border-neutral-100">
+      <div className="bg-bgmain flex flex-col  justify-between p-4 items-center  h-screen border-l border-r border-bordermain">
         <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon
-              className="p-1 bg-indigo-500 text-white rounded-full"
+              className="p-1 bg-indigomain text-textmain rounded-full"
               sx={{ fontSize: 35 }}
             />
           </button>
-          <div className="text-xl flex justify-center items-center gap-5 font-light bg-indigo-50 px-4 rounded-md py-1 text-indigo-500 text-center">
+          <div className="text-xl flex justify-center items-center gap-5 font-light bg-bgtwo px-4 rounded-md py-1 text-indigomain text-center">
             <div>Create Post</div>
           </div>
         </div>
@@ -138,10 +138,10 @@ export const Post = () => {
                 htmlFor="image-upload"
                 className="cursor-pointer block text-center"
               >
-                <div className="h-48 w-48  bg-neutral-50 shadow-sm rounded-xl border border-neutral-100  gap-2 flex justify-center items-center">
+                <div className="h-48 w-48  bg-bgmain shadow-sm rounded-xl border border-bordermain  gap-2 flex justify-center items-center">
                   <AddPhotoAlternateIcon
                     sx={{ fontSize: 40 }}
-                    className="text-neutral-800"
+                    className="text-textmain"
                   />
                 </div>
               </label>
@@ -158,13 +158,13 @@ export const Post = () => {
           <div className="my-4">
             <div className="bg-red-200">
               {previewImage && (
-                <div className="w-[100%] bg-white p-4 rounded-md">
+                <div className="w-[100%] bg-bgmain p-4 rounded-md">
                   <div className="flex flex-col items-center">
                     <div className="flex justify-center gap-2 items-end">
                       <img
                         src={previewImage}
                         alt="Preview"
-                        className="max-w:w-[80%] lg:max-w-[50%] rounded-md border border-neutral-100"
+                        className="max-w:w-[80%] lg:max-w-[50%] rounded-md border border-bordermain"
                       />
                     </div>
                     <button
@@ -183,12 +183,12 @@ export const Post = () => {
             </div>
             {showCaptionInput && (
               <>
-                <div className="px-4 shadow-sm bg-white  rounded-md">
+                <div className="px-4 shadow-sm bg-bgmain  rounded-md">
                   <textarea
                     value={caption}
                     onChange={(e) => setCaption(e.target.value)}
                     rows={3}
-                    className="w-full overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+                    className="w-full overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-textmain rounded-lg"
                     placeholder="Write some captions..."
                     wrap="soft"
                     maxLength={250}
@@ -199,7 +199,7 @@ export const Post = () => {
                     <div className="flex w-full p-2 justify-end">
                       <button
                         onClick={createPost}
-                        className=" bg-indigo-500 text-white px-4 py-1 rounded-lg"
+                        className=" bg-indigomain text-textmain px-4 py-1 rounded-lg"
                       >
                         Post
                       </button>

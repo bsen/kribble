@@ -155,14 +155,14 @@ export const SignupAuth = () => {
         </div>
       )}
       {!isLoading && (
-        <div className="h-screen w-full  bg-white flex justify-center items-center">
+        <div className="h-screen w-full  bg-bgmain flex justify-center items-center">
           <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
-            <div className="text-neutral-800 font-ubuntu text-[1.5rem] text-center my-4">
+            <div className="text-textmain font-ubuntu text-[1.5rem] text-center my-4">
               Create an account
             </div>
 
             <div>
-              <div className="font-normal m-1 text-neutral-800">Name</div>
+              <div className="font-normal m-1 text-textmain">Name</div>
               <input
                 value={fullname}
                 maxLength={20}
@@ -174,7 +174,7 @@ export const SignupAuth = () => {
               />
             </div>
             <div>
-              <div className="font-normal m-1 text-neutral-800">Username</div>
+              <div className="font-normal m-1 text-textmain">Username</div>
               <input
                 value={username}
                 maxLength={20}
@@ -182,13 +182,13 @@ export const SignupAuth = () => {
                   handleUsernameChange(e.target.value);
                 }}
                 className={`w-full h-10 px-4 border border-neutral-300 focus:outline-none  rounded-lg ${
-                  available ? "" : "border border-rose-500"
+                  available ? "" : "border border-rosemain"
                 }`}
                 placeholder="Enter your username"
               />
             </div>
             <div>
-              <div className="font-normal m-1 text-neutral-800">Email</div>
+              <div className="font-normal m-1 text-textmain">Email</div>
               <input
                 value={email}
                 onChange={(e) => {
@@ -199,7 +199,7 @@ export const SignupAuth = () => {
               />
             </div>
             <div>
-              <div className="font-normal m-1 text-neutral-800">Password</div>
+              <div className="font-normal m-1 text-textmain">Password</div>
               <input
                 value={password}
                 onChange={(e) => {
@@ -213,20 +213,20 @@ export const SignupAuth = () => {
             <button
               onClick={signup}
               disabled={isLoading}
-              className="my-4 w-full text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-700"
+              className="my-4 w-full text-textmain bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-700"
             >
               Register
             </button>
-            <div className="text-center text-md font-light text-neutral-800">
+            <div className="text-center text-md font-light text-textmain">
               Already have an account?
               <Link
                 to="/login"
-                className="font-normal text-neutral-800 underline underline-offset-2 mx-1"
+                className="font-normal text-textmain underline underline-offset-2 mx-1"
               >
                 Login
               </Link>
             </div>
-            <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
+            <div className="text-rosemain font-ubuntu font-light text-center text-sm">
               {popup ? popup : <div>‎</div>}
             </div>
           </div>

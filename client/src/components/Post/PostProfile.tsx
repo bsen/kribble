@@ -153,7 +153,7 @@ export const PostProfile = () => {
             ref={scrollContainerRef}
           >
             <NavBar />
-            <div className="bg-white p-4 rounded-md">
+            <div className="bg-bgmain p-4 rounded-md">
               <div className="flex items-start gap-2 ">
                 <div>
                   <Link to={`/${postData.creator.username}`}>
@@ -171,11 +171,11 @@ export const PostProfile = () => {
                 <div className="w-full">
                   <div className="flex gap-2 items-center">
                     <Link to={`/${postData.creator.username}`}>
-                      <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                      <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
                         {postData.creator.username}
                       </div>
                     </Link>
-                    <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                    <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
                       · {getTimeDifference(postData.createdAt)}
                     </div>
                   </div>
@@ -184,21 +184,21 @@ export const PostProfile = () => {
                     {postData.image && (
                       <img
                         src={postData.image}
-                        className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-neutral-100"
+                        className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-bordermain"
                       />
                     )}
 
-                    <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                    <div className="text-textmain text-sm lg:text-base font-light">
                       {postData.content}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white  flex justify-center items-center">
+              <div className="bg-bgmain  flex justify-center items-center">
                 <textarea
                   rows={3}
-                  className={`w-full border border-neutral-100 resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+                  className={`w-full border border-bordermain resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
                     popup ? "border border-rose-400" : ""
                   }`}
                   wrap="soft"
@@ -212,7 +212,7 @@ export const PostProfile = () => {
               </div>
 
               <div className="flex w-full my-2 justify-between">
-                <div className="flex gap-2 text-xs text-neutral-600 w-fit justify-center items-center">
+                <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
                   <div
                     onClick={() => {
                       setAnonymity((prevState) => !prevState);
@@ -220,7 +220,7 @@ export const PostProfile = () => {
                   >
                     <VisibilityOffIcon
                       className={`${
-                        anonymity ? "text-indigo-500" : "text-neutral-600"
+                        anonymity ? "text-indigomain" : "text-texttwo"
                       }`}
                     />
                   </div>
@@ -231,7 +231,7 @@ export const PostProfile = () => {
                 <div>
                   <button
                     onClick={createComment}
-                    className="text-white text-base py-1 px-4 rounded-md bg-indigo-500"
+                    className="text-textmain text-base py-1 px-4 rounded-md bg-indigomain"
                   >
                     Comment
                   </button>
@@ -241,7 +241,7 @@ export const PostProfile = () => {
             {postComments.map((comment) => (
               <div
                 key={comment.id}
-                className="my-2 p-4 border border-neutral-100 rounded-md bg-white"
+                className="my-2 p-4 border border-bordermain rounded-md bg-bgmain"
               >
                 <div className="flex gap-2">
                   <div>
@@ -268,25 +268,25 @@ export const PostProfile = () => {
                   <div className="w-full">
                     <div className="flex gap-2 items-center">
                       {comment.anonymity ? (
-                        <div className="text-primarytextcolor text-sm lg:text-base font-semibold">
+                        <div className="text-textmain text-sm lg:text-base font-semibold">
                           {comment.creator.username}
                         </div>
                       ) : (
                         <Link to={`/${comment.creator.username}`}>
-                          <div className="text-primarytextcolor text-sm lg:text-base hover:underline font-semibold">
+                          <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
                             {comment.creator.username}
                           </div>
                         </Link>
                       )}
-                      <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                      <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
                         · {getTimeDifference(comment.createdAt)}
                       </div>
                     </div>
-                    <div className="text-primarytextcolor text-sm lg:text-base font-light">
+                    <div className="text-textmain text-sm lg:text-base font-light">
                       {comment.content}
                     </div>
                     <div>
-                      <div className="flex gap-2 text-neutral-600"></div>
+                      <div className="flex gap-2 text-texttwo"></div>
                     </div>
                   </div>
                 </div>

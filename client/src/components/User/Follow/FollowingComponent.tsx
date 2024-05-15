@@ -76,11 +76,11 @@ export const FollowingComponent = () => {
           followingsData.followings.map((followingObj) => (
             <div
               key={followingObj.id}
-              className="border my-2 rounded-md border-neutral-100 p-4 bg-white"
+              className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
             >
               <div className="flex justify-start items-center gap-2">
                 <img
-                  className="h-10 w-10 rounded-full bg-white"
+                  className="h-10 w-10 rounded-full bg-bgmain"
                   src={
                     followingObj.following.image
                       ? followingObj.following.image
@@ -89,12 +89,12 @@ export const FollowingComponent = () => {
                 />
                 <div>
                   <Link to={`/${followingObj.following.username}`}>
-                    <div className="text-primarytextcolor text-lg font-ubuntu">
+                    <div className="text-textmain text-lg font-ubuntu">
                       {followingObj.following.username}
                     </div>
                   </Link>
                   <Link to={`/${followingObj.following.username}`}>
-                    <div className="text-primarytextcolor text-sm font-light font-ubuntu">
+                    <div className="text-textmain text-sm font-light font-ubuntu">
                       @{followingObj.following.name}
                     </div>
                   </Link>
@@ -103,7 +103,7 @@ export const FollowingComponent = () => {
             </div>
           ))
         ) : (
-          <div className="text-neutral-600 my-5  font-light text-center text-lg">
+          <div className="text-texttwo my-5  font-light text-center text-lg">
             No following found.
           </div>
         )}
