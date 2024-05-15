@@ -7,7 +7,7 @@ export const CommunityPost = () => {
       <div className="w-[18%] max-lg:hidden">
         <SideBar />
       </div>
-      <div className="w-full border-l border-r border-bordermain lg:w-[35%]">
+      <div className="w-full lg:w-[40%]">
         <Post />
       </div>
       <div className="w-[25%] max-lg:hidden"></div>

@@ -153,8 +153,8 @@ export const UpdateProfileComponent = () => {
         <div className="w-full">{logoutState && <Logout />}</div>
         <div className="w-full">
           {!logoutState && (
-            <div className="bg-bgmain h-screen  border-l border-r border-bordermain p-4 flex flex-col gap-4">
-              <div className="flex justify-between items-center border-b border-bordermain pb-4">
+            <div className="bg-bgmain h-screen  p-2 flex flex-col gap-4">
+              <div className="flex justify-between items-center border-b border-bordermain pb-2">
                 <button
                   onClick={() => {
                     navigate(`/${currentUser}`);
@@ -170,7 +170,7 @@ export const UpdateProfileComponent = () => {
                     setLogoutState(true);
                   }}
                 >
-                  <div className="text-rosemain text-sm font-normal px-2 py-1 bg-rose-100 rounded-md">
+                  <div className="text-rosemain text-sm font-normal px-2 py-1 bg-bgtwo rounded-md">
                     Log out
                   </div>
                 </button>

@@ -11,7 +11,6 @@ interface FollowingsData {
 
 interface Following {
   id: string;
-  name: string;
   username: string;
   image: string;
 }
@@ -67,20 +66,20 @@ export const FollowingComponent = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar pt-14"
+        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <NavBar />
-        {followingsData.followings.length > 0 ? (
+        {followingsData.followings &&
           followingsData.followings.map((followingObj) => (
             <div
               key={followingObj.id}
-              className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
+              className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgmain"
             >
               <div className="flex justify-start items-center gap-2">
                 <img
-                  className="h-10 w-10 rounded-full bg-bgmain"
+                  className="h-9 w-9 rounded-full bg-bgmain"
                   src={
                     followingObj.following.image
                       ? followingObj.following.image
@@ -93,23 +92,19 @@ export const FollowingComponent = () => {
                       {followingObj.following.username}
                     </div>
                   </Link>
-                  <Link to={`/${followingObj.following.username}`}>
-                    <div className="text-textmain text-sm font-light font-ubuntu">
-                      @{followingObj.following.name}
-                    </div>
-                  </Link>
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <div className="text-texttwo my-5  font-light text-center text-lg">
-            No following found.
-          </div>
-        )}
+          ))}
+        {!followingsData.followings ||
+          (!isLoading && (
+            <div className="text-texttwo my-5  font-light text-center text-lg">
+              No following found.
+            </div>
+          ))}
         {isLoading && (
-          <div className="text-center my-5">
-            <CircularProgress color="inherit" />
+          <div className="text-texttwo my-5  font-light text-center text-lg">
+            Loading ...
           </div>
         )}
       </div>

@@ -99,7 +99,7 @@ export const UserData: React.FC = () => {
   }
 
   return (
-    <div className="p-4 mt-2 rounded-md border border-bordermain bg-bgmain">
+    <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgmain">
       <div className="flex w-full justify-start items-center gap-2">
         <img
           src={userData.image ? userData.image : "/user.png"}
@@ -114,7 +114,7 @@ export const UserData: React.FC = () => {
                   onClick={() => {
                     navigate("/edit/profile");
                   }}
-                  className="text-left text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                  className="text-left border border-bordermain text-texttwo bg-bgtwo font-light rounded-full px-4 py-1 text-sm"
                 >
                   Edit
                 </button>
@@ -152,23 +152,23 @@ export const UserData: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="flex my-2 text-indigomain items-center gap-2 font-ubuntu text-sm">
+      <div className="flex my-2 text-textmain items-center gap-2 font-light text-sm">
         <Link to={`/${username}/followers`}>
-          <div className="flex gap-1 items-center px-2 py-1/2 bg-bgtwo rounded-md">
+          <div className="flex gap-1 items-center">
             {userData.followersCount} Followers
           </div>
         </Link>
         <Link to={`/${username}/following`}>
-          <div className="flex gap-1 items-center px-2 py-1/2 bg-bgtwo rounded-md">
+          <div className="flex gap-1 items-center">
             {userData.followingCount} Following
           </div>
         </Link>
       </div>
-      <div className="text-sm text-texttwo font-light">
+      <div className="text-sm text-textmain font-light">
         {userData.bio ? userData.bio : "bio"}
       </div>
 
-      <div className="text-sm text-indigomain0 font-light hover:underline">
+      <div className="text-sm text-indigomain font-light hover:underline">
         <a
           href={`${
             userData.website &&
@@ -204,7 +204,7 @@ export const UserData: React.FC = () => {
                 navigate("/comments");
               }}
               className={
-                "flex justify-between text-sm items-center text-texttwo font-light bg-bgtwo px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
               }
             >
               Comments

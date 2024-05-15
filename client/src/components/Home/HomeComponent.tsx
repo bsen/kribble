@@ -2,10 +2,8 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import { CircularProgress } from "@mui/material";
 import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
 
@@ -144,17 +142,17 @@ export const HomeComponent = () => {
   return (
     <>
       <div
-        className="h-screen flex justify-center overflow-y-auto no-scrollbar py-12 md:py-0"
+        className="h-screen p-2 flex justify-center overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <NavBar />
-        <div className="w-[100%] md:w-[55%]">
-          {postData.posts.length > 0 ? (
+        <div className="w-[100%] md:w-[58%]">
+          {postData.posts ? (
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-4 p-2 py-4 border-b border-bordermain  bg-bgmain"
+                className="my-4 p-2 py-4 rounded-md border border-bordermain  bg-bgmain"
               >
                 <div className="flex items-center gap-2">
                   <div>
@@ -243,12 +241,9 @@ export const HomeComponent = () => {
                   </div>
                 </div>
                 <div className="w-full flex flex-col">
-                  <div className="flex flex-col gap-1 py-4 w-full">
+                  <div className="flex flex-col gap-2 py-4 w-full">
                     {post.image && (
-                      <img
-                        src={post.image}
-                        className=" rounded-sm  border border-bordermain"
-                      />
+                      <img src={post.image} className="rounded-md" />
                     )}
 
                     <div className="text-textmain text-sm lg:text-base font-light">
