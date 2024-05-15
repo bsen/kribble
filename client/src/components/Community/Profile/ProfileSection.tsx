@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { CircularProgress } from "@mui/material";
 import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
 
@@ -57,13 +56,11 @@ export const ProfileSection: React.FC = () => {
   });
   const getCommunityData = async () => {
     try {
-      setLoadingState(true);
       setIsLoading(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/community/profile/data`,
         { token, name }
       );
-      setLoadingState(false);
       setCommunityData(response.data.data);
       setIsCreator(response.data.creator);
       setIsLoading(false);
@@ -365,6 +362,13 @@ export const ProfileSection: React.FC = () => {
             {!postData.posts && (
               <div className="text-texttwo my-5  font-light text-center text-lg">
                 No posts found
+              </div>
+            )}
+          </div>
+          <div>
+            {isLoading && (
+              <div className="w-full my-5 flex justify-center items-center">
+                <CircularProgress />
               </div>
             )}
           </div>

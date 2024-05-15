@@ -127,11 +127,7 @@ export const CommunityData: React.FC = () => {
                   >
                     <div className="flex items-center justify-center">
                       {isJoiningLoading ? (
-                        <CircularProgress
-                          size="20px"
-                          className="text-sm"
-                          color="inherit"
-                        />
+                        <CircularProgress size="20px" className="text-sm" />
                       ) : (
                         <div>
                           {isJoined ? <div>Joined</div> : <div>Join</div>}
@@ -142,7 +138,7 @@ export const CommunityData: React.FC = () => {
                 )}
               </div>
             </div>
-            <div className="text-lg lg:text-xl  font-semibold text-textmain">
+            <div className="text-lg lg:text-xl font-semibold text-textmain">
               {communityData.name}
             </div>
           </div>

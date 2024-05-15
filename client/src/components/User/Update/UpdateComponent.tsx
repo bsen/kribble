@@ -143,7 +143,7 @@ export const UpdateProfileComponent = () => {
   if (isLoading) {
     return (
       <div className="h-screen bg-bgmain w-full flex justify-center items-center">
-        <CircularProgress color="inherit" />
+        <CircularProgress />
       </div>
     );
   }

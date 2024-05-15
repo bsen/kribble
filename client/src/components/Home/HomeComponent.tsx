@@ -6,6 +6,7 @@ import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
+import { CircularProgress } from "@mui/material";
 
 interface Post {
   id: string;
@@ -131,14 +132,6 @@ export const HomeComponent = () => {
       return `${minutesDifference}m ago`;
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="text-textmain my-5  font-light text-center text-lg">
-        Loading ...
-      </div>
-    );
-  }
   return (
     <>
       <div
@@ -302,7 +295,15 @@ export const HomeComponent = () => {
               No posts found
             </div>
           )}
+          <div>
+            {isLoading && (
+              <div className="w-full my-5 flex justify-center items-center">
+                <CircularProgress />
+              </div>
+            )}
+          </div>
         </div>
+
         <BottomBar />
       </div>
     </>

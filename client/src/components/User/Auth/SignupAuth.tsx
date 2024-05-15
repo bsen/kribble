@@ -151,7 +151,7 @@ export const SignupAuth = () => {
     <>
       {isLoading && (
         <div className="h-screen flex justify-center items-center w-full">
-          <CircularProgress color="inherit" />
+          <CircularProgress />
         </div>
       )}
       {!isLoading && (

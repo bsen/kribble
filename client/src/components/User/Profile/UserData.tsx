@@ -127,11 +127,7 @@ export const UserData: React.FC = () => {
                     className="text-left flex justify-center items-center text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     {isFollowUserLoading ? (
-                      <CircularProgress
-                        size="15px"
-                        className="text-sm"
-                        color="inherit"
-                      />
+                      <CircularProgress size="15px" className="text-sm" />
                     ) : (
                       <div>
                         {isFollowing ? <div>Unfollow</div> : <div>Follow</div>}

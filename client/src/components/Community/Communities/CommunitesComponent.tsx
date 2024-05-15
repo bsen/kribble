@@ -59,11 +59,6 @@ export const CommunitiesComponent = () => {
       getCommunities(communityData.nextCursor);
     }
   };
-  if (isLoading) {
-    <div className="text-center my-5">
-      <CircularProgress />
-    </div>;
-  }
 
   return (
     <>
@@ -112,6 +107,13 @@ export const CommunitiesComponent = () => {
             No communities found
           </div>
         )}
+        <div>
+          {isLoading && (
+            <div className="w-full my-5 flex justify-center items-center">
+              <CircularProgress />
+            </div>
+          )}
+        </div>
 
         <BottomBar />
       </div>

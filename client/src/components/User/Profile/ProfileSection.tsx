@@ -210,13 +210,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
       </div>
     );
   }
-  if (isLoading) {
-    return (
-      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
-        <CircularProgress />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -234,7 +227,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
         ref={scrollContainerRef}
       >
         <NavBar />
-
         <div className="w-[100%] md:w-[60%]">
           <UserData />
           <div
@@ -245,7 +237,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
               postData.posts.map((post, index) => (
                 <div
                   key={index}
-                  className="my-4 p-2 py-4 rounded-md border border-bordermain  bg-bgmain"
+                  className="my-2 p-2 rounded-md border border-bordermain  bg-bgmain"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex gap-2 items-center">
@@ -362,6 +354,13 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             {!postData.posts && (
               <div className="text-texttwo my-5  font-light text-center text-lg">
                 No posts found
+              </div>
+            )}
+          </div>
+          <div>
+            {isLoading && (
+              <div className="w-full my-5 flex justify-center items-center">
+                <CircularProgress />
               </div>
             )}
           </div>

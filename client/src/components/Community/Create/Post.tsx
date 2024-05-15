@@ -115,7 +115,7 @@ export const Post = () => {
   if (isLoading) {
     return (
       <div className="h-screen bg-bgmain w-full flex justify-center items-center">
-        <CircularProgress color="inherit" />
+        <CircularProgress />
       </div>
     );
   }
@@ -129,7 +129,7 @@ export const Post = () => {
               sx={{ fontSize: 35 }}
             />
           </button>
-          <div className="text-xl flex justify-center items-center gap-5 font-light bg-bgtwo px-4 rounded-md py-1 text-indigomain text-center">
+          <div className="text-xl flex justify-center items-center gap-5 font-light bg-bgtwo px-4 rounded-md py-1 text-textmain text-center">
             <div>Create Post</div>
           </div>
         </div>
@@ -181,7 +181,7 @@ export const Post = () => {
             value={post}
             onChange={handlePostChange}
             rows={3}
-            className="w-full border border-bordermain overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-textmain rounded-lg"
+            className="w-full bg-bgtwo border border-bordermain overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-textmain rounded-lg"
             placeholder="Write your thoughts..."
             wrap="soft"
             maxLength={250}
@@ -196,10 +196,14 @@ export const Post = () => {
               }}
             >
               <VisibilityOffIcon
-                className={`${anonymity ? "text-indigomain" : "text-texttwo"}`}
+                className={`${anonymity ? "text-textmain" : "text-texttwo"}`}
               />
             </div>
-            {anonymity ? "Your identity will be hidden" : "Hide your identity"}
+            {anonymity ? (
+              <div className="text-textmain">Your identity will be hidden</div>
+            ) : (
+              <div className="text-texttwo">Hide your identity</div>
+            )}
           </div>
           <div>
             <button
