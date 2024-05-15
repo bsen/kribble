@@ -6,7 +6,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface User {
   username: string;
-  image: string;
+  image: string | null;
   id: string;
 }
 
@@ -118,8 +118,8 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
             }}
           >
             <ArrowBackIcon
-              className="text-secondarytextcolor rounded-full border  py-1 hover:bg-neutral-100"
-              sx={{ fontSize: 40 }}
+              className="text-neutral-600 rounded-full  py-1"
+              sx={{ fontSize: 35 }}
             />
           </button>
 
@@ -165,7 +165,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
           value={sendingmessage}
           onChange={(e) => setSendingMessage(e.target.value)}
           placeholder="Message..."
-          className="w-[80%] h-10 bg-neutral-100 border-t rounded-full px-4 focus:outline-none"
+          className="w-[80%] h-10 bg-neutral-100  rounded-full px-4 focus:outline-none"
           ref={inputRef}
           onKeyDown={handleKeyDown}
         />

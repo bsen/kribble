@@ -42,10 +42,10 @@ export const BottomBar = () => {
 
         <button
           onClick={() => {
-            navigate("/connect");
+            navigate("/matching");
           }}
           className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
-            location.pathname === "/connect"
+            location.pathname === "/matching"
               ? "text-indigo-500 text-lg"
               : "text-neutral-800"
           }`}

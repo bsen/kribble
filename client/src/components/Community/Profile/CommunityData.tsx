@@ -167,7 +167,7 @@ export const CommunityData: React.FC = () => {
         <div
           className="w-full flex justify-start items-center"
           onClick={() => {
-            navigate(`/community/${communityData.name}/post`);
+            navigate(`/${communityData.name}/create/post`);
           }}
         >
           <div

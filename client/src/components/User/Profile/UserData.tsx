@@ -153,12 +153,12 @@ export const UserData: React.FC = () => {
         </div>
       </div>
       <div className="flex my-2 text-indigo-500 items-center gap-2 font-ubuntu text-sm">
-        <Link to={`/followers/${username}`}>
+        <Link to={`/${username}/followers`}>
           <div className="flex gap-1 items-center px-2 py-1/2 bg-indigo-50 rounded-md">
             {userData.followersCount} Followers
           </div>
         </Link>
-        <Link to={`/following/${username}`}>
+        <Link to={`/${username}/following`}>
           <div className="flex gap-1 items-center px-2 py-1/2 bg-indigo-50 rounded-md">
             {userData.followingCount} Following
           </div>
@@ -188,20 +188,32 @@ export const UserData: React.FC = () => {
 
       {currentUser === username && (
         <div className="flex my-2 flex-col items-start gap-2">
-          <button
-            onClick={() => {
-              navigate("/comments");
-            }}
-            className={
-              "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
-            }
-          >
-            My comments
-          </button>
           <div className="flex justify-between items-center gap-2">
             <button
               onClick={() => {
-                navigate("/user/created/communities");
+                navigate("/matches");
+              }}
+              className={
+                "flex justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+              }
+            >
+              Matches
+            </button>
+            <button
+              onClick={() => {
+                navigate("/comments");
+              }}
+              className={
+                "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
+              }
+            >
+              Comments
+            </button>
+          </div>
+          <div className="flex justify-between items-center gap-2">
+            <button
+              onClick={() => {
+                navigate("/created/communities");
               }}
               className={
                 "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"
@@ -211,7 +223,7 @@ export const UserData: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                navigate("/user/joined/communities");
+                navigate("/joined/communities");
               }}
               className={
                 "flex justify-between text-sm items-center text-indigo-500 font-light bg-indigo-50 px-4 py-1 rounded-full"

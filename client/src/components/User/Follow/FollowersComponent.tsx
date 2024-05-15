@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import { NavBar } from "../../Bars/NavBar";
@@ -105,7 +104,7 @@ export const FollowersComponent = () => {
             </div>
           ))
         ) : (
-          <div className="text-center font-ubuntu my-5 text-primarytextcolor">
+          <div className="text-neutral-600 my-5  font-light text-center text-lg">
             No followers found.
           </div>
         )}

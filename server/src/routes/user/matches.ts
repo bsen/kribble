@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
-import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
-export const userConnectionsRouter = new Hono<{
+export const userMatchesRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
@@ -13,7 +13,7 @@ export const userConnectionsRouter = new Hono<{
   };
 }>();
 
-userConnectionsRouter.post("/all/connections", async (c) => {
+userMatchesRouter.post("/all/matches", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -34,14 +34,14 @@ userConnectionsRouter.post("/all/connections", async (c) => {
 
     const userMatches = await prisma.profileMatch.findMany({
       where: {
-        initiatorId: findUser.id,
+        recipientId: findUser.id,
         isConfirmed: true,
       },
       select: {
-        recipient: {
+        initiatorId: true,
+        initiator: {
           select: {
             id: true,
-            fullname: true,
             username: true,
             image: true,
           },
@@ -51,6 +51,7 @@ userConnectionsRouter.post("/all/connections", async (c) => {
         createdAt: "desc",
       },
     });
+    console.log(userMatches);
 
     if (!userMatches) {
       return c.json({ status: 404, message: "No matches found" });
