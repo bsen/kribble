@@ -206,7 +206,14 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
   if (loadingState) {
     return (
       <div className="h-screen bg-bgmain w-full flex justify-center items-center">
-        <CircularProgress color="inherit" />
+        <CircularProgress />
+      </div>
+    );
+  }
+  if (isLoading) {
+    return (
+      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+        <CircularProgress />
       </div>
     );
   }
@@ -352,7 +359,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                   </div>
                 </div>
               ))}
-            {!isLoading && (
+            {!postData.posts && (
               <div className="text-texttwo my-5  font-light text-center text-lg">
                 No posts found
               </div>

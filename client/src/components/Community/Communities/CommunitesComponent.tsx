@@ -59,26 +59,31 @@ export const CommunitiesComponent = () => {
       getCommunities(communityData.nextCursor);
     }
   };
+  if (isLoading) {
+    <div className="text-center my-5">
+      <CircularProgress />
+    </div>;
+  }
 
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-12"
+        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <NavBar />
-        {communityData.communities.length > 0 ? (
+        {communityData.communities &&
           communityData.communities.map((community, index) => (
             <div
               key={index}
-              className="my-2 border rounded-md border-bordermain p-4 bg-bgmain"
+              className="my-4 p-2 rounded-md border border-bordermain  bg-bgmain"
             >
               <Link to={`/community/${community.name}`}>
                 <div className="flex justify-between gap-2">
                   <div className="flex gap-2 ">
                     <img
-                      className="h-10 w-10 rounded-full bg-bgmain"
+                      className="h-9 w-9 rounded-full bg-bgmain"
                       src={community.image ? community.image : "/group.png"}
                     />
                     <div className="flex flex-col w-full">
@@ -89,10 +94,10 @@ export const CommunitiesComponent = () => {
                         {community.description}
                       </div>
                       <div className="flex gap-2 items-center">
-                        <div className="text-indigomain font-light  text-sm">
+                        <div className="text-textmain font-light  text-sm">
                           {community.membersCount} members
                         </div>
-                        <div className="text-indigomain font-light  text-sm">
+                        <div className="text-textmain font-light  text-sm">
                           {community.postsCount} posts
                         </div>
                       </div>
@@ -101,17 +106,13 @@ export const CommunitiesComponent = () => {
                 </div>
               </Link>
             </div>
-          ))
-        ) : (
+          ))}
+        {!communityData.communities && (
           <div className="text-texttwo my-5  font-light text-center text-lg">
             No communities found
           </div>
         )}
-        {isLoading && (
-          <div className="text-center my-5">
-            <CircularProgress color="inherit" />
-          </div>
-        )}
+
         <BottomBar />
       </div>
     </>

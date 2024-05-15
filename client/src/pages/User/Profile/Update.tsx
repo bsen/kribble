@@ -10,7 +10,7 @@ export const UpdateProfile = () => {
       <div className="w-full lg:w-[40%]">
         <UpdateProfileComponent />
       </div>
-      <div className="w-[25%] max-lg:hidden"></div>
+      <div className="w-[22%] max-lg:hidden"></div>
     </div>
   );
 };

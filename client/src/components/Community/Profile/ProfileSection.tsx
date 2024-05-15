@@ -192,7 +192,7 @@ export const ProfileSection: React.FC = () => {
   if (loadingState) {
     return (
       <div className="h-screen bg-bgmain w-full flex justify-center items-center">
-        <CircularProgress color="inherit" />
+        <CircularProgress />
       </div>
     );
   }
@@ -236,66 +236,60 @@ export const ProfileSection: React.FC = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-12"
+        className="h-screen p-2 flex justify-center overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <NavBar />
-        <CommunityData />
-        <div>
-          {postData.posts.length > 0 ? (
-            postData.posts.map((post, index) => (
-              <div
-                key={index}
-                className="my-2 p-4 border border-bordermain rounded-md bg-bgmain"
-              >
-                <div className="flex gap-2">
-                  {post.anonymity ? (
-                    <div>
-                      <img
-                        src={"/user.png"}
-                        alt="unknown"
-                        className="w-8 h-8 rounded-full"
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      onClick={() => {
-                        navigate(`/${post.creator.username}`);
-                      }}
-                    >
-                      <img
-                        src={
-                          post.creator.image ? post.creator.image : "/user.png"
-                        }
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full"
-                      />
-                    </div>
-                  )}
-
-                  <div className="w-full flex flex-col">
-                    <div className="w-full flex gap-2 justify-between items-center">
-                      <div className="flex gap-2 items-center">
-                        {post.anonymity ? (
-                          <div className="text-textmain text-sm lg:text-base  font-semibold">
-                            {post.creator.username}
-                          </div>
-                        ) : (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/${post.creator.username}`);
-                            }}
-                            className="text-textmain text-sm lg:text-base hover:underline font-semibold"
-                          >
-                            {post.creator.username}
-                          </div>
-                        )}
-                        <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-                          · {getTimeDifference(post.createdAt)}
-                        </div>
+        <div className="w-[100%] md:w-[60%]">
+          <CommunityData />
+          <div>
+            {postData.posts &&
+              postData.posts.map((post, index) => (
+                <div
+                  key={index}
+                  className="my-4 p-2 py-4 rounded-md border border-bordermain  bg-bgmain"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex gap-2 items-center">
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/${post.creator.username}`);
+                        }}
+                      >
+                        <img
+                          src={
+                            post.creator.image
+                              ? post.creator.image
+                              : "/user.png"
+                          }
+                          alt="Profile"
+                          className="w-9 h-9 rounded-full"
+                        />
                       </div>
+
+                      <div className="w-fit flex gap-2 items-center">
+                        <>
+                          <div className="flex gap-2 items-center">
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/${post.creator.username}`);
+                              }}
+                              className="text-textmain text-sm lg:text-base hover:underline font-semibold"
+                            >
+                              {post.creator.username}
+                            </div>
+
+                            <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
+                          </div>
+                        </>
+                      </div>
+                    </div>
+                    <div>
                       {isCreator && (
                         <button
                           onClick={() => {
@@ -304,24 +298,24 @@ export const ProfileSection: React.FC = () => {
                           }}
                         >
                           <MoreVertIcon
-                            sx={{ fontSize: 20 }}
                             className="text-texttwo"
+                            sx={{ fontSize: 20 }}
                           />
                         </button>
                       )}
                     </div>
-                    <div className="flex flex-col gap-1 py-4 w-full">
+                  </div>
+                  <div className="w-full flex flex-col">
+                    <div className="flex flex-col gap-2 py-4 w-full">
                       {post.image && (
-                        <img
-                          src={post.image ? post.image : ""}
-                          className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-bordermain"
-                        />
+                        <img src={post.image} className="rounded-md" />
                       )}
 
                       <div className="text-textmain text-sm lg:text-base font-light">
                         {post.content}
                       </div>
                     </div>
+
                     <div className=" flex justify-between gap-2 items-center text-sm text-neutral-500">
                       <div className="flex gap-2 items-center">
                         <button
@@ -337,14 +331,14 @@ export const ProfileSection: React.FC = () => {
                                 sx={{
                                   fontSize: 22,
                                 }}
-                                className="text-rosemain"
+                                className="text-rose-600"
                               />
                             ) : (
-                              <FavoriteBorderIcon
+                              <FavoriteIcon
                                 sx={{
                                   fontSize: 22,
                                 }}
-                                className="text-rosemain"
+                                className="text-neutral-400"
                               />
                             )}
                           </div>
@@ -357,35 +351,24 @@ export const ProfileSection: React.FC = () => {
                         <div onClick={() => navigate(`/post/${post.id}`)}>
                           <MapsUgcRoundedIcon
                             sx={{ fontSize: 22 }}
-                            className="text-indigomain cursor-pointer"
+                            className="text-texttwo cursor-pointer"
                           />
                         </div>
-                        <div className="text-sm text-texttwo">
+                        <div className="text-sm text-neutral-400">
                           {post.commentsCount} comments
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              ))}
+            {!postData.posts && (
+              <div className="text-texttwo my-5  font-light text-center text-lg">
+                No posts found
               </div>
-            ))
-          ) : (
-            <div className="text-texttwo my-5  font-light text-center text-lg">
-              No posts found
-            </div>
-          )}
-          {isLoading && (
-            <div className="text-center my-5">
-              <CircularProgress color="inherit" />
-            </div>
-          )}
-        </div>
-
-        {isLoading && (
-          <div className="text-center my-5">
-            <CircularProgress color="inherit" />
+            )}
           </div>
-        )}
+        </div>
         <BottomBar />
       </div>
     </>

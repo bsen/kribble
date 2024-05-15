@@ -152,7 +152,7 @@ export const UserData: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="flex my-2 text-textmain items-center gap-2 font-light text-sm">
+      <div className="flex mt-2 text-textmain items-center gap-2 font-light text-sm">
         <Link to={`/${username}/followers`}>
           <div className="flex gap-1 items-center">
             {userData.followersCount} Followers

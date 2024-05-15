@@ -99,7 +99,7 @@ export const CommunityData: React.FC = () => {
 
   return (
     <>
-      <div className="w-full bg-bgmain my-2 p-4 rounded-md flex flex-col items-start border border-bordermain">
+      <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgmain">
         <div className="flex justify-between w-full items-center gap-2">
           <img
             src={communityData.image ? communityData.image : "/group.png"}
@@ -145,27 +145,26 @@ export const CommunityData: React.FC = () => {
             <div className="text-lg lg:text-xl  font-semibold text-textmain">
               {communityData.name}
             </div>
-            <div className="flex my-2 text-indigomain  items-center gap-2 font-ubuntu text-sm">
-              <Link to={`/followers`}>
-                <div className="flex gap-1 items-center px-2 py-1/2  bg-bgtwo rounded-md">
-                  {communityData.membersCount} Members
-                </div>
-              </Link>
-              <div className="flex gap-1 items-center px-2 py-1/2  bg-bgtwo rounded-md">
-                {communityData.postsCount} Posts
-              </div>
-            </div>
           </div>
         </div>
-
-        <div className="text-sm mb-2 text-texttwo font-light">
+        <div className="flex mt-2 text-textmain items-center gap-2 font-light text-sm">
+          <Link to={`/followers`}>
+            <div className="flex gap-1 items-center">
+              {communityData.membersCount} Members
+            </div>
+          </Link>
+          <div className="flex gap-1 items-center">
+            {communityData.postsCount} Posts
+          </div>
+        </div>
+        <div className="text-sm mb-2 text-textmain font-light">
           {communityData.description
             ? communityData.description
             : "description"}
         </div>
 
         <div
-          className="w-full flex justify-start items-center"
+          className="w-fit flex justify-start items-center"
           onClick={() => {
             navigate(`/${communityData.name}/create/post`);
           }}

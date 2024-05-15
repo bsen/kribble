@@ -79,7 +79,7 @@ export const MatchingComponent: React.FC = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-bgmain border-l border-r border-bordermain h-screen flex flex-col justify-center items-center">
+      <div className="bg-bgmain h-screen flex flex-col justify-center items-center">
         <div className="w-full flex flex-col items-center justify-center">
           {popup && (
             <div

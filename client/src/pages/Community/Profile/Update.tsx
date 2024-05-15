@@ -10,7 +10,7 @@ export const UpdateCommunity = () => {
       <div className="w-full lg:w-[40%]">
         <UpdateCommunityComponent />
       </div>
-      <div className="w-[25%] max-lg:hidden"></div>
+      <div className="w-[22%] max-lg:hidden"></div>
     </div>
   );
 };
