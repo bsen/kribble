@@ -99,7 +99,7 @@ export const CommunityData: React.FC = () => {
 
   return (
     <>
-      <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgmain">
+      <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgpost">
         <div className="flex justify-between w-full items-center gap-2">
           <img
             src={communityData.image ? communityData.image : "/group.png"}
@@ -113,7 +113,7 @@ export const CommunityData: React.FC = () => {
                     onClick={() => {
                       navigate(`/edit/community/${communityData.name}`);
                     }}
-                    className="text-left border border-bordermain text-textmain bg-bgtwo font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-bgmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     Edit
                   </button>
@@ -123,7 +123,7 @@ export const CommunityData: React.FC = () => {
                   <button
                     onClick={handleJoinCommunity}
                     disabled={isJoiningLoading}
-                    className="text-left text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-bgmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     <div className="flex items-center justify-center">
                       {isJoiningLoading ? (
@@ -141,18 +141,19 @@ export const CommunityData: React.FC = () => {
             <div className="text-lg lg:text-xl font-semibold text-textmain">
               {communityData.name}
             </div>
-          </div>
-        </div>
-        <div className="flex mt-2 text-textmain items-center gap-2 font-light text-sm">
-          <Link to={`/followers`}>
-            <div className="flex gap-1 items-center">
-              {communityData.membersCount} Members
+            <div className="flex text-textmain items-center gap-2 font-light text-sm">
+              <Link to={`/followers`}>
+                <div className="flex gap-1 items-center">
+                  {communityData.membersCount} Members
+                </div>
+              </Link>
+              <div className="flex gap-1 items-center">
+                {communityData.postsCount} Posts
+              </div>
             </div>
-          </Link>
-          <div className="flex gap-1 items-center">
-            {communityData.postsCount} Posts
           </div>
         </div>
+
         <div className="text-sm mb-2 text-textmain font-light">
           {communityData.description
             ? communityData.description
@@ -167,7 +168,7 @@ export const CommunityData: React.FC = () => {
         >
           <div
             className={
-              "flex w-fit justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
+              "flex w-fit justify-between text-sm items-center text-bgmain font-light bg-indigomain px-4 py-1 rounded-full"
             }
           >
             <AddIcon sx={{ fontSize: 20 }} />

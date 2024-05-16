@@ -99,7 +99,7 @@ export const UserData: React.FC = () => {
   }
 
   return (
-    <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgmain">
+    <div className="p-3 mt-4 rounded-md border border-bordermain bg-bgpost">
       <div className="flex w-full justify-start items-center gap-2">
         <img
           src={userData.image ? userData.image : "/user.png"}
@@ -114,7 +114,7 @@ export const UserData: React.FC = () => {
                   onClick={() => {
                     navigate("/edit/profile");
                   }}
-                  className="text-left border border-bordermain text-textmain bg-bgtwo font-light rounded-full px-4 py-1 text-sm"
+                  className="text-left text-bgmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                 >
                   Edit
                 </button>
@@ -200,34 +200,34 @@ export const UserData: React.FC = () => {
                 navigate("/comments");
               }}
               className={
-                "flex justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-bgmain font-light bg-indigomain px-4 py-1 rounded-full"
               }
             >
               Comments
             </button>
           </div>
-          <div className="flex justify-between items-center gap-2">
-            <button
-              onClick={() => {
-                navigate("/created/communities");
-              }}
-              className={
-                "flex justify-between text-sm items-center text-textmain font-light bg-bgtwo px-4 py-1 rounded-full"
-              }
-            >
-              Created communites
-            </button>
-            <button
-              onClick={() => {
-                navigate("/joined/communities");
-              }}
-              className={
-                "flex justify-between text-sm items-center text-textmain font-light bg-bgtwo px-4 py-1 rounded-full"
-              }
-            >
-              Joined communites
-            </button>
-          </div>
+
+          <button
+            onClick={() => {
+              navigate("/created/communities");
+            }}
+            className={
+              "flex justify-between text-sm items-center text-textmain font-light bg-bgtwo px-4 py-1 rounded-full"
+            }
+          >
+            Created communites
+          </button>
+          <button
+            onClick={() => {
+              navigate("/joined/communities");
+            }}
+            className={
+              "flex justify-between text-sm items-center text-textmain font-light bg-bgtwo px-4 py-1 rounded-full"
+            }
+          >
+            Joined communites
+          </button>
+
           <div className="flex justify-between items-center gap-2">
             <button
               onClick={() => {
@@ -236,7 +236,7 @@ export const UserData: React.FC = () => {
             >
               <div
                 className={
-                  "flex justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
+                  "flex justify-between text-sm items-center text-bgmain font-light bg-indigomain px-4 py-1 rounded-full"
                 }
               >
                 <AddIcon sx={{ fontSize: 20 }} />
@@ -251,7 +251,7 @@ export const UserData: React.FC = () => {
             >
               <div
                 className={
-                  "flex justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
+                  "flex justify-between text-sm items-center text-bgmain font-light bg-indigomain px-4 py-1 rounded-full"
                 }
               >
                 <AddIcon sx={{ fontSize: 20 }} />

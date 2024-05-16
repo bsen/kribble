@@ -58,43 +58,43 @@ export const LoginAuth = () => {
 
   return (
     <>
-      <div className="h-screen w-full p-2  flex justify-evenly items-center bg-bgmain">
+      <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
         <div className="w-[100%] lg:w-[35%]">
-          <div className="text-textmain text-center mb-6 font-ubuntu font-light text-2xl">
-            Welcome back to Introsium
+          <div className="text-bgmain text-center mb-6 font-ubuntu font-medium text-3xl">
+            Welcome back to Friendcity
           </div>
 
-          <div className="items-center p-2 rounded-md bg-bgtwo border border-bordermain">
+          <div className="items-center p-2 rounded-md bg-bgpost">
             <div className="my-2 flex gap-2">
               <img
                 src="/people.png"
-                className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+                className="h-20 w-20  rounded-full  bg-bgtwo"
               />
               <img
                 src="/girl.png"
-                className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+                className="h-20 w-20  rounded-full  bg-bgtwo"
               />
               <img
                 src="/boy.png"
-                className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+                className="h-20 w-20  rounded-full  bg-bgtwo"
               />
             </div>
 
             <div>
-              <div className="font-normal m-1 text-textmain">Email</div>
+              <div className="font-normal m-1 text-texttwo">Email</div>
               <input
                 value={email}
                 onChange={(e) => {
                   handleEmailChnage(e.target.value);
                 }}
                 type="email"
-                className="h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+                className="h-9 w-full text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
                 placeholder="Enter your email address"
               />
             </div>
 
             <div>
-              <div className="font-normal m-1 text-textmain">Password</div>
+              <div className="font-normal m-1 text-texttwo">Password</div>
               <input
                 value={password}
                 onChange={(e) => {
@@ -102,13 +102,13 @@ export const LoginAuth = () => {
                 }}
                 type="password"
                 onKeyDown={handleKeyDown}
-                className="h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+                className="h-9 w-full text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
                 placeholder="Enter password"
               />
             </div>
             <button
               onClick={login}
-              className="my-4 w-full text-textmain bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+              className="my-4 w-full text-bgmain bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
             >
               Login
             </button>
