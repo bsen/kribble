@@ -15,13 +15,13 @@ export const SideBar = () => {
 
   return (
     <>
-      <div className="flex bg-bgmain flex-col items-center px-6 justify-between h-screen border-r border-bordermain">
+      <div className="flex bg-bgpost flex-col items-center px-6 justify-between h-screen border-r border-bordermain">
         <div className="w-full flex flex-col  items-center">
           <div
             onClick={() => {
               navigate("/");
             }}
-            className="bg-white my-4 text-transparent bg-clip-text text-3xl font-ubuntu"
+            className="bg-textmain my-4 text-transparent bg-clip-text text-3xl font-ubuntu"
           >
             introsium
           </div>
@@ -32,7 +32,7 @@ export const SideBar = () => {
             }}
             className={`w-full h-10 px-3 mt-4 rounded-md  flex items-center justify-start gap-2  font-light  ${
               location.pathname === "/"
-                ? "text-textmain text-base bg-bgtwo border border-bordermain"
+                ? "text-textmain text-base bg-bgtwo"
                 : "text-textmain text-sm"
             }`}
           >
@@ -45,7 +45,7 @@ export const SideBar = () => {
             }}
             className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
               location.pathname === "/communities"
-                ? "text-textmain text-base bg-bgtwo border border-bordermain"
+                ? "text-textmain text-base bg-bgtwo"
                 : "text-textmain text-sm"
             }`}
           >
@@ -59,7 +59,7 @@ export const SideBar = () => {
             }}
             className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
               location.pathname === "/matching"
-                ? "text-textmain text-base bg-bgtwo border border-bordermain"
+                ? "text-textmain text-base bg-bgtwo"
                 : "text-textmain text-sm"
             }`}
           >
@@ -73,7 +73,7 @@ export const SideBar = () => {
             }}
             className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
               location.pathname === `/${currentUser}`
-                ? "text-textmain text-base bg-bgtwo border border-bordermain"
+                ? "text-textmain text-base bg-bgtwo"
                 : "text-textmain text-sm"
             }`}
           >
@@ -86,7 +86,7 @@ export const SideBar = () => {
             }}
             className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
               location.pathname === "/search"
-                ? "text-textmain text-base bg-bgtwo border border-bordermain"
+                ? "text-textmain text-base bg-bgtwo"
                 : "text-textmain text-sm"
             }`}
           >
@@ -99,7 +99,7 @@ export const SideBar = () => {
               navigate("/create/post");
             }}
             className={
-              "w-full h-10 px-3 mt-4 rounded-md  bg-indigomain text-textmain flex items-center justify-start gap-2 text-sm font-light"
+              "w-full h-10 px-3 mt-4 rounded-md  bg-indigomain text-bgmain flex items-center justify-start gap-2 text-sm font-light"
             }
           >
             <AddIcon sx={{ fontSize: 25 }} />

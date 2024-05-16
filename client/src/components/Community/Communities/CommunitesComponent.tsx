@@ -72,7 +72,7 @@ export const CommunitiesComponent = () => {
           communityData.communities.map((community, index) => (
             <div
               key={index}
-              className="my-4 p-2 rounded-md border border-bordermain  bg-bgmain"
+              className="my-4 p-2 rounded-md border border-bordermain  bg-bgpost"
             >
               <Link to={`/community/${community.name}`}>
                 <div className="flex justify-between gap-2">

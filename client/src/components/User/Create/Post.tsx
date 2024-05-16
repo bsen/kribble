@@ -120,21 +120,21 @@ export const Post = () => {
   }
   return (
     <>
-      <div className="w-full bg-bgmain p-4 rounded-md">
+      <div className="w-full bg-bgpost p-4 rounded-md">
         <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon
-              className="p-1 bg-indigomain text-textmain rounded-full"
+              className="p-1 bg-indigomain text-bgmain rounded-full"
               sx={{ fontSize: 35 }}
             />
           </button>
-          <div className="text-xl flex justify-center items-center gap-5 font-light bg-bgtwo px-4 rounded-md py-1 text-textmain text-center">
+          <div className="text-xl flex justify-center items-center gap-5 font-light text-texttwo text-center">
             <div>Create Post</div>
           </div>
         </div>
         <div className="w-full h-full rounded-lg flex flex-col justify-center">
           {previewImage ? (
-            <div className="w-[100%] flex items-end justify-center bg-bgmain p-4 rounded-md">
+            <div className="w-[100%] flex items-end justify-center p-4">
               <div className="flex flex-col items-center">
                 <img
                   src={previewImage}
@@ -175,17 +175,15 @@ export const Post = () => {
           )}
         </div>
 
-        <div className="w-full bg-bgmain my-4 rounded-md">
-          <textarea
-            value={post}
-            onChange={handlePostChange}
-            rows={3}
-            className="w-full bg-bgtwo border border-bordermain overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-textmain rounded-lg"
-            placeholder="Write your thoughts..."
-            wrap="soft"
-            maxLength={250}
-          />
-        </div>
+        <textarea
+          value={post}
+          onChange={handlePostChange}
+          rows={3}
+          className="w-full bg-bordermain overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-texttwo rounded-lg"
+          placeholder="Write your thoughts..."
+          wrap="soft"
+          maxLength={250}
+        />
 
         <div className="flex w-full my-2 justify-between">
           <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
@@ -207,7 +205,7 @@ export const Post = () => {
           <div>
             <button
               onClick={createCommunityPost}
-              className="text-textmain text-base py-1 px-6 rounded-md bg-indigomain"
+              className="text-bgmain text-base py-1 px-6 rounded-md bg-indigomain"
             >
               Post
             </button>

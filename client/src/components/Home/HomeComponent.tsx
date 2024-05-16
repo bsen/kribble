@@ -7,7 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
 import { CircularProgress } from "@mui/material";
-
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 interface Post {
   id: string;
   creator: {
@@ -135,7 +135,7 @@ export const HomeComponent = () => {
   return (
     <>
       <div
-        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
+        className="h-screen overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
@@ -144,7 +144,7 @@ export const HomeComponent = () => {
           postData.posts.map((post, index) => (
             <div
               key={index}
-              className="my-4 p-2  rounded-md border border-bordermain  bg-bgmain"
+              className="my-3 p-3  rounded-md border border-bordermain  bg-bgpost"
             >
               <div className="flex items-center gap-2">
                 <div>
@@ -231,7 +231,7 @@ export const HomeComponent = () => {
                 </div>
               </div>
               <div className="w-full flex flex-col">
-                <div className="flex flex-col gap-2 py-4 w-full">
+                <div className="flex flex-col gap-2 py-4  w-full">
                   {post.image && (
                     <img
                       src={post.image}
@@ -243,49 +243,43 @@ export const HomeComponent = () => {
                     {post.content}
                   </div>
                 </div>
-
-                <div className=" flex justify-between gap-2 items-center text-sm text-neutral-500">
-                  <div className="flex gap-2 items-center">
-                    <button
-                      className="flex justify-center items-center gap-2 cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleLike(post.id);
-                      }}
-                    >
+                <div className="flex gap-2 mt-2 items-center text-sm text-texttwo">
+                  <button
+                    className="w-16 bg-rose-100 text-rosemain py-1  rounded-md flex justify-center items-center gap-2 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLike(post.id);
+                    }}
+                  >
+                    {post.isLiked ? (
                       <div>
-                        {post.isLiked ? (
-                          <FavoriteIcon
-                            sx={{
-                              fontSize: 22,
-                            }}
-                            className="text-rose-600"
-                          />
-                        ) : (
-                          <FavoriteIcon
-                            sx={{
-                              fontSize: 22,
-                            }}
-                            className="text-texttwo"
-                          />
-                        )}
+                        <FavoriteIcon
+                          sx={{
+                            fontSize: 20,
+                          }}
+                          className="text-rosemain"
+                        />
                       </div>
-                    </button>
-                    <div className="text-sm text-texttwo">
-                      {post.likesCount} likes
-                    </div>
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <div onClick={() => navigate(`/post/${post.id}`)}>
-                      <ReplyIcon
-                        sx={{ fontSize: 22 }}
-                        className="text-texttwo cursor-pointer"
-                      />
-                    </div>
-                    <div className="text-sm text-texttwo">
-                      {post.commentsCount} comments
-                    </div>
-                  </div>
+                    ) : (
+                      <div>
+                        <FavoriteBorderOutlinedIcon
+                          sx={{
+                            fontSize: 20,
+                          }}
+                          className="text-rosemain"
+                        />
+                      </div>
+                    )}
+
+                    {post.likesCount}
+                  </button>
+                  <button
+                    onClick={() => navigate(`/post/${post.id}`)}
+                    className="w-16 text-indigomain py-1  bg-indigo-100 rounded-md flex justify-center items-center gap-2 cursor-pointer"
+                  >
+                    <ReplyIcon sx={{ fontSize: 22 }} />
+                    {post.commentsCount}
+                  </button>
                 </div>
               </div>
             </div>

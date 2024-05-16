@@ -99,7 +99,7 @@ export const Data = () => {
   }
 
   return (
-    <div className="bg-bgmain mt-4 border border-bordermain p-2 rounded-md">
+    <div className="bg-bgpost mt-4 border border-bordermain p-2 rounded-md">
       <div className="flex gap-2 items-center">
         <Link to={`/${postData.creator.username}`}>
           <img
@@ -132,21 +132,19 @@ export const Data = () => {
         </div>
       </div>
 
-      <div className="bg-bgmain  flex justify-center items-center">
-        <textarea
-          rows={3}
-          className={`w-full bg-bgtwo text-textmain border border-bordermain resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
-            popup ? "border border-rosemain" : ""
-          }`}
-          wrap="soft"
-          onChange={(e) => {
-            setPopup(false);
-            setComment(e.target.value);
-          }}
-          maxLength={250}
-          placeholder="Post a reply"
-        />
-      </div>
+      <textarea
+        rows={3}
+        className={`w-full bg-bordermain text-texttwo resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+          popup ? "border border-rosemain" : ""
+        }`}
+        wrap="soft"
+        onChange={(e) => {
+          setPopup(false);
+          setComment(e.target.value);
+        }}
+        maxLength={250}
+        placeholder="Post a reply"
+      />
 
       <div className="flex w-full my-2 justify-between">
         <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
@@ -168,7 +166,7 @@ export const Data = () => {
         <div>
           <button
             onClick={createComment}
-            className="text-textmain text-base py-1 px-4 rounded-md bg-indigomain"
+            className="text-bgmain text-base py-1 px-4 rounded-md bg-indigomain"
           >
             Comment
           </button>

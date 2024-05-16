@@ -18,9 +18,9 @@ const fullNameSchema = z.string().max(20);
 const usernameSchema = z.string().max(20);
 const emailSchema = z.string().email();
 const passwordSchema = z.string().min(6);
-const dateSchema = z.string().max(2);
-const monthSchema = z.string().max(2);
-const yearSchema = z.string().max(4);
+const dateSchema = z.string().length(2);
+const monthSchema = z.string().length(2);
+const yearSchema = z.string().length(4);
 
 userAuthRouter.post("/username/check", async (c) => {
   try {

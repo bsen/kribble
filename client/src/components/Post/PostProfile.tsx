@@ -100,7 +100,7 @@ export const PostProfile = () => {
         {postComments.map((comment) => (
           <div
             key={comment.id}
-            className="my-2 p-2 rounded-md border border-bordermain bg-bgmain"
+            className="my-3 p-3 rounded-md border border-bordermain bg-bgpost"
           >
             <div className="flex gap-2">
               <div>

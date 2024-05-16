@@ -184,12 +184,10 @@ export const UpdateCommunityComponent = () => {
           </button>
         </div>
         <div>
-          <div className="text-textmain  bg-bgtwo  text-sm font-light">
-            Description
-          </div>
+          <div className="text-texttwo  text-sm font-light">Description</div>
           <textarea
             rows={2}
-            className="w-full px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-bordermain"
+            className="w-full text-texttwo bordermain px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-bordermain"
             defaultValue={communityData.description}
             wrap="soft"
             maxLength={150}

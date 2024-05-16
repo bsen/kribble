@@ -153,7 +153,7 @@ export const UpdateProfileComponent = () => {
         <div className="w-full">{logoutState && <Logout />}</div>
         <div className="w-full">
           {!logoutState && (
-            <div className="bg-bgmain h-screen  p-2 flex flex-col gap-4">
+            <div className="bg-bgpost h-screen  p-2 flex flex-col gap-4">
               <div className="flex justify-between items-center border-b border-bordermain pb-2">
                 <button
                   onClick={() => {
@@ -204,25 +204,25 @@ export const UpdateProfileComponent = () => {
                 </div>
 
                 <button onClick={updateProfile}>
-                  <div className="text-textmain bg-indigomain text-base font-light rounded-md py-1 px-4">
+                  <div className="text-bgmain bg-indigomain text-base font-light rounded-md py-1 px-4">
                     save
                   </div>
                 </button>
               </div>
 
               <div>
-                <div className="text-textmain text-sm font-light">Name</div>
+                <div className="text-texttwo text-sm font-light">Name</div>
                 <input
                   maxLength={20}
                   defaultValue={userData.fullname}
                   onChange={(e) => {
                     setFullName(e.target.value);
                   }}
-                  className=" h-10 w-full bg-bgtwo text-textmain text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
+                  className=" h-10 w-full bg-bordermain text-texttwo text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
                 />
               </div>
               <div>
-                <div className="text-textmain text-sm font-light">Website</div>
+                <div className="text-texttwo text-sm font-light">Website</div>
                 <input
                   type="link"
                   maxLength={40}
@@ -230,14 +230,14 @@ export const UpdateProfileComponent = () => {
                   onChange={(e) => {
                     setWebsite(e.target.value);
                   }}
-                  className=" h-10 bg-bgtwo text-textmain w-full text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
+                  className=" h-10 bg-bordermain text-texttwo w-full text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
                 />
               </div>
               <div>
-                <div className="text-textmain text-sm  font-light">Bio</div>
+                <div className="text-texttwo text-sm  font-light">Bio</div>
                 <textarea
                   rows={2}
-                  className="w-full bg-bgtwo text-textmain text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-bordermain"
+                  className="w-full bg-bordermain text-texttwo text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-bordermain"
                   defaultValue={userData.bio}
                   wrap="soft"
                   maxLength={150}

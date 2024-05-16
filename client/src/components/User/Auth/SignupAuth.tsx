@@ -76,6 +76,39 @@ export const SignupAuth = () => {
     setPassword(newPassword);
   };
 
+  const handleDateChange = (text: string) => {
+    const newDate = text.replace(/\D/g, ""); // Remove non-numeric characters
+    setDate(newDate);
+
+    if (newDate.length !== 2) {
+      setPopup("Please provide a valid date (two characters)");
+    } else {
+      setPopup("");
+    }
+  };
+
+  const handleMonthChange = (text: string) => {
+    const newMonth = text.replace(/\D/g, ""); // Remove non-numeric characters
+    setMonth(newMonth);
+
+    if (newMonth.length !== 2) {
+      setPopup("Please provide a valid month (two characters)");
+    } else {
+      setPopup("");
+    }
+  };
+
+  const handleYearChange = (text: string) => {
+    const newYear = text.replace(/\D/g, ""); // Remove non-numeric characters
+    setYear(newYear);
+
+    if (newYear.length !== 4) {
+      setPopup("Please provide a valid year (four characters)");
+    } else {
+      setPopup("");
+    }
+  };
+
   const checkName = async (username: string) => {
     try {
       const response = await axios.post(
@@ -107,57 +140,6 @@ export const SignupAuth = () => {
       debouncedCheckName.cancel();
     };
   }, [username]);
-
-  const isLeapYear = (year: number) => {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-  };
-
-  const getDaysInMonth = (month: number, year: number) => {
-    const days31 = [1, 3, 5, 7, 8, 10, 12];
-    const days30 = [4, 6, 9, 11];
-    if (days31.includes(month)) {
-      return 31;
-    } else if (days30.includes(month)) {
-      return 30;
-    } else {
-      return isLeapYear(year) ? 29 : 28;
-    }
-  };
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const renderOptions = (start: number, end: number) => {
-    const options = [];
-    for (let i = start; i <= end; i++) {
-      options.push(i);
-    }
-    return options.map((option) => (
-      <option key={option} value={option.toString()}>
-        {option}
-      </option>
-    ));
-  };
-
-  const renderMonthOptions = () => {
-    return monthNames.map((month, index) => (
-      <option key={index} value={(index + 1).toString()}>
-        {month}
-      </option>
-    ));
-  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -253,114 +235,119 @@ export const SignupAuth = () => {
     );
   }
   return (
-    <div className="h-screen w-full p-2  flex justify-evenly items-center bg-bgmain">
-      <div className="w-[100%] lg:w-[40%]">
-        <div className="text-textmain text-center mb-6 font-ubuntu font-light text-2xl">
-          Create your profile on Introsium
+    <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
+      <div className="w-[100%] lg:w-[35%]">
+        <div className="text-bgmain text-center mb-6 font-ubuntu font-medium text-3xl">
+          Welcome back to Friendsium
         </div>
 
-        <div className="items-center p-2 rounded-md bg-bgtwo border border-bordermain">
-          <div className="my-2 flex gap-2">
-            <img
-              src="/people.png"
-              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
-            />
+        <div className="items-center justify-center p-2 rounded-md bg-bgpost">
+          <div className="my-2 justify-center flex gap-2">
             <img
               src="/girl.png"
-              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
             />
             <img
               src="/boy.png"
-              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+            />
+            <img
+              src="/people.png"
+              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+            />
+
+            <img
+              src="/girl2.png"
+              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+            />
+            <img
+              src="/boy2.png"
+              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
             />
           </div>
 
           <div>
-            <div className="font-normal m-1 text-textmain">Full Name</div>
+            <div className="font-normal m-1 text-texttwo">Full Name</div>
             <input
               value={fullname}
               maxLength={20}
               onChange={(e) => {
                 setFullName(e.target.value);
               }}
-              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              className=" h-9 w-full text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
               placeholder="Enter your full name"
             />
           </div>
           <div>
-            <div className="font-normal m-1 text-textmain">Username</div>
+            <div className="font-normal m-1 text-texttwo">Username</div>
             <input
               value={username}
               maxLength={20}
               onChange={(e) => {
                 handleUsernameChange(e.target.value);
               }}
-              className={`w-full h-9 px-4 border border-bordermain focus:outline-none  rounded-lg ${
+              className={`w-full text-textmain h-9 px-4 bg-bordermain focus:outline-none  rounded-lg ${
                 available ? "" : "border border-rosemain"
               }`}
               placeholder="Select your username"
             />
           </div>
           <div>
-            <div className="font-normal m-1 text-textmain">Email</div>
+            <div className="font-normal m-1 text-texttwo">Email</div>
             <input
               value={email}
               onChange={(e) => {
                 handleEmailChange(e.target.value);
               }}
-              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              className=" h-9 w-full text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
               placeholder="Enter your email address"
             />
           </div>
           <div>
-            <div className="font-normal m-1 text-textmain">Password</div>
+            <div className="font-normal m-1 text-texttwo">Password</div>
             <input
               value={password}
               onChange={(e) => {
                 handlePasswordChange(e.target.value);
               }}
               onKeyDown={handleKeyDown}
-              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              className=" h-9 w-full text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
               placeholder="Enter password"
             />
           </div>
           <div>
-            <div className="font-normal m-1 text-textmain">Birthday</div>
+            <div className="font-normal m-1 text-texttwo">Date of birth</div>
             <div className="flex gap-2">
-              <select
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
-              >
-                <option value="">Month</option>
-                {renderMonthOptions()}
-              </select>
-              <select
+              <input
+                type="text"
                 value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="h-9 w-20 rounded-lg px-4 focus:outline-none border border-bordermain"
-              >
-                <option value="">Date</option>
-                {renderOptions(
-                  1,
-                  getDaysInMonth(parseInt(month), parseInt(year))
-                )}
-              </select>
-              <select
+                onChange={(e) => handleDateChange(e.target.value)}
+                placeholder="Date"
+                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain border"
+              />
+
+              <input
+                type="text"
+                value={month}
+                onChange={(e) => handleMonthChange(e.target.value)}
+                placeholder="Month"
+                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain border"
+              />
+
+              <input
+                type="text"
                 value={year}
-                onChange={(e) => setYear(e.target.value)}
-                className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
-              >
-                <option value="">Year</option>
-                {renderOptions(1975, new Date().getFullYear())}
-              </select>
+                onChange={(e) => handleYearChange(e.target.value)}
+                placeholder="Year"
+                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain border"
+              />
             </div>
           </div>
 
           <button
             onClick={signup}
             disabled={isLoading}
-            className="my-4 w-full text-textmain bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-bordermain font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+            className="my-4 w-full text-bgmain bg-indigomain active:bg-bgmain  focus:outline-none focus:ring-2 focus:ring-bordermain font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
           >
             Register
           </button>
@@ -373,8 +360,8 @@ export const SignupAuth = () => {
               Login
             </Link>
           </div>
-          <div className="text-rosemain font-ubuntu font-light text-center text-sm">
-            {popup ? popup : <div>‎</div>}
+          <div className="text-rosemain mt-2 font-ubuntu font-light text-center text-sm">
+            {popup ? popup : ""}
           </div>
         </div>
       </div>
