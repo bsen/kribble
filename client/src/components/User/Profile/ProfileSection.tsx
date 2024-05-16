@@ -10,7 +10,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
 import { BottomBar } from "../../Bars/BottomBar";

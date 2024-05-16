@@ -99,7 +99,7 @@ export const Post = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:8787/api/user/post/create`,
+        `${BACKEND_URL}/api/user/post/create`,
         formData
       );
       setPopup(response.data.message);

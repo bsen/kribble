@@ -2,7 +2,6 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config";
-import { CircularProgress } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 export const Data = () => {
   interface PostData {
