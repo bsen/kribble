@@ -173,9 +173,9 @@ export const SignupAuth = () => {
       !username ||
       !email ||
       !password ||
-      !date ||
+      !year ||
       !month ||
-      !year
+      !date
     ) {
       setPopup("Please fill in all the fields");
       return;
@@ -196,17 +196,14 @@ export const SignupAuth = () => {
       return;
     }
 
-    const birthdate = `${date.padStart(2, "0")}${month.padStart(
-      2,
-      "0"
-    )}${year}`;
-
     const userdata = {
       fullname,
       username,
       email,
       password,
-      birthdate,
+      year,
+      month,
+      date,
     };
 
     try {
@@ -257,124 +254,128 @@ export const SignupAuth = () => {
   }
   return (
     <div className="h-screen w-full p-2  flex justify-evenly items-center bg-bgmain">
-      <div className="w-[100%] lg:w-[40%] p-2 rounded-md bg-bgtwo border border-bordermain">
-        <div className="flex gap-2">
-          <img
-            src="/people.png"
-            className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
-          />
-          <img
-            src="/girl.png"
-            className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
-          />
-          <img
-            src="/boy.png"
-            className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
-          />
-        </div>
-        <div className="text-textmain my-2 text-left font-light text-2xl">
-          Create your Introsium profile
-        </div>
-        <div>
-          <div className="font-normal m-1 text-textmain">Full Name</div>
-          <input
-            value={fullname}
-            maxLength={20}
-            onChange={(e) => {
-              setFullName(e.target.value);
-            }}
-            className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
-            placeholder="Enter your full name"
-          />
-        </div>
-        <div>
-          <div className="font-normal m-1 text-textmain">Username</div>
-          <input
-            value={username}
-            maxLength={20}
-            onChange={(e) => {
-              handleUsernameChange(e.target.value);
-            }}
-            className={`w-full h-9 px-4 border border-bordermain focus:outline-none  rounded-lg ${
-              available ? "" : "border border-rosemain"
-            }`}
-            placeholder="Select your username"
-          />
-        </div>
-        <div>
-          <div className="font-normal m-1 text-textmain">Email</div>
-          <input
-            value={email}
-            onChange={(e) => {
-              handleEmailChange(e.target.value);
-            }}
-            className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
-            placeholder="Enter your email address"
-          />
-        </div>
-        <div>
-          <div className="font-normal m-1 text-textmain">Password</div>
-          <input
-            value={password}
-            onChange={(e) => {
-              handlePasswordChange(e.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-            className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
-            placeholder="Enter password"
-          />
-        </div>
-        <div>
-          <div className="font-normal m-1 text-textmain">Birthday</div>
-          <div className="flex gap-2">
-            <select
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-              className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
-            >
-              <option value="">Month</option>
-              {renderMonthOptions()}
-            </select>
-            <select
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="h-9 w-20 rounded-lg px-4 focus:outline-none border border-bordermain"
-            >
-              <option value="">Date</option>
-              {renderOptions(
-                1,
-                getDaysInMonth(parseInt(month), parseInt(year))
-              )}
-            </select>
-            <select
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-              className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
-            >
-              <option value="">Year</option>
-              {renderOptions(1950, new Date().getFullYear())}
-            </select>
-          </div>
+      <div className="w-[100%] lg:w-[40%]">
+        <div className="text-textmain text-center mb-6 font-ubuntu font-light text-2xl">
+          Create your profile on Introsium
         </div>
 
-        <button
-          onClick={signup}
-          disabled={isLoading}
-          className="my-4 w-full text-textmain bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-bordermain font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-        >
-          Register
-        </button>
-        <div className="text-center text-md font-light text-textmain">
-          Already have an account?
-          <Link
-            to="/login"
-            className="font-normal text-textmain underline underline-offset-2 mx-1"
+        <div className="items-center p-2 rounded-md bg-bgtwo border border-bordermain">
+          <div className="my-2 flex gap-2">
+            <img
+              src="/people.png"
+              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+            />
+            <img
+              src="/girl.png"
+              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+            />
+            <img
+              src="/boy.png"
+              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+            />
+          </div>
+
+          <div>
+            <div className="font-normal m-1 text-textmain">Full Name</div>
+            <input
+              value={fullname}
+              maxLength={20}
+              onChange={(e) => {
+                setFullName(e.target.value);
+              }}
+              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              placeholder="Enter your full name"
+            />
+          </div>
+          <div>
+            <div className="font-normal m-1 text-textmain">Username</div>
+            <input
+              value={username}
+              maxLength={20}
+              onChange={(e) => {
+                handleUsernameChange(e.target.value);
+              }}
+              className={`w-full h-9 px-4 border border-bordermain focus:outline-none  rounded-lg ${
+                available ? "" : "border border-rosemain"
+              }`}
+              placeholder="Select your username"
+            />
+          </div>
+          <div>
+            <div className="font-normal m-1 text-textmain">Email</div>
+            <input
+              value={email}
+              onChange={(e) => {
+                handleEmailChange(e.target.value);
+              }}
+              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              placeholder="Enter your email address"
+            />
+          </div>
+          <div>
+            <div className="font-normal m-1 text-textmain">Password</div>
+            <input
+              value={password}
+              onChange={(e) => {
+                handlePasswordChange(e.target.value);
+              }}
+              onKeyDown={handleKeyDown}
+              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              placeholder="Enter password"
+            />
+          </div>
+          <div>
+            <div className="font-normal m-1 text-textmain">Birthday</div>
+            <div className="flex gap-2">
+              <select
+                value={month}
+                onChange={(e) => setMonth(e.target.value)}
+                className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
+              >
+                <option value="">Month</option>
+                {renderMonthOptions()}
+              </select>
+              <select
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="h-9 w-20 rounded-lg px-4 focus:outline-none border border-bordermain"
+              >
+                <option value="">Date</option>
+                {renderOptions(
+                  1,
+                  getDaysInMonth(parseInt(month), parseInt(year))
+                )}
+              </select>
+              <select
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
+              >
+                <option value="">Year</option>
+                {renderOptions(1950, new Date().getFullYear())}
+              </select>
+            </div>
+          </div>
+
+          <button
+            onClick={signup}
+            disabled={isLoading}
+            className="my-4 w-full text-textmain bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-bordermain font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
           >
-            Login
-          </Link>
-        </div>
-        <div className="text-rosemain font-ubuntu font-light text-center text-sm">
-          {popup ? popup : <div>‎</div>}
+            Register
+          </button>
+          <div className="text-center text-md font-light text-textmain">
+            Already have an account?
+            <Link
+              to="/login"
+              className="font-semibold text-textmain underline underline-offset-2 mx-1"
+            >
+              Login
+            </Link>
+          </div>
+          <div className="text-rosemain font-ubuntu font-light text-center text-sm">
+            {popup ? popup : <div>‎</div>}
+          </div>
         </div>
       </div>
     </div>
