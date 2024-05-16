@@ -135,8 +135,8 @@ export const Data = () => {
       <div className="bg-bgmain  flex justify-center items-center">
         <textarea
           rows={3}
-          className={`w-full border border-bordermain resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
-            popup ? "border border-rose-400" : ""
+          className={`w-full bg-bgtwo text-textmain border border-bordermain resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+            popup ? "border border-rosemain" : ""
           }`}
           wrap="soft"
           onChange={(e) => {
@@ -156,11 +156,11 @@ export const Data = () => {
             }}
           >
             <VisibilityOffIcon
-              className={`${anonymity ? "text-textmain" : "text-texttwo"}`}
+              className={`${anonymity ? "text-rosemain" : "text-texttwo"}`}
             />
           </div>
           {anonymity ? (
-            <div className="text-textmain">Your identity will be hidden</div>
+            <div className="text-rosemain">Your identity will be hidden</div>
           ) : (
             <div className="text-texttwo">Hide your identity</div>
           )}

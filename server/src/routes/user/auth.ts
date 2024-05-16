@@ -2,8 +2,9 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, verify } from "hono/jwt";
-import { z } from "zod";
+import { date, z } from "zod";
 import bcrypt from "bcryptjs";
+import { BalancedPool } from "undici";
 export const userAuthRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -17,6 +18,9 @@ const fullNameSchema = z.string().max(20);
 const usernameSchema = z.string().max(20);
 const emailSchema = z.string().email();
 const passwordSchema = z.string().min(6);
+const dateSchema = z.string().max(2);
+const monthSchema = z.string().max(2);
+const yearSchema = z.string().max(4);
 
 userAuthRouter.post("/username/check", async (c) => {
   try {
@@ -74,14 +78,23 @@ userAuthRouter.post("/signup", async (c) => {
     const usernameRes = usernameSchema.safeParse(body.username);
     const emailRes = emailSchema.safeParse(body.email);
     const passwordRes = passwordSchema.safeParse(body.password);
+    const dateRes = dateSchema.safeParse(body.date);
+    const monthRes = monthSchema.safeParse(body.month);
+    const yearRes = yearSchema.safeParse(body.year);
     if (
       !fullnameRes.success ||
       !usernameRes.success ||
       !emailRes.success ||
-      !passwordRes.success
+      !passwordRes.success ||
+      !dateRes.success ||
+      !monthRes.success ||
+      !yearRes
     ) {
       return c.json({ status: 400, message: "Invalid inputs" });
     }
+
+    let birthday = `${body.year}/${body.month}/${body.date}`;
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -116,6 +129,7 @@ userAuthRouter.post("/signup", async (c) => {
         username: body.username,
         email: body.email,
         password: hashedPassword,
+        birthday: birthday,
       },
     });
     if (!newUser) {

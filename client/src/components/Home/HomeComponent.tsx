@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
+import ReplyIcon from "@mui/icons-material/Reply";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
@@ -144,7 +144,7 @@ export const HomeComponent = () => {
           postData.posts.map((post, index) => (
             <div
               key={index}
-              className="my-4 p-2 py-4 rounded-md border border-bordermain  bg-bgmain"
+              className="my-4 p-2  rounded-md border border-bordermain  bg-bgmain"
             >
               <div className="flex items-center gap-2">
                 <div>
@@ -235,7 +235,7 @@ export const HomeComponent = () => {
                   {post.image && (
                     <img
                       src={post.image}
-                      className="rounded-md w-[100%] md:w-[60%] border border-bordermain"
+                      className="rounded-md w-[100%] md:w-[60%]"
                     />
                   )}
 
@@ -266,23 +266,23 @@ export const HomeComponent = () => {
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-textmain"
+                            className="text-texttwo"
                           />
                         )}
                       </div>
                     </button>
-                    <div className="text-sm text-textmain">
+                    <div className="text-sm text-texttwo">
                       {post.likesCount} likes
                     </div>
                   </div>
                   <div className="flex gap-2 items-center">
                     <div onClick={() => navigate(`/post/${post.id}`)}>
-                      <MapsUgcRoundedIcon
+                      <ReplyIcon
                         sx={{ fontSize: 22 }}
-                        className="text-textmain cursor-pointer"
+                        className="text-texttwo cursor-pointer"
                       />
                     </div>
-                    <div className="text-sm text-textmain">
+                    <div className="text-sm text-texttwo">
                       {post.commentsCount} comments
                     </div>
                   </div>

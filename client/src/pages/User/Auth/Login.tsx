@@ -1,4 +1,3 @@
-import { Quote } from "../../../components/User/Auth/Quote";
 import { LoginAuth } from "../../../components/User/Auth/LoginAuth";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -10,10 +9,5 @@ export const Login = () => {
       navigate("/");
     }
   });
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2">
-      <Quote />
-      <LoginAuth />
-    </div>
-  );
+  return <LoginAuth />;
 };

@@ -11,7 +11,7 @@ import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
+import ReplyIcon from "@mui/icons-material/Reply";
 import { BottomBar } from "../../Bars/BottomBar";
 import { NavBar } from "../../Bars/NavBar";
 import { UserData } from "./UserData";
@@ -235,7 +235,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-2 p-2 rounded-md border border-bordermain  bg-bgmain"
+                className="my-4 p-2 rounded-md border border-bordermain  bg-bgmain"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2 items-center">
@@ -295,7 +295,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                     {post.image && (
                       <img
                         src={post.image}
-                        className="rounded-md w-[100%] md:w-[60%] border border-bordermain"
+                        className="rounded-md w-[100%] md:w-[60%]"
                       />
                     )}
 
@@ -326,23 +326,23 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                               sx={{
                                 fontSize: 22,
                               }}
-                              className="text-textmain"
+                              className="text-texttwo"
                             />
                           )}
                         </div>
                       </button>
-                      <div className="text-sm text-textmain">
+                      <div className="text-sm text-texttwo">
                         {post.likesCount} likes
                       </div>
                     </div>
                     <div className="flex gap-2 items-center">
                       <div onClick={() => navigate(`/post/${post.id}`)}>
-                        <MapsUgcRoundedIcon
+                        <ReplyIcon
                           sx={{ fontSize: 22 }}
-                          className="text-textmain cursor-pointer"
+                          className="text-texttwo cursor-pointer"
                         />
                       </div>
-                      <div className="text-sm text-textmain">
+                      <div className="text-sm text-texttwo">
                         {post.commentsCount} comments
                       </div>
                     </div>

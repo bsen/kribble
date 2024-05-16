@@ -33,6 +33,7 @@ function debounce<T extends (...args: any[]) => void>(
   debouncedFunc.cancel = cancel;
   return debouncedFunc;
 }
+
 export const SignupAuth = () => {
   const navigate = useNavigate();
   const { setCurrentUser } = useContext(UserContext);
@@ -43,10 +44,14 @@ export const SignupAuth = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [popup, setPopup] = useState<string>("");
+  const [month, setMonth] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [year, setYear] = useState<string>("");
 
   const validateUsername = (char: string) => {
     return char.match(/^[a-z0-9_]$/i);
   };
+
   const validatePassword = (char: string) => {
     return char.match(/^[A-Za-z0-9@#]$/i);
   };
@@ -60,11 +65,13 @@ export const SignupAuth = () => {
     setUsername(newUsername);
     debouncedCheckName(newUsername);
   };
-  const handleEmailChnage = (text: string) => {
+
+  const handleEmailChange = (text: string) => {
     const newEmail = text.toLowerCase();
     setEmail(newEmail);
   };
-  const handlePasswordChnage = (text: string) => {
+
+  const handlePasswordChange = (text: string) => {
     const newPassword = text.split("").filter(validatePassword).join("");
     setPassword(newPassword);
   };
@@ -101,9 +108,75 @@ export const SignupAuth = () => {
     };
   }, [username]);
 
+  const isLeapYear = (year: number) => {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  };
+
+  const getDaysInMonth = (month: number, year: number) => {
+    const days31 = [1, 3, 5, 7, 8, 10, 12];
+    const days30 = [4, 6, 9, 11];
+    if (days31.includes(month)) {
+      return 31;
+    } else if (days30.includes(month)) {
+      return 30;
+    } else {
+      return isLeapYear(year) ? 29 : 28;
+    }
+  };
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const renderOptions = (start: number, end: number) => {
+    const options = [];
+    for (let i = start; i <= end; i++) {
+      options.push(i);
+    }
+    return options.map((option) => (
+      <option key={option} value={option.toString()}>
+        {option}
+      </option>
+    ));
+  };
+
+  const renderMonthOptions = () => {
+    return monthNames.map((month, index) => (
+      <option key={index} value={(index + 1).toString()}>
+        {month}
+      </option>
+    ));
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      signup();
+    }
+  };
+
   async function signup() {
     setPopup("");
-    if (!fullname || !username || !email || !password) {
+    if (
+      !fullname ||
+      !username ||
+      !email ||
+      !password ||
+      !year ||
+      !month ||
+      !date
+    ) {
       setPopup("Please fill in all the fields");
       return;
     }
@@ -118,7 +191,20 @@ export const SignupAuth = () => {
       return;
     }
 
-    const userdata = { fullname, username, email, password };
+    if (!isEighteen()) {
+      setPopup("You must be at least 18 years old to register");
+      return;
+    }
+
+    const userdata = {
+      fullname,
+      username,
+      email,
+      password,
+      year,
+      month,
+      date,
+    };
 
     try {
       setIsLoading(true);
@@ -141,97 +227,157 @@ export const SignupAuth = () => {
     }
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      signup();
+  const isEighteen = () => {
+    const today = new Date();
+    const birthDate = new Date(
+      parseInt(year),
+      parseInt(month) - 1,
+      parseInt(date)
+    );
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
     }
+    return age >= 18;
   };
-  return (
-    <>
-      {isLoading && (
-        <div className="h-screen flex justify-center items-center w-full">
-          <CircularProgress />
-        </div>
-      )}
-      {!isLoading && (
-        <div className="h-screen w-full  bg-bgmain flex justify-center items-center">
-          <div className="w-[80%] lg:w-[60%] md:w-[40%] grid gap-y-2">
-            <div className="text-textmain font-ubuntu text-[1.5rem] text-center my-4">
-              Create an account
-            </div>
 
-            <div>
-              <div className="font-normal m-1 text-textmain">Name</div>
-              <input
-                value={fullname}
-                maxLength={20}
-                onChange={(e) => {
-                  setFullName(e.target.value);
-                }}
-                className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
-                placeholder="Enter your name"
-              />
-            </div>
-            <div>
-              <div className="font-normal m-1 text-textmain">Username</div>
-              <input
-                value={username}
-                maxLength={20}
-                onChange={(e) => {
-                  handleUsernameChange(e.target.value);
-                }}
-                className={`w-full h-10 px-4 border border-neutral-300 focus:outline-none  rounded-lg ${
-                  available ? "" : "border border-rosemain"
-                }`}
-                placeholder="Enter your username"
-              />
-            </div>
-            <div>
-              <div className="font-normal m-1 text-textmain">Email</div>
-              <input
-                value={email}
-                onChange={(e) => {
-                  handleEmailChnage(e.target.value);
-                }}
-                className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
-                placeholder="Enter your email address"
-              />
-            </div>
-            <div>
-              <div className="font-normal m-1 text-textmain">Password</div>
-              <input
-                value={password}
-                onChange={(e) => {
-                  handlePasswordChnage(e.target.value);
-                }}
-                onKeyDown={handleKeyDown}
-                className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-300"
-                placeholder="Enter password"
-              />
-            </div>
-            <button
-              onClick={signup}
-              disabled={isLoading}
-              className="my-4 w-full text-textmain bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-700"
-            >
-              Register
-            </button>
-            <div className="text-center text-md font-light text-textmain">
-              Already have an account?
-              <Link
-                to="/login"
-                className="font-normal text-textmain underline underline-offset-2 mx-1"
+  if (isLoading) {
+    return (
+      <div className="h-screen flex justify-center items-center w-full">
+        <CircularProgress />
+      </div>
+    );
+  }
+  return (
+    <div className="h-screen w-full p-2  flex justify-evenly items-center bg-bgmain">
+      <div className="w-[100%] lg:w-[40%]">
+        <div className="text-textmain text-center mb-6 font-ubuntu font-light text-2xl">
+          Create your profile on Introsium
+        </div>
+
+        <div className="items-center p-2 rounded-md bg-bgtwo border border-bordermain">
+          <div className="my-2 flex gap-2">
+            <img
+              src="/people.png"
+              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+            />
+            <img
+              src="/girl.png"
+              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+            />
+            <img
+              src="/boy.png"
+              className="h-20 w-20  rounded-full border border-bordermain bg-bgtwo"
+            />
+          </div>
+
+          <div>
+            <div className="font-normal m-1 text-textmain">Full Name</div>
+            <input
+              value={fullname}
+              maxLength={20}
+              onChange={(e) => {
+                setFullName(e.target.value);
+              }}
+              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              placeholder="Enter your full name"
+            />
+          </div>
+          <div>
+            <div className="font-normal m-1 text-textmain">Username</div>
+            <input
+              value={username}
+              maxLength={20}
+              onChange={(e) => {
+                handleUsernameChange(e.target.value);
+              }}
+              className={`w-full h-9 px-4 border border-bordermain focus:outline-none  rounded-lg ${
+                available ? "" : "border border-rosemain"
+              }`}
+              placeholder="Select your username"
+            />
+          </div>
+          <div>
+            <div className="font-normal m-1 text-textmain">Email</div>
+            <input
+              value={email}
+              onChange={(e) => {
+                handleEmailChange(e.target.value);
+              }}
+              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              placeholder="Enter your email address"
+            />
+          </div>
+          <div>
+            <div className="font-normal m-1 text-textmain">Password</div>
+            <input
+              value={password}
+              onChange={(e) => {
+                handlePasswordChange(e.target.value);
+              }}
+              onKeyDown={handleKeyDown}
+              className=" h-9 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
+              placeholder="Enter password"
+            />
+          </div>
+          <div>
+            <div className="font-normal m-1 text-textmain">Birthday</div>
+            <div className="flex gap-2">
+              <select
+                value={month}
+                onChange={(e) => setMonth(e.target.value)}
+                className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
               >
-                Login
-              </Link>
-            </div>
-            <div className="text-rosemain font-ubuntu font-light text-center text-sm">
-              {popup ? popup : <div>‎</div>}
+                <option value="">Month</option>
+                {renderMonthOptions()}
+              </select>
+              <select
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="h-9 w-20 rounded-lg px-4 focus:outline-none border border-bordermain"
+              >
+                <option value="">Date</option>
+                {renderOptions(
+                  1,
+                  getDaysInMonth(parseInt(month), parseInt(year))
+                )}
+              </select>
+              <select
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
+              >
+                <option value="">Year</option>
+                {renderOptions(1975, new Date().getFullYear())}
+              </select>
             </div>
           </div>
+
+          <button
+            onClick={signup}
+            disabled={isLoading}
+            className="my-4 w-full text-textmain bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-bordermain font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+          >
+            Register
+          </button>
+          <div className="text-center text-md font-light text-textmain">
+            Already have an account?
+            <Link
+              to="/login"
+              className="font-semibold text-textmain underline underline-offset-2 mx-1"
+            >
+              Login
+            </Link>
+          </div>
+          <div className="text-rosemain font-ubuntu font-light text-center text-sm">
+            {popup ? popup : <div>‎</div>}
+          </div>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };

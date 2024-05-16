@@ -196,11 +196,11 @@ export const Post = () => {
               }}
             >
               <VisibilityOffIcon
-                className={`${anonymity ? "text-textmain" : "text-texttwo"}`}
+                className={`${anonymity ? "text-rosemain" : "text-texttwo"}`}
               />
             </div>
             {anonymity ? (
-              <div className="text-textmain">Your identity will be hidden</div>
+              <div className="text-rosemain">Your identity will be hidden</div>
             ) : (
               <div className="text-texttwo">Hide your identity</div>
             )}

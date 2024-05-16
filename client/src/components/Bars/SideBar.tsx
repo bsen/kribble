@@ -23,7 +23,7 @@ export const SideBar = () => {
             }}
             className="bg-white my-4 text-transparent bg-clip-text text-3xl font-ubuntu"
           >
-            introspium
+            introsium
           </div>
 
           <button
