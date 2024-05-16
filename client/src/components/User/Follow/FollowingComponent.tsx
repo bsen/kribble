@@ -71,42 +71,44 @@ export const FollowingComponent = () => {
         ref={scrollContainerRef}
       >
         <NavBar />
-        {followingsData.followings &&
-          followingsData.followings.map((followingObj) => (
-            <div
-              key={followingObj.id}
-              className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgmain"
-            >
-              <div className="flex justify-start items-center gap-2">
-                <img
-                  className="h-9 w-9 rounded-full bg-bgmain"
-                  src={
-                    followingObj.following.image
-                      ? followingObj.following.image
-                      : "/user.png"
-                  }
-                />
-                <div>
-                  <Link to={`/${followingObj.following.username}`}>
-                    <div className="text-textmain text-lg font-ubuntu">
-                      {followingObj.following.username}
-                    </div>
-                  </Link>
+        <>
+          {followingsData.followings &&
+            followingsData.followings.map((followingObj) => (
+              <div
+                key={followingObj.id}
+                className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgmain"
+              >
+                <div className="flex justify-start items-center gap-2">
+                  <img
+                    className="h-9 w-9 rounded-full bg-bgmain"
+                    src={
+                      followingObj.following.image
+                        ? followingObj.following.image
+                        : "/user.png"
+                    }
+                  />
+                  <div>
+                    <Link to={`/${followingObj.following.username}`}>
+                      <div className="text-textmain text-lg font-ubuntu">
+                        {followingObj.following.username}
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        {!followingsData.followings ||
-          (!isLoading && (
+            ))}
+
+          {!followingsData.followings && (
             <div className="text-texttwo my-5  font-light text-center text-lg">
               No following found.
             </div>
-          ))}
-        {isLoading && (
-          <div className="text-texttwo my-5  font-light text-center text-lg">
-            Loading ...
-          </div>
-        )}
+          )}
+          {isLoading && (
+            <div className="text-texttwo my-5  font-light text-center text-lg">
+              Loading ...
+            </div>
+          )}
+        </>
       </div>
     </>
   );

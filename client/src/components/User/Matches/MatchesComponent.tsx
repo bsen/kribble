@@ -79,10 +79,7 @@ export const MatchesComponent = () => {
                 </div>
               ) : (
                 <>
-                  <div className="my-4 text-textmain bg-indigomain px-4 py-1 text-sm font-light rounded-md">
-                    Matches
-                  </div>
-                  <div className="w-full px-2">
+                  <div className="w-[100%] md:w-[50%] px-2">
                     {matchedUsers.length > 0 ? (
                       matchedUsers.map((user, index) => (
                         <button
@@ -91,7 +88,7 @@ export const MatchesComponent = () => {
                             parentToChild(user.username, user.image, user.id);
                             setMessageState(true);
                           }}
-                          className="flex w-full  bg-bgmain shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
+                          className="flex w-full border border-bordermain bg-bgmain shadow-sm rounded-xl items-center justify-between gap-4 my-2 px-4"
                         >
                           <div className="w-full m-2 flex justify-between items-center">
                             <div className="flex gap-2 justify-center items-center">

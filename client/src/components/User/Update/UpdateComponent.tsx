@@ -218,7 +218,7 @@ export const UpdateProfileComponent = () => {
                   onChange={(e) => {
                     setFullName(e.target.value);
                   }}
-                  className=" h-10 w-full text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
+                  className=" h-10 w-full bg-bgtwo text-textmain text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
                 />
               </div>
               <div>
@@ -230,14 +230,14 @@ export const UpdateProfileComponent = () => {
                   onChange={(e) => {
                     setWebsite(e.target.value);
                   }}
-                  className=" h-10 w-full text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
+                  className=" h-10 bg-bgtwo text-textmain w-full text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
                 />
               </div>
               <div>
                 <div className="text-textmain text-sm  font-light">Bio</div>
                 <textarea
                   rows={2}
-                  className="w-full text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-bordermain"
+                  className="w-full bg-bgtwo text-textmain text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-bordermain"
                   defaultValue={userData.bio}
                   wrap="soft"
                   maxLength={150}

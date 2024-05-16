@@ -114,7 +114,7 @@ export const UserData: React.FC = () => {
                   onClick={() => {
                     navigate("/edit/profile");
                   }}
-                  className="text-left border border-bordermain text-texttwo bg-bgtwo font-light rounded-full px-4 py-1 text-sm"
+                  className="text-left border border-bordermain text-textmain bg-bgtwo font-light rounded-full px-4 py-1 text-sm"
                 >
                   Edit
                 </button>
@@ -190,7 +190,7 @@ export const UserData: React.FC = () => {
                 navigate("/matches");
               }}
               className={
-                "flex justify-between text-sm items-center text-texttwo font-light bg-bgtwo px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-textmain font-light bg-bgtwo px-4 py-1 rounded-full"
               }
             >
               Matches
@@ -212,7 +212,7 @@ export const UserData: React.FC = () => {
                 navigate("/created/communities");
               }}
               className={
-                "flex justify-between text-sm items-center text-texttwo font-light bg-bgtwo px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-textmain font-light bg-bgtwo px-4 py-1 rounded-full"
               }
             >
               Created communites
@@ -222,7 +222,7 @@ export const UserData: React.FC = () => {
                 navigate("/joined/communities");
               }}
               className={
-                "flex justify-between text-sm items-center text-texttwo font-light bg-bgtwo px-4 py-1 rounded-full"
+                "flex justify-between text-sm items-center text-textmain font-light bg-bgtwo px-4 py-1 rounded-full"
               }
             >
               Joined communites

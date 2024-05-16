@@ -27,6 +27,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   async function send() {
+    setSendingMessage("");
     if (sendingmessage.trim()) {
       await axios.post(`${BACKEND_URL}/api/message/send`, {
         token,
@@ -148,24 +149,24 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
           .map((message, index) => (
             <div
               key={index}
-              className={`mt-2 max-w-[70%] rounded-lg px-3 py-2 ${
+              className={`mt-2 max-w-[70%] rounded-lg px-4 py-1 ${
                 message.sender === "self"
                   ? "bg-indigomain text-textmain self-end"
-                  : "bg-violet-500 text-textmain self-start"
+                  : "bg-indigomain text-textmain self-start"
               }`}
             >
               {message.message}
             </div>
           ))}
       </div>
-      <div className="bg-bgmain bottom-0 gap-4 w-full border border-bordermain lg:w-[50%] flex items-center h-16 fixed justify-center">
+      <div className=" bottom-0 gap-4 w-full border-t border-bordermain lg:w-[50%] flex items-center h-16 fixed justify-center">
         <input
           type="text"
           maxLength={300}
           value={sendingmessage}
           onChange={(e) => setSendingMessage(e.target.value)}
           placeholder="Message..."
-          className="w-[80%] h-10 bg-neutral-100  rounded-full px-4 focus:outline-none"
+          className="w-[80%] h-10 text-textmain bg-bgtwo  rounded-full px-4 focus:outline-none"
           ref={inputRef}
           onKeyDown={handleKeyDown}
         />

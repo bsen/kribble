@@ -184,7 +184,9 @@ export const UpdateCommunityComponent = () => {
           </button>
         </div>
         <div>
-          <div className="text-textmain  text-sm font-light">Description</div>
+          <div className="text-textmain  bg-bgtwo text-textmain text-sm font-light">
+            Description
+          </div>
           <textarea
             rows={2}
             className="w-full px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-bordermain"

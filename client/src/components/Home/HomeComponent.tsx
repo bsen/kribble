@@ -135,175 +135,173 @@ export const HomeComponent = () => {
   return (
     <>
       <div
-        className="h-screen p-2 flex justify-center overflow-y-auto no-scrollbar py-12 md:py-0"
+        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <NavBar />
-        <div className="w-[100%] md:w-[58%]">
-          {postData.posts ? (
-            postData.posts.map((post, index) => (
-              <div
-                key={index}
-                className="my-4 p-2 py-4 rounded-md border border-bordermain  bg-bgmain"
-              >
-                <div className="flex items-center gap-2">
-                  <div>
-                    {post.community ? (
-                      <div>
-                        {post.community && (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/community/${post.community.name}`);
-                            }}
-                            className="flex gap-2 mt-2 text-textmain"
-                          >
-                            {post.community && (
-                              <img
-                                src={post.community.image || "/group.png"}
-                                className="w-9 h-9 rounded-full"
-                                alt="Community"
-                              />
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/${post.creator.username}`);
-                        }}
-                      >
-                        <img
-                          src={
-                            post.creator.image
-                              ? post.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-9 h-9 rounded-full"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="w-fit flex gap-2 items-center">
-                    {post.community ? (
-                      <div>
-                        <div className="flex gap-2 items-center">
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/community/${post.community.name}`);
-                            }}
-                          >
-                            {post.community && (
-                              <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
-                                c/ {post.community.name}
-                              </div>
-                            )}
-                          </div>
-                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-                            · {getTimeDifference(post.createdAt)}
-                          </div>
-                        </div>
-                        <div className="text-texttwo text-xs  font-light">
-                          by {post.creator.username}
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="flex gap-2 items-center">
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/${post.creator.username}`);
-                            }}
-                            className="text-textmain text-sm lg:text-base hover:underline font-semibold"
-                          >
-                            {post.creator.username}
-                          </div>
-
-                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-                            · {getTimeDifference(post.createdAt)}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-                <div className="w-full flex flex-col">
-                  <div className="flex flex-col gap-2 py-4 w-full">
-                    {post.image && (
-                      <img src={post.image} className="rounded-md" />
-                    )}
-
-                    <div className="text-textmain text-sm lg:text-base font-light">
-                      {post.content}
-                    </div>
-                  </div>
-
-                  <div className=" flex justify-between gap-2 items-center text-sm text-neutral-500">
-                    <div className="flex gap-2 items-center">
-                      <button
-                        className="flex justify-center items-center gap-2 cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLike(post.id);
-                        }}
-                      >
-                        <div>
-                          {post.isLiked ? (
-                            <FavoriteIcon
-                              sx={{
-                                fontSize: 22,
-                              }}
-                              className="text-rose-600"
-                            />
-                          ) : (
-                            <FavoriteIcon
-                              sx={{
-                                fontSize: 22,
-                              }}
-                              className="text-neutral-400"
+        {postData.posts ? (
+          postData.posts.map((post, index) => (
+            <div
+              key={index}
+              className="my-4 p-2 py-4 rounded-md border border-bordermain  bg-bgmain"
+            >
+              <div className="flex items-center gap-2">
+                <div>
+                  {post.community ? (
+                    <div>
+                      {post.community && (
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/community/${post.community.name}`);
+                          }}
+                          className="flex gap-2 mt-2 text-textmain"
+                        >
+                          {post.community && (
+                            <img
+                              src={post.community.image || "/group.png"}
+                              className="w-9 h-9 rounded-full"
+                              alt="Community"
                             />
                           )}
                         </div>
-                      </button>
-                      <div className="text-sm text-texttwo">
-                        {post.likesCount} likes
+                      )}
+                    </div>
+                  ) : (
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/${post.creator.username}`);
+                      }}
+                    >
+                      <img
+                        src={
+                          post.creator.image ? post.creator.image : "/user.png"
+                        }
+                        alt="Profile"
+                        className="w-9 h-9 rounded-full"
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="w-fit flex gap-2 items-center">
+                  {post.community ? (
+                    <div>
+                      <div className="flex gap-2 items-center">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/community/${post.community.name}`);
+                          }}
+                        >
+                          {post.community && (
+                            <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
+                              c/ {post.community.name}
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                          · {getTimeDifference(post.createdAt)}
+                        </div>
+                      </div>
+                      <div className="text-texttwo text-xs  font-light">
+                        by {post.creator.username}
                       </div>
                     </div>
-                    <div className="flex gap-2 items-center">
-                      <div onClick={() => navigate(`/post/${post.id}`)}>
-                        <MapsUgcRoundedIcon
-                          sx={{ fontSize: 22 }}
-                          className="text-texttwo cursor-pointer"
-                        />
+                  ) : (
+                    <>
+                      <div className="flex gap-2 items-center">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/${post.creator.username}`);
+                          }}
+                          className="text-textmain text-sm lg:text-base hover:underline font-semibold"
+                        >
+                          {post.creator.username}
+                        </div>
+
+                        <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                          · {getTimeDifference(post.createdAt)}
+                        </div>
                       </div>
-                      <div className="text-sm text-neutral-400">
-                        {post.commentsCount} comments
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="w-full flex flex-col">
+                <div className="flex flex-col gap-2 py-4 w-full">
+                  {post.image && (
+                    <img
+                      src={post.image}
+                      className="rounded-md w-[100%] md:w-[60%] border border-bordermain"
+                    />
+                  )}
+
+                  <div className="text-textmain text-sm lg:text-base font-light">
+                    {post.content}
+                  </div>
+                </div>
+
+                <div className=" flex justify-between gap-2 items-center text-sm text-neutral-500">
+                  <div className="flex gap-2 items-center">
+                    <button
+                      className="flex justify-center items-center gap-2 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleLike(post.id);
+                      }}
+                    >
+                      <div>
+                        {post.isLiked ? (
+                          <FavoriteIcon
+                            sx={{
+                              fontSize: 22,
+                            }}
+                            className="text-rose-600"
+                          />
+                        ) : (
+                          <FavoriteIcon
+                            sx={{
+                              fontSize: 22,
+                            }}
+                            className="text-textmain"
+                          />
+                        )}
                       </div>
+                    </button>
+                    <div className="text-sm text-textmain">
+                      {post.likesCount} likes
+                    </div>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <div onClick={() => navigate(`/post/${post.id}`)}>
+                      <MapsUgcRoundedIcon
+                        sx={{ fontSize: 22 }}
+                        className="text-textmain cursor-pointer"
+                      />
+                    </div>
+                    <div className="text-sm text-textmain">
+                      {post.commentsCount} comments
                     </div>
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="text-texttwo my-5  font-light text-center text-lg">
-              No posts found
+            </div>
+          ))
+        ) : (
+          <div className="text-texttwo my-5  font-light text-center text-lg">
+            No posts found
+          </div>
+        )}
+        <div>
+          {isLoading && (
+            <div className="w-full my-5 flex justify-center items-center">
+              <CircularProgress />
             </div>
           )}
-          <div>
-            {isLoading && (
-              <div className="w-full my-5 flex justify-center items-center">
-                <CircularProgress />
-              </div>
-            )}
-          </div>
         </div>
-
         <BottomBar />
       </div>
     </>

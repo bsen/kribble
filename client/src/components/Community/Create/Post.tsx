@@ -130,7 +130,7 @@ export const Post = () => {
             />
           </button>
           <div className="text-xl flex justify-center items-center gap-5 font-light bg-bgtwo px-4 rounded-md py-1 text-textmain text-center">
-            <div>Create Post</div>
+            <div>Create Post in {name}</div>
           </div>
         </div>
         <div className="w-full h-full rounded-lg flex flex-col justify-center">
@@ -214,12 +214,10 @@ export const Post = () => {
             </button>
           </div>
         </div>
-        {popup ? (
+        {popup && (
           <div className="text-red-400 font-light text-center text-xs my-2">
             {popup}
           </div>
-        ) : (
-          ""
         )}
       </div>
     </>

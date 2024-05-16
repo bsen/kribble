@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import { BACKEND_URL } from "../../../config";
 import { CircularProgress } from "@mui/material";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useNavigate } from "react-router-dom";
 
 export const Post = () => {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
-  const [caption, setCaption] = useState("");
+  const [post, setPost] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+  const [anonymity, setAnonymity] = useState(false);
   const [popup, setPopup] = useState("");
-  const [showCaptionInput, setShowCaptionInput] = useState(false);
-  const [showPostButton, setShowPostButton] = useState(false);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -52,63 +54,63 @@ export const Post = () => {
           ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
           const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
           setPreviewImage(compressedImageData);
-          setShowCaptionInput(true);
         }
       };
     };
     reader.readAsDataURL(file);
   };
 
+  const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPost(e.target.value);
+  };
+
   const handleClose = () => {
+    setPost("");
+    setPreviewImage("");
     history.go(-1);
   };
 
-  const createPost = async () => {
+  const createCommunityPost = async () => {
     setPopup("");
-    if (!previewImage) {
-      setPopup("Select an image");
+    if (!post) {
+      setPopup("Write something");
       return;
     }
 
     try {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append("caption", caption);
+      formData.append("post", post);
       formData.append("token", token || "");
+      formData.append("anonymity", String(anonymity));
 
-      const fileName = "croppedImage.jpeg";
-      const fileType = "image/jpeg";
-      const binaryString = atob(previewImage.split(",")[1]);
-      const arrayBuffer = new ArrayBuffer(binaryString.length);
-      const uint8Array = new Uint8Array(arrayBuffer);
-      for (let i = 0; i < binaryString.length; i++) {
-        uint8Array[i] = binaryString.charCodeAt(i);
+      if (previewImage) {
+        const fileName = "croppedImage.jpeg";
+        const fileType = "image/jpeg";
+        const binaryString = atob(previewImage.split(",")[1]);
+        const arrayBuffer = new ArrayBuffer(binaryString.length);
+        const uint8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < binaryString.length; i++) {
+          uint8Array[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([uint8Array], { type: fileType });
+        const file = new File([blob], fileName, { type: fileType });
+        formData.append("image", file);
       }
-      const blob = new Blob([uint8Array], { type: fileType });
-      const file = new File([blob], fileName, { type: fileType });
 
-      formData.append("image", file);
       const response = await axios.post(
-        `${BACKEND_URL}/api/user/post/create`,
+        `http://localhost:8787/api/user/post/create`,
         formData
       );
       setPopup(response.data.message);
       setIsLoading(false);
-      history.go(-1);
+      navigate("/");
     } catch (error) {
       console.error("Error creating post:", error);
       setPopup("Network error");
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (caption) {
-      setShowPostButton(true);
-    } else {
-      setShowPostButton(false);
-    }
-  }, [caption]);
   if (isLoading) {
     return (
       <div className="h-screen bg-bgmain w-full flex justify-center items-center">
@@ -116,10 +118,9 @@ export const Post = () => {
       </div>
     );
   }
-
   return (
     <>
-      <div className="bg-bgmain flex flex-col  justify-between p-4 items-center  h-screen border-l border-r border-bordermain">
+      <div className="w-full bg-bgmain p-4 rounded-md">
         <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon
@@ -127,20 +128,38 @@ export const Post = () => {
               sx={{ fontSize: 35 }}
             />
           </button>
-          <div className="text-xl flex justify-center items-center gap-5 font-light bg-bgtwo px-4 rounded-md py-1 text-indigomain text-center">
+          <div className="text-xl flex justify-center items-center gap-5 font-light bg-bgtwo px-4 rounded-md py-1 text-textmain text-center">
             <div>Create Post</div>
           </div>
         </div>
-        <div>
-          {!previewImage && (
-            <div>
+        <div className="w-full h-full rounded-lg flex flex-col justify-center">
+          {previewImage ? (
+            <div className="w-[100%] flex items-end justify-center bg-bgmain p-4 rounded-md">
+              <div className="flex flex-col items-center">
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="max-w:w-[80%] lg:max-w-[50%] rounded-md border border-bordermain"
+                />
+                <button
+                  onClick={() => {
+                    setPreviewImage("");
+                  }}
+                  className="text-black mt-2 rounded-full"
+                >
+                  <DeleteIcon sx={{ fontSize: 25 }} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex justify-end">
               <label
                 htmlFor="image-upload"
                 className="cursor-pointer block text-center"
               >
-                <div className="h-48 w-48  bg-bgmain shadow-sm rounded-xl border border-bordermain  gap-2 flex justify-center items-center">
+                <div className="h-[5vh] w-fit rounded-md  gap-2 flex justify-center items-center">
                   <AddPhotoAlternateIcon
-                    sx={{ fontSize: 40 }}
+                    sx={{ fontSize: 30 }}
                     className="text-textmain"
                   />
                 </div>
@@ -154,66 +173,51 @@ export const Post = () => {
               />
             </div>
           )}
+        </div>
 
-          <div className="my-4">
-            <div className="bg-red-200">
-              {previewImage && (
-                <div className="w-[100%] bg-bgmain p-4 rounded-md">
-                  <div className="flex flex-col items-center">
-                    <div className="flex justify-center gap-2 items-end">
-                      <img
-                        src={previewImage}
-                        alt="Preview"
-                        className="max-w:w-[80%] lg:max-w-[50%] rounded-md border border-bordermain"
-                      />
-                    </div>
-                    <button
-                      onClick={() => {
-                        setPreviewImage("");
-                        setShowCaptionInput(false);
-                        setShowPostButton(false);
-                      }}
-                      className="text-black mt-2 rounded-full"
-                    >
-                      <DeleteIcon sx={{ fontSize: 25 }} />
-                    </button>
-                  </div>
-                </div>
-              )}
+        <div className="w-full bg-bgmain my-4 rounded-md">
+          <textarea
+            value={post}
+            onChange={handlePostChange}
+            rows={3}
+            className="w-full bg-bgtwo border border-bordermain overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-textmain rounded-lg"
+            placeholder="Write your thoughts..."
+            wrap="soft"
+            maxLength={250}
+          />
+        </div>
+
+        <div className="flex w-full my-2 justify-between">
+          <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
+            <div
+              onClick={() => {
+                setAnonymity((prevState) => !prevState);
+              }}
+            >
+              <VisibilityOffIcon
+                className={`${anonymity ? "text-textmain" : "text-texttwo"}`}
+              />
             </div>
-            {showCaptionInput && (
-              <>
-                <div className="px-4 shadow-sm bg-bgmain  rounded-md">
-                  <textarea
-                    value={caption}
-                    onChange={(e) => setCaption(e.target.value)}
-                    rows={3}
-                    className="w-full overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-textmain rounded-lg"
-                    placeholder="Write some captions..."
-                    wrap="soft"
-                    maxLength={250}
-                  />
-                </div>
-                <div>
-                  {showPostButton && (
-                    <div className="flex w-full p-2 justify-end">
-                      <button
-                        onClick={createPost}
-                        className=" bg-indigomain text-textmain px-4 py-1 rounded-lg"
-                      >
-                        Post
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </>
+            {anonymity ? (
+              <div className="text-textmain">Your identity will be hidden</div>
+            ) : (
+              <div className="text-texttwo">Hide your identity</div>
             )}
           </div>
+          <div>
+            <button
+              onClick={createCommunityPost}
+              className="text-textmain text-base py-1 px-6 rounded-md bg-indigomain"
+            >
+              Post
+            </button>
+          </div>
         </div>
-
-        <div className="text-red-400 font-light text-center text-sm my-2">
-          {popup ? popup : <div>‎</div>}
-        </div>
+        {popup && (
+          <div className="text-red-400 font-light text-center text-xs my-2">
+            {popup}
+          </div>
+        )}
       </div>
     </>
   );

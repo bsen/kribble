@@ -12,62 +12,84 @@ export const userPostRouter = new Hono<{
     CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
+
 userPostRouter.post("/create", async (c) => {
   try {
     const formData = await c.req.formData();
-    const file = formData.get("image");
-    const caption = formData.get("caption");
+    const file = formData.get("image") || null;
+    const post = formData.get("post");
     const token = formData.get("token");
-    if (typeof caption !== "string" || typeof token !== "string") {
+    const anonymity = formData.get("anonymity");
+    let anonymityBollean;
+
+    if (
+      typeof post !== "string" ||
+      typeof token !== "string" ||
+      typeof anonymity !== "string"
+    ) {
       return c.json({ status: 400, message: "Invalid post or token" });
     }
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+
     const userId = await verify(token, c.env.JWT_SECRET);
     const userData = await prisma.user.findUnique({ where: { id: userId.id } });
     if (!userData) {
       return c.json({ status: 401, message: "Unauthorized user" });
     }
-    if (!file) {
-      console.log("bo file");
-      return c.json({ status: 400, message: "No image provided" });
-    }
-    const data = new FormData();
-    const blob = new Blob([file]);
-    data.append("file", blob, "postby:" + userId.id);
-    const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${c.env.CLOUDFLARE_IMGAES_API_TOKEN}`,
-      },
-      body: data,
-    });
-    const imgUrl = (await response.json()) as {
-      result: { variants: string[] };
-    };
-    if (
-      imgUrl.result &&
-      imgUrl.result.variants &&
-      imgUrl.result.variants.length > 0
-    ) {
-      const variantUrl = imgUrl.result.variants[0];
 
-      const success = await prisma.post.create({
-        data: {
-          content: caption ? caption : "",
-          creator: { connect: { id: userId.id } },
-          image: variantUrl,
+    if (anonymity === "false") {
+      anonymityBollean = false;
+    }
+    if (anonymity === "true") {
+      anonymityBollean = true;
+    }
+
+    let variantUrl = null;
+
+    if (file) {
+      const data = new FormData();
+      const blob = new Blob([file]);
+      data.append("file", blob, "postby:" + userId.id);
+
+      const response = await fetch(c.env.CLOUDFLARE_IMGAES_POST_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${c.env.CLOUDFLARE_IMGAES_API_TOKEN}`,
         },
+        body: data,
       });
-      if (!success) {
-        return c.json({ status: 403, message: "Failed to create the post" });
+      const imgUrl = (await response.json()) as {
+        result: { variants: string[] };
+      };
+      if (
+        imgUrl.result &&
+        imgUrl.result.variants &&
+        imgUrl.result.variants.length > 0
+      ) {
+        variantUrl = imgUrl.result.variants[0];
+      } else {
+        console.error("No variants found in the response.");
       }
-    } else {
-      console.error("No variants found in the response.");
     }
 
-    return c.json({ status: 200, message: "Post created successfully" });
+    const createPost = await prisma.post.create({
+      data: {
+        content: post,
+        anonymity: anonymityBollean,
+        creator: { connect: { id: userId.id } },
+        image: variantUrl || null,
+      },
+    });
+    if (!createPost) {
+      return c.json({ status: 403, message: "Failed to create the post" });
+    }
+    return c.json({
+      status: 200,
+      message: "Community post created successfully",
+    });
   } catch (error) {
     return c.json({ status: 400, message: "Try again later, Network error" });
   }

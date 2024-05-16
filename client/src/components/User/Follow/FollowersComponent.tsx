@@ -97,12 +97,11 @@ export const FollowersComponent = () => {
               </div>
             </div>
           ))}
-        {!followersData.followers ||
-          (!isLoading && (
-            <div className="text-texttwo my-5  font-light text-center text-lg">
-              No following found.
-            </div>
-          ))}
+        {!followersData.followers && (
+          <div className="text-texttwo my-5  font-light text-center text-lg">
+            No followers found.
+          </div>
+        )}
         {isLoading && (
           <div className="text-texttwo my-5  font-light text-center text-lg">
             Loading ...

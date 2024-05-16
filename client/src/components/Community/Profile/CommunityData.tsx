@@ -113,9 +113,9 @@ export const CommunityData: React.FC = () => {
                     onClick={() => {
                       navigate(`/edit/community/${communityData.name}`);
                     }}
-                    className="text-left text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left border border-bordermain text-textmain bg-bgtwo font-light rounded-full px-4 py-1 text-sm"
                   >
-                    Edit details
+                    Edit
                   </button>
                 )}
 

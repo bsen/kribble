@@ -86,80 +86,80 @@ export const PostProfile = () => {
 
   return (
     <div
-      className="h-screen p-2 flex justify-center overflow-y-auto no-scrollbar py-12 md:py-0"
+      className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
       onScroll={handleScroll}
       ref={scrollContainerRef}
     >
       <NavBar />
-      <div className="w-[100%] md:w-[60%]">
-        <Data />
-        <div
-          className="overflow-y-auto no-scrollbar touch-action-none"
-          ref={ScrollContainerRef}
-        >
-          {postComments.map((comment) => (
-            <div
-              key={comment.id}
-              className="my-2 p-2 rounded-md border border-bordermain bg-bgmain"
-            >
-              <div className="flex gap-2">
-                <div>
-                  {comment.anonymity ? (
+
+      <Data />
+      <div
+        className="overflow-y-auto no-scrollbar touch-action-none"
+        ref={ScrollContainerRef}
+      >
+        {postComments.map((comment) => (
+          <div
+            key={comment.id}
+            className="my-2 p-2 rounded-md border border-bordermain bg-bgmain"
+          >
+            <div className="flex gap-2">
+              <div>
+                {comment.anonymity ? (
+                  <img
+                    src="/user.png"
+                    alt="Anonymous"
+                    className="w-8 h-8 rounded-full"
+                  />
+                ) : (
+                  <Link to={`/${comment.creator.username}`}>
                     <img
-                      src="/user.png"
-                      alt="Anonymous"
+                      src={
+                        comment.creator.image
+                          ? comment.creator.image
+                          : "/user.png"
+                      }
+                      alt="Profile"
                       className="w-8 h-8 rounded-full"
                     />
+                  </Link>
+                )}
+              </div>
+              <div className="w-full">
+                <div className="flex gap-2 items-center">
+                  {comment.anonymity ? (
+                    <div className="text-textmain text-sm lg:text-base font-semibold">
+                      {comment.creator.username}
+                    </div>
                   ) : (
                     <Link to={`/${comment.creator.username}`}>
-                      <img
-                        src={
-                          comment.creator.image
-                            ? comment.creator.image
-                            : "/user.png"
-                        }
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full"
-                      />
-                    </Link>
-                  )}
-                </div>
-                <div className="w-full">
-                  <div className="flex gap-2 items-center">
-                    {comment.anonymity ? (
-                      <div className="text-textmain text-sm lg:text-base font-semibold">
+                      <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
                         {comment.creator.username}
                       </div>
-                    ) : (
-                      <Link to={`/${comment.creator.username}`}>
-                        <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
-                          {comment.creator.username}
-                        </div>
-                      </Link>
-                    )}
-                    <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-                      · {getTimeDifference(comment.createdAt)}
-                    </div>
+                    </Link>
+                  )}
+                  <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                    · {getTimeDifference(comment.createdAt)}
                   </div>
-                  <div className="text-textmain text-sm lg:text-base font-light">
-                    {comment.content}
-                  </div>
-                  <div>
-                    <div className="flex gap-2 text-texttwo"></div>
-                  </div>
+                </div>
+                <div className="text-textmain text-sm lg:text-base font-light">
+                  {comment.content}
+                </div>
+                <div>
+                  <div className="flex gap-2 text-texttwo"></div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-        <div>
-          {isLoadingComments && (
-            <div className="w-full my-5 flex justify-center items-center">
-              <CircularProgress />
-            </div>
-          )}
-        </div>
+          </div>
+        ))}
       </div>
+      <div>
+        {isLoadingComments && (
+          <div className="w-full my-5 flex justify-center items-center">
+            <CircularProgress />
+          </div>
+        )}
+      </div>
+
       <BottomBar />
     </div>
   );
