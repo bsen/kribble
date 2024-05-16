@@ -352,7 +352,7 @@ export const SignupAuth = () => {
                 className="h-9 w-28 rounded-lg px-4 focus:outline-none border border-bordermain"
               >
                 <option value="">Year</option>
-                {renderOptions(1950, new Date().getFullYear())}
+                {renderOptions(1975, new Date().getFullYear())}
               </select>
             </div>
           </div>

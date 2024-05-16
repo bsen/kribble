@@ -13,6 +13,7 @@ model User {
   username       String     @unique
   gender         String?
   password       String
+  birthday       String?
   bio            String?
   image          String?
   website        String?
