@@ -10,7 +10,9 @@ export const NavBar = () => {
           onClick={() => {
             navigate("/");
           }}
-        ></div>
+        >
+          <img src="/f.png" className="w-6 h-6" />
+        </div>
       </div>
     </div>
   );

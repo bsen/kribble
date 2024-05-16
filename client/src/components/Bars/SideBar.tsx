@@ -21,9 +21,9 @@ export const SideBar = () => {
             onClick={() => {
               navigate("/");
             }}
-            className="bg-textmain my-4 text-transparent bg-clip-text text-3xl font-ubuntu"
+            className="bg bg-gradient-to-r from-indigo-500 via-orange-500 to-purple-500 my-4 text-transparent bg-clip-text text-4xl font-ubuntu"
           >
-            introsium
+            friendcity
           </div>
 
           <button
@@ -107,7 +107,7 @@ export const SideBar = () => {
           </button>
         </div>
         <div className="text-xs text-center py-2 font-ubuntu font-light text-texttwo">
-          © 2024 kribble, a Sen production
+          © 2024 friendcity ltd
         </div>
       </div>
     </>
