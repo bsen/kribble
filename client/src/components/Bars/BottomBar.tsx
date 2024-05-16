@@ -14,15 +14,15 @@ export const BottomBar = () => {
 
   return (
     <>
-      <div className="lg:hidden bottom-0  h-12 flex items-center justify-evenly border-t border-neutral-100  rounded-t-md  bg-white fixed w-full lg:w-[50%]">
+      <div className="lg:hidden bottom-0  h-12 flex items-center justify-evenly border-t border-bordermain  rounded-t-md  bg-bgmain fixed w-full lg:w-[50%]">
         <button
           onClick={() => {
             navigate("/");
           }}
           className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/"
-              ? "text-indigo-500 text-lg"
-              : "text-neutral-800"
+              ? "text-indigomain text-lg"
+              : "text-textmain"
           }`}
         >
           <HomeOutlinedIcon sx={{ fontSize: 25 }} />
@@ -33,8 +33,8 @@ export const BottomBar = () => {
           }}
           className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/communities"
-              ? "text-indigo-500 text-lg"
-              : "text-neutral-800"
+              ? "text-indigomain text-lg"
+              : "text-textmain"
           }`}
         >
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
@@ -46,8 +46,8 @@ export const BottomBar = () => {
           }}
           className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/matching"
-              ? "text-indigo-500 text-lg"
-              : "text-neutral-800"
+              ? "text-indigomain text-lg"
+              : "text-textmain"
           }`}
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
@@ -58,8 +58,8 @@ export const BottomBar = () => {
           }}
           className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === `/${currentUser}`
-              ? "text-indigo-500 text-lg"
-              : "text-neutral-800"
+              ? "text-indigomain text-lg"
+              : "text-textmain"
           }`}
         >
           <PersonOutlinedIcon sx={{ fontSize: 25 }} />
@@ -70,8 +70,8 @@ export const BottomBar = () => {
           }}
           className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/search"
-              ? "text-indigo-500 text-lg"
-              : "text-neutral-800"
+              ? "text-indigomain text-lg"
+              : "text-textmain"
           }`}
         >
           <SearchOutlinedIcon sx={{ fontSize: 25 }} />

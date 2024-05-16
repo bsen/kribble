@@ -71,26 +71,26 @@ export const JoinedCommunitiesComponent = () => {
           communityData.communities.map((community, index) => (
             <div
               key={index}
-              className="border my-2 rounded-md border-neutral-100 p-4 bg-white"
+              className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
             >
               <div className="flex gap-2 justify-between items-start">
                 <div className="flex gap-2 items-start">
                   <img
-                    className="h-10 w-10 rounded-full bg-white"
+                    className="h-10 w-10 rounded-full bg-bgmain"
                     src={community.image ? community.image : "/group.png"}
                   />
 
                   <div className="flex flex-col w-full">
                     <Link
                       to={`/community/${community.name}`}
-                      className="text-primarytextcolor w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
+                      className="text-textmain w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
                     >
                       {community.name}
                     </Link>
-                    <div className="text-primarytextcolor text-sm  font-normal">
+                    <div className="text-textmain text-sm  font-normal">
                       {community.description}
                     </div>
-                    <div className="text-primarytextcolor font-ubuntu  text-sm font-light">
+                    <div className="text-textmain font-ubuntu  text-sm font-light">
                       {community.membersCount} members
                     </div>
                   </div>
@@ -99,13 +99,13 @@ export const JoinedCommunitiesComponent = () => {
             </div>
           ))
         ) : (
-          <div className="text-neutral-600 my-5  font-light text-center text-lg">
+          <div className="text-texttwo my-5  font-light text-center text-lg">
             No communities found.
           </div>
         )}
         {isLoading && (
           <div className="text-center my-5">
-            <CircularProgress color="inherit" />
+            <CircularProgress />
           </div>
         )}
       </div>

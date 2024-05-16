@@ -107,13 +107,13 @@ export const CommentsComponent = () => {
         <div className="w-full h-screen flex justify-center items-center">
           <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
             Do you really want to delete the post
-            <span className="text-xs font-light text-neutral-600">
+            <span className="text-xs font-light text-texttwo">
               note you can not get back the deleted item!
             </span>
             <div className="flex gap-5">
               <button
                 onClick={deleteComment}
-                className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
+                className="text-textmain bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
               >
                 Delete
               </button>
@@ -123,7 +123,7 @@ export const CommentsComponent = () => {
                   setDeleteCommentId("");
                   setDeleteCommentPostId("");
                 }}
-                className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+                className="text-black bg-bgmain hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
               >
                 Cancel
               </button>
@@ -141,22 +141,22 @@ export const CommentsComponent = () => {
             commentsData.comments.map((comment, index) => (
               <div
                 key={index}
-                className="border bg-white my-2 rounded-md border-neutral-100 p-4 hover:bg-white"
+                className="border bg-bgmain my-2 rounded-md border-bordermain p-4 hover:bg-bgmain"
               >
                 <div className="flex flex-col gap-2 ">
-                  <div className="text-primarytextcolor w-full flex items-center justify-between gap-2 text-sm font-light">
+                  <div className="text-textmain w-full flex items-center justify-between gap-2 text-sm font-light">
                     <div className="flex gap-2 items-center">
                       <Link to={`/post/${comment.postId}`}>
                         <OpenInNewIcon
                           sx={{ fontSize: 18 }}
-                          className="text-indigo-500"
+                          className="text-indigomain"
                         />
                       </Link>
-                      <div className="text-neutral-600 text-xs lg:text-sm font-ubuntu">
+                      <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
                         · {getTimeDifference(comment.createdAt)}
                       </div>
                     </div>
-                    <div className="text-neutral-600">
+                    <div className="text-texttwo">
                       <button
                         onClick={() => {
                           setDeleteCommentId(comment.id);
@@ -168,20 +168,20 @@ export const CommentsComponent = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="text-primarytextcolor  text-sm lg:text-base font-light">
+                  <div className="text-textmain  text-sm lg:text-base font-light">
                     {comment.content}
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="text-neutral-600 my-5  font-light text-center text-lg">
+            <div className="text-texttwo my-5  font-light text-center text-lg">
               No comments found.
             </div>
           )}
           {isLoadingComments && (
             <div className="text-center my-5">
-              <CircularProgress color="inherit" />
+              <CircularProgress />
             </div>
           )}
           <BottomBar />

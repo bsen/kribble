@@ -131,33 +131,30 @@ export const UpdateCommunityComponent = () => {
   }
   if (isLoading) {
     return (
-      <div className="h-screen bg-white w-full flex justify-center items-center">
-        <CircularProgress color="inherit" />
+      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+        <CircularProgress />
       </div>
     );
   }
   return (
     <>
-      <div className="bg-white h-screen border-l border-r border-neutral-100 px-4 flex flex-col gap-4">
-        <div className=" border-b border-neutral-100 py-4">
+      <div className="bg-bgmain h-screen border-l border-r border-bordermain px-4 flex flex-col gap-4">
+        <div className=" border-b border-bordermain py-4">
           <button
             className="w-fit flex items-start"
             onClick={() => {
               navigate(`/community/${communityData.name}`);
             }}
           >
-            <ArrowBackIcon
-              sx={{ fontSize: 30 }}
-              className="text-primarytextcolor"
-            />
+            <ArrowBackIcon sx={{ fontSize: 30 }} className="text-textmain" />
           </button>
         </div>
         <div className="w-ful items-start flex justify-between">
           <div className="flex justify-center items-center">
-            <div className="absolute text-primarytextcolor z-50">
+            <div className="absolute text-textmain z-50">
               <button>
                 <label htmlFor="image-upload" className="cursor-pointer ">
-                  <CameraAltRoundedIcon className="bg-white/50 p-1 rounded-full" />
+                  <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-full" />
                 </label>
                 <input
                   id="image-upload"
@@ -176,23 +173,23 @@ export const UpdateCommunityComponent = () => {
                   ? communityData.image
                   : "/group.png"
               }
-              className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10 border border-neutral-50"
+              className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10 border border-bordermain"
             />
           </div>
 
           <button onClick={updateCommunity}>
-            <div className="text-white bg-indigo-500 text-base font-light rounded-md py-1 px-4">
+            <div className="text-textmain bg-indigomain text-base font-light rounded-md py-1 px-4">
               save
             </div>
           </button>
         </div>
         <div>
-          <div className="text-primarytextcolor  text-sm font-light">
+          <div className="text-textmain  bg-bgtwo  text-sm font-light">
             Description
           </div>
           <textarea
             rows={2}
-            className="w-full px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-neutral-100"
+            className="w-full px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-bordermain"
             defaultValue={communityData.description}
             wrap="soft"
             maxLength={150}
@@ -201,7 +198,7 @@ export const UpdateCommunityComponent = () => {
             }}
           />
         </div>
-        <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
+        <div className="text-rosemain font-ubuntu font-light text-center text-sm">
           {popup ? popup : <div>‎</div>}
         </div>
       </div>

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import { NavBar } from "../../Bars/NavBar";
 interface FollowersData {
@@ -11,7 +10,6 @@ interface FollowersData {
 
 interface Follower {
   id: string;
-  name: string;
   username: string;
   image: string;
 }
@@ -68,20 +66,20 @@ export const FollowersComponent = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-14"
+        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <NavBar />
-        {followersData.followers.length > 0 ? (
+        {followersData.followers &&
           followersData.followers.map((followersObj) => (
             <div
               key={followersObj.id}
-              className="border my-2 rounded-md border-neutral-100 p-4 bg-white"
+              className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
             >
               <div className="flex justify-start items-center gap-2">
                 <img
-                  className="h-10 w-10 rounded-full bg-white"
+                  className="h-10 w-10 rounded-full bg-bgmain"
                   src={
                     followersObj.follower.image
                       ? followersObj.follower.image
@@ -90,27 +88,22 @@ export const FollowersComponent = () => {
                 />
                 <div>
                   <Link to={`/${followersObj.follower.username}`}>
-                    <div className="text-primarytextcolor text-lg font-ubuntu">
+                    <div className="text-textmain text-lg font-ubuntu">
                       {followersObj.follower.username}
-                    </div>
-                  </Link>
-                  <Link to={`/${followersObj.follower.username}`}>
-                    <div className="text-primarytextcolor text-sm font-light font-ubuntu">
-                      @{followersObj.follower.name}
                     </div>
                   </Link>
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <div className="text-neutral-600 my-5  font-light text-center text-lg">
+          ))}
+        {!followersData.followers && (
+          <div className="text-texttwo my-5  font-light text-center text-lg">
             No followers found.
           </div>
         )}
         {isLoading && (
-          <div className="text-center my-5">
-            <CircularProgress color="inherit" />
+          <div className="text-texttwo my-5  font-light text-center text-lg">
+            Loading ...
           </div>
         )}
       </div>

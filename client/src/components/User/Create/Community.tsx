@@ -77,22 +77,22 @@ export const Community = () => {
   };
   if (isLoading) {
     return (
-      <div className="h-screen bg-white w-full flex justify-center items-center">
-        <CircularProgress color="inherit" />
+      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+        <CircularProgress />
       </div>
     );
   }
 
   return (
     <>
-      <div className="h-screen border-l border-r border-neutral-100 bg-white flex justify-center items-center px-5 lg:px-0">
+      <div className="h-screen border-l border-r border-bordermain bg-bgmain flex justify-center items-center px-5 lg:px-0">
         <NavBar />
-        <div className="w-full max-w-md my-5 rounded-lg bg-white">
+        <div className="w-full max-w-md my-5 rounded-lg bg-bgmain">
           <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
             <div>
               <button onClick={handleClose}>
                 <ArrowBackIcon
-                  className="bg-neutral-800 p-1 rounded-full text-white"
+                  className="bg-neutral-800 p-1 rounded-full text-textmain"
                   sx={{ fontSize: 30 }}
                 />
               </button>
@@ -101,7 +101,7 @@ export const Community = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div>
-              <div className="font-normal m-1 text-neutral-800">
+              <div className="font-normal m-1 text-textmain">
                 Community Name
               </div>
               <input
@@ -109,24 +109,22 @@ export const Community = () => {
                 onChange={(e) => {
                   handleNameChange(e.target.value);
                 }}
-                className={`w-full border border-neutral-100 resize-none focus:outline-none p-2 text-neutral-600 rounded-lg ${
-                  available ? "" : "border border-rose-500"
+                className={`w-full border border-bordermain resize-none focus:outline-none p-2 text-texttwo rounded-lg ${
+                  available ? "" : "border border-rosemain"
                 }`}
                 placeholder="Choose a name for your community"
                 maxLength={20}
               />
             </div>
             <div>
-              <div className="m-1 text-neutral-800 font-normal">
-                Description
-              </div>
+              <div className="m-1 text-textmain font-normal">Description</div>
               <textarea
                 rows={2}
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
-                className="w-full border border-neutral-100 resize-none focus:outline-none px-2 py-1 text-neutral-600 rounded-lg"
+                className="w-full border border-bordermain resize-none focus:outline-none px-2 py-1 text-texttwo rounded-lg"
                 placeholder="Write description for your community"
                 maxLength={150}
               />
@@ -134,7 +132,7 @@ export const Community = () => {
             <div className="flex w-full justify-center">
               <button
                 onClick={createCommunity}
-                className="bg-indigo-500 w-full text-white px-6 py-2 rounded-lg"
+                className="bg-indigomain w-full text-textmain px-6 py-2 rounded-lg"
               >
                 Create your community
               </button>

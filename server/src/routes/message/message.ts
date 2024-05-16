@@ -1,3 +1,4 @@
+// Backend code
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
@@ -24,6 +25,7 @@ const getMessagesSchema = z.object({
   token: z.string(),
   receiverId: z.string().uuid(),
   page: z.number().optional(),
+  limit: z.number().optional(),
 });
 
 messageRouter.post("/send", async (c) => {
@@ -61,10 +63,7 @@ messageRouter.post("/send", async (c) => {
 
     return c.json({ status: 200, message: "Message sent successfully" });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return c.json({ status: 400, message: "Invalid input" });
-    }
-    console.log(error);
+    console.error(error);
     return c.json({ status: 500, message: "Internal Server Error" });
   }
 });
@@ -72,8 +71,12 @@ messageRouter.post("/send", async (c) => {
 messageRouter.post("/get", async (c) => {
   try {
     const body = await c.req.json();
-    const { token, receiverId, page = 1 } = getMessagesSchema.parse(body);
-    const limit = 20;
+    const {
+      token,
+      receiverId,
+      page = 1,
+      limit = 20,
+    } = getMessagesSchema.parse(body);
 
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
@@ -91,7 +94,7 @@ messageRouter.post("/get", async (c) => {
       return c.json({ status: 401, message: "Unauthorised user" });
     }
 
-    const findSendMesssages = await prisma.message.findMany({
+    const findSendMessages = await prisma.message.findMany({
       where: {
         senderId: findUser.id,
         receiverId: receiverId,
@@ -123,21 +126,17 @@ messageRouter.post("/get", async (c) => {
       },
     });
 
-    if (!findSendMesssages && !findReceivedMessages) {
+    if (!findSendMessages && !findReceivedMessages) {
       return c.json({ status: 404, message: "NO messages found" });
     }
 
     return c.json({
       status: 200,
-      message: "Your messages are fetcehd",
-      sendMessages: findSendMesssages,
+      message: "Your messages are fetched",
+      sendMessages: findSendMessages,
       receivedMessages: findReceivedMessages,
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return c.json({ status: 400, message: "Invalid input" });
-    }
-    console.log(error);
+  } catch (error: unknown) {
     return c.json({ status: 500, message: "Internal Server Error" });
   }
 });

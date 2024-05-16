@@ -51,7 +51,7 @@ export const LoginAuth = () => {
   if (isLoading) {
     return (
       <div className=" flex justify-center items-center h-screen w-full text-center">
-        <CircularProgress color="inherit" />
+        <CircularProgress />
       </div>
     );
   }
@@ -59,31 +59,27 @@ export const LoginAuth = () => {
   return (
     <>
       <div>
-        <div className="h-screen w-full  bg-white flex justify-center items-center">
+        <div className="h-screen w-full  bg-bgmain flex justify-center items-center">
           <div className="w-[80%] lg:w-[50%] grid gap-y-2">
-            <div className="text-neutral-800 text-center font-ubuntu text-[2rem]">
+            <div className="text-textmain text-center font-ubuntu text-[2rem]">
               Login
             </div>
 
             <div>
-              <div className="font-semibold m-1 text-primarytextcolor">
-                Email
-              </div>
+              <div className="font-semibold m-1 text-textmain">Email</div>
               <input
                 value={email}
                 onChange={(e) => {
                   handleEmailChnage(e.target.value);
                 }}
                 type="email"
-                className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-100"
+                className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
                 placeholder="Enter your email address"
               />
             </div>
 
             <div>
-              <div className="font-semibold m-1 text-primarytextcolor">
-                Password
-              </div>
+              <div className="font-semibold m-1 text-textmain">Password</div>
               <input
                 value={password}
                 onChange={(e) => {
@@ -91,26 +87,26 @@ export const LoginAuth = () => {
                 }}
                 type="password"
                 onKeyDown={handleKeyDown}
-                className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-neutral-100"
+                className=" h-10 w-full rounded-lg px-4 focus:outline-none border border-bordermain"
                 placeholder="Enter password"
               />
             </div>
             <button
               onClick={login}
-              className="my-4 w-full text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-800"
+              className="my-4 w-full text-textmain bg-neutral-800 hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 dark:border-neutral-800"
             >
               Login
             </button>
-            <div className="text-center text-md font-light text-neutral-800">
+            <div className="text-center text-md font-light text-textmain">
               Don't have an account?
               <Link
                 to="/signup"
-                className="font-semibold text-primarytextcolor underline underline-offset-2 mx-1"
+                className="font-semibold text-textmain underline underline-offset-2 mx-1"
               >
                 Sign up
               </Link>
             </div>
-            <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
+            <div className="text-rosemain font-ubuntu font-light text-center text-sm">
               {popup ? popup : <div>‎</div>}
             </div>
           </div>

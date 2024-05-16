@@ -91,7 +91,7 @@ export const CommunityData: React.FC = () => {
 
   if (loadingState) {
     return (
-      <div className="text-neutral-600 my-5  font-light text-center text-lg">
+      <div className="text-texttwo my-5  font-light text-center text-lg">
         Loading ...
       </div>
     );
@@ -99,11 +99,11 @@ export const CommunityData: React.FC = () => {
 
   return (
     <>
-      <div className="w-full bg-white my-2 p-4 rounded-md flex flex-col items-start border border-neutral-100">
+      <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgmain">
         <div className="flex justify-between w-full items-center gap-2">
           <img
             src={communityData.image ? communityData.image : "/group.png"}
-            className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-neutral-50 mb-2"
+            className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-bordermain mb-2"
           />
           <div className="w-full">
             <div className="flex justify-end items-center">
@@ -113,9 +113,9 @@ export const CommunityData: React.FC = () => {
                     onClick={() => {
                       navigate(`/edit/community/${communityData.name}`);
                     }}
-                    className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left border border-bordermain text-textmain bg-bgtwo font-light rounded-full px-4 py-1 text-sm"
                   >
-                    Edit details
+                    Edit
                   </button>
                 )}
 
@@ -123,15 +123,11 @@ export const CommunityData: React.FC = () => {
                   <button
                     onClick={handleJoinCommunity}
                     disabled={isJoiningLoading}
-                    className="text-left text-white bg-indigo-500 font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-textmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     <div className="flex items-center justify-center">
                       {isJoiningLoading ? (
-                        <CircularProgress
-                          size="20px"
-                          className="text-sm"
-                          color="inherit"
-                        />
+                        <CircularProgress size="20px" className="text-sm" />
                       ) : (
                         <div>
                           {isJoined ? <div>Joined</div> : <div>Join</div>}
@@ -142,37 +138,36 @@ export const CommunityData: React.FC = () => {
                 )}
               </div>
             </div>
-            <div className="text-lg lg:text-xl  font-semibold text-neutral-800">
+            <div className="text-lg lg:text-xl font-semibold text-textmain">
               {communityData.name}
-            </div>
-            <div className="flex my-2 text-indigo-500  items-center gap-2 font-ubuntu text-sm">
-              <Link to={`/followers`}>
-                <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
-                  {communityData.membersCount} Members
-                </div>
-              </Link>
-              <div className="flex gap-1 items-center px-2 py-1/2  bg-indigo-50 rounded-md">
-                {communityData.postsCount} Posts
-              </div>
             </div>
           </div>
         </div>
-
-        <div className="text-sm mb-2 text-neutral-600 font-light">
+        <div className="flex mt-2 text-textmain items-center gap-2 font-light text-sm">
+          <Link to={`/followers`}>
+            <div className="flex gap-1 items-center">
+              {communityData.membersCount} Members
+            </div>
+          </Link>
+          <div className="flex gap-1 items-center">
+            {communityData.postsCount} Posts
+          </div>
+        </div>
+        <div className="text-sm mb-2 text-textmain font-light">
           {communityData.description
             ? communityData.description
             : "description"}
         </div>
 
         <div
-          className="w-full flex justify-start items-center"
+          className="w-fit flex justify-start items-center"
           onClick={() => {
             navigate(`/${communityData.name}/create/post`);
           }}
         >
           <div
             className={
-              "flex w-fit justify-between text-sm items-center text-white font-light bg-indigo-500 px-4 py-1 rounded-full"
+              "flex w-fit justify-between text-sm items-center text-textmain font-light bg-indigomain px-4 py-1 rounded-full"
             }
           >
             <AddIcon sx={{ fontSize: 20 }} />

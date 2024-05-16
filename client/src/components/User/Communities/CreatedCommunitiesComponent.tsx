@@ -92,10 +92,10 @@ export const CreatedCommunitiesComponent = () => {
               <div className="flex flex-col gap-2 text-lg text-center items-center font-ubuntu font-medium">
                 Do you really want to delete the community?
                 <br />
-                <span className="text-base font-normal text-rose-500">
+                <span className="text-base font-normal text-rosemain">
                   Note you can not get back the community
                 </span>
-                <span className="text-base font-normal text-rose-500">
+                <span className="text-base font-normal text-rosemain">
                   To confirm you deletion Type: "Delete my community"
                 </span>
               </div>
@@ -110,7 +110,7 @@ export const CreatedCommunitiesComponent = () => {
               <div className="flex gap-5 justify-evenly items-center">
                 <button
                   onClick={deleteCommunity}
-                  className="text-white bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
+                  className="text-textmain bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
                 >
                   Delete
                 </button>
@@ -120,7 +120,7 @@ export const CreatedCommunitiesComponent = () => {
                     setCommunityId("");
                     setDeletingState(false);
                   }}
-                  className="text-black bg-white hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+                  className="text-black bg-bgmain hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
                 >
                   Cancel
                 </button>
@@ -141,26 +141,26 @@ export const CreatedCommunitiesComponent = () => {
               communityData.communities.map((community, index) => (
                 <div
                   key={index}
-                  className="border my-2 rounded-md border-neutral-100 p-4 bg-white"
+                  className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
                 >
                   <div className="flex gap-2 justify-between items-start">
                     <div className="flex gap-2 items-start">
                       <img
-                        className="h-10 w-10 rounded-full bg-white"
+                        className="h-10 w-10 rounded-full bg-bgmain"
                         src={community.image ? community.image : "/group.png"}
                       />
 
                       <div className="flex flex-col w-full">
                         <Link
                           to={`/community/${community.name}`}
-                          className="text-primarytextcolor w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
+                          className="text-textmain w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
                         >
                           {community.name}
                         </Link>
-                        <div className="text-primarytextcolor text-sm  font-normal">
+                        <div className="text-textmain text-sm  font-normal">
                           {community.description}
                         </div>
-                        <div className="text-primarytextcolor font-ubuntu  text-sm font-light">
+                        <div className="text-textmain font-ubuntu  text-sm font-light">
                           {community.membersCount} members
                         </div>
                       </div>
@@ -177,13 +177,13 @@ export const CreatedCommunitiesComponent = () => {
                 </div>
               ))
             ) : (
-              <div className="text-neutral-600 my-5  font-light text-center text-lg">
+              <div className="text-texttwo my-5  font-light text-center text-lg">
                 No communities found.
               </div>
             )}
             {isLoading && (
               <div className="text-center my-5">
-                <CircularProgress color="inherit" />
+                <CircularProgress />
               </div>
             )}
           </div>

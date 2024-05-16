@@ -142,19 +142,19 @@ export const UpdateProfileComponent = () => {
   }
   if (isLoading) {
     return (
-      <div className="h-screen bg-white w-full flex justify-center items-center">
-        <CircularProgress color="inherit" />
+      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+        <CircularProgress />
       </div>
     );
   }
   return (
     <>
-      <div className="h-screen text-neutral-600">
+      <div className="h-screen text-texttwo">
         <div className="w-full">{logoutState && <Logout />}</div>
         <div className="w-full">
           {!logoutState && (
-            <div className="bg-white h-screen  border-l border-r border-neutral-100 p-4 flex flex-col gap-4">
-              <div className="flex justify-between items-center border-b border-neutral-100 pb-4">
+            <div className="bg-bgmain h-screen  p-2 flex flex-col gap-4">
+              <div className="flex justify-between items-center border-b border-bordermain pb-2">
                 <button
                   onClick={() => {
                     navigate(`/${currentUser}`);
@@ -162,7 +162,7 @@ export const UpdateProfileComponent = () => {
                 >
                   <ArrowBackIcon
                     sx={{ fontSize: 30 }}
-                    className="text-primarytextcolor"
+                    className="text-textmain"
                   />
                 </button>
                 <button
@@ -170,17 +170,17 @@ export const UpdateProfileComponent = () => {
                     setLogoutState(true);
                   }}
                 >
-                  <div className="text-rose-500 text-sm font-normal px-2 py-1 bg-rose-100 rounded-md">
+                  <div className="text-rosemain text-sm font-normal px-2 py-1 bg-bgtwo rounded-md">
                     Log out
                   </div>
                 </button>
               </div>
               <div className="w-full flex justify-between items-end">
                 <div className="flex justify-center items-center">
-                  <div className="absolute text-primarytextcolor z-50">
+                  <div className="absolute text-textmain z-50">
                     <button>
                       <label htmlFor="image-upload" className="cursor-pointer ">
-                        <CameraAltRoundedIcon className="bg-white/50 p-1 rounded-full" />
+                        <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-full" />
                       </label>
                       <input
                         id="image-upload"
@@ -204,29 +204,25 @@ export const UpdateProfileComponent = () => {
                 </div>
 
                 <button onClick={updateProfile}>
-                  <div className="text-white bg-indigo-500 text-base font-light rounded-md py-1 px-4">
+                  <div className="text-textmain bg-indigomain text-base font-light rounded-md py-1 px-4">
                     save
                   </div>
                 </button>
               </div>
 
               <div>
-                <div className="text-primarytextcolor text-sm font-light">
-                  Name
-                </div>
+                <div className="text-textmain text-sm font-light">Name</div>
                 <input
                   maxLength={20}
                   defaultValue={userData.fullname}
                   onChange={(e) => {
                     setFullName(e.target.value);
                   }}
-                  className=" h-10 w-full text-base font-light rounded-lg px-2 focus:outline-none border border-neutral-100"
+                  className=" h-10 w-full bg-bgtwo text-textmain text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
                 />
               </div>
               <div>
-                <div className="text-primarytextcolor text-sm font-light">
-                  Website
-                </div>
+                <div className="text-textmain text-sm font-light">Website</div>
                 <input
                   type="link"
                   maxLength={40}
@@ -234,16 +230,14 @@ export const UpdateProfileComponent = () => {
                   onChange={(e) => {
                     setWebsite(e.target.value);
                   }}
-                  className=" h-10 w-full text-base font-light rounded-lg px-2 focus:outline-none border border-neutral-100"
+                  className=" h-10 bg-bgtwo text-textmain w-full text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
                 />
               </div>
               <div>
-                <div className="text-primarytextcolor text-sm  font-light">
-                  Bio
-                </div>
+                <div className="text-textmain text-sm  font-light">Bio</div>
                 <textarea
                   rows={2}
-                  className="w-full text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-neutral-100"
+                  className="w-full bg-bgtwo text-textmain text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-bordermain"
                   defaultValue={userData.bio}
                   wrap="soft"
                   maxLength={150}
@@ -252,7 +246,7 @@ export const UpdateProfileComponent = () => {
                   }}
                 />
               </div>
-              <div className="text-rose-500 font-ubuntu font-light text-center text-sm">
+              <div className="text-rosemain font-ubuntu font-light text-center text-sm">
                 {popup ? popup : <div>‎</div>}
               </div>
             </div>

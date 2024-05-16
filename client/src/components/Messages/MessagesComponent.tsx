@@ -27,6 +27,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   async function send() {
+    setSendingMessage("");
     if (sendingmessage.trim()) {
       await axios.post(`${BACKEND_URL}/api/message/send`, {
         token,
@@ -109,7 +110,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   };
 
   return (
-    <div className="h-screen border-r border-l border-neutral-100 bg-white  w-full flex flex-col  justify-between">
+    <div className="h-screen border-r border-l border-bordermain bg-bgmain  w-full flex flex-col  justify-between">
       <div className="flex shadow-sm p-2 w-full flex-col justify-center items-center">
         <div className="flex justify-start gap-4 w-full p-2">
           <button
@@ -118,7 +119,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
             }}
           >
             <ArrowBackIcon
-              className="text-neutral-600 rounded-full  py-1"
+              className="text-texttwo rounded-full  py-1"
               sx={{ fontSize: 35 }}
             />
           </button>
@@ -129,7 +130,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
               className="h-10 w-10 rounded-full"
             />
             <div>
-              <div className="text-base font-semibold text-primarytextcolor">
+              <div className="text-base font-semibold text-textmain">
                 {username}
               </div>
             </div>
@@ -148,31 +149,31 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
           .map((message, index) => (
             <div
               key={index}
-              className={`mt-2 max-w-[70%] rounded-lg px-3 py-2 ${
+              className={`mt-2 max-w-[70%] rounded-lg px-4 py-1 ${
                 message.sender === "self"
-                  ? "bg-indigo-500 text-white self-end"
-                  : "bg-violet-500 text-white self-start"
+                  ? "bg-indigomain text-textmain self-end"
+                  : "bg-indigomain text-textmain self-start"
               }`}
             >
               {message.message}
             </div>
           ))}
       </div>
-      <div className="bg-white bottom-0 gap-4 w-full border border-neutral-100 lg:w-[50%] flex items-center h-16 fixed justify-center">
+      <div className=" bottom-0 gap-4 w-full border-t border-bordermain lg:w-[50%] flex items-center h-16 fixed justify-center">
         <input
           type="text"
           maxLength={300}
           value={sendingmessage}
           onChange={(e) => setSendingMessage(e.target.value)}
           placeholder="Message..."
-          className="w-[80%] h-10 bg-neutral-100  rounded-full px-4 focus:outline-none"
+          className="w-[80%] h-10 text-textmain bg-bgtwo  rounded-full px-4 focus:outline-none"
           ref={inputRef}
           onKeyDown={handleKeyDown}
         />
         <button onClick={send}>
           <SendIcon
             sx={{ fontSize: 35 }}
-            className="text-indigo-500 p-1 rounded-full"
+            className="text-indigomain p-1 rounded-full"
           />
         </button>
       </div>

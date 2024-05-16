@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import { NavBar } from "../../Bars/NavBar";
 interface FollowingsData {
@@ -11,7 +10,6 @@ interface FollowingsData {
 
 interface Following {
   id: string;
-  name: string;
   username: string;
   image: string;
 }
@@ -67,51 +65,49 @@ export const FollowingComponent = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto no-scrollbar pt-14"
+        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
         <NavBar />
-        {followingsData.followings.length > 0 ? (
-          followingsData.followings.map((followingObj) => (
-            <div
-              key={followingObj.id}
-              className="border my-2 rounded-md border-neutral-100 p-4 bg-white"
-            >
-              <div className="flex justify-start items-center gap-2">
-                <img
-                  className="h-10 w-10 rounded-full bg-white"
-                  src={
-                    followingObj.following.image
-                      ? followingObj.following.image
-                      : "/user.png"
-                  }
-                />
-                <div>
-                  <Link to={`/${followingObj.following.username}`}>
-                    <div className="text-primarytextcolor text-lg font-ubuntu">
-                      {followingObj.following.username}
-                    </div>
-                  </Link>
-                  <Link to={`/${followingObj.following.username}`}>
-                    <div className="text-primarytextcolor text-sm font-light font-ubuntu">
-                      @{followingObj.following.name}
-                    </div>
-                  </Link>
+        <>
+          {followingsData.followings &&
+            followingsData.followings.map((followingObj) => (
+              <div
+                key={followingObj.id}
+                className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgmain"
+              >
+                <div className="flex justify-start items-center gap-2">
+                  <img
+                    className="h-9 w-9 rounded-full bg-bgmain"
+                    src={
+                      followingObj.following.image
+                        ? followingObj.following.image
+                        : "/user.png"
+                    }
+                  />
+                  <div>
+                    <Link to={`/${followingObj.following.username}`}>
+                      <div className="text-textmain text-lg font-ubuntu">
+                        {followingObj.following.username}
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
+            ))}
+
+          {!followingsData.followings && (
+            <div className="text-texttwo my-5  font-light text-center text-lg">
+              No following found.
             </div>
-          ))
-        ) : (
-          <div className="text-neutral-600 my-5  font-light text-center text-lg">
-            No following found.
-          </div>
-        )}
-        {isLoading && (
-          <div className="text-center my-5">
-            <CircularProgress color="inherit" />
-          </div>
-        )}
+          )}
+          {isLoading && (
+            <div className="text-texttwo my-5  font-light text-center text-lg">
+              Loading ...
+            </div>
+          )}
+        </>
       </div>
     </>
   );

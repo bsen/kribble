@@ -4,15 +4,13 @@ export const NavBar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="top-0 rounded-b-md h-12 shadow-sm bg-white fixed w-full lg:w-[50%]">
-      <div className="w-full h-full flex justify-center items-center">
+    <div className="top-0 md:hidden rounded-sm h-12 border-b  border-bordermain bg-bgmain fixed w-full lg:w-[35%]">
+      <div className="w-full h-full text-xl font-ubuntu  flex justify-center items-center text-textmain">
         <div
           onClick={() => {
             navigate("/");
           }}
-        >
-          <img src="/logo.png" className="h-8" />
-        </div>
+        ></div>
       </div>
     </div>
   );

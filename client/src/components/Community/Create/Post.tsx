@@ -114,33 +114,33 @@ export const Post = () => {
   };
   if (isLoading) {
     return (
-      <div className="h-screen bg-white w-full flex justify-center items-center">
-        <CircularProgress color="inherit" />
+      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+        <CircularProgress />
       </div>
     );
   }
   return (
     <>
-      <div className="w-full bg-white p-4 rounded-md">
+      <div className="w-full bg-bgmain p-4 rounded-md">
         <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon
-              className="p-1 bg-indigo-500 text-white rounded-full"
+              className="p-1 bg-indigomain text-textmain rounded-full"
               sx={{ fontSize: 35 }}
             />
           </button>
-          <div className="text-xl flex justify-center items-center gap-5 font-light bg-indigo-50 px-4 rounded-md py-1 text-indigo-500 text-center">
-            <div>Create Post</div>
+          <div className="text-xl flex justify-center items-center gap-5 font-light bg-bgtwo px-4 rounded-md py-1 text-textmain text-center">
+            <div>Create Post in {name}</div>
           </div>
         </div>
         <div className="w-full h-full rounded-lg flex flex-col justify-center">
           {previewImage ? (
-            <div className="w-[100%] flex items-end justify-center bg-white p-4 rounded-md">
+            <div className="w-[100%] flex items-end justify-center bg-bgmain p-4 rounded-md">
               <div className="flex flex-col items-center">
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="max-w:w-[80%] lg:max-w-[50%] rounded-md border border-neutral-100"
+                  className="max-w:w-[80%] lg:max-w-[50%] rounded-md border border-bordermain"
                 />
                 <button
                   onClick={() => {
@@ -161,7 +161,7 @@ export const Post = () => {
                 <div className="h-[5vh] w-fit rounded-md  gap-2 flex justify-center items-center">
                   <AddPhotoAlternateIcon
                     sx={{ fontSize: 30 }}
-                    className="text-neutral-800"
+                    className="text-textmain"
                   />
                 </div>
               </label>
@@ -176,12 +176,12 @@ export const Post = () => {
           )}
         </div>
 
-        <div className="w-full bg-white my-4 rounded-md">
+        <div className="w-full bg-bgmain my-4 rounded-md">
           <textarea
             value={post}
             onChange={handlePostChange}
             rows={3}
-            className="w-full border border-neutral-100 overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-primarytextcolor rounded-lg"
+            className="w-full bg-bgtwo border border-bordermain overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-textmain rounded-lg"
             placeholder="Write your thoughts..."
             wrap="soft"
             maxLength={250}
@@ -189,35 +189,35 @@ export const Post = () => {
         </div>
 
         <div className="flex w-full my-2 justify-between">
-          <div className="flex gap-2 text-xs text-neutral-600 w-fit justify-center items-center">
+          <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
             <div
               onClick={() => {
                 setAnonymity((prevState) => !prevState);
               }}
             >
               <VisibilityOffIcon
-                className={`${
-                  anonymity ? "text-indigo-500" : "text-neutral-600"
-                }`}
+                className={`${anonymity ? "text-textmain" : "text-texttwo"}`}
               />
             </div>
-            {anonymity ? "Your identity will be hidden" : "Hide your identity"}
+            {anonymity ? (
+              <div className="text-textmain">Your identity will be hidden</div>
+            ) : (
+              <div className="text-texttwo">Hide your identity</div>
+            )}
           </div>
           <div>
             <button
               onClick={createCommunityPost}
-              className="text-white text-base py-1 px-6 rounded-md bg-indigo-500"
+              className="text-textmain text-base py-1 px-6 rounded-md bg-indigomain"
             >
               Post
             </button>
           </div>
         </div>
-        {popup ? (
+        {popup && (
           <div className="text-red-400 font-light text-center text-xs my-2">
             {popup}
           </div>
-        ) : (
-          ""
         )}
       </div>
     </>

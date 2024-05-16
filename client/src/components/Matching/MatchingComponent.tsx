@@ -79,11 +79,11 @@ export const MatchingComponent: React.FC = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-white border-l border-r border-neutral-100 h-screen flex flex-col justify-center items-center">
+      <div className="bg-bgmain h-screen flex flex-col justify-center items-center">
         <div className="w-full flex flex-col items-center justify-center">
           {popup && (
             <div
-              className="text-neutral-600  font-light text-center text-lg"
+              className="text-texttwo  font-light text-center text-lg"
               onClick={clearError}
             >
               {popup}
@@ -93,10 +93,10 @@ export const MatchingComponent: React.FC = () => {
             <div className="w-full flex flex-col justify-center items-center gap-2">
               <img
                 src={matchableUserData.image || "user.png"}
-                className="w-[80%] md:max-w-[50%] rounded-full border border-neutral-100"
+                className="w-[80%] md:max-w-[50%] rounded-full border border-bordermain"
                 alt="User"
               />
-              <div className="text-primarytextcolor text-base font-medium font-ubuntu">
+              <div className="text-textmain text-base font-medium font-ubuntu">
                 {matchableUserData.username}
               </div>
               <div className="font-light text-center text-sm text-secondarytextcolor m-2 w-[50%]">
@@ -105,13 +105,13 @@ export const MatchingComponent: React.FC = () => {
               <div className="flex items-center py-2 justify-center gap-5 w-full">
                 <button
                   onClick={searchPeople}
-                  className="bg-neutral-800 px-6 font-ubuntu font-normal text-base py-2 rounded-full active:bg-neutral-700 flex items-center text-white justify-evenly"
+                  className="bg-neutral-800 px-6 font-ubuntu font-normal text-base py-2 rounded-full active:bg-neutral-700 flex items-center text-textmain justify-evenly"
                 >
                   <ClearIcon />
                 </button>
                 <button
                   onClick={match}
-                  className="bg-indigo-500 px-6 font-ubuntu font-normal text-base py-2 rounded-full active:bg-indigo-500 flex text-white items-center justify-evenly"
+                  className="bg-indigomain px-6 font-ubuntu font-normal text-base py-2 rounded-full active:bg-indigomain flex text-textmain items-center justify-evenly"
                 >
                   <CheckIcon />
                 </button>

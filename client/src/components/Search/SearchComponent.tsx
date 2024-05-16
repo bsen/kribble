@@ -46,10 +46,10 @@ export const SearchComponent = () => {
 
   return (
     <div className="top-0 fixed w-full  lg:w-[45%]">
-      <div className="w-full px-4 border-b border-neutral-100 bg-white h-14 flex justify-between items-center">
+      <div className="w-full px-4 border-b border-bordermain bg-bgmain h-14 flex justify-between items-center">
         <button
           disabled={true}
-          className="h-10 mx-auto w-[75%] flex px-4 justify-between items-center border border-neutral-100 bg-neutral-100 rounded-full"
+          className="h-10 mx-auto w-[75%] flex px-4 justify-between items-center border border-bordermain bg-neutral-100 rounded-full"
           onClick={() => navigate("/search")}
         >
           <input
@@ -58,20 +58,18 @@ export const SearchComponent = () => {
             placeholder="Search"
             className="w-full h-full bg-neutral-100 focus:outline-none"
           />
-          <SearchIcon className="text-neutral-600" />
+          <SearchIcon className="text-texttwo" />
         </button>
       </div>
 
       <div>
         {users.length !== 0 || communities.length !== 0 ? (
           <div>
-            <div className="bg-white">
+            <div className="bg-bgmain">
               {users.map((user) => (
                 <Link to={`/${user.username}`} key={user.username}>
-                  <div className="flex border my-2 bg-white rounded-md border-neutral-100 py-2 gap-2 items-center px-4 hover:bg-neutral-100">
-                    <div className=" text-sm font-normal text-primarytextcolor">
-                      u/
-                    </div>
+                  <div className="flex border my-2 bg-bgmain rounded-md border-bordermain py-2 gap-2 items-center px-4 hover:bg-neutral-100">
+                    <div className=" text-sm font-normal text-textmain">u/</div>
                     <div>
                       <img
                         src={user.image ? user.image : "/user.png"}
@@ -80,7 +78,7 @@ export const SearchComponent = () => {
                       />
                     </div>
 
-                    <div className="text-primarytextcolor text-base  font-normal">
+                    <div className="text-textmain text-base  font-normal">
                       {user.name}
                     </div>
 
@@ -94,10 +92,8 @@ export const SearchComponent = () => {
             <div>
               {communities.map((community) => (
                 <Link to={`/${community.name}`} key={community.name}>
-                  <div className="flex border my-2 bg-white rounded-md border-neutral-100 py-2 gap-2 items-center px-4 hover:bg-neutral-100">
-                    <div className=" text-sm font-normal text-primarytextcolor">
-                      c/
-                    </div>
+                  <div className="flex border my-2 bg-bgmain rounded-md border-bordermain py-2 gap-2 items-center px-4 hover:bg-neutral-100">
+                    <div className=" text-sm font-normal text-textmain">c/</div>
                     <div>
                       <img
                         src={community.image ? community.image : "/group.png"}
@@ -106,7 +102,7 @@ export const SearchComponent = () => {
                       />
                     </div>
                     <div className="items-center">
-                      <div className="text-primarytextcolor text-base  font-normal">
+                      <div className="text-textmain text-base  font-normal">
                         {community.name}
                       </div>
                     </div>
@@ -118,11 +114,11 @@ export const SearchComponent = () => {
         ) : (
           <div>
             {isSearching ? (
-              <div className="text-neutral-600 my-5  font-light text-center text-lg">
+              <div className="text-texttwo my-5  font-light text-center text-lg">
                 Searching
               </div>
             ) : (
-              <div className="text-neutral-600 my-5  font-light text-center text-lg">
+              <div className="text-texttwo my-5  font-light text-center text-lg">
                 Search result not found
               </div>
             )}
