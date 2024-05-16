@@ -144,7 +144,7 @@ export const HomeComponent = () => {
           postData.posts.map((post, index) => (
             <div
               key={index}
-              className="my-4 p-2 py-4 rounded-md border border-bordermain  bg-bgmain"
+              className="my-4 p-2  rounded-md border border-bordermain  bg-bgmain"
             >
               <div className="flex items-center gap-2">
                 <div>
@@ -235,7 +235,7 @@ export const HomeComponent = () => {
                   {post.image && (
                     <img
                       src={post.image}
-                      className="rounded-md w-[100%] md:w-[60%] border border-bordermain"
+                      className="rounded-md w-[100%] md:w-[60%]"
                     />
                   )}
 

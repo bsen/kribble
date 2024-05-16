@@ -235,7 +235,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-2 p-2 rounded-md border border-bordermain  bg-bgmain"
+                className="my-4 p-2 rounded-md border border-bordermain  bg-bgmain"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2 items-center">
@@ -295,7 +295,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                     {post.image && (
                       <img
                         src={post.image}
-                        className="rounded-md w-[100%] md:w-[60%] border border-bordermain"
+                        className="rounded-md w-[100%] md:w-[60%]"
                       />
                     )}
 
