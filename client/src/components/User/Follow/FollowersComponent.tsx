@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import { NavBar } from "../../Bars/NavBar";
 interface FollowersData {
