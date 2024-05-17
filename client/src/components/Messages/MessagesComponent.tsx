@@ -110,7 +110,7 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
   };
 
   return (
-    <div className="h-screen border-r border-l border-bordermain bg-bgmain  w-full flex flex-col  justify-between">
+    <div className="h-screen border-r border-l border-bordermain bg-bgpost  w-full flex flex-col  justify-between">
       <div className="flex shadow-sm p-2 w-full flex-col justify-center items-center">
         <div className="flex justify-start gap-4 w-full p-2">
           <button
@@ -151,8 +151,8 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
               key={index}
               className={`mt-2 max-w-[70%] rounded-lg px-4 py-1 ${
                 message.sender === "self"
-                  ? "bg-indigomain text-textmain self-end"
-                  : "bg-indigomain text-textmain self-start"
+                  ? "bg-indigomain text-bgpost self-end"
+                  : "bg-indigomain text-bgpost self-start"
               }`}
             >
               {message.message}

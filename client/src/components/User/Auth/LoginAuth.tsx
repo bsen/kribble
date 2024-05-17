@@ -65,18 +65,27 @@ export const LoginAuth = () => {
           </div>
 
           <div className="items-center p-2 rounded-md bg-bgpost">
-            <div className="my-2 flex gap-2">
-              <img
-                src="/people.png"
-                className="h-20 w-20  rounded-full  bg-bgtwo"
-              />
+            <div className="my-2 justify-center flex gap-2">
               <img
                 src="/girl.png"
-                className="h-20 w-20  rounded-full  bg-bgtwo"
+                className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
               />
               <img
                 src="/boy.png"
-                className="h-20 w-20  rounded-full  bg-bgtwo"
+                className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              />
+              <img
+                src="/people.png"
+                className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              />
+
+              <img
+                src="/girl2.png"
+                className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              />
+              <img
+                src="/boy2.png"
+                className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
               />
             </div>
 

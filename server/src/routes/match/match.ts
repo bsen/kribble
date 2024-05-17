@@ -32,9 +32,6 @@ matchRouter.post("/matchable/users", async (c) => {
       where: {
         initiatorId: userId.id,
       },
-      select: {
-        recipientId: true,
-      },
     });
 
     const initiatedMatchRecipientIds = initiatedMatchIds.map(

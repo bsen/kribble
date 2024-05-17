@@ -245,7 +245,7 @@ export const HomeComponent = () => {
                 </div>
                 <div className="flex gap-2 mt-2 items-center text-sm text-texttwo">
                   <button
-                    className="w-16 bg-rose-100 text-rosemain py-1  rounded-md flex justify-center items-center gap-2 cursor-pointer"
+                    className="bg-rose-100 text-rosemain p-1  rounded-full flex justify-center items-center gap-2 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleLike(post.id);
@@ -270,16 +270,15 @@ export const HomeComponent = () => {
                         />
                       </div>
                     )}
-
-                    {post.likesCount}
                   </button>
+                  {post.likesCount}
                   <button
                     onClick={() => navigate(`/post/${post.id}`)}
-                    className="w-16 text-indigomain py-1  bg-indigo-100 rounded-md flex justify-center items-center gap-2 cursor-pointer"
+                    className="text-indigomain p-1  bg-indigo-100 rounded-full flex justify-center items-center gap-2 cursor-pointer"
                   >
                     <ReplyIcon sx={{ fontSize: 22 }} />
-                    {post.commentsCount}
                   </button>
+                  {post.commentsCount}
                 </div>
               </div>
             </div>

@@ -12,6 +12,8 @@ interface UserData {
   image: string;
   bio: string;
   website: string;
+  college: string;
+  interest: string;
   followersCount: string;
   followingCount: string;
 }
@@ -30,6 +32,8 @@ export const UserData: React.FC = () => {
     image: "",
     bio: "",
     website: "",
+    college: "",
+    interest: "",
     followersCount: "",
     followingCount: "",
   });
@@ -161,7 +165,13 @@ export const UserData: React.FC = () => {
         </Link>
       </div>
       <div className="text-sm text-textmain font-light">
-        {userData.bio ? userData.bio : "bio"}
+        {userData.bio ? userData.bio : ""}
+      </div>
+      <div className="text-sm text-textmain font-light">
+        {userData.college ? userData.college : ""}
+      </div>
+      <div className="text-sm text-textmain font-light">
+        {userData.interest ? userData.interest : ""}
       </div>
 
       <div className="text-sm text-indigomain font-light hover:underline">

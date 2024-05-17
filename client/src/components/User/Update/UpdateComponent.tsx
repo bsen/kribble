@@ -6,6 +6,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { Logout } from "../Auth/Logout";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 export const UpdateProfileComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -16,6 +19,8 @@ export const UpdateProfileComponent = () => {
   const [website, setWebsite] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [popup, setPopup] = useState("");
+  const [college, setCollege] = useState<string>("");
+  const [interest, setInterest] = useState<string>("");
   const [logoutState, setLogoutState] = useState(false);
   const [userData, setUserData] = useState<{
     fullname: string;
@@ -23,12 +28,16 @@ export const UpdateProfileComponent = () => {
     bio: string;
     image: string;
     website: string;
+    college: string;
+    interest: string;
   }>({
     fullname: "",
     username: "",
     bio: "",
     image: "",
     website: "",
+    college: "",
+    interest: "",
   });
 
   async function getData() {
@@ -50,6 +59,13 @@ export const UpdateProfileComponent = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const handleCollegeChange = (event: SelectChangeEvent) => {
+    setCollege(event.target.value as string);
+  };
+  const handleInterestChange = (event: SelectChangeEvent) => {
+    setInterest(event.target.value as string);
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -120,8 +136,10 @@ export const UpdateProfileComponent = () => {
       }
 
       let newFullName = fullname || userData.fullname || "";
-      let newBio = bio || userData.bio || "bio";
-      let newWebsite = website || userData.website || "website";
+      let newBio = bio || userData.bio || "";
+      let newWebsite = website || userData.website || "";
+      let newCollege = college || userData.college || "";
+      let newInterest = interest || userData.interest || "";
 
       const formdata = new FormData();
       if (imageToUpload) {
@@ -130,8 +148,9 @@ export const UpdateProfileComponent = () => {
       formdata.append("fullname", newFullName);
       formdata.append("bio", newBio);
       formdata.append("website", newWebsite);
+      formdata.append("college", newCollege);
+      formdata.append("interest", newInterest);
       formdata.append("token", token ? token : "");
-
       setIsLoading(true);
       await axios.post(`${BACKEND_URL}/api/user/profile/update`, formdata);
       setIsLoading(false);
@@ -245,6 +264,137 @@ export const UpdateProfileComponent = () => {
                     setBio(e.target.value);
                   }}
                 />
+              </div>
+              <div>
+                <div className="text-texttwo text-sm  font-light">College</div>
+                <FormControl className="w-full">
+                  <Select
+                    sx={{
+                      boxShadow: "none",
+                      ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                    }}
+                    className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 300,
+                          width: 250,
+                          overflow: "auto",
+                        },
+                      },
+                      disableScrollLock: true,
+                      disablePortal: true,
+                    }}
+                    onChange={handleCollegeChange}
+                  >
+                    <MenuItem value="" disabled>
+                      Select Campus
+                    </MenuItem>
+                    {/* VIT */}
+                    <MenuItem value="VIT Vellore">VIT Vellore</MenuItem>
+                    <MenuItem value="VIT Chennai">VIT Chennai</MenuItem>
+                    <MenuItem value="VIT Amaravati">VIT Amaravati</MenuItem>
+                    <MenuItem value="VIT Bhopal">VIT Bhopal</MenuItem>
+
+                    {/* BITS */}
+                    <MenuItem value="BITS Pilani">BITS Pilani</MenuItem>
+                    <MenuItem value="BITS Goa">BITS Goa</MenuItem>
+                    <MenuItem value="BITS Hyderabad">BITS Hyderabad</MenuItem>
+
+                    {/* SRMIST */}
+                    <MenuItem value="SRMIST Kattankulathur">
+                      SRMIST Kattankulathur
+                    </MenuItem>
+                    <MenuItem value="SRMIST Amaravati">
+                      SRMIST Amaravati
+                    </MenuItem>
+                    <MenuItem value="SRMIST NCR">SRMIST NCR</MenuItem>
+
+                    {/* Manipal */}
+                    <MenuItem value="MIT Manipal">MIT Manipal</MenuItem>
+
+                    {/* IITs */}
+                    <MenuItem value="IIT Bombay">IIT Bombay</MenuItem>
+                    <MenuItem value="IIT Delhi">IIT Delhi</MenuItem>
+                    <MenuItem value="IIT Madras">IIT Madras</MenuItem>
+                    <MenuItem value="IIT Kanpur">IIT Kanpur</MenuItem>
+                    <MenuItem value="IIT Kharagpur">IIT Kharagpur</MenuItem>
+                    <MenuItem value="IIT Roorkee">IIT Roorkee</MenuItem>
+                    <MenuItem value="IIT Guwahati">IIT Guwahati</MenuItem>
+
+                    {/* NITs */}
+                    <MenuItem value="NIT Trichy">NIT Trichy</MenuItem>
+                    <MenuItem value="NIT Surathkal">NIT Surathkal</MenuItem>
+                    <MenuItem value="NIT Warangal">NIT Warangal</MenuItem>
+                    <MenuItem value="NIT Calicut">NIT Calicut</MenuItem>
+                    <MenuItem value="NIT Rourkela">NIT Rourkela</MenuItem>
+                    <MenuItem value="NIT Kurukshetra">NIT Kurukshetra</MenuItem>
+                    <MenuItem value="NIT Durgapur">NIT Durgapur</MenuItem>
+
+                    {/* Other Colleges */}
+                    <MenuItem value="NSUT">NSUT</MenuItem>
+                    <MenuItem value="DTU">DTU</MenuItem>
+                    <MenuItem value="IGDTUW">IGDTUW</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div>
+                <div className="text-texttwo text-sm  font-light">Interest</div>
+                <FormControl className="w-full">
+                  <Select
+                    sx={{
+                      boxShadow: "none",
+                      ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                    }}
+                    className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 300,
+                          width: 250,
+                          overflow: "auto",
+                        },
+                      },
+                      disableScrollLock: true,
+                      disablePortal: true,
+                    }}
+                    onChange={handleInterestChange}
+                  >
+                    <MenuItem value="" disabled>
+                      Select Interest
+                    </MenuItem>
+                    <MenuItem value="Coding/Development">
+                      Coding/Development
+                    </MenuItem>
+                    <MenuItem value="Drama">Drama</MenuItem>
+                    <MenuItem value="Singing">Singing</MenuItem>
+                    <MenuItem value="Dancing">Dancing</MenuItem>
+                    <MenuItem value="Sports">Sports</MenuItem>
+                    <MenuItem value="Fitness">Fitness</MenuItem>
+                    <MenuItem value="Social Work">Social Work</MenuItem>
+                    <MenuItem value="Environmental Work">
+                      Environmental Work
+                    </MenuItem>
+                    <MenuItem value="Startup/Entrepreneurship">
+                      Startup/Entrepreneurship
+                    </MenuItem>
+                    <MenuItem value="Movies">Movies</MenuItem>
+                    <MenuItem value="Travel">Travel</MenuItem>
+                    <MenuItem value="Photography">Photography</MenuItem>
+                    <MenuItem value="Writing">Writing</MenuItem>
+                    <MenuItem value="Music">Music</MenuItem>
+                    <MenuItem value="Fashion">Fashion</MenuItem>
+                    <MenuItem value="Gaming">Gaming</MenuItem>
+                    <MenuItem value="Art">Art</MenuItem>
+                    <MenuItem value="Reading/Literature">
+                      Reading/Literature
+                    </MenuItem>
+                    <MenuItem value="Still figuring out">
+                      Still figuring out
+                    </MenuItem>
+                  </Select>
+                </FormControl>
               </div>
               <div className="text-rosemain font-ubuntu font-light text-center text-sm">
                 {popup ? popup : <div>‎</div>}

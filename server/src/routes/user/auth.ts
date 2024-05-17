@@ -21,6 +21,7 @@ const passwordSchema = z.string().min(6);
 const dateSchema = z.string().length(2);
 const monthSchema = z.string().length(2);
 const yearSchema = z.string().length(4);
+const collegeSchema = z.string();
 
 userAuthRouter.post("/username/check", async (c) => {
   try {
@@ -81,18 +82,20 @@ userAuthRouter.post("/signup", async (c) => {
     const dateRes = dateSchema.safeParse(body.date);
     const monthRes = monthSchema.safeParse(body.month);
     const yearRes = yearSchema.safeParse(body.year);
+    const collegeRes = collegeSchema.safeParse(body.college);
     if (
       !fullnameRes.success ||
       !usernameRes.success ||
       !emailRes.success ||
       !passwordRes.success ||
+      !collegeRes.success ||
       !dateRes.success ||
       !monthRes.success ||
       !yearRes
     ) {
       return c.json({ status: 400, message: "Invalid inputs" });
     }
-
+    //year-month-date
     let birthday = `${body.year}/${body.month}/${body.date}`;
 
     const prisma = new PrismaClient({
@@ -129,6 +132,7 @@ userAuthRouter.post("/signup", async (c) => {
         username: body.username,
         email: body.email,
         password: hashedPassword,
+        college: body.college,
         birthday: birthday,
       },
     });
@@ -137,6 +141,7 @@ userAuthRouter.post("/signup", async (c) => {
         message: "signup failed",
       });
     }
+
     const jwt = await sign({ id: newUser.id }, c.env.JWT_SECRET);
     return c.json({
       status: 200,
