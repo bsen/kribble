@@ -4,7 +4,6 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
-
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -36,6 +35,38 @@ function debounce<T extends (...args: any[]) => void>(
   debouncedFunc.cancel = cancel;
   return debouncedFunc;
 }
+
+const colleges = [
+  "VIT Vellore",
+  "VIT Chennai",
+  "VIT Amaravati",
+  "VIT Bhopal",
+  "BITS Pilani",
+  "BITS Goa",
+  "BITS Hyderabad",
+  "SRMIST Kattankulathur",
+  "SRMIST Amaravati",
+  "SRMIST NCR",
+  "MIT Manipal",
+  "IIT Bombay",
+  "IIT Delhi",
+  "IIT Madras",
+  "IIT Kanpur",
+  "IIT Kharagpur",
+  "IIT Roorkee",
+  "IIT Guwahati",
+  "NIT Trichy",
+  "NIT Surathkal",
+  "NIT Warangal",
+  "NIT Calicut",
+  "NIT Rourkela",
+  "NIT Kurukshetra",
+  "NIT Durgapur",
+  "NSUT",
+  "DTU",
+  "IGDTUW",
+  "Other",
+];
 
 export const SignupAuth = () => {
   const navigate = useNavigate();
@@ -326,7 +357,7 @@ export const SignupAuth = () => {
           </div>
 
           <div>
-            <div className="font-normal m-1 text-texttwo">College</div>
+            <div className="text-texttwo text-sm font-light">College</div>
             <FormControl className="w-full">
               <Select
                 sx={{
@@ -346,58 +377,19 @@ export const SignupAuth = () => {
                   disablePortal: true,
                 }}
                 onChange={handleCollegeChange}
+                value={college}
               >
                 <MenuItem value="" disabled>
                   Select Campus
                 </MenuItem>
-                {/* VIT */}
-                <MenuItem value="VIT Vellore">VIT Vellore</MenuItem>
-                <MenuItem value="VIT Chennai">VIT Chennai</MenuItem>
-                <MenuItem value="VIT Amaravati">VIT Amaravati</MenuItem>
-                <MenuItem value="VIT Bhopal">VIT Bhopal</MenuItem>
-
-                {/* BITS */}
-                <MenuItem value="BITS Pilani">BITS Pilani</MenuItem>
-                <MenuItem value="BITS Goa">BITS Goa</MenuItem>
-                <MenuItem value="BITS Hyderabad">BITS Hyderabad</MenuItem>
-
-                {/* SRMIST */}
-                <MenuItem value="SRMIST Kattankulathur">
-                  SRMIST Kattankulathur
-                </MenuItem>
-                <MenuItem value="SRMIST Amaravati">SRMIST Amaravati</MenuItem>
-                <MenuItem value="SRMIST NCR">SRMIST NCR</MenuItem>
-
-                {/* Manipal */}
-                <MenuItem value="MIT Manipal">MIT Manipal</MenuItem>
-
-                {/* IITs */}
-                <MenuItem value="IIT Bombay">IIT Bombay</MenuItem>
-                <MenuItem value="IIT Delhi">IIT Delhi</MenuItem>
-                <MenuItem value="IIT Madras">IIT Madras</MenuItem>
-                <MenuItem value="IIT Kanpur">IIT Kanpur</MenuItem>
-                <MenuItem value="IIT Kharagpur">IIT Kharagpur</MenuItem>
-                <MenuItem value="IIT Roorkee">IIT Roorkee</MenuItem>
-                <MenuItem value="IIT Guwahati">IIT Guwahati</MenuItem>
-
-                {/* NITs */}
-                <MenuItem value="NIT Trichy">NIT Trichy</MenuItem>
-                <MenuItem value="NIT Surathkal">NIT Surathkal</MenuItem>
-                <MenuItem value="NIT Warangal">NIT Warangal</MenuItem>
-                <MenuItem value="NIT Calicut">NIT Calicut</MenuItem>
-                <MenuItem value="NIT Rourkela">NIT Rourkela</MenuItem>
-                <MenuItem value="NIT Kurukshetra">NIT Kurukshetra</MenuItem>
-                <MenuItem value="NIT Durgapur">NIT Durgapur</MenuItem>
-
-                {/* Other Colleges */}
-                <MenuItem value="NSUT">NSUT</MenuItem>
-                <MenuItem value="DTU">DTU</MenuItem>
-                <MenuItem value="IGDTUW">IGDTUW</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
+                {colleges.map((college) => (
+                  <MenuItem key={college} value={college}>
+                    {college}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>
-
           <div>
             <div className="font-normal m-1 text-texttwo">Date of birth</div>
             <div className="flex gap-2">

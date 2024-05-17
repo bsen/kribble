@@ -9,6 +9,61 @@ import { Logout } from "../Auth/Logout";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+
+const interests = [
+  "Coding/Development",
+  "Drama",
+  "Singing",
+  "Dancing",
+  "Sports",
+  "Fitness",
+  "Social Work",
+  "Environmental Work",
+  "Startup/Entrepreneurship",
+  "Movies",
+  "Travel",
+  "Photography",
+  "Writing",
+  "Music",
+  "Fashion",
+  "Gaming",
+  "Art",
+  "Reading/Literature",
+  "Still figuring out",
+];
+
+const colleges = [
+  "VIT Vellore",
+  "VIT Chennai",
+  "VIT Amaravati",
+  "VIT Bhopal",
+  "BITS Pilani",
+  "BITS Goa",
+  "BITS Hyderabad",
+  "SRMIST Kattankulathur",
+  "SRMIST Amaravati",
+  "SRMIST NCR",
+  "MIT Manipal",
+  "IIT Bombay",
+  "IIT Delhi",
+  "IIT Madras",
+  "IIT Kanpur",
+  "IIT Kharagpur",
+  "IIT Roorkee",
+  "IIT Guwahati",
+  "NIT Trichy",
+  "NIT Surathkal",
+  "NIT Warangal",
+  "NIT Calicut",
+  "NIT Rourkela",
+  "NIT Kurukshetra",
+  "NIT Durgapur",
+  "NSUT",
+  "DTU",
+  "IGDTUW",
+  "Other",
+];
+
 export const UpdateProfileComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -266,7 +321,7 @@ export const UpdateProfileComponent = () => {
                 />
               </div>
               <div>
-                <div className="text-texttwo text-sm  font-light">College</div>
+                <div className="text-texttwo text-sm font-light">College</div>
                 <FormControl className="w-full">
                   <Select
                     sx={{
@@ -286,61 +341,21 @@ export const UpdateProfileComponent = () => {
                       disablePortal: true,
                     }}
                     onChange={handleCollegeChange}
+                    value={college}
                   >
                     <MenuItem value="" disabled>
-                      Select Campus
+                      Select College
                     </MenuItem>
-                    {/* VIT */}
-                    <MenuItem value="VIT Vellore">VIT Vellore</MenuItem>
-                    <MenuItem value="VIT Chennai">VIT Chennai</MenuItem>
-                    <MenuItem value="VIT Amaravati">VIT Amaravati</MenuItem>
-                    <MenuItem value="VIT Bhopal">VIT Bhopal</MenuItem>
-
-                    {/* BITS */}
-                    <MenuItem value="BITS Pilani">BITS Pilani</MenuItem>
-                    <MenuItem value="BITS Goa">BITS Goa</MenuItem>
-                    <MenuItem value="BITS Hyderabad">BITS Hyderabad</MenuItem>
-
-                    {/* SRMIST */}
-                    <MenuItem value="SRMIST Kattankulathur">
-                      SRMIST Kattankulathur
-                    </MenuItem>
-                    <MenuItem value="SRMIST Amaravati">
-                      SRMIST Amaravati
-                    </MenuItem>
-                    <MenuItem value="SRMIST NCR">SRMIST NCR</MenuItem>
-
-                    {/* Manipal */}
-                    <MenuItem value="MIT Manipal">MIT Manipal</MenuItem>
-
-                    {/* IITs */}
-                    <MenuItem value="IIT Bombay">IIT Bombay</MenuItem>
-                    <MenuItem value="IIT Delhi">IIT Delhi</MenuItem>
-                    <MenuItem value="IIT Madras">IIT Madras</MenuItem>
-                    <MenuItem value="IIT Kanpur">IIT Kanpur</MenuItem>
-                    <MenuItem value="IIT Kharagpur">IIT Kharagpur</MenuItem>
-                    <MenuItem value="IIT Roorkee">IIT Roorkee</MenuItem>
-                    <MenuItem value="IIT Guwahati">IIT Guwahati</MenuItem>
-
-                    {/* NITs */}
-                    <MenuItem value="NIT Trichy">NIT Trichy</MenuItem>
-                    <MenuItem value="NIT Surathkal">NIT Surathkal</MenuItem>
-                    <MenuItem value="NIT Warangal">NIT Warangal</MenuItem>
-                    <MenuItem value="NIT Calicut">NIT Calicut</MenuItem>
-                    <MenuItem value="NIT Rourkela">NIT Rourkela</MenuItem>
-                    <MenuItem value="NIT Kurukshetra">NIT Kurukshetra</MenuItem>
-                    <MenuItem value="NIT Durgapur">NIT Durgapur</MenuItem>
-
-                    {/* Other Colleges */}
-                    <MenuItem value="NSUT">NSUT</MenuItem>
-                    <MenuItem value="DTU">DTU</MenuItem>
-                    <MenuItem value="IGDTUW">IGDTUW</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
+                    {colleges.map((college) => (
+                      <MenuItem key={college} value={college}>
+                        {college}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
               <div>
-                <div className="text-texttwo text-sm  font-light">Interest</div>
+                <div className="text-texttwo text-sm font-light">Interest</div>
                 <FormControl className="w-full">
                   <Select
                     sx={{
@@ -360,39 +375,16 @@ export const UpdateProfileComponent = () => {
                       disablePortal: true,
                     }}
                     onChange={handleInterestChange}
+                    value={interest}
                   >
                     <MenuItem value="" disabled>
                       Select Interest
                     </MenuItem>
-                    <MenuItem value="Coding/Development">
-                      Coding/Development
-                    </MenuItem>
-                    <MenuItem value="Drama">Drama</MenuItem>
-                    <MenuItem value="Singing">Singing</MenuItem>
-                    <MenuItem value="Dancing">Dancing</MenuItem>
-                    <MenuItem value="Sports">Sports</MenuItem>
-                    <MenuItem value="Fitness">Fitness</MenuItem>
-                    <MenuItem value="Social Work">Social Work</MenuItem>
-                    <MenuItem value="Environmental Work">
-                      Environmental Work
-                    </MenuItem>
-                    <MenuItem value="Startup/Entrepreneurship">
-                      Startup/Entrepreneurship
-                    </MenuItem>
-                    <MenuItem value="Movies">Movies</MenuItem>
-                    <MenuItem value="Travel">Travel</MenuItem>
-                    <MenuItem value="Photography">Photography</MenuItem>
-                    <MenuItem value="Writing">Writing</MenuItem>
-                    <MenuItem value="Music">Music</MenuItem>
-                    <MenuItem value="Fashion">Fashion</MenuItem>
-                    <MenuItem value="Gaming">Gaming</MenuItem>
-                    <MenuItem value="Art">Art</MenuItem>
-                    <MenuItem value="Reading/Literature">
-                      Reading/Literature
-                    </MenuItem>
-                    <MenuItem value="Still figuring out">
-                      Still figuring out
-                    </MenuItem>
+                    {interests.map((interest) => (
+                      <MenuItem key={interest} value={interest}>
+                        {interest}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
