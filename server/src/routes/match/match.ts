@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { PrismaClient, Prisma } from "@prisma/client/edge";
+import { PrismaClient, User } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 
@@ -9,11 +9,15 @@ export const matchRouter = new Hono<{
     JWT_SECRET: string;
   };
 }>();
+
 matchRouter.post("/matchable/users", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
+    const interests = body.interests;
+    const colleges = body.colleges;
     const userId = await verify(token, c.env.JWT_SECRET);
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -32,50 +36,90 @@ matchRouter.post("/matchable/users", async (c) => {
       where: {
         initiatorId: userId.id,
       },
+      select: {
+        recipientId: true,
+      },
     });
 
     const initiatedMatchRecipientIds = initiatedMatchIds.map(
       (match) => match.recipientId
     );
 
-    const receivedMatchIds = await prisma.profileMatch.findMany({
-      where: {
-        recipientId: userId.id,
-      },
-      select: {
-        initiatorId: true,
-      },
-    });
+    let usersMatchingInterestsAndColleges: User[] = [];
+    let usersWithMatchingInterests: User[] = [];
+    let usersWithMatchingColleges: User[] = [];
 
-    const receivedMatchInitiatorIds = receivedMatchIds.map(
-      (match) => match.initiatorId
-    );
+    if (interests.length > 0 && colleges.length > 0) {
+      usersMatchingInterestsAndColleges = await prisma.user.findMany({
+        where: {
+          interest: {
+            in: interests,
+          },
+          college: {
+            in: colleges,
+          },
+          id: {
+            notIn: [...initiatedMatchRecipientIds, userId.id],
+          },
+        },
+      });
+    }
 
-    const suggestedUsers = await prisma.user.findMany({
+    if (
+      usersMatchingInterestsAndColleges.length === 0 &&
+      interests.length > 0
+    ) {
+      usersWithMatchingInterests = await prisma.user.findMany({
+        where: {
+          interest: {
+            in: interests,
+          },
+          id: {
+            notIn: [...initiatedMatchRecipientIds, userId.id],
+          },
+        },
+      });
+    }
+
+    if (
+      (usersWithMatchingInterests.length === 0 && interests.length === 0) ||
+      colleges.length > 0
+    ) {
+      usersWithMatchingColleges = await prisma.user.findMany({
+        where: {
+          college: {
+            in: colleges,
+          },
+          id: {
+            notIn: [...initiatedMatchRecipientIds, userId.id],
+          },
+        },
+      });
+    }
+    const randomUsers = await prisma.user.findMany({
       where: {
         id: {
           notIn: [...initiatedMatchRecipientIds, userId.id],
         },
       },
-      take: 5,
-      orderBy: [
-        {
-          id:
-            receivedMatchInitiatorIds.length > 0
-              ? Prisma.SortOrder.desc
-              : undefined,
-        },
-        {
-          id: Prisma.SortOrder.asc,
-        },
-      ],
-      select: {
-        id: true,
-        username: true,
-        bio: true,
-        image: true,
-      },
     });
+
+    console.log(
+      usersMatchingInterestsAndColleges,
+      usersWithMatchingColleges,
+      usersWithMatchingInterests
+    );
+    const allMatchingUsers = [
+      ...usersMatchingInterestsAndColleges,
+      ...usersWithMatchingInterests,
+      ...usersWithMatchingColleges,
+    ];
+
+    const suggestedUsers = allMatchingUsers
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5)
+      .map(({ id, username, bio, image }) => ({ id, username, bio, image }));
+
     return c.json({ status: 200, user: suggestedUsers });
   } catch (error) {
     console.error(error);

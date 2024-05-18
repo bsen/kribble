@@ -12,7 +12,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 
 const interests = [
-  "Coding/Development",
+  "Programming",
   "Drama",
   "Singing",
   "Dancing",
@@ -20,7 +20,7 @@ const interests = [
   "Fitness",
   "Social Work",
   "Environmental Work",
-  "Startup/Entrepreneurship",
+  "Entrepreneurship",
   "Movies",
   "Travel",
   "Photography",
@@ -29,7 +29,7 @@ const interests = [
   "Fashion",
   "Gaming",
   "Art",
-  "Reading/Literature",
+  "Literature",
   "Still figuring out",
 ];
 

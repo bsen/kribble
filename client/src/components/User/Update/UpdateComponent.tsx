@@ -11,7 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const interests = [
-  "Coding/Development",
+  "Programming",
   "Drama",
   "Singing",
   "Dancing",
@@ -19,7 +19,7 @@ const interests = [
   "Fitness",
   "Social Work",
   "Environmental Work",
-  "Startup/Entrepreneurship",
+  "Entrepreneurship",
   "Movies",
   "Travel",
   "Photography",
@@ -28,7 +28,7 @@ const interests = [
   "Fashion",
   "Gaming",
   "Art",
-  "Reading/Literature",
+  "Literature",
   "Still figuring out",
 ];
 
