@@ -85,14 +85,14 @@ export const Community = () => {
 
   return (
     <>
-      <div className="h-screen border-l border-r border-bordermain bg-bgmain flex justify-center items-center px-5 lg:px-0">
+      <div className="h-screen bg-bgmain flex justify-center items-center px-5 lg:px-0">
         <NavBar />
         <div className="w-full max-w-md my-5 rounded-lg bg-bgmain">
           <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
             <div>
               <button onClick={handleClose}>
                 <ArrowBackIcon
-                  className="bg-neutral-800 p-1 rounded-full text-textmain"
+                  className="rounded-full text-textmain"
                   sx={{ fontSize: 30 }}
                 />
               </button>
@@ -132,7 +132,7 @@ export const Community = () => {
             <div className="flex w-full justify-center">
               <button
                 onClick={createCommunity}
-                className="bg-indigomain w-full text-textmain px-6 py-2 rounded-lg"
+                className="bg-indigomain w-full text-bgmain px-6 py-2 rounded-lg"
               >
                 Create your community
               </button>

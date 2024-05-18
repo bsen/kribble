@@ -151,16 +151,15 @@ export const UpdateProfileComponent = () => {
       img.onload = () => {
         const canvas = document.createElement("canvas");
         const size = Math.min(img.width, img.height);
+
         canvas.width = size;
         canvas.height = size;
-        const ctx = canvas.getContext("2d");
 
+        const ctx = canvas.getContext("2d");
         if (ctx) {
-          ctx.beginPath();
-          ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
-          ctx.closePath();
-          ctx.clip();
-          ctx.drawImage(img, 0, 0);
+          const xOffset = (img.width - size) / 2;
+          const yOffset = (img.height - size) / 2;
+          ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
           const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
           setPreviewImage(compressedImageData);
         }
@@ -227,7 +226,7 @@ export const UpdateProfileComponent = () => {
         <div className="w-full">{logoutState && <Logout />}</div>
         <div className="w-full">
           {!logoutState && (
-            <div className="bg-bgpost h-screen  p-2 flex flex-col gap-4">
+            <div className="bg-bgmain h-screen  p-2 flex flex-col gap-4">
               <div className="flex justify-between items-center border-b border-bordermain pb-2">
                 <button
                   onClick={() => {

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { PrismaClient, User } from "@prisma/client/edge";
-import { withAccelerate } from "@prisma/extension-accelerate";
+import { PrismaClient } from "@prisma/client/edge";
 import { verify } from "hono/jwt";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
 export const matchRouter = new Hono<{
   Bindings: {
@@ -10,12 +10,19 @@ export const matchRouter = new Hono<{
   };
 }>();
 
+interface SuggestedUser {
+  id: string;
+  username: string;
+  bio: string | null;
+  image: string | null;
+}
+
 matchRouter.post("/matchable/users", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
-    const interests = body.interests;
-    const colleges = body.colleges;
+    const interests = body.interests || [];
+    const colleges = body.colleges || [];
     const userId = await verify(token, c.env.JWT_SECRET);
 
     const prisma = new PrismaClient({
@@ -41,86 +48,42 @@ matchRouter.post("/matchable/users", async (c) => {
       },
     });
 
-    const initiatedMatchRecipientIds = initiatedMatchIds.map(
-      (match) => match.recipientId
-    );
+    const excludedIds = [
+      ...initiatedMatchIds.map((match) => match.recipientId),
+      userId.id,
+    ];
+    const passedUserIds = body.passedUserIds || [];
 
-    let usersMatchingInterestsAndColleges: User[] = [];
-    let usersWithMatchingInterests: User[] = [];
-    let usersWithMatchingColleges: User[] = [];
+    let suggestedUser: SuggestedUser | null = null;
 
-    if (interests.length > 0 && colleges.length > 0) {
-      usersMatchingInterestsAndColleges = await prisma.user.findMany({
-        where: {
-          interest: {
-            in: interests,
-          },
-          college: {
-            in: colleges,
-          },
-          id: {
-            notIn: [...initiatedMatchRecipientIds, userId.id],
-          },
-        },
-      });
-    }
-
-    if (
-      usersMatchingInterestsAndColleges.length === 0 &&
-      interests.length > 0
-    ) {
-      usersWithMatchingInterests = await prisma.user.findMany({
-        where: {
-          interest: {
-            in: interests,
-          },
-          id: {
-            notIn: [...initiatedMatchRecipientIds, userId.id],
-          },
-        },
-      });
-    }
-
-    if (
-      (usersWithMatchingInterests.length === 0 && interests.length === 0) ||
-      colleges.length > 0
-    ) {
-      usersWithMatchingColleges = await prisma.user.findMany({
-        where: {
-          college: {
-            in: colleges,
-          },
-          id: {
-            notIn: [...initiatedMatchRecipientIds, userId.id],
-          },
-        },
-      });
-    }
-    const randomUsers = await prisma.user.findMany({
+    const allUsers = await prisma.user.findMany({
       where: {
         id: {
-          notIn: [...initiatedMatchRecipientIds, userId.id],
+          notIn: [...excludedIds, ...passedUserIds],
         },
+        ...(interests.length > 0 && { interest: { in: interests } }),
+        ...(colleges.length > 0 && { college: { in: colleges } }),
+      },
+      select: {
+        id: true,
+        username: true,
+        bio: true,
+        image: true,
+        college: true,
+        interest: true,
       },
     });
 
-    console.log(
-      usersMatchingInterestsAndColleges,
-      usersWithMatchingColleges,
-      usersWithMatchingInterests
+    const remainingUsers = allUsers.filter(
+      (user) => !passedUserIds.includes(user.id)
     );
-    const allMatchingUsers = [
-      ...usersMatchingInterestsAndColleges,
-      ...usersWithMatchingInterests,
-      ...usersWithMatchingColleges,
-    ];
 
-    const suggestedUsers = allMatchingUsers
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 5)
-      .map(({ id, username, bio, image }) => ({ id, username, bio, image }));
+    if (remainingUsers.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingUsers.length);
+      suggestedUser = remainingUsers[randomIndex];
+    }
 
-    return c.json({ status: 200, user: suggestedUsers });
+    return c.json({ status: 200, user: suggestedUser });
   } catch (error) {
     console.error(error);
     return c.json({ status: 500, message: "Internal Server Error" });

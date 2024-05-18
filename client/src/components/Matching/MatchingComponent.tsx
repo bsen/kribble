@@ -10,6 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import { UserData } from "../User/Profile/UserData";
 
 const interests = [
   "Programming",
@@ -70,6 +71,8 @@ interface UserData {
   username: string;
   bio: string;
   image: string;
+  college: string;
+  interest: string;
 }
 
 export const MatchingComponent: React.FC = () => {
@@ -91,20 +94,15 @@ export const MatchingComponent: React.FC = () => {
   const searchPeople = async () => {
     try {
       setIsMatching(true);
-      console.log(selectedColleges, selectedInterests);
-      if (selectedInterests.length === 0 || selectedColleges.length === 0) {
-        setPopup("Please select both interests and colleges to proceed");
-        return setIsMatching(false);
-      }
       setPopup("Searching ...");
       const response = await axios.post(
         `${BACKEND_URL}/api/match/matchable/users`,
         { token, interests: selectedInterests, colleges: selectedColleges }
       );
       setPopup("");
-      if (response.data.status === 200 && Array.isArray(response.data.user)) {
-        if (response.data.user.length > 0) {
-          setMatchableUserData(response.data.user[0]);
+      if (response.data.status === 200) {
+        if (response.data.user) {
+          setMatchableUserData(response.data.user);
         } else {
           setPopup("No users found for matching, Please try again later.");
         }
@@ -183,50 +181,22 @@ export const MatchingComponent: React.FC = () => {
         <div className="w-full flex flex-col items-center justify-center">
           {!isMatching && (
             <div className="h-screen bg-white w-full flex flex-col justify-center items-center p-2">
-              <div className="flex gap-4 bg-bgtwo flex-col justify-center items-center p-4 shadow-sm rounded-md">
-                <img src="/match.png" className="h-16 w-16 mb-4" />
-                <div className="text-xl  font-normal text-indigomain font-ubuntu">
-                  Start matching in FriendCity
-                </div>
-                <div className="w-full">
-                  <div className="text-texttwo text-sm font-light">
-                    Select Interests
+              <div className=" bg-bgtwo p-4 shadow-sm rounded-md">
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <img src="/match.png" className="h-16 w-16" />
+                  <div className="text-center flex flex-col items-center justify-center gap-1">
+                    <div className="text-2xl  font-normal text-indigomain font-ubuntu">
+                      Start matching in FriendCity
+                    </div>
+                    <div className="text-xs  text-texttwo font-light">
+                      1. Filter people based on colleges and interests.
+                      <br /> 2. Your profile displays your photo, bio,
+                      interests, and college.
+                      <br /> 3. Check your matches from your profile section.
+                    </div>
                   </div>
-                  <FormControl className="w-full">
-                    <Select
-                      sx={{
-                        boxShadow: "none",
-                        ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                      }}
-                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgpost"
-                      multiple
-                      MenuProps={{
-                        PaperProps: {
-                          style: {
-                            maxHeight: 300,
-                            width: 250,
-                            overflow: "auto",
-                          },
-                        },
-                        disableScrollLock: true,
-                        disablePortal: true,
-                      }}
-                      value={selectedInterests}
-                      onChange={handleInterestChange}
-                      renderValue={(selected) => selected.join(", ")}
-                    >
-                      {interests.map((interest) => (
-                        <MenuItem key={interest} value={interest}>
-                          <Checkbox
-                            checked={selectedInterests.indexOf(interest) > -1}
-                          />
-                          <ListItemText primary={interest} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
                 </div>
-                <div className="w-full">
+                <div className="w-full my-4 flex flex-col justify-center items-start">
                   <div className="text-texttwo text-sm font-light">
                     Select Colleges
                   </div>
@@ -236,7 +206,7 @@ export const MatchingComponent: React.FC = () => {
                         boxShadow: "none",
                         ".MuiOutlinedInput-notchedOutline": { border: 0 },
                       }}
-                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgpost"
+                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgmain"
                       multiple
                       MenuProps={{
                         PaperProps: {
@@ -264,12 +234,52 @@ export const MatchingComponent: React.FC = () => {
                     </Select>
                   </FormControl>
                 </div>
-                <button
-                  onClick={searchPeople}
-                  className="bg-indigomain text-bgpost px-6 font-ubuntu font-normal text-base py-2 rounded-full mt-4"
-                >
-                  Start Matching
-                </button>
+                <div className="w-full my-4 flex flex-col justify-center items-start">
+                  <div className="text-texttwo text-sm font-light">
+                    Select Interests
+                  </div>
+                  <FormControl className="w-full">
+                    <Select
+                      sx={{
+                        boxShadow: "none",
+                        ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                      }}
+                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgmain"
+                      multiple
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 300,
+                            width: 250,
+                            overflow: "auto",
+                          },
+                        },
+                        disableScrollLock: true,
+                        disablePortal: true,
+                      }}
+                      value={selectedInterests}
+                      onChange={handleInterestChange}
+                      renderValue={(selected) => selected.join(", ")}
+                    >
+                      {interests.map((interest) => (
+                        <MenuItem key={interest} value={interest}>
+                          <Checkbox
+                            checked={selectedInterests.indexOf(interest) > -1}
+                          />
+                          <ListItemText primary={interest} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={searchPeople}
+                    className="bg-indigomain text-center text-bgmain px-6 font-ubuntu font-normal text-base py-2 rounded-full"
+                  >
+                    Start Matching
+                  </button>
+                </div>
               </div>
               {popup && (
                 <div
@@ -282,43 +292,55 @@ export const MatchingComponent: React.FC = () => {
             </div>
           )}
 
-          {isMatching && matchableUserData && (
-            <div className="w-full flex flex-col justify-center items-center gap-2">
+          {isMatching && matchableUserData && !popup && (
+            <div className="flex bg-white text-left p-2 rounded-lg shadow-sm  flex-col justify-center">
               <img
                 src={matchableUserData.image || "user.png"}
-                className="w-[75%] md:max-w-[40%] rounded-full border border-bordermain"
+                className="w-60 rounded-lg border border-bordermain"
               />
-              <div className="text-textmain text-base font-medium font-ubuntu">
+              <div className="text-textmain my-2 text-base font-medium font-ubuntu">
                 {matchableUserData.username}
               </div>
-              <div className="font-light text-center text-sm text-secondarytextcolor m-2 w-[50%]">
-                {matchableUserData.bio ? matchableUserData.bio : ""}
-              </div>
-              <div className="flex items-center py-2 justify-center gap-5 w-full">
+              {matchableUserData.bio && (
+                <div className="font-light  text-xs text-secondarytextcolor ">
+                  {matchableUserData.bio ? matchableUserData.bio : ""}
+                </div>
+              )}
+              {matchableUserData.college && (
+                <div className="font-light  text-xs text-secondarytextcolor ">
+                  {matchableUserData.college ? matchableUserData.college : ""}
+                </div>
+              )}
+              {matchableUserData.interest && (
+                <div className="font-light  text-xs text-secondarytextcolor">
+                  {matchableUserData.interest ? matchableUserData.interest : ""}
+                </div>
+              )}
+              <div className="flex items-center my-4 justify-center gap-5 w-full">
                 <button
                   onClick={searchPeople}
-                  className="bg-textmain text-bgpost px-6 font-ubuntu font-normal text-base py-2 rounded-full"
+                  className="bg-textmain text-bgmain px-6 font-ubuntu font-normal text-base py-1 rounded-full"
                 >
                   <ClearIcon />
                 </button>
                 <button
                   onClick={match}
-                  className="bg-indigomain text-bgpost px-6 font-ubuntu font-normal text-base py-2 rounded-full"
+                  className="bg-indigomain text-bgmain px-6 font-ubuntu font-normal text-base py-1 rounded-full"
                 >
                   <CheckIcon />
                 </button>
               </div>
             </div>
           )}
-          {popup && (
-            <div
-              className="text-texttwo mt-4 font-light text-center text-sm"
-              onClick={clearError}
-            >
-              {popup}
-            </div>
-          )}
         </div>
+        {popup && (
+          <div
+            className="text-texttwo mt-4 font-light text-center text-sm"
+            onClick={clearError}
+          >
+            {popup}
+          </div>
+        )}
         <BottomBar />
       </div>
     </>

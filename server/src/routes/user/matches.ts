@@ -51,8 +51,6 @@ userMatchesRouter.post("/all/matches", async (c) => {
         createdAt: "desc",
       },
     });
-    console.log(userMatches);
-
     if (!userMatches) {
       return c.json({ status: 404, message: "No matches found" });
     }

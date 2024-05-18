@@ -4,9 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        bgmain: "rgb(250 250 250);",
+        bgmain: "rgb(255 255 255);",
         bgtwo: "rgb(238 242 255);",
-        bgpost: "rgb(255 255 255);",
         textmain: "rgb(13 13 13);",
         texttwo: "rgb(82 82 82);",
         rosemain: "rgb(245, 66, 108);",

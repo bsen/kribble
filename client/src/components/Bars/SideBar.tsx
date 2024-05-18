@@ -15,7 +15,7 @@ export const SideBar = () => {
 
   return (
     <>
-      <div className="flex bg-bgpost flex-col items-center px-6 justify-between h-screen border-r border-bordermain">
+      <div className="flex bg-bgmain flex-col items-center px-6 justify-between h-screen border-r border-bordermain">
         <div className="w-full flex flex-col  items-center">
           <div
             onClick={() => {

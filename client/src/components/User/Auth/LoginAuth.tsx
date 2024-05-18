@@ -64,7 +64,7 @@ export const LoginAuth = () => {
             Welcome back to Friendcity
           </div>
 
-          <div className="items-center p-2 rounded-md bg-bgpost">
+          <div className="items-center p-2 rounded-md bg-bgmain">
             <div className="my-2 justify-center flex gap-2">
               <img
                 src="/girl.png"

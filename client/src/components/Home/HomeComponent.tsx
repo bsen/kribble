@@ -144,7 +144,7 @@ export const HomeComponent = () => {
           postData.posts.map((post, index) => (
             <div
               key={index}
-              className="my-3 p-3  rounded-md border border-bordermain  bg-bgpost"
+              className="my-3 p-3  rounded-md border border-bordermain  bg-bgmain"
             >
               <div className="flex items-center gap-2">
                 <div>
@@ -245,7 +245,7 @@ export const HomeComponent = () => {
                 </div>
                 <div className="flex gap-2 mt-2 items-center text-sm text-texttwo">
                   <button
-                    className="bg-rose-100 text-rosemain p-1  rounded-full flex justify-center items-center gap-2 cursor-pointer"
+                    className="bg-bordermain text-rosemain px-2   rounded-full flex justify-center items-center gap-2 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleLike(post.id);
@@ -270,15 +270,16 @@ export const HomeComponent = () => {
                         />
                       </div>
                     )}
+                    {post.likesCount}
                   </button>
-                  {post.likesCount}
+
                   <button
                     onClick={() => navigate(`/post/${post.id}`)}
-                    className="text-indigomain p-1  bg-indigo-100 rounded-full flex justify-center items-center gap-2 cursor-pointer"
+                    className="bg-bordermain text-indigomain px-2   rounded-full flex justify-center items-center gap-2 cursor-pointer"
                   >
                     <ReplyIcon sx={{ fontSize: 22 }} />
+                    {post.commentsCount}
                   </button>
-                  {post.commentsCount}
                 </div>
               </div>
             </div>
