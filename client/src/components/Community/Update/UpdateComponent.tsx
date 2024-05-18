@@ -20,6 +20,8 @@ export const UpdateCommunityComponent = () => {
   const [newDescription, setNewDescription] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [popup, setPopup] = useState("");
+  const [CommunityDeletingState, setCommunityDeletingState] = useState(false);
+  const [confirmation, setConfirmation] = useState("");
   const [communityData, setCommunityData] = useState<CommunityData>({
     id: "",
     name: "",
@@ -129,6 +131,26 @@ export const UpdateCommunityComponent = () => {
       console.log("Error updating community:", error);
     }
   }
+
+  useEffect(() => {
+    setPopup("");
+  }, [confirmation]);
+  const deleteCommunity = async () => {
+    if (confirmation !== "Delete community") {
+      return setPopup(
+        "Please confirm the deletion by typing the given senetence"
+      );
+    }
+    setIsLoading(true);
+    const response = await axios.post(
+      `${BACKEND_URL}/api/community/delete/delete/community`,
+      { token, communityId: communityData.id }
+    );
+    setPopup(response.data.message);
+    setIsLoading(false);
+    setCommunityDeletingState(false);
+    navigate("/");
+  };
   if (isLoading) {
     return (
       <div className="h-screen bg-bgmain w-full flex justify-center items-center">
@@ -136,18 +158,77 @@ export const UpdateCommunityComponent = () => {
       </div>
     );
   }
+
+  if (CommunityDeletingState) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div>
+          <div className="flex flex-col gap-2 text-lg text-center items-center font-ubuntu font-medium">
+            Do you really want to delete the community?
+            <br />
+            <span className="text-base font-normal text-rosemain">
+              Note you can not get back the community
+            </span>
+            <span className="text-base font-normal text-rosemain">
+              To confirm you deletion Type: "Delete community"
+            </span>
+          </div>
+          <div>
+            <input
+              onChange={(e) => {
+                setConfirmation(e.target.value);
+              }}
+              maxLength={25}
+              className=" h-10 w-full my-5 text-texttwo rounded-lg px-4 focus:outline-none border border-neutral-300"
+            />
+          </div>
+          <div className="flex gap-5 justify-evenly items-center">
+            <button
+              onClick={deleteCommunity}
+              className="text-bgmain bg-rosemain font-semibold px-4 py-1  rounded-full"
+            >
+              Delete
+            </button>
+
+            <button
+              onClick={() => {
+                setCommunityDeletingState(false);
+              }}
+              className="text-black bg-bgmain hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+            >
+              Cancel
+            </button>
+          </div>
+          <div className="text-rosemain mt-5 font-light text-center text-sm my-2">
+            {popup ? popup : "‎"}
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
       <div className="bg-bgmain h-screen border-l border-r border-bordermain px-4 flex flex-col gap-4">
         <div className=" border-b border-bordermain py-4">
-          <button
-            className="w-fit flex items-start"
-            onClick={() => {
-              navigate(`/community/${communityData.name}`);
-            }}
-          >
-            <ArrowBackIcon sx={{ fontSize: 30 }} className="text-textmain" />
-          </button>
+          <div className="flex justify-between items-center">
+            <button
+              className="w-fit flex items-start"
+              onClick={() => {
+                navigate(`/community/${communityData.name}`);
+              }}
+            >
+              <ArrowBackIcon sx={{ fontSize: 30 }} className="text-textmain" />
+            </button>
+            <button
+              onClick={() => {
+                setCommunityDeletingState(true);
+              }}
+            >
+              <div className="bg-rose-50 rounded-full text-rosemain text-sm font-light py-1 px-4">
+                Delete community
+              </div>
+            </button>
+          </div>
         </div>
         <div className="w-ful items-start flex justify-between">
           <div className="flex justify-center items-center">
@@ -178,7 +259,7 @@ export const UpdateCommunityComponent = () => {
           </div>
 
           <button onClick={updateCommunity}>
-            <div className="text-textmain bg-indigomain text-base font-light rounded-md py-1 px-4">
+            <div className="text-bgmain bg-indigomain text-base font-light rounded-md py-1 px-4">
               save
             </div>
           </button>

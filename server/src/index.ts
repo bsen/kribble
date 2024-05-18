@@ -25,6 +25,7 @@ import { communityCreateRouter } from "./routes/community/create";
 import { communityJoinRouter } from "./routes/community/join";
 import { communityPostRouter } from "./routes/community/post";
 import { communityProfileRouter } from "./routes/community/profile";
+import { communityDeleteRouter } from "./routes/community/delete";
 
 const app = new Hono<{
   Bindings: {
@@ -61,5 +62,6 @@ app.route("/api/community/create", communityCreateRouter);
 app.route("/api/community/join", communityJoinRouter);
 app.route("/api/community/post", communityPostRouter);
 app.route("/api/community/profile", communityProfileRouter);
+app.route("/api/community/delete", communityDeleteRouter);
 
 export default app;
