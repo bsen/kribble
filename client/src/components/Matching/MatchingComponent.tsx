@@ -293,7 +293,7 @@ export const MatchingComponent: React.FC = () => {
           )}
 
           {isMatching && matchableUserData && !popup && (
-            <div className="flex bg-white text-left p-2 rounded-lg shadow-sm  flex-col justify-center">
+            <div className="flex bg-bgtwo p-2 rounded-lg shadow-sm  items-center flex-col justify-center">
               <img
                 src={matchableUserData.image || "user.png"}
                 className="w-60 rounded-lg border border-bordermain"

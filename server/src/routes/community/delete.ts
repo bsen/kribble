@@ -1,19 +1,19 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
+import { verify } from "hono/jwt";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { sign, verify } from "hono/jwt";
-import { date, string, z } from "zod";
+
 export const communityDeleteRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
-    CLOUDFLARE_IMGAES_ACCOUNT_ID: string;
-    CLOUDFLARE_IMGAES_API_TOKEN: string;
-    CLOUDFLARE_IMGAES_POST_URL: string;
+    CLOUDFLARE_IMAGES_ACCOUNT_ID: string;
+    CLOUDFLARE_IMAGES_API_TOKEN: string;
+    CLOUDFLARE_IMAGES_POST_URL: string;
   };
 }>();
 
-communityDeleteRouter.post("/delete", async (c) => {
+communityDeleteRouter.post("/delete/community", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
@@ -34,31 +34,61 @@ communityDeleteRouter.post("/delete", async (c) => {
     if (!findUser) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
-    const deleteCommunityPosts = await prisma.post.deleteMany({
-      where: {
-        communityId: communityId,
-      },
-    });
-    const deleteAssociatedMemberships =
-      await prisma.communityMembership.deleteMany({
+
+    await prisma.$transaction(async (tx) => {
+      const deleteCommunityPosts = await tx.post.findMany({
+        where: {
+          communityId: communityId,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      await tx.postLike.deleteMany({
+        where: {
+          postId: {
+            in: deleteCommunityPosts.map((post) => post.id),
+          },
+        },
+      });
+
+      await tx.comment.deleteMany({
+        where: {
+          postId: {
+            in: deleteCommunityPosts.map((post) => post.id),
+          },
+        },
+      });
+
+      await tx.postTagging.deleteMany({
+        where: {
+          postId: {
+            in: deleteCommunityPosts.map((post) => post.id),
+          },
+        },
+      });
+
+      await tx.post.deleteMany({
         where: {
           communityId: communityId,
         },
       });
-    const deleteCommunity = await prisma.community.delete({
-      where: {
-        id: communityId,
-        creatorId: findUser.id,
-      },
+
+      await tx.communityMembership.deleteMany({
+        where: {
+          communityId: communityId,
+        },
+      });
+
+      await tx.community.delete({
+        where: {
+          id: communityId,
+          creatorId: findUser.id,
+        },
+      });
     });
 
-    if (
-      !deleteCommunityPosts ||
-      !deleteAssociatedMemberships ||
-      !deleteCommunity
-    ) {
-      return c.json({ status: 400, message: "Community deletion failed" });
-    }
     return c.json({ status: 200, message: "Community deletion successful" });
   } catch (error) {
     return c.json({ status: 500, message: "Network error" });

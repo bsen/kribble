@@ -61,7 +61,7 @@ export const LoginAuth = () => {
       <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
         <div className="w-[100%] lg:w-[35%]">
           <div className="text-bgmain text-center mb-6 font-ubuntu font-medium text-3xl">
-            Welcome back to Friendcity
+            Welcome back to FriendCity
           </div>
 
           <div className="items-center p-2 rounded-md bg-bgmain">

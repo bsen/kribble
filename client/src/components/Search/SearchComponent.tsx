@@ -114,11 +114,11 @@ export const SearchComponent = () => {
         ) : (
           <div>
             {isSearching ? (
-              <div className="text-texttwo my-5  font-light text-center text-lg">
-                Searching
+              <div className="text-texttwo my-5  font-light text-center text-sm">
+                Searching ...
               </div>
             ) : (
-              <div className="text-texttwo my-5  font-light text-center text-lg">
+              <div className="text-texttwo my-5  font-light text-center text-sm">
                 Search result not found
               </div>
             )}

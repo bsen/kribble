@@ -68,7 +68,10 @@ export const CommunitiesComponent = () => {
         ref={scrollContainerRef}
       >
         <NavBar />
-        {communityData.communities &&
+        <div className="text-lg font-ubuntu text-texttwo fonr-normal text-center mt-2">
+          Communities
+        </div>
+        {communityData.communities.length > 0 ? (
           communityData.communities.map((community, index) => (
             <div
               key={index}
@@ -101,9 +104,9 @@ export const CommunitiesComponent = () => {
                 </div>
               </Link>
             </div>
-          ))}
-        {!communityData.communities && (
-          <div className="text-texttwo my-5  font-light text-center text-lg">
+          ))
+        ) : (
+          <div className="text-texttwo my-5  font-light text-center text-sm">
             No communities found
           </div>
         )}

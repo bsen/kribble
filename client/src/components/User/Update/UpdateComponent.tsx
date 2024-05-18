@@ -150,24 +150,36 @@ export const UpdateProfileComponent = () => {
       img.src = reader.result as string;
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const size = Math.min(img.width, img.height);
-
-        canvas.width = size;
-        canvas.height = size;
-
         const ctx = canvas.getContext("2d");
-        if (ctx) {
-          const xOffset = (img.width - size) / 2;
-          const yOffset = (img.height - size) / 2;
-          ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
-          const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
-          setPreviewImage(compressedImageData);
+
+        if (!ctx) {
+          return;
         }
+
+        const aspectRatio = img.width / img.height;
+        const maxSize = 500;
+
+        let width = maxSize;
+        let height = maxSize;
+
+        if (aspectRatio < 1) {
+          width = maxSize * aspectRatio;
+        } else {
+          height = maxSize / aspectRatio;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
+        setPreviewImage(compressedImageData);
       };
     };
 
     reader.readAsDataURL(file);
   };
+
   async function updateProfile() {
     try {
       let imageToUpload = null;

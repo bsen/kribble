@@ -106,7 +106,7 @@ export const CommentsComponent = () => {
       {deleteState ? (
         <div className="w-full h-screen flex justify-center items-center">
           <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
-            Do you really want to delete the post
+            Do you really want to delete the comment
             <span className="text-xs font-light text-texttwo">
               note you can not get back the deleted item!
             </span>
@@ -132,11 +132,14 @@ export const CommentsComponent = () => {
         </div>
       ) : (
         <div
-          className="h-screen overflow-y-auto no-scrollbar py-14"
+          className="h-screen overflow-y-auto no-scrollbar py-12 md:py-0"
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
           <NavBar />
+          <div className="text-lg font-ubuntu text-texttwo fonr-normal text-center mt-2">
+            Comments
+          </div>
           {commentsData.comments.length > 0 ? (
             commentsData.comments.map((comment, index) => (
               <div

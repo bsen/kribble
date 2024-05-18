@@ -1,41 +1,37 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
+import { BottomBar } from "../../Bars/BottomBar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-interface MatchesData {
+interface Communities {
   id: string;
-  initiator: Initiator;
-}
-
-interface Initiator {
-  id: string;
-  username: string;
+  name: string;
+  description: string;
+  membersCount: string;
   image: string;
 }
-
-export const MatchesComponent = () => {
+export const CommunitiesComponent = () => {
   const token = localStorage.getItem("token");
-  const [matchesData, setMatchesData] = useState<{
-    initiators: MatchesData[];
+  const [isLoading, setIsLoading] = useState(false);
+  const [communityData, setCommunityData] = useState<{
+    communities: Communities[];
     nextCursor: string | null;
   }>({
-    initiators: [],
+    communities: [],
     nextCursor: null,
   });
-  const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  async function getMatches(cursor?: string) {
+  async function getCommunities(cursor?: string) {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/user/matches/all/matches`,
+        `${BACKEND_URL}/api/user/communities/all/communities`,
         { token, cursor }
       );
-      console.log(response.data.data);
-      setMatchesData({
-        initiators: [...matchesData.initiators, ...response.data.data],
+      setCommunityData({
+        communities: [...communityData.communities, ...response.data.data],
         nextCursor: response.data.nextCursor,
       });
       setIsLoading(false);
@@ -46,7 +42,7 @@ export const MatchesComponent = () => {
   }
 
   useEffect(() => {
-    getMatches();
+    getCommunities();
   }, []);
 
   const handleScroll = () => {
@@ -55,10 +51,10 @@ export const MatchesComponent = () => {
       scrollContainerRef.current.scrollTop +
         scrollContainerRef.current.clientHeight >=
         scrollContainerRef.current.scrollHeight &&
-      matchesData.nextCursor &&
+      communityData.nextCursor &&
       !isLoading
     ) {
-      getMatches(matchesData.nextCursor);
+      getCommunities(communityData.nextCursor);
     }
   };
 
@@ -79,26 +75,34 @@ export const MatchesComponent = () => {
             >
               <ArrowBackIcon />
             </button>
-            <div className="text-sm font-ubuntu text-center">Matches</div>
+            <div className="text-sm font-ubuntu text-center">Communities</div>
           </div>
-          {matchesData.initiators.length > 0 ? (
-            matchesData.initiators.map((initiatorObj) => (
+          {communityData.communities.length > 0 ? (
+            communityData.communities.map((community, index) => (
               <div
-                key={initiatorObj.id}
-                className=" my-2 rounded-md border border-bordermain px-2 py-1 bg-bordermain"
+                key={index}
+                className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
               >
-                <div className="flex justify-start items-center gap-2">
-                  <img
-                    className="h-10 w-10 rounded-full bg-bgmain"
-                    src={
-                      initiatorObj.initiator.image
-                        ? initiatorObj.initiator.image
-                        : "/user.png"
-                    }
-                  />
-                  <div>
-                    <div className="text-textmain text-lg font-ubuntu">
-                      {initiatorObj.initiator.username}
+                <div className="flex gap-2 justify-between items-start">
+                  <div className="flex gap-2 items-start">
+                    <img
+                      className="h-10 w-10 rounded-full bg-bgmain"
+                      src={community.image ? community.image : "/group.png"}
+                    />
+
+                    <div className="flex flex-col w-full">
+                      <Link
+                        to={`/community/${community.name}`}
+                        className="text-textmain w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
+                      >
+                        {community.name}
+                      </Link>
+                      <div className="text-textmain text-sm  font-normal">
+                        {community.description}
+                      </div>
+                      <div className="text-textmain font-ubuntu  text-sm font-light">
+                        {community.membersCount} members
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -106,7 +110,7 @@ export const MatchesComponent = () => {
             ))
           ) : (
             <div className="text-texttwo my-5  font-light text-center text-sm">
-              No Matches found
+              No communities found.
             </div>
           )}
           {isLoading && (
@@ -116,6 +120,8 @@ export const MatchesComponent = () => {
           )}
         </div>
       </div>
+
+      <BottomBar />
     </>
   );
 };

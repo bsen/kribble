@@ -34,7 +34,7 @@ searchRouter.post("/data", async (c) => {
       where: {
         OR: [
           {
-            name: {
+            fullname: {
               contains: searchingText,
             },
           },
@@ -47,7 +47,7 @@ searchRouter.post("/data", async (c) => {
       },
       select: {
         username: true,
-        name: true,
+        fullname: true,
         image: true,
       },
       take: 15,

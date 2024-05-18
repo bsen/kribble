@@ -278,7 +278,7 @@ export const SignupAuth = () => {
     <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
       <div className="w-[100%] lg:w-[35%]">
         <div className="text-bgmain text-center mb-6 font-ubuntu font-medium text-3xl">
-          Create your account in Friendcity
+          Create your account in FriendCity
         </div>
 
         <div className="items-center justify-center p-2 rounded-md bg-bgmain">

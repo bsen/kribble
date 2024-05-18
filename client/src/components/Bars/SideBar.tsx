@@ -21,9 +21,9 @@ export const SideBar = () => {
             onClick={() => {
               navigate("/");
             }}
-            className="bg bg-gradient-to-r from-indigo-500 via-orange-500 to-purple-500 my-4 text-transparent bg-clip-text text-4xl font-ubuntu"
+            className="bg bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 my-4 text-transparent bg-clip-text text-4xl font-ubuntu"
           >
-            friendcity
+            FriendCity
           </div>
 
           <button

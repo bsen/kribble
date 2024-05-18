@@ -86,7 +86,7 @@ export const FollowingComponent = () => {
             followingsData.followings.map((followingObj) => (
               <div
                 key={followingObj.id}
-                className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgtwo"
+                className=" my-2 rounded-md border border-bordermain px-2 py-1 bg-bordermain"
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
