@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
-import { NavBar } from "../../Bars/NavBar";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 interface FollowingsData {
   id: string;
   following: Following;
@@ -64,18 +65,28 @@ export const FollowingComponent = () => {
 
   return (
     <>
-      <div
-        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
-        onScroll={handleScroll}
-        ref={scrollContainerRef}
-      >
-        <NavBar />
-        <>
+      <div className="h-screen absolute w-[50%] bg-white/75 flex justify-center items-center">
+        <div
+          className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
+          onScroll={handleScroll}
+          ref={scrollContainerRef}
+        >
+          <div className="flex text-texttwo  justify-center gap-5 items-center py-2">
+            <button
+              onClick={() => {
+                window.location.reload();
+              }}
+              className="border border-bordermain p-1 rounded-full"
+            >
+              <ArrowBackIcon />
+            </button>
+            <div className="text-sm font-ubuntu text-center">Following</div>
+          </div>
           {followingsData.followings &&
             followingsData.followings.map((followingObj) => (
               <div
                 key={followingObj.id}
-                className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgmain"
+                className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgtwo"
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
@@ -96,7 +107,6 @@ export const FollowingComponent = () => {
                 </div>
               </div>
             ))}
-
           {!followingsData.followings && (
             <div className="text-texttwo my-5  font-light text-center text-lg">
               No following found.
@@ -107,7 +117,7 @@ export const FollowingComponent = () => {
               Loading ...
             </div>
           )}
-        </>
+        </div>
       </div>
     </>
   );

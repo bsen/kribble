@@ -4,7 +4,9 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
-
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 interface DebouncedFunction<T extends (...args: any[]) => void> {
   (...args: Parameters<T>): void;
   cancel: () => void;
@@ -34,6 +36,38 @@ function debounce<T extends (...args: any[]) => void>(
   return debouncedFunc;
 }
 
+const colleges = [
+  "VIT Vellore",
+  "VIT Chennai",
+  "VIT Amaravati",
+  "VIT Bhopal",
+  "BITS Pilani",
+  "BITS Goa",
+  "BITS Hyderabad",
+  "SRMIST Kattankulathur",
+  "SRMIST Amaravati",
+  "SRMIST NCR",
+  "MIT Manipal",
+  "IIT Bombay",
+  "IIT Delhi",
+  "IIT Madras",
+  "IIT Kanpur",
+  "IIT Kharagpur",
+  "IIT Roorkee",
+  "IIT Guwahati",
+  "NIT Trichy",
+  "NIT Surathkal",
+  "NIT Warangal",
+  "NIT Calicut",
+  "NIT Rourkela",
+  "NIT Kurukshetra",
+  "NIT Durgapur",
+  "NSUT",
+  "DTU",
+  "IGDTUW",
+  "Other",
+];
+
 export const SignupAuth = () => {
   const navigate = useNavigate();
   const { setCurrentUser } = useContext(UserContext);
@@ -43,6 +77,7 @@ export const SignupAuth = () => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [college, setCollege] = useState<string>("");
   const [popup, setPopup] = useState<string>("");
   const [month, setMonth] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -75,9 +110,12 @@ export const SignupAuth = () => {
     const newPassword = text.split("").filter(validatePassword).join("");
     setPassword(newPassword);
   };
+  const handleCollegeChange = (event: SelectChangeEvent) => {
+    setCollege(event.target.value as string);
+  };
 
   const handleDateChange = (text: string) => {
-    const newDate = text.replace(/\D/g, ""); // Remove non-numeric characters
+    const newDate = text.replace(/\D/g, "");
     setDate(newDate);
 
     if (newDate.length !== 2) {
@@ -88,7 +126,7 @@ export const SignupAuth = () => {
   };
 
   const handleMonthChange = (text: string) => {
-    const newMonth = text.replace(/\D/g, ""); // Remove non-numeric characters
+    const newMonth = text.replace(/\D/g, "");
     setMonth(newMonth);
 
     if (newMonth.length !== 2) {
@@ -99,7 +137,7 @@ export const SignupAuth = () => {
   };
 
   const handleYearChange = (text: string) => {
-    const newYear = text.replace(/\D/g, ""); // Remove non-numeric characters
+    const newYear = text.replace(/\D/g, "");
     setYear(newYear);
 
     if (newYear.length !== 4) {
@@ -154,12 +192,13 @@ export const SignupAuth = () => {
       !fullname ||
       !username ||
       !email ||
+      !college ||
       !password ||
       !year ||
       !month ||
       !date
     ) {
-      setPopup("Please fill in all the fields");
+      setPopup("All the fields are necessary");
       return;
     }
 
@@ -183,6 +222,7 @@ export const SignupAuth = () => {
       username,
       email,
       password,
+      college,
       year,
       month,
       date,
@@ -238,10 +278,10 @@ export const SignupAuth = () => {
     <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
       <div className="w-[100%] lg:w-[35%]">
         <div className="text-bgmain text-center mb-6 font-ubuntu font-medium text-3xl">
-          Welcome back to Friendcity
+          Create your account in Friendcity
         </div>
 
-        <div className="items-center justify-center p-2 rounded-md bg-bgpost">
+        <div className="items-center justify-center p-2 rounded-md bg-bgmain">
           <div className="my-2 justify-center flex gap-2">
             <img
               src="/girl.png"
@@ -315,6 +355,41 @@ export const SignupAuth = () => {
               placeholder="Enter password"
             />
           </div>
+
+          <div>
+            <div className="text-texttwo text-sm font-light">College</div>
+            <FormControl className="w-full">
+              <Select
+                sx={{
+                  boxShadow: "none",
+                  ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                }}
+                className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 300,
+                      width: 250,
+                      overflow: "auto",
+                    },
+                  },
+                  disableScrollLock: true,
+                  disablePortal: true,
+                }}
+                onChange={handleCollegeChange}
+                value={college}
+              >
+                <MenuItem value="" disabled>
+                  Select Campus
+                </MenuItem>
+                {colleges.map((college) => (
+                  <MenuItem key={college} value={college}>
+                    {college}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
           <div>
             <div className="font-normal m-1 text-texttwo">Date of birth</div>
             <div className="flex gap-2">
@@ -343,7 +418,6 @@ export const SignupAuth = () => {
               />
             </div>
           </div>
-
           <button
             onClick={signup}
             disabled={isLoading}

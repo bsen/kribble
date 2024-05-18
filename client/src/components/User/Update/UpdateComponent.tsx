@@ -6,6 +6,64 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { Logout } from "../Auth/Logout";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
+const interests = [
+  "Programming",
+  "Drama",
+  "Singing",
+  "Dancing",
+  "Sports",
+  "Fitness",
+  "Social Work",
+  "Environmental Work",
+  "Entrepreneurship",
+  "Movies",
+  "Travel",
+  "Photography",
+  "Writing",
+  "Music",
+  "Fashion",
+  "Gaming",
+  "Art",
+  "Literature",
+  "Still figuring out",
+];
+
+const colleges = [
+  "VIT Vellore",
+  "VIT Chennai",
+  "VIT Amaravati",
+  "VIT Bhopal",
+  "BITS Pilani",
+  "BITS Goa",
+  "BITS Hyderabad",
+  "SRMIST Kattankulathur",
+  "SRMIST Amaravati",
+  "SRMIST NCR",
+  "MIT Manipal",
+  "IIT Bombay",
+  "IIT Delhi",
+  "IIT Madras",
+  "IIT Kanpur",
+  "IIT Kharagpur",
+  "IIT Roorkee",
+  "IIT Guwahati",
+  "NIT Trichy",
+  "NIT Surathkal",
+  "NIT Warangal",
+  "NIT Calicut",
+  "NIT Rourkela",
+  "NIT Kurukshetra",
+  "NIT Durgapur",
+  "NSUT",
+  "DTU",
+  "IGDTUW",
+  "Other",
+];
+
 export const UpdateProfileComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -16,6 +74,8 @@ export const UpdateProfileComponent = () => {
   const [website, setWebsite] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [popup, setPopup] = useState("");
+  const [college, setCollege] = useState<string>("");
+  const [interest, setInterest] = useState<string>("");
   const [logoutState, setLogoutState] = useState(false);
   const [userData, setUserData] = useState<{
     fullname: string;
@@ -23,12 +83,16 @@ export const UpdateProfileComponent = () => {
     bio: string;
     image: string;
     website: string;
+    college: string;
+    interest: string;
   }>({
     fullname: "",
     username: "",
     bio: "",
     image: "",
     website: "",
+    college: "",
+    interest: "",
   });
 
   async function getData() {
@@ -50,6 +114,13 @@ export const UpdateProfileComponent = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const handleCollegeChange = (event: SelectChangeEvent) => {
+    setCollege(event.target.value as string);
+  };
+  const handleInterestChange = (event: SelectChangeEvent) => {
+    setInterest(event.target.value as string);
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -80,16 +151,15 @@ export const UpdateProfileComponent = () => {
       img.onload = () => {
         const canvas = document.createElement("canvas");
         const size = Math.min(img.width, img.height);
+
         canvas.width = size;
         canvas.height = size;
-        const ctx = canvas.getContext("2d");
 
+        const ctx = canvas.getContext("2d");
         if (ctx) {
-          ctx.beginPath();
-          ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
-          ctx.closePath();
-          ctx.clip();
-          ctx.drawImage(img, 0, 0);
+          const xOffset = (img.width - size) / 2;
+          const yOffset = (img.height - size) / 2;
+          ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
           const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
           setPreviewImage(compressedImageData);
         }
@@ -120,8 +190,10 @@ export const UpdateProfileComponent = () => {
       }
 
       let newFullName = fullname || userData.fullname || "";
-      let newBio = bio || userData.bio || "bio";
-      let newWebsite = website || userData.website || "website";
+      let newBio = bio || userData.bio || "";
+      let newWebsite = website || userData.website || "";
+      let newCollege = college || userData.college || "";
+      let newInterest = interest || userData.interest || "";
 
       const formdata = new FormData();
       if (imageToUpload) {
@@ -130,8 +202,9 @@ export const UpdateProfileComponent = () => {
       formdata.append("fullname", newFullName);
       formdata.append("bio", newBio);
       formdata.append("website", newWebsite);
+      formdata.append("college", newCollege);
+      formdata.append("interest", newInterest);
       formdata.append("token", token ? token : "");
-
       setIsLoading(true);
       await axios.post(`${BACKEND_URL}/api/user/profile/update`, formdata);
       setIsLoading(false);
@@ -153,7 +226,7 @@ export const UpdateProfileComponent = () => {
         <div className="w-full">{logoutState && <Logout />}</div>
         <div className="w-full">
           {!logoutState && (
-            <div className="bg-bgpost h-screen  p-2 flex flex-col gap-4">
+            <div className="bg-bgmain h-screen  p-2 flex flex-col gap-4">
               <div className="flex justify-between items-center border-b border-bordermain pb-2">
                 <button
                   onClick={() => {
@@ -245,6 +318,74 @@ export const UpdateProfileComponent = () => {
                     setBio(e.target.value);
                   }}
                 />
+              </div>
+              <div>
+                <div className="text-texttwo text-sm font-light">College</div>
+                <FormControl className="w-full">
+                  <Select
+                    sx={{
+                      boxShadow: "none",
+                      ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                    }}
+                    className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 300,
+                          width: 250,
+                          overflow: "auto",
+                        },
+                      },
+                      disableScrollLock: true,
+                      disablePortal: true,
+                    }}
+                    onChange={handleCollegeChange}
+                    value={college}
+                  >
+                    <MenuItem value="" disabled>
+                      Select College
+                    </MenuItem>
+                    {colleges.map((college) => (
+                      <MenuItem key={college} value={college}>
+                        {college}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+              <div>
+                <div className="text-texttwo text-sm font-light">Interest</div>
+                <FormControl className="w-full">
+                  <Select
+                    sx={{
+                      boxShadow: "none",
+                      ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                    }}
+                    className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 300,
+                          width: 250,
+                          overflow: "auto",
+                        },
+                      },
+                      disableScrollLock: true,
+                      disablePortal: true,
+                    }}
+                    onChange={handleInterestChange}
+                    value={interest}
+                  >
+                    <MenuItem value="" disabled>
+                      Select Interest
+                    </MenuItem>
+                    {interests.map((interest) => (
+                      <MenuItem key={interest} value={interest}>
+                        {interest}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </div>
               <div className="text-rosemain font-ubuntu font-light text-center text-sm">
                 {popup ? popup : <div>‎</div>}

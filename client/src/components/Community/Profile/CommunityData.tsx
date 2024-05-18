@@ -99,11 +99,11 @@ export const CommunityData: React.FC = () => {
 
   return (
     <>
-      <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgpost">
+      <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgmain">
         <div className="flex justify-between w-full items-center gap-2">
           <img
             src={communityData.image ? communityData.image : "/group.png"}
-            className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-bordermain mb-2"
+            className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-bordermain"
           />
           <div className="w-full">
             <div className="flex justify-end items-center">
@@ -154,7 +154,7 @@ export const CommunityData: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-sm mb-2 text-textmain font-light">
+        <div className="text-sm my-2 text-textmain font-light">
           {communityData.description
             ? communityData.description
             : "description"}

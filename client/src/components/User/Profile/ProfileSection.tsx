@@ -17,7 +17,6 @@ import { NavBar } from "../../Bars/NavBar";
 import { UserData } from "./UserData";
 import { UserContext } from "../Context/UserContext";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-
 interface Post {
   id: string;
   creator: {
@@ -236,7 +235,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3 p-3 rounded-md border border-bordermain bg-bgpost"
+                className="my-3 p-3 rounded-md border border-bordermain bg-bgmain"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2 items-center">
@@ -307,7 +306,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
                   <div className="flex gap-2 mt-2 items-center text-sm text-texttwo">
                     <button
-                      className="w-16 bg-rose-100 text-rosemain py-1  rounded-md flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-bordermain text-rosemain px-2   rounded-full flex justify-center items-center gap-2 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleLike(post.id);
@@ -332,12 +331,12 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           />
                         </div>
                       )}
-
                       {post.likesCount}
                     </button>
+
                     <button
                       onClick={() => navigate(`/post/${post.id}`)}
-                      className="w-16 text-indigomain py-1  bg-indigo-100 rounded-md flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-bordermain text-indigomain px-2   rounded-full flex justify-center items-center gap-2 cursor-pointer"
                     >
                       <ReplyIcon sx={{ fontSize: 22 }} />
                       {post.commentsCount}
@@ -346,8 +345,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                 </div>
               </div>
             ))}
-          {!postData.posts && (
-            <div className="text-texttwo my-5  font-light text-center text-lg">
+          {!isLoading && !postData.posts && (
+            <div className="text-texttwo my-5  font-light text-center text-sm">
               No posts found
             </div>
           )}

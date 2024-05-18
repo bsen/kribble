@@ -8,8 +8,6 @@ import { Matching } from "./pages/Matching/Matching";
 import { Post } from "./pages/Post/Post";
 import { Matches } from "./pages/User/Matches/Matches";
 import { Communities } from "./pages/Community/Communities/Communities";
-import { Followers } from "./pages/User/Follow/Followers";
-import { Following } from "./pages/User/Follow/Following";
 import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
 import { Community } from "./pages/Community/Profile/Community";
 import { Comments } from "./pages/User/Comments/Comments";
@@ -77,14 +75,6 @@ function App() {
             <Route
               path="/matches"
               element={<ProtectedRoute element={<Matches />} />}
-            />
-            <Route
-              path="/:username/followers"
-              element={<ProtectedRoute element={<Followers />} />}
-            />
-            <Route
-              path="/:username/following"
-              element={<ProtectedRoute element={<Following />} />}
             />
             <Route
               path="/created/communities"

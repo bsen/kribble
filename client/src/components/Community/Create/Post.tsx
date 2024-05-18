@@ -121,7 +121,7 @@ export const Post = () => {
   }
   return (
     <>
-      <div className="w-full bg-bgpost p-4 rounded-md">
+      <div className="w-full bg-bgmain p-4 rounded-md">
         <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon

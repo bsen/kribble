@@ -38,6 +38,8 @@ userProfileRouter.post("/data", async (c) => {
         image: true,
         bio: true,
         website: true,
+        college: true,
+        interest: true,
         followersCount: true,
         followingCount: true,
       },
@@ -79,6 +81,9 @@ userProfileRouter.post("/update", async (c) => {
     const newFullName = formData.get("fullname");
     const newBio = formData.get("bio");
     const newWebsite = formData.get("website");
+    const newCollege = formData.get("college");
+    const newInterest = formData.get("interest");
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -86,7 +91,9 @@ userProfileRouter.post("/update", async (c) => {
       typeof token !== "string" ||
       typeof newBio !== "string" ||
       typeof newFullName !== "string" ||
-      typeof newWebsite !== "string"
+      typeof newWebsite !== "string" ||
+      typeof newCollege !== "string" ||
+      typeof newInterest !== "string"
     ) {
       return c.json({ status: 400, message: "Invalid data or token" });
     }
@@ -103,6 +110,8 @@ userProfileRouter.post("/update", async (c) => {
             fullname: newFullName,
             bio: newBio,
             website: newWebsite,
+            college: newCollege,
+            interest: newInterest,
           },
         });
         if (!updateProfile) {
@@ -143,6 +152,8 @@ userProfileRouter.post("/update", async (c) => {
           fullname: newFullName,
           bio: newBio,
           website: newWebsite,
+          college: newCollege,
+          interest: newInterest,
           image: variantUrl,
         },
       });

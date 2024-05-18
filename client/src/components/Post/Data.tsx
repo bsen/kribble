@@ -99,7 +99,7 @@ export const Data = () => {
   }
 
   return (
-    <div className="bg-bgpost mt-4 border border-bordermain p-2 rounded-md">
+    <div className="bg-bgmain mt-4 border border-bordermain p-2 rounded-md">
       <div className="flex gap-2 items-center">
         <Link to={`/${postData.creator.username}`}>
           <img

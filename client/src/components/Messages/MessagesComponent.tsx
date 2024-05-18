@@ -151,8 +151,8 @@ export const MessagesComponent: React.FC<{ otherUser: User }> = (props) => {
               key={index}
               className={`mt-2 max-w-[70%] rounded-lg px-4 py-1 ${
                 message.sender === "self"
-                  ? "bg-indigomain text-textmain self-end"
-                  : "bg-indigomain text-textmain self-start"
+                  ? "bg-indigomain text-bgmain self-end"
+                  : "bg-bordermain text-textmain self-start"
               }`}
             >
               {message.message}

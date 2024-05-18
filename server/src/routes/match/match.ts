@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { PrismaClient, Prisma } from "@prisma/client/edge";
-import { withAccelerate } from "@prisma/extension-accelerate";
+import { PrismaClient } from "@prisma/client/edge";
 import { verify } from "hono/jwt";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
 export const matchRouter = new Hono<{
   Bindings: {
@@ -9,11 +9,22 @@ export const matchRouter = new Hono<{
     JWT_SECRET: string;
   };
 }>();
+
+interface SuggestedUser {
+  id: string;
+  username: string;
+  bio: string | null;
+  image: string | null;
+}
+
 matchRouter.post("/matchable/users", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
+    const interests = body.interests || [];
+    const colleges = body.colleges || [];
     const userId = await verify(token, c.env.JWT_SECRET);
+
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -37,49 +48,42 @@ matchRouter.post("/matchable/users", async (c) => {
       },
     });
 
-    const initiatedMatchRecipientIds = initiatedMatchIds.map(
-      (match) => match.recipientId
-    );
+    const excludedIds = [
+      ...initiatedMatchIds.map((match) => match.recipientId),
+      userId.id,
+    ];
+    const passedUserIds = body.passedUserIds || [];
 
-    const receivedMatchIds = await prisma.profileMatch.findMany({
-      where: {
-        recipientId: userId.id,
-      },
-      select: {
-        initiatorId: true,
-      },
-    });
+    let suggestedUser: SuggestedUser | null = null;
 
-    const receivedMatchInitiatorIds = receivedMatchIds.map(
-      (match) => match.initiatorId
-    );
-
-    const suggestedUsers = await prisma.user.findMany({
+    const allUsers = await prisma.user.findMany({
       where: {
         id: {
-          notIn: [...initiatedMatchRecipientIds, userId.id],
+          notIn: [...excludedIds, ...passedUserIds],
         },
+        ...(interests.length > 0 && { interest: { in: interests } }),
+        ...(colleges.length > 0 && { college: { in: colleges } }),
       },
-      take: 5,
-      orderBy: [
-        {
-          id:
-            receivedMatchInitiatorIds.length > 0
-              ? Prisma.SortOrder.desc
-              : undefined,
-        },
-        {
-          id: Prisma.SortOrder.asc,
-        },
-      ],
       select: {
         id: true,
         username: true,
         bio: true,
         image: true,
+        college: true,
+        interest: true,
       },
     });
-    return c.json({ status: 200, user: suggestedUsers });
+
+    const remainingUsers = allUsers.filter(
+      (user) => !passedUserIds.includes(user.id)
+    );
+
+    if (remainingUsers.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingUsers.length);
+      suggestedUser = remainingUsers[randomIndex];
+    }
+
+    return c.json({ status: 200, user: suggestedUser });
   } catch (error) {
     console.error(error);
     return c.json({ status: 500, message: "Internal Server Error" });

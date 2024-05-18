@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
-import { NavBar } from "../../Bars/NavBar";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 interface FollowersData {
   id: string;
   follower: Follower;
@@ -65,47 +66,59 @@ export const FollowersComponent = () => {
 
   return (
     <>
-      <div
-        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
-        onScroll={handleScroll}
-        ref={scrollContainerRef}
-      >
-        <NavBar />
-        {followersData.followers &&
-          followersData.followers.map((followersObj) => (
-            <div
-              key={followersObj.id}
-              className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
+      <div className="h-screen absolute w-[50%] bg-white/75 flex justify-center items-center">
+        <div
+          className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
+          onScroll={handleScroll}
+          ref={scrollContainerRef}
+        >
+          <div className="flex text-texttwo  justify-center gap-5 items-center py-2">
+            <button
+              onClick={() => {
+                window.location.reload();
+              }}
+              className="border border-bordermain p-1 rounded-full"
             >
-              <div className="flex justify-start items-center gap-2">
-                <img
-                  className="h-10 w-10 rounded-full bg-bgmain"
-                  src={
-                    followersObj.follower.image
-                      ? followersObj.follower.image
-                      : "/user.png"
-                  }
-                />
-                <div>
-                  <Link to={`/${followersObj.follower.username}`}>
-                    <div className="text-textmain text-lg font-ubuntu">
-                      {followersObj.follower.username}
-                    </div>
-                  </Link>
+              <ArrowBackIcon />
+            </button>
+            <div className="text-sm font-ubuntu text-center">Followers</div>
+          </div>
+          {followersData.followers.length > 0 ? (
+            followersData.followers.map((followersObj) => (
+              <div
+                key={followersObj.id}
+                className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgtwo"
+              >
+                <div className="flex justify-start items-center gap-2">
+                  <img
+                    className="h-10 w-10 rounded-full bg-bgmain"
+                    src={
+                      followersObj.follower.image
+                        ? followersObj.follower.image
+                        : "/user.png"
+                    }
+                  />
+                  <div>
+                    <Link to={`/${followersObj.follower.username}`}>
+                      <div className="text-textmain text-lg font-ubuntu">
+                        {followersObj.follower.username}
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="text-texttwo my-5  font-light text-center text-sm">
+              No followers found
             </div>
-          ))}
-        {!followersData.followers && (
-          <div className="text-texttwo my-5  font-light text-center text-lg">
-            No followers found.
-          </div>
-        )}
-        {isLoading && (
-          <div className="text-texttwo my-5  font-light text-center text-lg">
-            Loading ...
-          </div>
-        )}
+          )}
+          {isLoading && (
+            <div className="text-texttwo my-5  font-light text-center text-sm">
+              Loading ...
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
