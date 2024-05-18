@@ -10,12 +10,10 @@ import { Communities } from "./pages/Community/Communities/Communities";
 import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
 import { Community } from "./pages/Community/Profile/Community";
 import { Comments } from "./pages/User/Comments/Comments";
-import { CreatedCommunities } from "./pages/User/Communities/CreatedCommunities";
 import { CommunityPost } from "./pages/Community/Create/CommunityPost";
 import { Search } from "./pages/Search/Search";
 import { UpdateProfile } from "./pages/User/Profile/Update";
 import { UpdateCommunity } from "./pages/Community/Profile/Update";
-import { JoinedCommunities } from "./pages/User/Communities/JoinedCommunities";
 import { UserProvider } from "./components/User/Context/UserContext";
 interface ProtectedRouteProps {
   element: React.ReactNode;
@@ -70,14 +68,6 @@ function App() {
             <Route
               path="/matching"
               element={<ProtectedRoute element={<Matching />} />}
-            />
-            <Route
-              path="/created/communities"
-              element={<ProtectedRoute element={<CreatedCommunities />} />}
-            />
-            <Route
-              path="/joined/communities"
-              element={<ProtectedRoute element={<JoinedCommunities />} />}
             />
             <Route
               path="/edit/profile"

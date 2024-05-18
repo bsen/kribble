@@ -8,6 +8,7 @@ import { UserContext } from "../Context/UserContext";
 import { FollowersComponent } from "../Follow/FollowersComponent";
 import { FollowingComponent } from "../Follow/FollowingComponent";
 import { MatchesComponent } from "../Matches/MatchesComponent";
+import { CommunitiesComponent } from "../Communities/CommunitiesComponent";
 
 interface UserData {
   fullname: string;
@@ -30,6 +31,7 @@ export const UserData: React.FC = () => {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
   const [showMatches, setShowMatches] = useState(false);
+  const [showCommunities, setShowCommunities] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollowUserLoading, setIsFollowUserLoading] = useState(false);
   const [userData, setUserData] = useState<UserData>({
@@ -113,6 +115,7 @@ export const UserData: React.FC = () => {
       {showFollowers && <FollowersComponent />}
       {showFollowing && <FollowingComponent />}
       {showMatches && <MatchesComponent />}
+      {showCommunities && <CommunitiesComponent />}
       <div className="mt-4 p-3 rounded-md border border-bordermain bg-bgmain">
         <div className="flex w-full justify-center items-center gap-2">
           <img
@@ -239,7 +242,7 @@ export const UserData: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                navigate("/create/community");
+                setShowCommunities(true);
               }}
               className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
             >

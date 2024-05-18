@@ -7,9 +7,9 @@ export const userCommunitiesRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
-    CLOUDFLARE_IMGAES_ACCOUNT_ID: string;
-    CLOUDFLARE_IMGAES_API_TOKEN: string;
-    CLOUDFLARE_IMGAES_POST_URL: string;
+    CLOUDFLARE_IMAGES_ACCOUNT_ID: string;
+    CLOUDFLARE_IMAGES_API_TOKEN: string;
+    CLOUDFLARE_IMAGES_POST_URL: string;
   };
 }>();
 
@@ -19,15 +19,19 @@ userCommunitiesRouter.post("/all/communities", async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+
     const token = body.token;
     const userId = await verify(token, c.env.JWT_SECRET);
     const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+
     if (!findUser) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
+
     const cursor = body.cursor || null;
     const take = 15;
-    const allCommunities = await prisma.community.findMany({
+
+    const createdCommunities = await prisma.community.findMany({
       where: { creatorId: findUser.id },
       select: {
         id: true,
@@ -43,39 +47,23 @@ userCommunitiesRouter.post("/all/communities", async (c) => {
       take: take + 1,
     });
 
-    const hasMore = allCommunities.length > take;
-    const communities = hasMore ? allCommunities.slice(0, -1) : allCommunities;
-    const nextCursor = hasMore
-      ? allCommunities[allCommunities.length - 1].id
+    const hasMoreCreated = createdCommunities.length > take;
+    const createdCommunityData = hasMoreCreated
+      ? createdCommunities.slice(0, -1)
+      : createdCommunities;
+    const nextCreatedCursor = hasMoreCreated
+      ? createdCommunities[createdCommunities.length - 1].id
       : null;
 
-    return c.json({ status: 200, data: communities, nextCursor });
-  } catch (error) {
-    console.log(error);
-    return c.json({ status: 400 });
-  }
-});
-userCommunitiesRouter.post("/all/joined/communities", async (c) => {
-  try {
-    const body = await c.req.json();
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-
-    const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
-
-    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
-
-    if (!findUser) {
-      return c.json({ status: 401, message: "Unauthorized" });
-    }
-
-    const cursor = body.cursor || null;
-    const take = 15;
+    const joinedCommunityIds = createdCommunities.map(
+      (community) => community.id
+    );
 
     const joinedCommunities = await prisma.communityMembership.findMany({
-      where: { userId: findUser.id },
+      where: {
+        userId: findUser.id,
+        communityId: { notIn: joinedCommunityIds },
+      },
       select: {
         community: {
           select: {
@@ -105,16 +93,18 @@ userCommunitiesRouter.post("/all/joined/communities", async (c) => {
       take: take + 1,
     });
 
-    const hasMore = joinedCommunities.length > take;
-    const communities = hasMore
+    const hasMoreJoined = joinedCommunities.length > take;
+    const joinedCommunityData = hasMoreJoined
       ? joinedCommunities.map((membership) => membership.community).slice(0, -1)
       : joinedCommunities.map((membership) => membership.community);
-
-    const nextCursor = hasMore
+    const nextJoinedCursor = hasMoreJoined
       ? joinedCommunities[joinedCommunities.length - 1].communityId
       : null;
 
-    return c.json({ status: 200, data: communities, nextCursor });
+    const allCommunities = [...createdCommunityData, ...joinedCommunityData];
+    const nextCursor = nextJoinedCursor || nextCreatedCursor;
+
+    return c.json({ status: 200, data: allCommunities, nextCursor });
   } catch (error) {
     console.log(error);
     return c.json({ status: 400 });
