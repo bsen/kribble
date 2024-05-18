@@ -6,7 +6,6 @@ import { Profile } from "./pages/User/Profile/Profile";
 import { CreatePost } from "./pages/User/Create/CreatePost";
 import { Matching } from "./pages/Matching/Matching";
 import { Post } from "./pages/Post/Post";
-import { Matches } from "./pages/User/Matches/Matches";
 import { Communities } from "./pages/Community/Communities/Communities";
 import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
 import { Community } from "./pages/Community/Profile/Community";
@@ -71,10 +70,6 @@ function App() {
             <Route
               path="/matching"
               element={<ProtectedRoute element={<Matching />} />}
-            />
-            <Route
-              path="/matches"
-              element={<ProtectedRoute element={<Matches />} />}
             />
             <Route
               path="/created/communities"

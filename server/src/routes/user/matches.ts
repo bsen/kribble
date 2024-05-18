@@ -17,11 +17,12 @@ userMatchesRouter.post("/all/matches", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
-    const userId = await verify(token, c.env.JWT_SECRET);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const cursor = body.cursor || null;
+    const take = 30;
     const findUser = await prisma.user.findUnique({
       where: {
         id: userId.id,
@@ -50,18 +51,18 @@ userMatchesRouter.post("/all/matches", async (c) => {
       orderBy: {
         createdAt: "desc",
       },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: take + 1,
     });
-    if (!userMatches) {
-      return c.json({ status: 404, message: "No matches found" });
-    }
 
-    return c.json({
-      status: 200,
-      data: userMatches,
-      message: "Matches found",
-    });
+    const hasMore = userMatches.length > take;
+    const matches = hasMore ? userMatches.slice(0, -1) : userMatches;
+    const nextCursor = hasMore
+      ? userMatches[userMatches.length - 1].initiatorId
+      : null;
+    return c.json({ status: 200, data: matches, nextCursor });
   } catch (error) {
-    console.error(error);
-    return c.json({ status: 500, message: "Internal Server Error" });
+    console.log(error);
+    return c.json({ status: 400 });
   }
 });

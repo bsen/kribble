@@ -87,7 +87,7 @@ export const FollowersComponent = () => {
             followersData.followers.map((followersObj) => (
               <div
                 key={followersObj.id}
-                className="border my-2 rounded-md border-bordermain px-2 py-1 bg-bgtwo"
+                className=" my-2 rounded-md border border-bordermain px-2 py-1 bg-bordermain"
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
