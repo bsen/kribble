@@ -150,4 +150,5 @@ model Message {
   receiverId String
   message    String
   createdAt  DateTime @default(now())
+  ttl        DateTime @default(dbgenerated("(NOW() + INTERVAL '1 day')")) 
 }

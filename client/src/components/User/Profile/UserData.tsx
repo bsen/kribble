@@ -7,7 +7,6 @@ import { BACKEND_URL } from "../../../config";
 import { UserContext } from "../Context/UserContext";
 import { FollowersComponent } from "../Follow/FollowersComponent";
 import { FollowingComponent } from "../Follow/FollowingComponent";
-import { MatchesComponent } from "../Matches/MatchesComponent";
 import { CommunitiesComponent } from "../Communities/CommunitiesComponent";
 
 interface UserData {
@@ -30,7 +29,6 @@ export const UserData: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
-  const [showMatches, setShowMatches] = useState(false);
   const [showCommunities, setShowCommunities] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollowUserLoading, setIsFollowUserLoading] = useState(false);
@@ -114,7 +112,6 @@ export const UserData: React.FC = () => {
     <>
       {showFollowers && <FollowersComponent />}
       {showFollowing && <FollowingComponent />}
-      {showMatches && <MatchesComponent />}
       {showCommunities && <CommunitiesComponent />}
       <div className="mt-4 p-3 rounded-md border border-bordermain bg-bgmain">
         <div className="flex w-full justify-center items-center gap-2">
@@ -234,15 +231,7 @@ export const UserData: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                setShowMatches(true);
-              }}
-              className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
-            >
-              Matches
-            </button>
-            <button
-              onClick={() => {
-                setShowCommunities(true);
+                navigate("/created/community");
               }}
               className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
             >
@@ -252,7 +241,7 @@ export const UserData: React.FC = () => {
 
             <button
               onClick={() => {
-                navigate("/created/communities");
+                setShowCommunities(true);
               }}
               className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
             >
