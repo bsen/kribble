@@ -8,13 +8,13 @@ import { Matching } from "./pages/Matching/Matching";
 import { Post } from "./pages/Post/Post";
 import { Communities } from "./pages/Community/Communities/Communities";
 import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
-import { Community } from "./pages/Community/Profile/Community";
 import { Comments } from "./pages/User/Comments/Comments";
 import { CommunityPost } from "./pages/Community/Create/CommunityPost";
 import { Search } from "./pages/Search/Search";
 import { UpdateProfile } from "./pages/User/Profile/Update";
 import { UpdateCommunity } from "./pages/Community/Profile/Update";
 import { UserProvider } from "./components/User/Context/UserContext";
+import { Inbox } from "./pages/User/InBox/InBox";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -46,8 +46,12 @@ function App() {
               element={<ProtectedRoute element={<Communities />} />}
             />
             <Route
-              path="/community/:name"
-              element={<ProtectedRoute element={<Community />} />}
+              path="/edit/community/:name"
+              element={<ProtectedRoute element={<UpdateCommunity />} />}
+            />
+            <Route
+              path="/inbox/:username"
+              element={<ProtectedRoute element={<Inbox />} />}
             />
             <Route
               path="/create/community"
@@ -60,6 +64,10 @@ function App() {
             <Route
               path="/:name/create/post/"
               element={<ProtectedRoute element={<CommunityPost />} />}
+            />
+            <Route
+              path="/inbox"
+              element={<ProtectedRoute element={<Inbox />} />}
             />
             <Route
               path="/post/:postId"

@@ -1,4 +1,3 @@
-// Backend code
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
@@ -20,14 +19,6 @@ const sendMessageSchema = z.object({
   receiverId: z.string().uuid(),
   message: z.string().max(300),
 });
-
-const getMessagesSchema = z.object({
-  token: z.string(),
-  receiverId: z.string().uuid(),
-  page: z.number().optional(),
-  limit: z.number().optional(),
-});
-
 messageRouter.post("/send", async (c) => {
   try {
     const body = await c.req.json();
@@ -49,6 +40,29 @@ messageRouter.post("/send", async (c) => {
       return c.json({ status: 400, message: "User not authenticated" });
     }
 
+    const existingMessage = await prisma.message.findFirst({
+      where: {
+        senderId: findUser.id,
+        receiverId: receiverId,
+        createdAt: {
+          gte: new Date(Date.now() - 24 * 60 * 60 * 1000), // Last 24 hours
+        },
+      },
+    });
+
+    if (existingMessage) {
+      const remainingTime =
+        new Date(
+          existingMessage.createdAt.getTime() + 24 * 60 * 60 * 1000
+        ).getTime() - Date.now();
+      return c.json({
+        status: 400,
+        message: `You can't send a message for the next ${Math.floor(
+          remainingTime / (1000 * 60 * 60)
+        )} hours`,
+      });
+    }
+
     const createMessage = await prisma.message.create({
       data: {
         message: message,
@@ -68,22 +82,15 @@ messageRouter.post("/send", async (c) => {
   }
 });
 
-messageRouter.post("/get", async (c) => {
+messageRouter.post("/getall", async (c) => {
   try {
     const body = await c.req.json();
-    const {
-      token,
-      receiverId,
-      page = 1,
-      limit = 20,
-    } = getMessagesSchema.parse(body);
-
+    const { token, page = 1, limit = 20 } = body;
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
     const userId = await verify(token, c.env.JWT_SECRET);
-
     const findUser = await prisma.user.findUnique({
       where: {
         id: userId.id,
@@ -93,31 +100,20 @@ messageRouter.post("/get", async (c) => {
     if (!findUser) {
       return c.json({ status: 401, message: "Unauthorised user" });
     }
-
-    const findSendMessages = await prisma.message.findMany({
+    const receivedMessages = await prisma.message.findMany({
       where: {
-        senderId: findUser.id,
-        receiverId: receiverId,
-      },
-      select: {
-        message: true,
-        createdAt: true,
-      },
-      take: limit,
-      skip: (page - 1) * limit,
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-
-    const findReceivedMessages = await prisma.message.findMany({
-      where: {
-        senderId: receiverId,
         receiverId: findUser.id,
       },
       select: {
         message: true,
         createdAt: true,
+        sender: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
       },
       take: limit,
       skip: (page - 1) * limit,
@@ -126,15 +122,14 @@ messageRouter.post("/get", async (c) => {
       },
     });
 
-    if (!findSendMessages && !findReceivedMessages) {
+    if (!receivedMessages) {
       return c.json({ status: 404, message: "NO messages found" });
     }
 
     return c.json({
       status: 200,
       message: "Your messages are fetched",
-      sendMessages: findSendMessages,
-      receivedMessages: findReceivedMessages,
+      receivedMessages,
     });
   } catch (error: unknown) {
     return c.json({ status: 500, message: "Internal Server Error" });
