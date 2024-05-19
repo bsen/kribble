@@ -58,9 +58,9 @@ export const LoginAuth = () => {
 
   return (
     <>
-      <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
+      <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigo-600">
         <div className="w-[100%] lg:w-[35%]">
-          <div className="text-bgmain text-center mb-6 font-ubuntu font-medium text-3xl">
+          <div className="text-texttwo text-center mb-6 font-ubuntu font-medium text-3xl">
             Welcome back to FriendCity
           </div>
 
@@ -117,7 +117,7 @@ export const LoginAuth = () => {
             </div>
             <button
               onClick={login}
-              className="my-4 w-full text-bgmain bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+              className="my-4 w-full text-texttwo bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
             >
               Login
             </button>
@@ -125,7 +125,7 @@ export const LoginAuth = () => {
               Don't have an account?
               <Link
                 to="/signup"
-                className="font-semibold text-textmain underline underline-offset-2 mx-1"
+                className="font-normal text-textmain underline underline-offset-2 mx-1"
               >
                 Create your profile
               </Link>

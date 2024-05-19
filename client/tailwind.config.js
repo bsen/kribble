@@ -4,14 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        bgmain: "rgb(255 255 255);",
-        bgtwo: "rgb(238 242 255);",
-        textmain: "rgb(13 13 13);",
-        texttwo: "rgb(82 82 82);",
+        bgmain: "rgb(20 20 20);",
+        bgtwo: "rgb(40 40 40);",
+        textmain: "rgb(240 240 240);",
+        texttwo: "rgb(210 210 210);",
         rosemain: "rgb(245, 66, 108);",
-        icon: "rgb(245 245 245);",
         indigomain: "rgb(99 102 241);",
-        bordermain: "rgb(245 245 245);",
+        bordermain: "rgb(40 40 40);",
       },
       fontFamily: {
         ubuntu: ["ubuntu", "ubuntu"],

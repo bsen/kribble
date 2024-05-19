@@ -96,7 +96,7 @@ export const UserData: React.FC = () => {
 
   if (error) {
     return (
-      <div className="text-center my-10 text-red-500 font-semibold">
+      <div className="text-center my-10 text-red-500 font-normal">
         An error occurred: {error.message}
       </div>
     );
@@ -128,7 +128,7 @@ export const UserData: React.FC = () => {
                     onClick={() => {
                       navigate("/edit/profile");
                     }}
-                    className="text-left text-bgmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-texttwo bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     Edit
                   </button>
@@ -138,7 +138,7 @@ export const UserData: React.FC = () => {
                     <button
                       onClick={followUser}
                       disabled={isFollowUserLoading}
-                      className="text-left flex justify-center items-center text-bgmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                      className="text-left flex justify-center items-center text-texttwo bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                     >
                       {isFollowUserLoading ? (
                         <div>··········</div>
@@ -157,7 +157,7 @@ export const UserData: React.FC = () => {
               </div>
             </div>
             <div>
-              <div className="text-base lg:text-lg font-semibold text-textmain">
+              <div className="text-base lg:text-lg font-normal text-textmain">
                 {userData.username}
               </div>
               <div className="text-xs text-texttwo font-light">
@@ -216,7 +216,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/create/post");
               }}
-              className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
             >
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Post</span>
@@ -225,7 +225,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/comments");
               }}
-              className="text-xs text-bgmain font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-full"
             >
               Comments
             </button>
@@ -233,7 +233,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/created/community");
               }}
-              className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
             >
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Community</span>
@@ -243,7 +243,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 setShowCommunities(true);
               }}
-              className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
             >
               Communities
             </button>

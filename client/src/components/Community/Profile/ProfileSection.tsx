@@ -197,7 +197,7 @@ export const ProfileSection: React.FC = () => {
 
   if (error) {
     return (
-      <div className="text-center my-10 text-red-500 font-semibold">
+      <div className="text-center my-10 text-red-500 font-normal">
         An error occurred: {error.message}
       </div>
     );
@@ -205,7 +205,7 @@ export const ProfileSection: React.FC = () => {
   if (communityPostDeletionState) {
     return (
       <div className="w-full bg-bgmain border-l border-r border-bordermain h-screen flex justify-center items-center">
-        <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
+        <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-normal">
           Do you really want to delete the post
           <div className="text-xs font-light text-texttwo">
             note you can not get back the deleted item!
@@ -213,7 +213,7 @@ export const ProfileSection: React.FC = () => {
           <div className="flex gap-5">
             <button
               onClick={deleteCommunityPost}
-              className="text-textmain bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
+              className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-full"
             >
               Delete
             </button>
@@ -222,7 +222,7 @@ export const ProfileSection: React.FC = () => {
                 setDeletingPostId("");
                 setCommunityPostDeletionState(false);
               }}
-              className="text-black bg-bgmain hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+              className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-full"
             >
               Cancel
             </button>
@@ -273,7 +273,7 @@ export const ProfileSection: React.FC = () => {
                               e.stopPropagation();
                               navigate(`/${post.creator.username}`);
                             }}
-                            className="text-textmain text-sm lg:text-base hover:underline font-semibold"
+                            className="text-textmain text-sm lg:text-base hover:underline font-normal"
                           >
                             {post.creator.username}
                           </div>

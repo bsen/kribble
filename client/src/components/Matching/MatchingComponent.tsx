@@ -105,6 +105,7 @@ export const MatchingComponent: React.FC = () => {
           setMatchableUserData(response.data.user);
         } else {
           setPopup("No users found for matching, Please try again later.");
+          setIsMatching(false);
         }
       } else {
         setPopup("Error while searching for users, Please try again later.");
@@ -180,30 +181,30 @@ export const MatchingComponent: React.FC = () => {
       <div className="bg-bgmain h-screen flex flex-col justify-center items-center">
         <div className="w-full flex flex-col items-center justify-center">
           {!isMatching && (
-            <div className="h-screen bg-white w-full flex flex-col justify-center items-center p-2">
+            <div className="h-screen  w-full flex flex-col justify-center items-center p-2">
               <div className=" bg-bgtwo p-4 shadow-sm rounded-md">
                 <div className="flex flex-col items-center justify-center gap-2">
-                  <img src="/match.png" className="h-16 w-16" />
+                  <img src="/people.png" className="h-16 w-16" />
                   <div className="text-center flex flex-col items-center justify-center gap-1">
-                    <div className="text-2xl  font-normal text-indigomain font-ubuntu">
+                    <div className="text-2xl  font-normal text-textmain font-ubuntu">
                       Start matching in FriendCity
                     </div>
                     <div className="text-xs  text-texttwo font-light">
-                      1. Filter people based on colleges and interests.
-                      <br /> 2. Your profile displays your photo, bio,
-                      interests, and college.
-                      <br /> 3. Check your matches from your profile section.
+                      Filter based on colleges and interests.
+                      <br /> Check your matches from Inbox.
                     </div>
                   </div>
                 </div>
-                <div className="w-full my-4 flex flex-col justify-center items-start">
+                <div className="w-full mt-8 flex flex-col justify-center items-start">
                   <div className="text-texttwo text-sm font-light">
                     Select Colleges
                   </div>
+
                   <FormControl className="w-full">
                     <Select
                       sx={{
                         boxShadow: "none",
+                        color: "rgb(210 210 210);",
                         ".MuiOutlinedInput-notchedOutline": { border: 0 },
                       }}
                       className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgmain"
@@ -242,6 +243,7 @@ export const MatchingComponent: React.FC = () => {
                     <Select
                       sx={{
                         boxShadow: "none",
+                        color: "rgb(210 210 210);",
                         ".MuiOutlinedInput-notchedOutline": { border: 0 },
                       }}
                       className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgmain"
@@ -275,7 +277,7 @@ export const MatchingComponent: React.FC = () => {
                 <div className="flex justify-center">
                   <button
                     onClick={searchPeople}
-                    className="bg-indigomain text-center text-bgmain px-6 font-ubuntu font-normal text-base py-2 rounded-full"
+                    className="bg-indigomain text-center text-texttwo px-6 font-ubuntu font-normal text-base py-2 rounded-full"
                   >
                     Start Matching
                   </button>
@@ -302,17 +304,17 @@ export const MatchingComponent: React.FC = () => {
                 {matchableUserData.username}
               </div>
               {matchableUserData.bio && (
-                <div className="font-light  text-xs text-secondarytextcolor ">
+                <div className="font-light  text-xs text-texttwo ">
                   {matchableUserData.bio ? matchableUserData.bio : ""}
                 </div>
               )}
               {matchableUserData.college && (
-                <div className="font-light  text-xs text-secondarytextcolor ">
+                <div className="font-light  text-xs text-texttwo ">
                   {matchableUserData.college ? matchableUserData.college : ""}
                 </div>
               )}
               {matchableUserData.interest && (
-                <div className="font-light  text-xs text-secondarytextcolor">
+                <div className="font-light  text-xs text-texttwo">
                   {matchableUserData.interest ? matchableUserData.interest : ""}
                 </div>
               )}
@@ -325,7 +327,7 @@ export const MatchingComponent: React.FC = () => {
                 </button>
                 <button
                   onClick={match}
-                  className="bg-indigomain text-bgmain px-6 font-ubuntu font-normal text-base py-1 rounded-full"
+                  className="bg-indigomain text-texttwo px-6 font-ubuntu font-normal text-base py-1 rounded-full"
                 >
                   <CheckIcon />
                 </button>

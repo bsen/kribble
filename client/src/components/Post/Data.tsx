@@ -110,7 +110,7 @@ export const Data = () => {
         </Link>
 
         <Link to={`/${postData.creator.username}`}>
-          <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
+          <div className="text-textmain text-sm lg:text-base hover:underline font-normal">
             {postData.creator.username}
           </div>
         </Link>
@@ -166,7 +166,7 @@ export const Data = () => {
         <div>
           <button
             onClick={createComment}
-            className="text-bgmain text-base py-1 px-4 rounded-md bg-indigomain"
+            className="text-texttwo text-base py-1 px-4 rounded-md bg-indigomain"
           >
             Comment
           </button>

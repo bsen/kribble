@@ -196,7 +196,7 @@ export const HomeComponent = () => {
                           }}
                         >
                           {post.community && (
-                            <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
+                            <div className="text-textmain text-sm lg:text-base hover:underline font-normal">
                               c/ {post.community.name}
                             </div>
                           )}
@@ -217,7 +217,7 @@ export const HomeComponent = () => {
                             e.stopPropagation();
                             navigate(`/${post.creator.username}`);
                           }}
-                          className="text-textmain text-sm lg:text-base hover:underline font-semibold"
+                          className="text-textmain text-sm lg:text-base hover:underline font-normal"
                         >
                           {post.creator.username}
                         </div>

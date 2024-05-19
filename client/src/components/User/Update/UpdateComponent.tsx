@@ -289,7 +289,7 @@ export const UpdateProfileComponent = () => {
                 </div>
 
                 <button onClick={updateProfile}>
-                  <div className="text-bgmain bg-indigomain text-base font-light rounded-md py-1 px-4">
+                  <div className="text-texttwo bg-indigomain text-base font-light rounded-md py-1 px-4">
                     save
                   </div>
                 </button>
@@ -337,6 +337,7 @@ export const UpdateProfileComponent = () => {
                   <Select
                     sx={{
                       boxShadow: "none",
+                      color: "rgb(210 210 210);",
                       ".MuiOutlinedInput-notchedOutline": { border: 0 },
                     }}
                     className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
@@ -371,9 +372,10 @@ export const UpdateProfileComponent = () => {
                   <Select
                     sx={{
                       boxShadow: "none",
+                      color: "rgb(210 210 210);",
                       ".MuiOutlinedInput-notchedOutline": { border: 0 },
                     }}
-                    className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
+                    className="h-9 w-full text-white rounded-lg focus:outline-none bg-bordermain"
                     MenuProps={{
                       PaperProps: {
                         style: {

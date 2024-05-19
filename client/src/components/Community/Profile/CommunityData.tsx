@@ -83,7 +83,7 @@ export const CommunityData: React.FC = () => {
 
   if (error) {
     return (
-      <div className="text-center my-10 text-red-500 font-semibold">
+      <div className="text-center my-10 text-red-500 font-normal">
         An error occurred: {error.message}
       </div>
     );
@@ -113,7 +113,7 @@ export const CommunityData: React.FC = () => {
                     onClick={() => {
                       navigate(`/edit/community/${communityData.name}`);
                     }}
-                    className="text-left text-bgmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-texttwo bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     Edit
                   </button>
@@ -123,7 +123,7 @@ export const CommunityData: React.FC = () => {
                   <button
                     onClick={handleJoinCommunity}
                     disabled={isJoiningLoading}
-                    className="text-left text-bgmain bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-texttwo bg-indigomain font-light rounded-full px-4 py-1 text-sm"
                   >
                     <div className="flex items-center justify-center">
                       {isJoiningLoading ? (
@@ -138,7 +138,7 @@ export const CommunityData: React.FC = () => {
                 )}
               </div>
             </div>
-            <div className="text-lg lg:text-xl font-semibold text-textmain">
+            <div className="text-lg lg:text-xl font-normal text-textmain">
               {communityData.name}
             </div>
             <div className="flex text-textmain items-center gap-2 font-light text-sm">
@@ -168,7 +168,7 @@ export const CommunityData: React.FC = () => {
         >
           <div
             className={
-              "flex w-fit justify-between text-sm items-center text-bgmain font-light bg-indigomain px-4 py-1 rounded-full"
+              "flex w-fit justify-between text-sm items-center text-texttwo font-light bg-indigomain px-4 py-1 rounded-full"
             }
           >
             <AddIcon sx={{ fontSize: 20 }} />
