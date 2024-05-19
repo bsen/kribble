@@ -185,7 +185,7 @@ export const UpdateCommunityComponent = () => {
           <div className="flex gap-5 justify-evenly items-center">
             <button
               onClick={deleteCommunity}
-              className="text-bgmain bg-rosemain font-semibold px-4 py-1  rounded-full"
+              className="text-texttwo bg-rosemain font-normal px-4 py-1  rounded-full"
             >
               Delete
             </button>
@@ -194,7 +194,7 @@ export const UpdateCommunityComponent = () => {
               onClick={() => {
                 setCommunityDeletingState(false);
               }}
-              className="text-black bg-bgmain hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+              className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-full"
             >
               Cancel
             </button>
@@ -259,7 +259,7 @@ export const UpdateCommunityComponent = () => {
           </div>
 
           <button onClick={updateCommunity}>
-            <div className="text-bgmain bg-indigomain text-base font-light rounded-md py-1 px-4">
+            <div className="text-texttwo bg-indigomain text-base font-light rounded-md py-1 px-4">
               save
             </div>
           </button>

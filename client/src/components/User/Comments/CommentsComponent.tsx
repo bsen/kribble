@@ -105,7 +105,7 @@ export const CommentsComponent = () => {
     <>
       {deleteState ? (
         <div className="w-full h-screen flex justify-center items-center">
-          <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-semibold">
+          <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-normal">
             Do you really want to delete the comment
             <span className="text-xs font-light text-texttwo">
               note you can not get back the deleted item!
@@ -113,7 +113,7 @@ export const CommentsComponent = () => {
             <div className="flex gap-5">
               <button
                 onClick={deleteComment}
-                className="text-textmain bg-red-500 hover:bg-red-400 font-semibold px-4 py-1  rounded-full"
+                className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-full"
               >
                 Delete
               </button>
@@ -123,7 +123,7 @@ export const CommentsComponent = () => {
                   setDeleteCommentId("");
                   setDeleteCommentPostId("");
                 }}
-                className="text-black bg-bgmain hover:bg-neutral-200 font-semibold px-4 py-1 border border-neutral-300 rounded-full"
+                className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-full"
               >
                 Cancel
               </button>

@@ -275,9 +275,9 @@ export const SignupAuth = () => {
     );
   }
   return (
-    <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
+    <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigo-600">
       <div className="w-[100%] lg:w-[35%]">
-        <div className="text-bgmain text-center mb-6 font-ubuntu font-medium text-3xl">
+        <div className="text-texttwo text-center mb-6 font-ubuntu font-medium text-3xl">
           Create your account in FriendCity
         </div>
 
@@ -398,7 +398,7 @@ export const SignupAuth = () => {
                 value={date}
                 onChange={(e) => handleDateChange(e.target.value)}
                 placeholder="Date"
-                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain border"
+                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
               />
 
               <input
@@ -406,7 +406,7 @@ export const SignupAuth = () => {
                 value={month}
                 onChange={(e) => handleMonthChange(e.target.value)}
                 placeholder="Month"
-                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain border"
+                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
               />
 
               <input
@@ -414,14 +414,14 @@ export const SignupAuth = () => {
                 value={year}
                 onChange={(e) => handleYearChange(e.target.value)}
                 placeholder="Year"
-                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain border"
+                className="h-9 w-[25%] text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
               />
             </div>
           </div>
           <button
             onClick={signup}
             disabled={isLoading}
-            className="my-4 w-full text-bgmain bg-indigomain active:bg-bgmain  focus:outline-none focus:ring-2 focus:ring-bordermain font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+            className="my-4 w-full text-texttwo bg-indigomain active:bg-bgmain  focus:outline-none focus:ring-2 focus:ring-bordermain font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
           >
             Register
           </button>
@@ -429,7 +429,7 @@ export const SignupAuth = () => {
             Already have an account?
             <Link
               to="/login"
-              className="font-semibold text-textmain underline underline-offset-2 mx-1"
+              className="font-normal text-textmain underline underline-offset-2 mx-1"
             >
               Login
             </Link>

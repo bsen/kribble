@@ -124,7 +124,7 @@ export const Post = () => {
         <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon
-              className="p-1 bg-indigomain text-bgmain rounded-full"
+              className="p-1 bg-indigomain text-texttwo rounded-full"
               sx={{ fontSize: 35 }}
             />
           </button>
@@ -205,7 +205,7 @@ export const Post = () => {
           <div>
             <button
               onClick={createCommunityPost}
-              className="text-bgmain text-base py-1 px-6 rounded-md bg-indigomain"
+              className="text-texttwo text-base py-1 px-6 rounded-md bg-indigomain"
             >
               Post
             </button>

@@ -113,7 +113,7 @@ export const SideBar = () => {
               navigate("/create/post");
             }}
             className={
-              "w-full h-10 px-3 mt-4 rounded-md  bg-indigomain text-bgmain flex items-center justify-start gap-2 text-sm font-light"
+              "w-full h-10 px-3 mt-4 rounded-md  bg-indigomain text-textmain flex items-center justify-start gap-2 text-sm font-light"
             }
           >
             <AddIcon sx={{ fontSize: 25 }} />
@@ -121,7 +121,7 @@ export const SideBar = () => {
           </button>
         </div>
         <div className="text-xs text-center py-2 font-ubuntu font-light text-texttwo">
-          © 2024 friendcity ltd
+          © 2024 FriendCity ltd
         </div>
       </div>
     </>

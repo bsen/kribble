@@ -127,12 +127,12 @@ export const PostProfile = () => {
               <div className="w-full">
                 <div className="flex gap-2 items-center">
                   {comment.anonymity ? (
-                    <div className="text-textmain text-sm lg:text-base font-semibold">
+                    <div className="text-textmain text-sm lg:text-base font-normal">
                       {comment.creator.username}
                     </div>
                   ) : (
                     <Link to={`/${comment.creator.username}`}>
-                      <div className="text-textmain text-sm lg:text-base hover:underline font-semibold">
+                      <div className="text-textmain text-sm lg:text-base hover:underline font-normal">
                         {comment.creator.username}
                       </div>
                     </Link>

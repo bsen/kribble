@@ -1,13 +1,12 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { BACKEND_URL } from "../../config";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { BottomBar } from "../Bars/BottomBar";
 
 interface User {
   username: string;
-  name: string;
   image: string;
 }
 
@@ -17,7 +16,6 @@ interface Community {
 }
 
 export const SearchComponent = () => {
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [search, setSearch] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -45,21 +43,17 @@ export const SearchComponent = () => {
   }, [search]);
 
   return (
-    <div className="top-0 fixed w-full  lg:w-[45%]">
-      <div className="w-full px-4 border-b border-bordermain bg-bgmain h-14 flex justify-between items-center">
-        <button
-          disabled={true}
-          className="h-10 mx-auto w-[75%] flex px-4 justify-between items-center border border-bordermain bg-neutral-100 rounded-full"
-          onClick={() => navigate("/search")}
-        >
+    <div className="top-0 fixed w-full  lg:w-[50%]">
+      <div className="w-full px-4 bg-bgmain h-14 flex justify-between items-center">
+        <div className="h-10 bg-bgtwo mx-auto w-[75%] flex px-4 justify-between items-center border border-bordermain  rounded-full">
           <input
             type="text"
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
-            className="w-full h-full bg-neutral-100 focus:outline-none"
+            className="w-full h-full bg-bgtwo focus:outline-none"
           />
           <SearchIcon className="text-texttwo" />
-        </button>
+        </div>
       </div>
 
       <div>
@@ -74,35 +68,29 @@ export const SearchComponent = () => {
                       <img
                         src={user.image ? user.image : "/user.png"}
                         alt="Profile"
-                        className="h-8 w-8 rounded-full"
+                        className="h-9 w-9 rounded-full"
                       />
                     </div>
 
-                    <div className="text-textmain text-base  font-normal">
-                      {user.name}
-                    </div>
-
-                    <div className="text-secondarytextcolor  text-xs lg:text-sm font-ubuntu">
-                      @{user.username}
-                    </div>
+                    <div className="text-textmain text-lg">{user.username}</div>
                   </div>
                 </Link>
               ))}
             </div>
             <div>
               {communities.map((community) => (
-                <Link to={`/${community.name}`} key={community.name}>
+                <Link to={`/community/${community.name}`} key={community.name}>
                   <div className="flex border my-2 bg-bgmain rounded-md border-bordermain py-2 gap-2 items-center px-4 hover:bg-neutral-100">
                     <div className=" text-sm font-normal text-textmain">c/</div>
                     <div>
                       <img
                         src={community.image ? community.image : "/group.png"}
                         alt="Profile"
-                        className="h-8 w-8 rounded-full"
+                        className="h-9 w-9 rounded-full"
                       />
                     </div>
                     <div className="items-center">
-                      <div className="text-textmain text-base  font-normal">
+                      <div className="text-textmain text-lg">
                         {community.name}
                       </div>
                     </div>

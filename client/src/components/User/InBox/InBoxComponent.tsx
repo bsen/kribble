@@ -3,7 +3,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
-
+import ScheduleOutlinedIcon from "@mui/icons-material/ScheduleOutlined";
 interface MatchesData {
   id: string;
   initiator: Initiator;
@@ -150,7 +150,7 @@ export const InBoxComponent = () => {
               }}
               className="border border-bordermain p-1 rounded-full"
             >
-              <ArrowBackIcon />
+              <ArrowBackIcon className="text-texttwo" />
             </button>
 
             <img
@@ -158,11 +158,11 @@ export const InBoxComponent = () => {
               className="h-10 w-10 rounded-full"
               alt="User Avatar"
             />
-            <div className="ml-2 text-lg font-semibold">
+            <div className="ml-2 text-lg text-textmain font-normal">
               {messagingUser.username}
             </div>
           </div>
-          <div className="bg-bgtwo border border-indigomain text-indigomain px-4 py-3 rounded mb-4">
+          <div className="bg-bgtwo  border-indigomain text-indigomain px-4 py-2 rounded mb-4">
             Share a story for 24 hours. It will automatically disappear after
             that time.
           </div>
@@ -177,17 +177,17 @@ export const InBoxComponent = () => {
           )}
           <div className="flex items-center">
             <textarea
-              cols={2}
+              cols={10}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Share your day's story..."
               maxLength={250}
-              className="w-full border border-indigomain text-texttwo text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg bg-bgmain"
+              className="w-full bg-bordermain text-texttwo text-base font-light px-2 py-1 resize-none no-scrollbar focus:outline-none rounded-lg"
               disabled={remainingTime > 0}
             />
             <button
               onClick={handleSendMessage}
-              className="ml-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+              className="ml-4 px-4 py-2 bg-indigo-600 text-texttwo rounded-lg hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
               disabled={remainingTime > 0 || !message.trim()}
             >
               Send
@@ -195,7 +195,7 @@ export const InBoxComponent = () => {
           </div>
         </div>
       ) : showMatches ? (
-        <div className="h-screen absolute w-[50%] bg-white/75 flex justify-center items-center">
+        <div className="h-screen  flex justify-center items-center">
           <div
             className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
             onScroll={handleScroll}
@@ -242,7 +242,7 @@ export const InBoxComponent = () => {
                       </div>
                     </div>
                   </div>
-                  <MailOutlinedIcon className="texttwo" />
+                  <MailOutlinedIcon className="text-texttwo" />
                 </div>
               ))
             ) : (
@@ -260,15 +260,19 @@ export const InBoxComponent = () => {
       ) : (
         <>
           <div className="flex justify-between items-center px-2">
-            <button
-              onClick={() => {
-                setShowMatches(true);
-              }}
-              className="text-xs text-bgmain font-light bg-indigomain px-3 py-1 rounded-full"
-            >
-              Check new matches
-            </button>
-            <div className="text-sm font-ubuntu text-center">Inbox</div>
+            <div className="p-2 mb-2 flex justify-between items-center w-full">
+              <div className="text-base flex items-center gap-2 text-texttwo font-ubuntu text-center">
+                <ScheduleOutlinedIcon /> 24 Hour Inbox
+              </div>
+              <button
+                onClick={() => {
+                  setShowMatches(true);
+                }}
+                className="text-sm text-texttwo font-light bg-indigomain px-3 py-1 rounded-full"
+              >
+                Matches
+              </button>
+            </div>
           </div>
           <div
             className="overflow-y-auto no-scrollbar"
@@ -279,9 +283,9 @@ export const InBoxComponent = () => {
               receivedMessages.map((message, index) => (
                 <div
                   key={index}
-                  className="mt-2 max-w-[70%] rounded-lg px-4 py-1 bg-bordermain text-textmain self-start"
+                  className="mt-2 shadow-sm w-full rounded-lg p-3 bg-bgmain border border-bordermain text-textmain self-start"
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-start  gap-2">
                     <img
                       src={
                         message.sender.image
@@ -291,7 +295,7 @@ export const InBoxComponent = () => {
                       className="h-9 w-9 rounded-full"
                     />
                     <div>
-                      <div className="text-textmain text-sm font-semibold">
+                      <div className="text-textmain text-lg">
                         {message.sender.username}
                       </div>
                       <div className="text-textmain text-sm">
