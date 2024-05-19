@@ -242,7 +242,7 @@ export const UserData: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                setShowCommunities(true);
+                navigate("/created/community");
               }}
               className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
             >
@@ -252,7 +252,7 @@ export const UserData: React.FC = () => {
 
             <button
               onClick={() => {
-                navigate("/created/communities");
+                setShowCommunities(true);
               }}
               className="text-xs text-bgmain flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
             >
