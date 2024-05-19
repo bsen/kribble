@@ -9,7 +9,7 @@ export default {
         textmain: "rgb(240 240 240);",
         texttwo: "rgb(210 210 210);",
         rosemain: "rgb(245, 66, 108);",
-        indigomain: "rgb(99 102 241);",
+        indigomain: "rgb(79 70 229);",
         bordermain: "rgb(40 40 40);",
       },
       fontFamily: {

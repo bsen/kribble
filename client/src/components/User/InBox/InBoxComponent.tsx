@@ -4,6 +4,8 @@ import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import ScheduleOutlinedIcon from "@mui/icons-material/ScheduleOutlined";
+import ScheduleSendOutlinedIcon from "@mui/icons-material/ScheduleSendOutlined";
+import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 interface MatchesData {
   id: string;
   initiator: Initiator;
@@ -146,7 +148,7 @@ export const InBoxComponent = () => {
             <button
               onClick={() => {
                 setMessaging(false);
-                setShowMatches(true);
+                setShowMatches(false);
               }}
               className="border border-bordermain p-1 rounded-full"
             >
@@ -162,9 +164,10 @@ export const InBoxComponent = () => {
               {messagingUser.username}
             </div>
           </div>
-          <div className="bg-bgtwo  border-indigomain text-indigomain px-4 py-2 rounded mb-4">
+          <div className="bg-indigomain text-sm border-indigomain text-texttwo px-4 py-2 rounded mb-4">
             Share a story for 24 hours. It will automatically disappear after
-            that time.
+            that duration. Please note that sent messages cannot be viewed or
+            deleted.
           </div>
 
           {errorMessage && (
@@ -175,23 +178,25 @@ export const InBoxComponent = () => {
               )}
             </div>
           )}
-          <div className="flex items-center">
+          <div className="flex items-end">
             <textarea
-              cols={10}
+              rows={4}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Share your day's story..."
-              maxLength={250}
-              className="w-full bg-bordermain text-texttwo text-base font-light px-2 py-1 resize-none no-scrollbar focus:outline-none rounded-lg"
+              maxLength={500}
+              className="w-full  bg-bordermain text-texttwo text-base font-light px-2 py-1 resize-none no-scrollbar focus:outline-none rounded-lg"
               disabled={remainingTime > 0}
             />
+          </div>
+          <div className="w-full my-4 flex justify-end">
             <button
               onClick={handleSendMessage}
-              className="ml-4 px-4 py-2 bg-indigo-600 text-texttwo rounded-lg hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+              className="cursor-pointer px-4 py-1 bg-indigo-600 text-texttwo rounded-lg hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
               disabled={remainingTime > 0 || !message.trim()}
             >
-              Send
-            </button>
+              <ScheduleSendOutlinedIcon sx={{ fontSize: 25 }} />
+            </button>{" "}
           </div>
         </div>
       ) : showMatches ? (
@@ -294,9 +299,27 @@ export const InBoxComponent = () => {
                       }
                       className="h-9 w-9 rounded-full"
                     />
-                    <div>
-                      <div className="text-textmain text-lg">
-                        {message.sender.username}
+                    <div className="w-full">
+                      <div className="w-full flex justify-between items-center">
+                        <div className="text-textmain text-lg">
+                          {message.sender.username}
+                        </div>
+                        <button
+                          onClick={() => {
+                            setMessagingUser({
+                              id: message.sender.id,
+                              username: message.sender.username,
+                              image: message.sender.image,
+                            });
+                            setMessaging(true);
+                            setShowMatches(false);
+                          }}
+                        >
+                          <ReplyOutlinedIcon
+                            sx={{ fontSize: 20 }}
+                            className="text-texttwo"
+                          />
+                        </button>
                       </div>
                       <div className="text-textmain text-sm">
                         {message.message}
