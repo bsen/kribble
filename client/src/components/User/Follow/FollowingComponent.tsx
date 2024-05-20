@@ -90,7 +90,7 @@ export const FollowingComponent = () => {
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
-                    className="h-9 w-9 rounded-lg bg-bgmain"
+                    className="h-8 w-8 rounded-lg bg-bgmain"
                     src={
                       followingObj.following.image
                         ? followingObj.following.image

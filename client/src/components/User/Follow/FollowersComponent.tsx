@@ -91,7 +91,7 @@ export const FollowersComponent = () => {
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
-                    className="h-10 w-10 rounded-lg bg-bgmain"
+                    className="h-8 w-8 rounded-lg bg-bgmain"
                     src={
                       followersObj.follower.image
                         ? followersObj.follower.image
