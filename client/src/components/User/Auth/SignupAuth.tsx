@@ -357,11 +357,12 @@ export const SignupAuth = () => {
           </div>
 
           <div>
-            <div className="text-texttwo text-sm font-light">College</div>
+            <div className="font-normal m-1 text-texttwo">College</div>
             <FormControl className="w-full">
               <Select
                 sx={{
                   boxShadow: "none",
+                  color: "rgb(210 210 210);",
                   ".MuiOutlinedInput-notchedOutline": { border: 0 },
                 }}
                 className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"

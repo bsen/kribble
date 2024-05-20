@@ -285,7 +285,7 @@ export const HomeComponent = () => {
             </div>
           ))
         ) : (
-          <div className="text-texttwo my-5  font-light text-center text-lg">
+          <div className="text-texttwo my-5 font-light text-center text-lg">
             No posts found
           </div>
         )}
