@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
