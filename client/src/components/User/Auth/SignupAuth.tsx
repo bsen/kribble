@@ -439,10 +439,10 @@ export const SignupAuth = () => {
           </div>
         </div>
       </div>
-      <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-neutral-600">
+      <footer className="w-full font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
         © 2024 FriendCity Ltd.
-        <Link to="/about" className="underline">
-          about
+        <Link to="/policies" className="underline">
+          Policies
         </Link>
       </footer>
     </div>

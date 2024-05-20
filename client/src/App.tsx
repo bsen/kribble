@@ -36,7 +36,7 @@ function App() {
             <Route path="/" element={<ProtectedRoute element={<Home />} />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/policies" element={<About />} />
 
             <Route
               path="/:username"

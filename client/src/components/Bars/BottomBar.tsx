@@ -14,7 +14,7 @@ export const BottomBar = () => {
 
   return (
     <>
-      <div className="lg:hidden bottom-0  h-12 flex items-center justify-evenly border-t border-bordermain  rounded-t-md  bg-bgtwo fixed w-full lg:w-[50%]">
+      <div className="lg:hidden bottom-0  h-12 flex items-center justify-evenly border-t border-bordermain  rounded-t-md  bg-bgtwo fixed w-full">
         <button
           onClick={() => {
             navigate("/");
