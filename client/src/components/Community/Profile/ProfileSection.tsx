@@ -242,7 +242,7 @@ export const ProfileSection: React.FC = () => {
 
         <CommunityData />
         <div>
-          {postData.posts &&
+          {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (
               <div
                 key={index}
@@ -355,8 +355,8 @@ export const ProfileSection: React.FC = () => {
                   </div>
                 </div>
               </div>
-            ))}
-          {!isLoading && !postData.posts && (
+            ))
+          ) : (
             <div className="text-texttwo my-5  font-light text-center text-lg">
               No posts found
             </div>
