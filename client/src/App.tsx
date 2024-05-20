@@ -15,6 +15,7 @@ import { UpdateProfile } from "./pages/User/Profile/Update";
 import { UpdateCommunity } from "./pages/Community/Profile/Update";
 import { UserProvider } from "./components/User/Context/UserContext";
 import { Inbox } from "./pages/User/InBox/InBox";
+import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -40,6 +41,10 @@ function App() {
             <Route
               path="/comments"
               element={<ProtectedRoute element={<Comments />} />}
+            />
+            <Route
+              path="/hidden/posts"
+              element={<ProtectedRoute element={<IncognitoPosts />} />}
             />
             <Route
               path="/communities"

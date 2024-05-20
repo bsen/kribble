@@ -1,21 +1,11 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  useContext,
-} from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReplyIcon from "@mui/icons-material/Reply";
-import { BottomBar } from "../../Bars/BottomBar";
-import { NavBar } from "../../Bars/NavBar";
-import { UserData } from "./UserData";
-import { UserContext } from "../Context/UserContext";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 interface Post {
   id: string;
@@ -34,9 +24,7 @@ interface Post {
 
 interface ProfileSectionProps {}
 
-export const ProfileSection: React.FC<ProfileSectionProps> = () => {
-  const { username } = useParams();
-  const { currentUser } = useContext(UserContext);
+export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [loadingState, setLoadingState] = useState(false);
@@ -59,8 +47,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
       try {
         setIsLoading(true);
         const response = await axios.post(
-          `${BACKEND_URL}/api/user/post/all/posts`,
-          { token, cursor, username }
+          `${BACKEND_URL}/api/user/post/all/hidden/posts`,
+          { token, cursor }
         );
         setPostData((prevData) => ({
           posts: truncate
@@ -74,11 +62,11 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
         setIsLoading(false);
       }
     },
-    [token, username]
+    [token]
   );
   useEffect(() => {
     getAllPosts(null, true);
-  }, [username]);
+  }, [token]);
 
   const handleScroll = useCallback(() => {
     const postsScrollContainer = postsScrollContainerRef.current;
@@ -225,8 +213,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
-        <UserData />
         <div
           className="overflow-y-auto no-scrollbar touch-action-none"
           ref={postsScrollContainerRef}
@@ -275,19 +261,17 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                     </div>
                   </div>
                   <div>
-                    {currentUser === username && (
-                      <button
-                        onClick={() => {
-                          setPostDeleteId(post.id);
-                          setDeleteState(true);
-                        }}
-                      >
-                        <MoreVertIcon
-                          className="text-texttwo"
-                          sx={{ fontSize: 20 }}
-                        />
-                      </button>
-                    )}
+                    <button
+                      onClick={() => {
+                        setPostDeleteId(post.id);
+                        setDeleteState(true);
+                      }}
+                    >
+                      <MoreVertIcon
+                        className="text-texttwo"
+                        sx={{ fontSize: 20 }}
+                      />
+                    </button>
                   </div>
                 </div>
                 <div className="w-full flex flex-col">
@@ -358,7 +342,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             </div>
           )}
         </div>
-        <BottomBar />
       </div>
     </>
   );

@@ -214,3 +214,75 @@ userPostRouter.post("/all/posts", async (c) => {
     return c.json({ status: 400 });
   }
 });
+
+userPostRouter.post("/all/hidden/posts", async (c) => {
+  try {
+    const body = await c.req.json();
+    const token = body.token;
+    const cursor = body.cursor || null;
+    const take = 10;
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const userId = await verify(token, c.env.JWT_SECRET);
+    const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
+    if (!findUser) {
+      return c.json({ status: 401, message: "Unauthorized Main User" });
+    }
+    const findPosts = await prisma.post.findMany({
+      where: {
+        creatorId: findUser.id,
+        anonymity: true,
+      },
+      select: {
+        id: true,
+        image: true,
+        content: true,
+        likesCount: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
+        createdAt: true,
+        commentsCount: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: take + 1,
+    });
+
+    if (!findPosts) {
+      return c.json({ status: 400, message: "posts not found" });
+    }
+
+    const hasMore = findPosts.length > take;
+    const posts = hasMore ? findPosts.slice(0, -1) : findPosts;
+    const nextCursor = hasMore ? findPosts[findPosts.length - 1].id : null;
+
+    const postsWithLikedState = await Promise.all(
+      posts.map(async (post) => {
+        const isLiked = await prisma.postLike.findUnique({
+          where: {
+            userId_postId: {
+              userId: findUser.id,
+              postId: post.id,
+            },
+          },
+        });
+        return {
+          ...post,
+          isLiked: isLiked ? true : false,
+        };
+      })
+    );
+
+    return c.json({ status: 200, posts: postsWithLikedState, nextCursor });
+  } catch (error) {
+    return c.json({ status: 400 });
+  }
+});
