@@ -77,7 +77,7 @@ export const Community = () => {
   };
   if (isLoading) {
     return (
-      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-bgmain w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
@@ -85,19 +85,19 @@ export const Community = () => {
 
   return (
     <>
-      <div className="h-screen bg-bgmain flex justify-center items-center px-5 lg:px-0">
+      <div className="h-screen flex justify-center items-center px-5 lg:px-0">
         <NavBar />
-        <div className="w-full max-w-md my-5 rounded-lg bg-bgmain">
+        <div className="w-full max-w-md my-5 p-3 rounded-lg bg-bgmain">
           <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
             <div>
               <button onClick={handleClose}>
                 <ArrowBackIcon
-                  className="rounded-lg text-textmain"
+                  className="rounded-full text-textmain"
                   sx={{ fontSize: 30 }}
                 />
               </button>
             </div>
-            <div>Create Community</div>
+            <div className="text-textmain">Create Community</div>
           </div>
           <div className="flex flex-col gap-4">
             <div>

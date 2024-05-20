@@ -189,7 +189,7 @@ export const ProfileSection: React.FC = () => {
 
   if (loadingState) {
     return (
-      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-bgmain w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );

@@ -178,7 +178,7 @@ export const MatchingComponent: React.FC = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-bgmain h-screen flex flex-col justify-center items-center">
+      <div className="h-screen flex flex-col justify-center items-center">
         <div className="w-full flex flex-col items-center justify-center">
           {!isMatching && (
             <div className="h-screen  w-full flex flex-col justify-center items-center p-2">
@@ -196,7 +196,7 @@ export const MatchingComponent: React.FC = () => {
                   </div>
                 </div>
                 <div className="w-full mt-8 flex flex-col justify-center items-start">
-                  <div className="text-texttwo text-sm font-light">
+                  <div className="text-texttwo text-sm font-light mb-1">
                     Select Colleges
                   </div>
 
@@ -205,9 +205,10 @@ export const MatchingComponent: React.FC = () => {
                       sx={{
                         boxShadow: "none",
                         color: "rgb(210 210 210);",
+                        backgroundColor: "black",
                         ".MuiOutlinedInput-notchedOutline": { border: 0 },
                       }}
-                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgmain"
+                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-texttwo"
                       multiple
                       MenuProps={{
                         PaperProps: {
@@ -236,7 +237,7 @@ export const MatchingComponent: React.FC = () => {
                   </FormControl>
                 </div>
                 <div className="w-full my-4 flex flex-col justify-center items-start">
-                  <div className="text-texttwo text-sm font-light">
+                  <div className="text-texttwo text-sm font-light mb-1">
                     Select Interests
                   </div>
                   <FormControl className="w-full">
@@ -244,9 +245,10 @@ export const MatchingComponent: React.FC = () => {
                       sx={{
                         boxShadow: "none",
                         color: "rgb(210 210 210);",
+                        backgroundColor: "black",
                         ".MuiOutlinedInput-notchedOutline": { border: 0 },
                       }}
-                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgmain"
+                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-texttwo"
                       multiple
                       MenuProps={{
                         PaperProps: {
@@ -295,7 +297,7 @@ export const MatchingComponent: React.FC = () => {
           )}
 
           {isMatching && matchableUserData && !popup && (
-            <div className="flex bg-bgtwo p-2 rounded-lg shadow-sm  items-center flex-col justify-center">
+            <div className="flex p-2 rounded-lg shadow-sm  items-center flex-col justify-center">
               <img
                 src={matchableUserData.image || "user.png"}
                 className="w-60 rounded-lg border border-bordermain"

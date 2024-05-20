@@ -2,7 +2,7 @@ import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 
 export const About = () => {
   return (
-    <div className="bg-indigomain h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-4">
+    <div className="h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-4">
       <div className="w-[100%] lg:w-[50%] border bg-bgmain border-bordermain rounded-lg p-4">
         <div className="text-textmain mb-4 font-ubuntu font-semibold text-[1.5rem]">
           Welcome to FriendSphere

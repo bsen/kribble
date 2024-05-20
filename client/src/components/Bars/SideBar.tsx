@@ -119,8 +119,11 @@ export const SideBar = () => {
           <div>Post</div>
         </button>
       </div>
-      <footer className="w-full mt-6 ml-4 text-xs flex gap-2  text-texttwo">
+      <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-neutral-600">
         © 2024 FriendCity Ltd.
+        <Link to="/about" className="underline">
+          about
+        </Link>
       </footer>
     </>
   );

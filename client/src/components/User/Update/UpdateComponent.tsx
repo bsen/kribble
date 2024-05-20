@@ -227,7 +227,7 @@ export const UpdateProfileComponent = () => {
   }
   if (isLoading) {
     return (
-      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-bgmain w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
@@ -238,7 +238,7 @@ export const UpdateProfileComponent = () => {
         <div className="w-full">{logoutState && <Logout />}</div>
         <div className="w-full">
           {!logoutState && (
-            <div className="bg-bgmain h-screen  p-2 flex flex-col gap-4">
+            <div className=" h-fit bg-bgmain rounded-b-lg  p-3 flex flex-col gap-4">
               <div className="flex justify-between items-center border-b border-bordermain pb-2">
                 <button
                   onClick={() => {

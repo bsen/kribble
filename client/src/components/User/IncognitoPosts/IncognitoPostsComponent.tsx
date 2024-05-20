@@ -192,7 +192,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
 
   if (loadingState) {
     return (
-      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-bgmain w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );

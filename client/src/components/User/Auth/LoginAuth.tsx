@@ -58,7 +58,7 @@ export const LoginAuth = () => {
 
   return (
     <>
-      <div className="h-screen w-full p-2  flex flex-col justify-center items-center bg-indigomain">
+      <div className="h-screen w-full p-2  flex flex-col justify-center items-center">
         <div className="w-[100%] lg:w-[35%]">
           <div className="text-texttwo text-center mb-6 font-ubuntu font-medium text-3xl">
             Welcome back to FriendCity
@@ -76,7 +76,7 @@ export const LoginAuth = () => {
               />
               <img
                 src="/people.png"
-                className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
+                className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
               />
 
               <img
@@ -135,10 +135,10 @@ export const LoginAuth = () => {
             </div>
           </div>
         </div>
-        <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-bgtwo">
+        <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-neutral-600">
           © 2024 FriendCity Ltd.
           <Link to="/about" className="underline">
-            About
+            about
           </Link>
         </footer>
       </div>
