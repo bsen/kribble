@@ -99,11 +99,11 @@ export const CommunityData: React.FC = () => {
 
   return (
     <>
-      <div className="p-2 mt-4 rounded-md border border-bordermain bg-bgmain">
+      <div className="p-2 mt-4 rounded-lg border border-bordermain bg-bgmain">
         <div className="flex justify-between w-full items-center gap-2">
           <img
             src={communityData.image ? communityData.image : "/group.png"}
-            className="lg:w-20 lg:h-20 w-16 h-16 rounded-full border border-bordermain"
+            className="lg:w-20 lg:h-20 w-16 h-16 rounded-lg border border-bordermain"
           />
           <div className="w-full">
             <div className="flex justify-end items-center">
@@ -113,7 +113,7 @@ export const CommunityData: React.FC = () => {
                     onClick={() => {
                       navigate(`/edit/community/${communityData.name}`);
                     }}
-                    className="text-left text-texttwo bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-texttwo bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
                   >
                     Edit
                   </button>
@@ -123,7 +123,7 @@ export const CommunityData: React.FC = () => {
                   <button
                     onClick={handleJoinCommunity}
                     disabled={isJoiningLoading}
-                    className="text-left text-texttwo bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-texttwo bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
                   >
                     <div className="flex items-center justify-center">
                       {isJoiningLoading ? (
@@ -168,7 +168,7 @@ export const CommunityData: React.FC = () => {
         >
           <div
             className={
-              "flex w-fit justify-between text-sm items-center text-texttwo font-light bg-indigomain px-4 py-1 rounded-full"
+              "flex w-fit justify-between text-sm items-center text-texttwo font-light bg-indigomain px-4 py-1 rounded-lg"
             }
           >
             <AddIcon sx={{ fontSize: 20 }} />

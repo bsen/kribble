@@ -113,7 +113,7 @@ export const CommentsComponent = () => {
             <div className="flex gap-5">
               <button
                 onClick={deleteComment}
-                className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-full"
+                className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-lg"
               >
                 Delete
               </button>
@@ -123,7 +123,7 @@ export const CommentsComponent = () => {
                   setDeleteCommentId("");
                   setDeleteCommentPostId("");
                 }}
-                className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-full"
+                className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
               >
                 Cancel
               </button>
@@ -144,7 +144,7 @@ export const CommentsComponent = () => {
             commentsData.comments.map((comment, index) => (
               <div
                 key={index}
-                className="border bg-bgmain my-2 rounded-md border-bordermain p-4 hover:bg-bgmain"
+                className="border bg-bgmain my-2 rounded-lg border-bordermain p-4 hover:bg-bgmain"
               >
                 <div className="flex flex-col gap-2 ">
                   <div className="text-textmain w-full flex items-center justify-between gap-2 text-sm font-light">

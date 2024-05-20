@@ -8,7 +8,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 interface Communities {
   id: string;
   name: string;
-  description: string;
   membersCount: string;
   image: string;
 }
@@ -60,7 +59,7 @@ export const CommunitiesComponent = () => {
 
   return (
     <>
-      <div className="h-screen absolute w-[50%] bg-white/75 flex justify-center items-center">
+      <div className="h-screen absolute w-[50%] bg-black/60 flex justify-center items-center">
         <div
           className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
           onScroll={handleScroll}
@@ -81,12 +80,12 @@ export const CommunitiesComponent = () => {
             communityData.communities.map((community, index) => (
               <div
                 key={index}
-                className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
+                className="border my-2 rounded-md border-bordermain p-1 bg-bgmain"
               >
                 <div className="flex gap-2 justify-between items-start">
                   <div className="flex gap-2 items-start">
                     <img
-                      className="h-10 w-10 rounded-full bg-bgmain"
+                      className="h-8 w-8 rounded-full bg-bgmain"
                       src={community.image ? community.image : "/group.png"}
                     />
 
@@ -97,9 +96,6 @@ export const CommunitiesComponent = () => {
                       >
                         {community.name}
                       </Link>
-                      <div className="text-textmain text-sm  font-normal">
-                        {community.description}
-                      </div>
                       <div className="text-textmain font-ubuntu  text-sm font-light">
                         {community.membersCount} members
                       </div>

@@ -153,7 +153,7 @@ export const UpdateCommunityComponent = () => {
   };
   if (isLoading) {
     return (
-      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-bgmain w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
@@ -185,7 +185,7 @@ export const UpdateCommunityComponent = () => {
           <div className="flex gap-5 justify-evenly items-center">
             <button
               onClick={deleteCommunity}
-              className="text-texttwo bg-rosemain font-normal px-4 py-1  rounded-full"
+              className="text-texttwo bg-rosemain font-normal px-4 py-1  rounded-lg"
             >
               Delete
             </button>
@@ -194,7 +194,7 @@ export const UpdateCommunityComponent = () => {
               onClick={() => {
                 setCommunityDeletingState(false);
               }}
-              className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-full"
+              className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
             >
               Cancel
             </button>
@@ -208,34 +208,33 @@ export const UpdateCommunityComponent = () => {
   }
   return (
     <>
-      <div className="bg-bgmain h-screen border-l border-r border-bordermain px-4 flex flex-col gap-4">
-        <div className=" border-b border-bordermain py-4">
-          <div className="flex justify-between items-center">
-            <button
-              className="w-fit flex items-start"
-              onClick={() => {
-                navigate(`/community/${communityData.name}`);
-              }}
-            >
-              <ArrowBackIcon sx={{ fontSize: 30 }} className="text-textmain" />
-            </button>
-            <button
-              onClick={() => {
-                setCommunityDeletingState(true);
-              }}
-            >
-              <div className="bg-rose-50 rounded-full text-rosemain text-sm font-light py-1 px-4">
-                Delete community
-              </div>
-            </button>
-          </div>
+      <div className="bg-bgmain h-fit  p-3 flex flex-col gap-4">
+        <div className="flex justify-between items-center">
+          <button
+            className="w-fit flex items-start"
+            onClick={() => {
+              navigate(`/community/${communityData.name}`);
+            }}
+          >
+            <ArrowBackIcon sx={{ fontSize: 30 }} className="text-textmain" />
+          </button>
+          <button
+            onClick={() => {
+              setCommunityDeletingState(true);
+            }}
+          >
+            <div className="bg-rose-50 rounded-lg text-rosemain text-sm font-light py-1 px-4">
+              Delete community
+            </div>
+          </button>
         </div>
+
         <div className="w-ful items-start flex justify-between">
           <div className="flex justify-center items-center">
             <div className="absolute text-textmain z-50">
               <button>
                 <label htmlFor="image-upload" className="cursor-pointer ">
-                  <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-full" />
+                  <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-lg" />
                 </label>
                 <input
                   id="image-upload"
@@ -254,32 +253,36 @@ export const UpdateCommunityComponent = () => {
                   ? communityData.image
                   : "/group.png"
               }
-              className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10 border border-bordermain"
+              className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10 border border-bordermain"
             />
           </div>
-
-          <button onClick={updateCommunity}>
-            <div className="text-texttwo bg-indigomain text-base font-light rounded-md py-1 px-4">
-              save
-            </div>
-          </button>
         </div>
         <div>
           <div className="text-texttwo  text-sm font-light">Description</div>
           <textarea
-            rows={2}
-            className="w-full text-texttwo bordermain px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-bordermain"
+            rows={4}
+            className="w-full text-texttwo bg-bordermain px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-bordermain"
             defaultValue={communityData.description}
             wrap="soft"
-            maxLength={150}
+            maxLength={200}
             onChange={(e) => {
               setNewDescription(e.target.value);
             }}
           />
         </div>
-        <div className="text-rosemain font-ubuntu font-light text-center text-sm">
-          {popup ? popup : <div>‎</div>}
-        </div>
+        <button onClick={updateCommunity}>
+          <div className="text-texttwo bg-indigomain text-base font-light rounded-lg py-1">
+            save
+          </div>
+        </button>
+
+        {popup ? (
+          <div className="text-rosemain font-ubuntu font-light text-center text-sm">
+            {popup}
+          </div>
+        ) : (
+          <div>‎</div>
+        )}
       </div>
     </>
   );

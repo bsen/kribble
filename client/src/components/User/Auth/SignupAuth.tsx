@@ -275,20 +275,20 @@ export const SignupAuth = () => {
     );
   }
   return (
-    <div className="h-screen w-full p-2  flex flex-col justify-center items-center bg-indigomain">
+    <div className="h-screen w-full p-2  flex flex-col justify-center items-center">
       <div className="w-[100%] lg:w-[35%]">
         <div className="text-texttwo text-center mb-6 font-ubuntu font-medium text-3xl">
           Create your account in FriendCity
         </div>
-        <div className="items-center justify-center p-2 rounded-md bg-bgmain">
+        <div className="items-center justify-center p-2 rounded-lg bg-bgmain">
           <div className="my-2 justify-center flex gap-2">
             <img
               src="/girl.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
             <img
               src="/boy.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
             <img
               src="/people.png"
@@ -297,11 +297,11 @@ export const SignupAuth = () => {
 
             <img
               src="/girl2.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
             <img
               src="/boy2.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
           </div>
 
@@ -439,10 +439,10 @@ export const SignupAuth = () => {
           </div>
         </div>
       </div>
-      <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-bgtwo">
+      <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-neutral-600">
         © 2024 FriendCity Ltd.
         <Link to="/about" className="underline">
-          About
+          about
         </Link>
       </footer>
     </div>

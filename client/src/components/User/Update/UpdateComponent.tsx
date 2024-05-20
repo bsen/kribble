@@ -227,7 +227,7 @@ export const UpdateProfileComponent = () => {
   }
   if (isLoading) {
     return (
-      <div className="h-screen bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-bgmain w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
@@ -238,7 +238,7 @@ export const UpdateProfileComponent = () => {
         <div className="w-full">{logoutState && <Logout />}</div>
         <div className="w-full">
           {!logoutState && (
-            <div className="bg-bgmain h-screen  p-2 flex flex-col gap-4">
+            <div className=" h-fit bg-bgmain rounded-b-lg  p-3 flex flex-col gap-4">
               <div className="flex justify-between items-center border-b border-bordermain pb-2">
                 <button
                   onClick={() => {
@@ -255,7 +255,7 @@ export const UpdateProfileComponent = () => {
                     setLogoutState(true);
                   }}
                 >
-                  <div className="text-rosemain text-sm font-normal px-2 py-1 bg-bgtwo rounded-md">
+                  <div className="text-rosemain text-sm font-normal px-2 py-1 bg-bgtwo rounded-lg">
                     Log out
                   </div>
                 </button>
@@ -265,7 +265,7 @@ export const UpdateProfileComponent = () => {
                   <div className="absolute text-textmain z-50">
                     <button>
                       <label htmlFor="image-upload" className="cursor-pointer ">
-                        <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-full" />
+                        <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-lg" />
                       </label>
                       <input
                         id="image-upload"
@@ -284,12 +284,12 @@ export const UpdateProfileComponent = () => {
                         ? userData.image
                         : "/user.png"
                     }
-                    className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10"
+                    className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10"
                   />
                 </div>
 
                 <button onClick={updateProfile}>
-                  <div className="text-texttwo bg-indigomain text-base font-light rounded-md py-1 px-4">
+                  <div className="text-texttwo bg-indigomain text-base font-light rounded-lg py-1 px-4">
                     save
                   </div>
                 </button>

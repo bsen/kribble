@@ -99,13 +99,13 @@ export const Data = () => {
   }
 
   return (
-    <div className="bg-bgmain mt-4 border border-bordermain p-2 rounded-md">
+    <div className="bg-bgmain mt-4 border border-bordermain p-2 rounded-lg">
       <div className="flex gap-2 items-center">
         <Link to={`/${postData.creator.username}`}>
           <img
             src={postData.creator.image ? postData.creator.image : "/user.png"}
             alt="Profile"
-            className="w-9 h-9  rounded-full"
+            className="w-9 h-9  rounded-lg"
           />
         </Link>
 
@@ -134,7 +134,7 @@ export const Data = () => {
 
       <textarea
         rows={3}
-        className={`w-full bg-bordermain text-texttwo resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+        className={`w-full bg-bordermain text-texttwo resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-lg  ${
           popup ? "border border-rosemain" : ""
         }`}
         wrap="soft"
@@ -166,7 +166,7 @@ export const Data = () => {
         <div>
           <button
             onClick={createComment}
-            className="text-texttwo text-base py-1 px-4 rounded-md bg-indigomain"
+            className="text-texttwo text-base py-1 px-4 rounded-lg bg-indigomain"
           >
             Comment
           </button>

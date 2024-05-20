@@ -178,11 +178,11 @@ export const MatchingComponent: React.FC = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-bgmain h-screen flex flex-col justify-center items-center">
+      <div className="h-screen flex flex-col justify-center items-center">
         <div className="w-full flex flex-col items-center justify-center">
           {!isMatching && (
             <div className="h-screen  w-full flex flex-col justify-center items-center p-2">
-              <div className=" bg-bgtwo p-4 shadow-sm rounded-md">
+              <div className=" bg-bgtwo p-4 shadow-sm rounded-lg">
                 <div className="flex flex-col items-center justify-center gap-2">
                   <img src="/people.png" className="h-16 w-16" />
                   <div className="text-center flex flex-col items-center justify-center gap-1">
@@ -196,7 +196,7 @@ export const MatchingComponent: React.FC = () => {
                   </div>
                 </div>
                 <div className="w-full mt-8 flex flex-col justify-center items-start">
-                  <div className="text-texttwo text-sm font-light">
+                  <div className="text-texttwo text-sm font-light mb-1">
                     Select Colleges
                   </div>
 
@@ -205,9 +205,10 @@ export const MatchingComponent: React.FC = () => {
                       sx={{
                         boxShadow: "none",
                         color: "rgb(210 210 210);",
+                        backgroundColor: "black",
                         ".MuiOutlinedInput-notchedOutline": { border: 0 },
                       }}
-                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgmain"
+                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-texttwo"
                       multiple
                       MenuProps={{
                         PaperProps: {
@@ -236,7 +237,7 @@ export const MatchingComponent: React.FC = () => {
                   </FormControl>
                 </div>
                 <div className="w-full my-4 flex flex-col justify-center items-start">
-                  <div className="text-texttwo text-sm font-light">
+                  <div className="text-texttwo text-sm font-light mb-1">
                     Select Interests
                   </div>
                   <FormControl className="w-full">
@@ -244,9 +245,10 @@ export const MatchingComponent: React.FC = () => {
                       sx={{
                         boxShadow: "none",
                         color: "rgb(210 210 210);",
+                        backgroundColor: "black",
                         ".MuiOutlinedInput-notchedOutline": { border: 0 },
                       }}
-                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bgmain"
+                      className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-texttwo"
                       multiple
                       MenuProps={{
                         PaperProps: {
@@ -277,7 +279,7 @@ export const MatchingComponent: React.FC = () => {
                 <div className="flex justify-center">
                   <button
                     onClick={searchPeople}
-                    className="bg-indigomain text-center text-texttwo px-6 font-ubuntu font-normal text-base py-2 rounded-full"
+                    className="bg-indigomain text-center text-texttwo px-6 font-ubuntu font-normal text-base py-2 rounded-lg"
                   >
                     Start Matching
                   </button>
@@ -295,7 +297,7 @@ export const MatchingComponent: React.FC = () => {
           )}
 
           {isMatching && matchableUserData && !popup && (
-            <div className="flex bg-bgtwo p-2 rounded-lg shadow-sm  items-center flex-col justify-center">
+            <div className="flex p-2 rounded-lg shadow-sm  items-center flex-col justify-center">
               <img
                 src={matchableUserData.image || "user.png"}
                 className="w-60 rounded-lg border border-bordermain"
@@ -321,13 +323,13 @@ export const MatchingComponent: React.FC = () => {
               <div className="flex items-center my-4 justify-center gap-5 w-full">
                 <button
                   onClick={searchPeople}
-                  className="bg-textmain text-bgmain px-6 font-ubuntu font-normal text-base py-1 rounded-full"
+                  className="bg-textmain text-bgmain px-6 font-ubuntu font-normal text-base py-1 rounded-lg"
                 >
                   <ClearIcon />
                 </button>
                 <button
                   onClick={match}
-                  className="bg-indigomain text-texttwo px-6 font-ubuntu font-normal text-base py-1 rounded-full"
+                  className="bg-indigomain text-texttwo px-6 font-ubuntu font-normal text-base py-1 rounded-lg"
                 >
                   <CheckIcon />
                 </button>

@@ -113,11 +113,11 @@ export const UserData: React.FC = () => {
       {showFollowers && <FollowersComponent />}
       {showFollowing && <FollowingComponent />}
       {showCommunities && <CommunitiesComponent />}
-      <div className="mt-4 p-3 rounded-md border border-bordermain bg-bgmain">
+      <div className="mt-4 p-3 rounded-lg border border-bordermain bg-bgmain">
         <div className="flex w-full justify-center items-center gap-2">
           <img
             src={userData.image ? userData.image : "/user.png"}
-            className="lg:w-20 lg:h-20 w-16 rounded-xl border border-bordermain"
+            className="lg:w-20 lg:h-20 w-16 rounded-lg border border-bordermain"
           />
 
           <div className="w-full">
@@ -128,7 +128,7 @@ export const UserData: React.FC = () => {
                     onClick={() => {
                       navigate("/edit/profile");
                     }}
-                    className="text-left text-texttwo bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                    className="text-left text-texttwo bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
                   >
                     Edit
                   </button>
@@ -138,7 +138,7 @@ export const UserData: React.FC = () => {
                     <button
                       onClick={followUser}
                       disabled={isFollowUserLoading}
-                      className="text-left flex justify-center items-center text-texttwo bg-indigomain font-light rounded-full px-4 py-1 text-sm"
+                      className="text-left flex justify-center items-center text-texttwo bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
                     >
                       {isFollowUserLoading ? (
                         <div>··········</div>
@@ -211,12 +211,12 @@ export const UserData: React.FC = () => {
       </div>
       <div>
         {currentUser === username && (
-          <div className="px-2 flex gap-2  rounded-md mt-2 overflow-x-auto no-scrollbar">
+          <div className="px-2 flex gap-2  rounded-lg mt-2 overflow-x-auto no-scrollbar">
             <button
               onClick={() => {
                 navigate("/create/post");
               }}
-              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Post</span>
@@ -225,7 +225,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/hidden/posts");
               }}
-              className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Hidden posts
             </button>
@@ -233,15 +233,15 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/comments");
               }}
-              className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Comments
             </button>
             <button
               onClick={() => {
-                navigate("/created/community");
+                navigate("/create/community");
               }}
-              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Community</span>
@@ -251,7 +251,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 setShowCommunities(true);
               }}
-              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-full"
+              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Communities
             </button>

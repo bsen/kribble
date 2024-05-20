@@ -75,13 +75,13 @@ export const CommunitiesComponent = () => {
           communityData.communities.map((community, index) => (
             <div
               key={index}
-              className="my-4 p-2 rounded-md border border-bordermain  bg-bgmain"
+              className="my-4 p-2 rounded-lg border border-bordermain  bg-bgmain"
             >
               <Link to={`/community/${community.name}`}>
                 <div className="flex justify-between gap-2">
                   <div className="flex gap-2 ">
                     <img
-                      className="h-9 w-9 rounded-full bg-bgmain"
+                      className="h-9 w-9 rounded-lg bg-bgmain"
                       src={community.image ? community.image : "/group.png"}
                     />
                     <div className="flex flex-col w-full">

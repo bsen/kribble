@@ -45,7 +45,7 @@ export const SearchComponent = () => {
   return (
     <div className="top-0 fixed w-full  lg:w-[50%]">
       <div className="w-full px-4 bg-bgmain h-14 flex justify-between items-center">
-        <div className="h-10 bg-bgtwo mx-auto w-[75%] flex px-4 justify-between items-center border border-bordermain  rounded-full">
+        <div className="h-10 bg-bgtwo mx-auto w-[75%] flex px-4 justify-between items-center border border-bordermain  rounded-lg">
           <input
             type="text"
             onChange={(e) => setSearch(e.target.value)}
@@ -62,13 +62,13 @@ export const SearchComponent = () => {
             <div className="bg-bgmain">
               {users.map((user) => (
                 <Link to={`/${user.username}`} key={user.username}>
-                  <div className="flex border my-2 bg-bgmain rounded-md border-bordermain py-2 gap-2 items-center px-4 hover:bg-neutral-100">
+                  <div className="flex border my-2 bg-bgmain rounded-lg border-bordermain py-2 gap-2 items-center px-4 hover:bg-neutral-100">
                     <div className=" text-sm font-normal text-textmain">u/</div>
                     <div>
                       <img
                         src={user.image ? user.image : "/user.png"}
                         alt="Profile"
-                        className="h-9 w-9 rounded-full"
+                        className="h-9 w-9 rounded-lg"
                       />
                     </div>
 
@@ -80,13 +80,13 @@ export const SearchComponent = () => {
             <div>
               {communities.map((community) => (
                 <Link to={`/community/${community.name}`} key={community.name}>
-                  <div className="flex border my-2 bg-bgmain rounded-md border-bordermain py-2 gap-2 items-center px-4 hover:bg-neutral-100">
+                  <div className="flex border my-2 bg-bgmain rounded-lg border-bordermain py-2 gap-2 items-center px-4 hover:bg-neutral-100">
                     <div className=" text-sm font-normal text-textmain">c/</div>
                     <div>
                       <img
                         src={community.image ? community.image : "/group.png"}
                         alt="Profile"
-                        className="h-9 w-9 rounded-full"
+                        className="h-9 w-9 rounded-lg"
                       />
                     </div>
                     <div className="items-center">

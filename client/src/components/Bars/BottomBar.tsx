@@ -19,7 +19,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate("/");
           }}
-          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/"
               ? "text-indigomain text-lg"
               : "text-textmain"
@@ -31,7 +31,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate("/communities");
           }}
-          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/communities"
               ? "text-indigomain text-lg"
               : "text-textmain"
@@ -44,7 +44,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate("/matching");
           }}
-          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/matching"
               ? "text-indigomain text-lg"
               : "text-textmain"
@@ -56,7 +56,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate(`/${currentUser}`);
           }}
-          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === `/${currentUser}`
               ? "text-indigomain text-lg"
               : "text-textmain"
@@ -68,7 +68,7 @@ export const BottomBar = () => {
           onClick={() => {
             navigate("/search");
           }}
-          className={` rounded-md flex items-center justify-start gap-2 text-base font-light  ${
+          className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/search"
               ? "text-indigomain text-lg"
               : "text-textmain"

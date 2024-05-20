@@ -150,14 +150,14 @@ export const InBoxComponent = () => {
                 setMessaging(false);
                 setShowMatches(false);
               }}
-              className="border border-bordermain p-1 rounded-full"
+              className="border border-bordermain p-1 rounded-lg"
             >
               <ArrowBackIcon className="text-texttwo" />
             </button>
 
             <img
               src={messagingUser.image ? messagingUser.image : "/user.png"}
-              className="h-10 w-10 rounded-full"
+              className="h-10 w-10 rounded-lg"
               alt="User Avatar"
             />
             <div className="ml-2 text-lg text-textmain font-normal">
@@ -211,7 +211,7 @@ export const InBoxComponent = () => {
                 onClick={() => {
                   setShowMatches(false);
                 }}
-                className="border border-bordermain p-1 rounded-full"
+                className="border border-bordermain p-1 rounded-lg"
               >
                 <ArrowBackIcon />
               </button>
@@ -230,11 +230,11 @@ export const InBoxComponent = () => {
                     setShowMatches(false);
                   }}
                   key={initiatorObj.id}
-                  className="cursor-pointer items-center flex justify-between my-2 rounded-md border border-bordermain px-2 py-1 bg-bordermain"
+                  className="cursor-pointer items-center flex justify-between my-2 rounded-lg border border-bordermain px-2 py-1 bg-bordermain"
                 >
                   <div className="flex justify-start items-center gap-2">
                     <img
-                      className="h-9 w-9 rounded-full"
+                      className="h-9 w-9 rounded-lg"
                       src={
                         initiatorObj.initiator.image
                           ? initiatorObj.initiator.image
@@ -273,7 +273,7 @@ export const InBoxComponent = () => {
                 onClick={() => {
                   setShowMatches(true);
                 }}
-                className="text-sm text-texttwo font-light bg-indigomain px-3 py-1 rounded-full"
+                className="text-sm text-texttwo font-light bg-indigomain px-3 py-1 rounded-lg"
               >
                 Matches
               </button>
@@ -297,7 +297,7 @@ export const InBoxComponent = () => {
                           ? message.sender.image
                           : "/user.png"
                       }
-                      className="h-9 w-9 rounded-full"
+                      className="h-9 w-9 rounded-lg"
                     />
                     <div className="w-full">
                       <div className="w-full flex justify-between items-center">
