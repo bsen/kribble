@@ -212,8 +212,8 @@ export const SignupAuth = () => {
       return;
     }
 
-    if (!isEighteen()) {
-      setPopup("You must be at least 18 years old to register");
+    if (!isThirteen()) {
+      setPopup("You must be at least 13 years old to register");
       return;
     }
 
@@ -249,7 +249,7 @@ export const SignupAuth = () => {
     }
   }
 
-  const isEighteen = () => {
+  const isThirteen = () => {
     const today = new Date();
     const birthDate = new Date(
       parseInt(year),
@@ -264,7 +264,7 @@ export const SignupAuth = () => {
     ) {
       age--;
     }
-    return age >= 18;
+    return age >= 13;
   };
 
   if (isLoading) {
@@ -275,12 +275,11 @@ export const SignupAuth = () => {
     );
   }
   return (
-    <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
+    <div className="h-screen w-full p-2  flex flex-col justify-center items-center bg-indigomain">
       <div className="w-[100%] lg:w-[35%]">
         <div className="text-texttwo text-center mb-6 font-ubuntu font-medium text-3xl">
           Create your account in FriendCity
         </div>
-
         <div className="items-center justify-center p-2 rounded-md bg-bgmain">
           <div className="my-2 justify-center flex gap-2">
             <img
@@ -430,7 +429,7 @@ export const SignupAuth = () => {
             Already have an account?
             <Link
               to="/login"
-              className="font-normal text-textmain underline underline-offset-2 mx-1"
+              className="font-normal text-textmain underline underline-offset-4 mx-1"
             >
               Login
             </Link>
@@ -440,6 +439,12 @@ export const SignupAuth = () => {
           </div>
         </div>
       </div>
+      <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-bgtwo">
+        © 2024 FriendCity Ltd.
+        <Link to="/about" className="underline">
+          About
+        </Link>
+      </footer>
     </div>
   );
 };

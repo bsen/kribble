@@ -16,6 +16,7 @@ import { UpdateCommunity } from "./pages/Community/Profile/Update";
 import { UserProvider } from "./components/User/Context/UserContext";
 import { Inbox } from "./pages/User/InBox/InBox";
 import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
+import { About } from "./pages/About/About";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -34,6 +35,8 @@ function App() {
             <Route path="/" element={<ProtectedRoute element={<Home />} />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
+
             <Route
               path="/:username"
               element={<ProtectedRoute element={<Profile />} />}
