@@ -246,78 +246,21 @@ export const ProfileSection: React.FC = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3 p-3  rounded-lg border border-bordermain  bg-bgmain"
+                className="my-3  rounded-lg border border-bordermain  bg-bgmain"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-2 items-center">
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/${post.creator.username}`);
-                      }}
-                    >
-                      <img
-                        src={
-                          post.creator.image ? post.creator.image : "/user.png"
-                        }
-                        alt="Profile"
-                        className="w-9 h-9 rounded-lg"
-                      />
-                    </div>
+                {post.image && (
+                  <img src={post.image} className="rounded-t-lg w-[100%]" />
+                )}
 
-                    <div className="w-fit flex gap-2 items-center">
-                      <>
-                        <div className="flex gap-2 items-center">
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/${post.creator.username}`);
-                            }}
-                            className="text-textmain text-sm lg:text-base hover:underline font-normal"
-                          >
-                            {post.creator.username}
-                          </div>
-
-                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-                            · {getTimeDifference(post.createdAt)}
-                          </div>
-                        </div>
-                      </>
-                    </div>
+                {post.content && (
+                  <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+                    {post.content}
                   </div>
-                  <div>
-                    {isCreator && (
-                      <button
-                        onClick={() => {
-                          setDeletingPostId(post.id);
-                          setCommunityPostDeletionState(true);
-                        }}
-                      >
-                        <MoreVertIcon
-                          className="text-texttwo"
-                          sx={{ fontSize: 20 }}
-                        />
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <div className="w-full flex flex-col">
-                  <div className="flex flex-col gap-2 py-4 w-full">
-                    {post.image && (
-                      <img
-                        src={post.image}
-                        className="rounded-lg w-[100%] md:w-[60%]"
-                      />
-                    )}
-
-                    <div className="text-textmain text-sm lg:text-base font-light">
-                      {post.content}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 mt-2 items-center text-sm text-texttwo">
+                )}
+                <div className="border-t border-bordermain py-4 flex flex-col gap-4">
+                  <div className="flex gap-2 px-3 items-center text-base text-texttwo">
                     <button
-                      className="bg-bordermain text-rosemain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleLike(post.id);
@@ -327,7 +270,7 @@ export const ProfileSection: React.FC = () => {
                         <div>
                           <FavoriteIcon
                             sx={{
-                              fontSize: 20,
+                              fontSize: 22,
                             }}
                             className="text-rosemain"
                           />
@@ -336,9 +279,9 @@ export const ProfileSection: React.FC = () => {
                         <div>
                           <FavoriteBorderOutlinedIcon
                             sx={{
-                              fontSize: 20,
+                              fontSize: 22,
                             }}
-                            className="text-rosemain"
+                            className="text-textmain"
                           />
                         </div>
                       )}
@@ -347,17 +290,62 @@ export const ProfileSection: React.FC = () => {
 
                     <button
                       onClick={() => navigate(`/post/${post.id}`)}
-                      className="bg-bordermain text-indigomain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     >
-                      <ReplyIcon sx={{ fontSize: 22 }} />
+                      <ReplyIcon sx={{ fontSize: 24 }} />
                       {post.commentsCount}
                     </button>
+                  </div>
+                  <div className="flex w-full justify-between rounded-lg items-center px-3">
+                    <div className="flex gap-2 items-center">
+                      <img
+                        src={
+                          post.creator.image ? post.creator.image : "/user.png"
+                        }
+                        alt="Profile"
+                        className="w-5 h-5 rounded-lg"
+                      />
+
+                      {post.anonymity ? (
+                        <div className="text-textmain text-sm lg:text-base font-normal">
+                          {post.creator.username}
+                        </div>
+                      ) : (
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/${post.creator.username}`);
+                          }}
+                          className="text-textmain text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                        >
+                          {post.creator.username}
+                        </div>
+                      )}
+                      <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                        · {getTimeDifference(post.createdAt)}
+                      </div>
+                    </div>
+                    <div>
+                      {isCreator && (
+                        <button
+                          onClick={() => {
+                            setDeletingPostId(post.id);
+                            setCommunityPostDeletionState(true);
+                          }}
+                        >
+                          <MoreVertIcon
+                            className="text-texttwo"
+                            sx={{ fontSize: 20 }}
+                          />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="text-texttwo my-5  font-light text-center text-lg">
+            <div className="text-texttwo my-5 font-light text-center text-lg">
               No posts found
             </div>
           )}

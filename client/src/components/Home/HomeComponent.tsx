@@ -199,13 +199,7 @@ export const HomeComponent = () => {
                     {post.community ? (
                       <div>
                         {post.community && (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/community/${post.community.name}`);
-                            }}
-                            className="flex gap-2 mt-2 text-textmain"
-                          >
+                          <div>
                             {post.community && (
                               <img
                                 src={post.community.image || "/group.png"}
@@ -217,12 +211,7 @@ export const HomeComponent = () => {
                         )}
                       </div>
                     ) : (
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/${post.creator.username}`);
-                        }}
-                      >
+                      <div>
                         <img
                           src={
                             post.creator.image
@@ -246,7 +235,7 @@ export const HomeComponent = () => {
                             }}
                           >
                             {post.community && (
-                              <div className="text-textmain text-sm lg:text-base hover:underline font-normal">
+                              <div className="text-textmain text-sm lg:text-base hover:underline underline-offset-2 font-normal">
                                 c/ {post.community.name}
                               </div>
                             )}
@@ -255,22 +244,41 @@ export const HomeComponent = () => {
                             · {getTimeDifference(post.createdAt)}
                           </div>
                         </div>
-                        <div className="text-texttwo text-xs  font-light">
-                          by {post.creator.username}
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="flex gap-2 items-center">
+
+                        {post.anonymity ? (
+                          <div className="text-texttwo text-xs font-light">
+                            by {post.creator.username}
+                          </div>
+                        ) : (
                           <div
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/${post.creator.username}`);
                             }}
-                            className="text-textmain text-sm lg:text-base hover:underline font-normal"
+                            className="text-texttwo text-xs font-light hover:underline underline-offset-2"
                           >
-                            {post.creator.username}
+                            by {post.creator.username}
                           </div>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex gap-2 items-center">
+                          {post.anonymity ? (
+                            <div className="text-textmain text-sm lg:text-base font-normal">
+                              {post.creator.username}
+                            </div>
+                          ) : (
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/${post.creator.username}`);
+                              }}
+                              className="text-textmain text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                            >
+                              {post.creator.username}
+                            </div>
+                          )}
 
                           <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
                             · {getTimeDifference(post.createdAt)}

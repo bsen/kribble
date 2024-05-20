@@ -239,7 +239,7 @@ export const UserData: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                navigate("/created/community");
+                navigate("/create/community");
               }}
               className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
             >

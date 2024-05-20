@@ -66,7 +66,7 @@ export const FollowersComponent = () => {
 
   return (
     <>
-      <div className="h-screen absolute w-[50%] bg-white/75 flex justify-center items-center">
+      <div className="h-screen absolute w-[50%] bg-black/60 flex justify-center items-center">
         <div
           className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
           onScroll={handleScroll}
@@ -87,7 +87,7 @@ export const FollowersComponent = () => {
             followersData.followers.map((followersObj) => (
               <div
                 key={followersObj.id}
-                className=" my-2 rounded-lg border border-bordermain px-2 py-1 bg-bordermain"
+                className=" my-2 rounded-lg border border-bordermain p-2 bg-bordermain"
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
