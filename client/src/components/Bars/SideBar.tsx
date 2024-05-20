@@ -1,6 +1,6 @@
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddIcon from "@mui/icons-material/Add";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -120,9 +120,12 @@ export const SideBar = () => {
             <div>Post</div>
           </button>
         </div>
-        <div className="text-xs text-center py-2 font-ubuntu font-light text-texttwo">
-          © 2024 FriendCity ltd
-        </div>
+        <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-texttwo">
+          © 2024 FriendCity Ltd.
+          <Link to="/about" className="underline">
+            About
+          </Link>
+        </footer>
       </div>
     </>
   );

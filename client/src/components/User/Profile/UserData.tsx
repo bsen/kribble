@@ -223,6 +223,14 @@ export const UserData: React.FC = () => {
             </button>
             <button
               onClick={() => {
+                navigate("/hidden/posts");
+              }}
+              className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-full"
+            >
+              Hidden posts
+            </button>
+            <button
+              onClick={() => {
                 navigate("/comments");
               }}
               className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-full"

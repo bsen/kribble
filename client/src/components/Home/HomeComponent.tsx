@@ -140,7 +140,7 @@ export const HomeComponent = () => {
         ref={scrollContainerRef}
       >
         <NavBar />
-        {postData.posts ? (
+        {postData.posts.length > 0 ? (
           postData.posts.map((post, index) => (
             <div
               key={index}

@@ -58,7 +58,7 @@ export const LoginAuth = () => {
 
   return (
     <>
-      <div className="h-screen w-full p-2  flex justify-evenly items-center bg-indigomain">
+      <div className="h-screen w-full p-2  flex flex-col justify-center items-center bg-indigomain">
         <div className="w-[100%] lg:w-[35%]">
           <div className="text-texttwo text-center mb-6 font-ubuntu font-medium text-3xl">
             Welcome back to FriendCity
@@ -125,9 +125,9 @@ export const LoginAuth = () => {
               Don't have an account?
               <Link
                 to="/signup"
-                className="font-normal text-textmain underline underline-offset-2 mx-1"
+                className="font-normal text-textmain underline underline-offset-4 mx-1"
               >
-                Create your profile
+                Sign up
               </Link>
             </div>
             <div className="text-rosemain font-ubuntu font-light text-center text-sm">
@@ -135,6 +135,12 @@ export const LoginAuth = () => {
             </div>
           </div>
         </div>
+        <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-bgtwo">
+          © 2024 FriendCity Ltd.
+          <Link to="/about" className="underline">
+            About
+          </Link>
+        </footer>
       </div>
     </>
   );
