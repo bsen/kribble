@@ -99,79 +99,84 @@ export const Data = () => {
   }
 
   return (
-    <div className="bg-bgmain mt-4 border border-bordermain p-2 rounded-lg">
-      <div className="flex gap-2 items-center">
-        <Link to={`/${postData.creator.username}`}>
-          <img
-            src={postData.creator.image ? postData.creator.image : "/user.png"}
-            alt="Profile"
-            className="w-9 h-9  rounded-lg"
-          />
-        </Link>
-
-        <Link to={`/${postData.creator.username}`}>
-          <div className="text-textmain text-sm lg:text-base hover:underline font-normal">
-            {postData.creator.username}
-          </div>
-        </Link>
-        <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-          · {getTimeDifference(postData.createdAt)}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-1 py-4 w-full">
+    <>
+      <div className="my-3 rounded-lg border border-bordermain  bg-bgmain">
         {postData.image && (
-          <img
-            src={postData.image}
-            className="max-w:w-[100%] lg:max-w-[50%] rounded-lg border border-bordermain"
-          />
+          <img src={postData.image} className="rounded-t-lg w-[100%]" />
         )}
 
-        <div className="text-textmain text-sm lg:text-base font-light">
-          {postData.content}
-        </div>
-      </div>
-
-      <textarea
-        rows={3}
-        className={`w-full bg-bordermain text-texttwo resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-lg  ${
-          popup ? "border border-rosemain" : ""
-        }`}
-        wrap="soft"
-        onChange={(e) => {
-          setPopup(false);
-          setComment(e.target.value);
-        }}
-        maxLength={250}
-        placeholder="Post a reply"
-      />
-
-      <div className="flex w-full my-2 justify-between">
-        <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
-          <div
-            onClick={() => {
-              setAnonymity((prevState) => !prevState);
-            }}
-          >
-            <VisibilityOffIcon
-              className={`${anonymity ? "text-rosemain" : "text-texttwo"}`}
-            />
+        {postData.content && (
+          <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+            {postData.content}
           </div>
-          {anonymity ? (
-            <div className="text-rosemain">Your identity will be hidden</div>
-          ) : (
-            <div className="text-texttwo">Hide your identity</div>
-          )}
-        </div>
-        <div>
-          <button
-            onClick={createComment}
-            className="text-texttwo text-base py-1 px-4 rounded-lg bg-indigomain"
-          >
-            Comment
-          </button>
+        )}
+        <div className="border-t border-bordermain py-4 flex flex-col gap-4">
+          <div className="flex w-full justify-between rounded-lg items-center px-3">
+            <div className="flex gap-2 items-center">
+              <div>
+                <img
+                  src={
+                    postData.creator.image
+                      ? postData.creator.image
+                      : "/user.png"
+                  }
+                  alt="Profile"
+                  className="w-5 h-5 rounded-lg"
+                />
+              </div>
+              <div className="text-textmain text-sm lg:text-base font-normal">
+                {postData.creator.username}
+              </div>
+
+              <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                · {getTimeDifference(postData.createdAt)}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+      <div className="p-3 bg-bgmain rounded-lg">
+        <textarea
+          rows={3}
+          className={`w-full bg-bordermain text-texttwo resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+            popup ? "border border-rosemain" : ""
+          }`}
+          wrap="soft"
+          onChange={(e) => {
+            setPopup(false);
+            setComment(e.target.value);
+          }}
+          maxLength={250}
+          placeholder="Post a reply"
+        />
+
+        <div className="flex w-full my-2 justify-between">
+          <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
+            <div
+              onClick={() => {
+                setAnonymity((prevState) => !prevState);
+              }}
+            >
+              <VisibilityOffIcon
+                className={`${anonymity ? "text-rosemain" : "text-texttwo"}`}
+              />
+            </div>
+            {anonymity ? (
+              <div className="text-rosemain">Your identity will be hidden</div>
+            ) : (
+              <div className="text-texttwo">Hide your identity</div>
+            )}
+          </div>
+          <div>
+            <button
+              onClick={createComment}
+              className="text-texttwo text-base py-1 px-4 rounded-md bg-indigomain"
+            >
+              Comment
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };

@@ -144,7 +144,7 @@ export const HomeComponent = () => {
           postData.posts.map((post, index) => (
             <div
               key={index}
-              className="my-3  rounded-lg border border-bordermain  bg-bgmain"
+              className="my-3 rounded-lg border border-bordermain  bg-bgmain"
             >
               {post.image && (
                 <img src={post.image} className="rounded-t-lg w-[100%]" />
@@ -194,7 +194,7 @@ export const HomeComponent = () => {
                     {post.commentsCount}
                   </button>
                 </div>
-                <div className="flex  rounded-lg items-center gap-2 px-3">
+                <div className="flex rounded-lg items-center gap-2 px-3">
                   <div>
                     {post.community ? (
                       <div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { BACKEND_URL } from "../../config";
 import { CircularProgress } from "@mui/material";
@@ -18,6 +18,7 @@ interface Comment {
 }
 export const PostProfile = () => {
   const { postId } = useParams();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [postComments, setPostComments] = useState<Comment[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
@@ -86,7 +87,7 @@ export const PostProfile = () => {
 
   return (
     <div
-      className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
+      className="h-screen  overflow-y-auto no-scrollbar py-12 md:py-0"
       onScroll={handleScroll}
       ref={scrollContainerRef}
     >
@@ -97,60 +98,62 @@ export const PostProfile = () => {
         className="overflow-y-auto no-scrollbar touch-action-none"
         ref={ScrollContainerRef}
       >
-        {postComments.map((comment) => (
-          <div
-            key={comment.id}
-            className="my-3 p-3 rounded-lg border border-bordermain bg-bgmain"
-          >
-            <div className="flex gap-2">
-              <div>
-                {comment.anonymity ? (
-                  <img
-                    src="/user.png"
-                    alt="Anonymous"
-                    className="w-8 h-8 rounded-lg"
-                  />
-                ) : (
-                  <Link to={`/${comment.creator.username}`}>
-                    <img
-                      src={
-                        comment.creator.image
-                          ? comment.creator.image
-                          : "/user.png"
-                      }
-                      alt="Profile"
-                      className="w-8 h-8 rounded-lg"
-                    />
-                  </Link>
-                )}
-              </div>
-              <div className="w-full">
-                <div className="flex gap-2 items-center">
-                  {comment.anonymity ? (
-                    <div className="text-textmain text-sm lg:text-base font-normal">
-                      {comment.creator.username}
-                    </div>
-                  ) : (
-                    <Link to={`/${comment.creator.username}`}>
-                      <div className="text-textmain text-sm lg:text-base hover:underline font-normal">
-                        {comment.creator.username}
-                      </div>
-                    </Link>
-                  )}
-                  <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-                    · {getTimeDifference(comment.createdAt)}
-                  </div>
-                </div>
-                <div className="text-textmain text-sm lg:text-base font-light">
+        {postComments.length > 0 ? (
+          postComments.map((comment, index) => (
+            <div
+              key={index}
+              className="my-3 rounded-lg border border-bordermain  bg-bgmain"
+            >
+              {comment.content && (
+                <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
                   {comment.content}
                 </div>
-                <div>
-                  <div className="flex gap-2 text-texttwo"></div>
+              )}
+              <div className="border-t border-bordermain py-4 flex flex-col gap-4">
+                <div className="flex w-full justify-between rounded-lg items-center px-3">
+                  <div className="flex gap-2 items-center">
+                    <div>
+                      <img
+                        src={
+                          comment.creator.image
+                            ? comment.creator.image
+                            : "/user.png"
+                        }
+                        alt="Profile"
+                        className="w-5 h-5 rounded-lg"
+                      />
+                    </div>
+                    <div className="text-textmain text-sm lg:text-base font-normal">
+                      {comment.anonymity ? (
+                        <div className="text-textmain text-sm lg:text-base font-normal">
+                          {comment.creator.username}
+                        </div>
+                      ) : (
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/${comment.creator.username}`);
+                          }}
+                          className="text-textmain text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                        >
+                          {comment.creator.username}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                      · {getTimeDifference(comment.createdAt)}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div className="text-texttwo my-5 font-light text-center text-lg">
+            No posts found
           </div>
-        ))}
+        )}
       </div>
       <div>
         {isLoadingComments && (
