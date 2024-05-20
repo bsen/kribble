@@ -280,28 +280,28 @@ export const SignupAuth = () => {
         <div className="text-texttwo text-center mb-6 font-ubuntu font-medium text-3xl">
           Create your account in FriendCity
         </div>
-        <div className="items-center justify-center p-2 rounded-md bg-bgmain">
+        <div className="items-center justify-center p-2 rounded-lg bg-bgmain">
           <div className="my-2 justify-center flex gap-2">
             <img
               src="/girl.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
             <img
               src="/boy.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
             <img
               src="/people.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
 
             <img
               src="/girl2.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
             <img
               src="/boy2.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
             />
           </div>
 

@@ -3,7 +3,7 @@ import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 export const About = () => {
   return (
     <div className="bg-indigomain h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-4">
-      <div className="w-[100%] lg:w-[50%] border bg-bgmain border-bordermain rounded-xl p-4">
+      <div className="w-[100%] lg:w-[50%] border bg-bgmain border-bordermain rounded-lg p-4">
         <div className="text-textmain mb-4 font-ubuntu font-semibold text-[1.5rem]">
           Welcome to FriendSphere
         </div>
@@ -14,7 +14,7 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="mt-8 w-[100%] lg:w-[50%] bg-bgmain  border bg-whitemain border-bordermain rounded-xl p-4">
+      <div className="mt-8 w-[100%] lg:w-[50%] bg-bgmain  border bg-whitemain border-bordermain rounded-lg p-4">
         <div className="text-textmain mb-4 font-semibold text-[1.5rem]">
           Privacy and Security
         </div>
@@ -52,7 +52,7 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="mt-8 w-[100%] lg:w-[50%] bg-bgmain border bg-whitemain border-bordermain rounded-xl p-4">
+      <div className="mt-8 w-[100%] lg:w-[50%] bg-bgmain border bg-whitemain border-bordermain rounded-lg p-4">
         <div className="text-textmain font-semibold mb-4 text-[1.5rem]">
           Terms of Use
         </div>
@@ -103,7 +103,7 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="mt-8 w-[100%] lg:w-[50%] bg-bgmain border bg-whitemain border-bordermain rounded-xl p-4">
+      <div className="mt-8 w-[100%] lg:w-[50%] bg-bgmain border bg-whitemain border-bordermain rounded-lg p-4">
         <div className="text-textmain font-semibold mb-4 text-[1.5rem]">
           About Our Founder
         </div>
@@ -115,7 +115,7 @@ export const About = () => {
           mission to revolutionize the social landscape.
         </div>
       </div>
-      <div className="mt-8 w-[100%] lg:w-[50%] bg-bgmain border bg-whitemain border-bordermain rounded-xl p-4">
+      <div className="mt-8 w-[100%] lg:w-[50%] bg-bgmain border bg-whitemain border-bordermain rounded-lg p-4">
         <div className="text-textmain flex items-center gap-2 font-semibold mb-4 text-[1.5rem]">
           Contact Us <MailOutlinedIcon />
         </div>

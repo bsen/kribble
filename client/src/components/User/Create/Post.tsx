@@ -120,11 +120,11 @@ export const Post = () => {
   }
   return (
     <>
-      <div className="w-full bg-bgmain p-4 rounded-md">
+      <div className="w-full bg-bgmain p-4 rounded-lg">
         <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon
-              className="p-1 bg-indigomain text-texttwo rounded-full"
+              className="p-1 bg-indigomain text-texttwo rounded-lg"
               sx={{ fontSize: 35 }}
             />
           </button>
@@ -139,13 +139,13 @@ export const Post = () => {
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="max-w:w-[80%] lg:max-w-[50%] rounded-md border border-bordermain"
+                  className="max-w:w-[80%] lg:max-w-[50%] rounded-lg border border-bordermain"
                 />
                 <button
                   onClick={() => {
                     setPreviewImage("");
                   }}
-                  className="text-black mt-2 rounded-full"
+                  className="text-black mt-2 rounded-lg"
                 >
                   <DeleteIcon sx={{ fontSize: 25 }} />
                 </button>
@@ -157,7 +157,7 @@ export const Post = () => {
                 htmlFor="image-upload"
                 className="cursor-pointer block text-center"
               >
-                <div className="h-[5vh] w-fit rounded-md  gap-2 flex justify-center items-center">
+                <div className="h-[5vh] w-fit rounded-lg  gap-2 flex justify-center items-center">
                   <AddPhotoAlternateIcon
                     sx={{ fontSize: 30 }}
                     className="text-textmain"
@@ -205,7 +205,7 @@ export const Post = () => {
           <div>
             <button
               onClick={createCommunityPost}
-              className="text-texttwo text-base py-1 px-6 rounded-md bg-indigomain"
+              className="text-texttwo text-base py-1 px-6 rounded-lg bg-indigomain"
             >
               Post
             </button>

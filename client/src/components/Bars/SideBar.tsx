@@ -15,118 +15,113 @@ export const SideBar = () => {
 
   return (
     <>
-      <div className="flex bg-bgmain flex-col items-center px-6 justify-between h-screen border-r border-bordermain">
-        <div className="w-full flex flex-col  items-center">
-          <div
-            onClick={() => {
-              navigate("/");
-            }}
-            className="bg bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 my-4 text-transparent bg-clip-text text-4xl font-ubuntu"
-          >
-            FriendCity
-          </div>
-
-          <button
-            onClick={() => {
-              navigate("/");
-            }}
-            className={`w-full h-10 px-3 mt-4 rounded-md  flex items-center justify-start gap-2  font-light  ${
-              location.pathname === "/"
-                ? "text-textmain text-base bg-bgtwo"
-                : "text-textmain text-sm"
-            }`}
-          >
-            <HomeOutlinedIcon sx={{ fontSize: 25 }} />
-            <div>Home</div>
-          </button>
-          <button
-            onClick={() => {
-              navigate("/communities");
-            }}
-            className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
-              location.pathname === "/communities"
-                ? "text-textmain text-base bg-bgtwo"
-                : "text-textmain text-sm"
-            }`}
-          >
-            <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
-            <div>Communities</div>
-          </button>
-
-          <button
-            onClick={() => {
-              navigate("/matching");
-            }}
-            className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
-              location.pathname === "/matching"
-                ? "text-textmain text-base bg-bgtwo"
-                : "text-textmain text-sm"
-            }`}
-          >
-            <AllInclusiveIcon sx={{ fontSize: 25 }} />
-            <div>Matching</div>
-          </button>
-
-          <button
-            onClick={() => {
-              navigate("/inbox");
-            }}
-            className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
-              location.pathname === "/inbox"
-                ? "text-textmain text-base bg-bgtwo"
-                : "text-textmain text-sm"
-            }`}
-          >
-            <MailOutlinedIcon sx={{ fontSize: 25 }} />
-            <div>Inbox</div>
-          </button>
-          <button
-            disabled={isLoading}
-            onClick={() => {
-              navigate(`/${currentUser}`);
-            }}
-            className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
-              location.pathname === `/${currentUser}`
-                ? "text-textmain text-base bg-bgtwo"
-                : "text-textmain text-sm"
-            }`}
-          >
-            <PersonOutlinedIcon sx={{ fontSize: 25 }} />
-            <div>Profile</div>
-          </button>
-          <button
-            onClick={() => {
-              navigate("/search");
-            }}
-            className={`w-full h-10 px-3 mt-4 rounded-md flex items-center justify-start gap-2  font-light  ${
-              location.pathname === "/search"
-                ? "text-textmain text-base bg-bgtwo"
-                : "text-textmain text-sm"
-            }`}
-          >
-            <SearchOutlinedIcon sx={{ fontSize: 25 }} />
-            <div>Search</div>
-          </button>
-
-          <button
-            onClick={() => {
-              navigate("/create/post");
-            }}
-            className={
-              "w-full h-10 px-3 mt-4 rounded-md  bg-indigomain text-textmain flex items-center justify-start gap-2 text-sm font-light"
-            }
-          >
-            <AddIcon sx={{ fontSize: 25 }} />
-            <div>Post</div>
-          </button>
+      <div className="flex border border-bordermain mt-3 bg-bgmain flex-col items-center p-4 justify-between h-fit rounded-lg">
+        <div
+          onClick={() => {
+            navigate("/");
+          }}
+          className="bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 text-transparent bg-clip-text text-4xl font-ubuntu"
+        >
+          FriendCity
         </div>
-        <footer className="w-full py-2 text-xs flex gap-2 items-center justify-center text-texttwo">
-          © 2024 FriendCity Ltd.
-          <Link to="/about" className="underline">
-            About
-          </Link>
-        </footer>
+
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg  flex items-center justify-start gap-2  font-light  ${
+            location.pathname === "/"
+              ? "text-textmain text-base bg-bgtwo"
+              : "text-textmain text-sm"
+          }`}
+        >
+          <HomeOutlinedIcon sx={{ fontSize: 25 }} />
+          <div>Home</div>
+        </button>
+        <button
+          onClick={() => {
+            navigate("/communities");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+            location.pathname === "/communities"
+              ? "text-textmain text-base bg-bgtwo"
+              : "text-textmain text-sm"
+          }`}
+        >
+          <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
+          <div>Communities</div>
+        </button>
+
+        <button
+          onClick={() => {
+            navigate("/matching");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+            location.pathname === "/matching"
+              ? "text-textmain text-base bg-bgtwo"
+              : "text-textmain text-sm"
+          }`}
+        >
+          <AllInclusiveIcon sx={{ fontSize: 25 }} />
+          <div>Matching</div>
+        </button>
+
+        <button
+          onClick={() => {
+            navigate("/inbox");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+            location.pathname === "/inbox"
+              ? "text-textmain text-base bg-bgtwo"
+              : "text-textmain text-sm"
+          }`}
+        >
+          <MailOutlinedIcon sx={{ fontSize: 25 }} />
+          <div>Inbox</div>
+        </button>
+        <button
+          disabled={isLoading}
+          onClick={() => {
+            navigate(`/${currentUser}`);
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+            location.pathname === `/${currentUser}`
+              ? "text-textmain text-base bg-bgtwo"
+              : "text-textmain text-sm"
+          }`}
+        >
+          <PersonOutlinedIcon sx={{ fontSize: 25 }} />
+          <div>Profile</div>
+        </button>
+        <button
+          onClick={() => {
+            navigate("/search");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+            location.pathname === "/search"
+              ? "text-textmain text-base bg-bgtwo"
+              : "text-textmain text-sm"
+          }`}
+        >
+          <SearchOutlinedIcon sx={{ fontSize: 25 }} />
+          <div>Search</div>
+        </button>
+
+        <button
+          onClick={() => {
+            navigate("/create/post");
+          }}
+          className={
+            "w-full h-10 px-3 mt-4 rounded-lg  bg-indigomain text-textmain flex items-center justify-start gap-2 text-sm font-light"
+          }
+        >
+          <AddIcon sx={{ fontSize: 25 }} />
+          <div>Post</div>
+        </button>
       </div>
+      <footer className="w-full mt-6 ml-4 text-xs flex gap-2  text-texttwo">
+        © 2024 FriendCity Ltd.
+      </footer>
     </>
   );
 };

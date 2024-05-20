@@ -183,7 +183,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
           <div className="flex gap-5">
             <button
               onClick={deletePost}
-              className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1 rounded-full"
+              className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1 rounded-lg"
             >
               Delete
             </button>
@@ -192,7 +192,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                 setDeleteState(false);
                 setPostDeleteId("");
               }}
-              className="text-black bg-stone-50 hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-full"
+              className="text-black bg-stone-50 hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
             >
               Cancel
             </button>
@@ -235,7 +235,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3 p-3 rounded-md border border-bordermain bg-bgmain"
+                className="my-3 p-3 rounded-lg border border-bordermain bg-bgmain"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2 items-center">
@@ -250,7 +250,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           post.creator.image ? post.creator.image : "/user.png"
                         }
                         alt="Profile"
-                        className="w-9 h-9 rounded-full"
+                        className="w-9 h-9 rounded-lg"
                       />
                     </div>
 
@@ -295,7 +295,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                     {post.image && (
                       <img
                         src={post.image}
-                        className="rounded-md w-[100%] md:w-[60%]"
+                        className="rounded-lg w-[100%] md:w-[60%]"
                       />
                     )}
 
@@ -306,7 +306,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
                   <div className="flex gap-2 mt-2 items-center text-sm text-texttwo">
                     <button
-                      className="bg-bordermain text-rosemain px-2   rounded-full flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-bordermain text-rosemain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleLike(post.id);
@@ -336,7 +336,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
                     <button
                       onClick={() => navigate(`/post/${post.id}`)}
-                      className="bg-bordermain text-indigomain px-2   rounded-full flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-bordermain text-indigomain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     >
                       <ReplyIcon sx={{ fontSize: 22 }} />
                       {post.commentsCount}

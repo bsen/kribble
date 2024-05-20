@@ -144,108 +144,21 @@ export const HomeComponent = () => {
           postData.posts.map((post, index) => (
             <div
               key={index}
-              className="my-3 p-3  rounded-md border border-bordermain  bg-bgmain"
+              className="my-3  rounded-lg border border-bordermain  bg-bgmain"
             >
-              <div className="flex items-center gap-2">
-                <div>
-                  {post.community ? (
-                    <div>
-                      {post.community && (
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/community/${post.community.name}`);
-                          }}
-                          className="flex gap-2 mt-2 text-textmain"
-                        >
-                          {post.community && (
-                            <img
-                              src={post.community.image || "/group.png"}
-                              className="w-9 h-9 rounded-full"
-                              alt="Community"
-                            />
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/${post.creator.username}`);
-                      }}
-                    >
-                      <img
-                        src={
-                          post.creator.image ? post.creator.image : "/user.png"
-                        }
-                        alt="Profile"
-                        className="w-9 h-9 rounded-full"
-                      />
-                    </div>
-                  )}
-                </div>
-                <div className="w-fit flex gap-2 items-center">
-                  {post.community ? (
-                    <div>
-                      <div className="flex gap-2 items-center">
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/community/${post.community.name}`);
-                          }}
-                        >
-                          {post.community && (
-                            <div className="text-textmain text-sm lg:text-base hover:underline font-normal">
-                              c/ {post.community.name}
-                            </div>
-                          )}
-                        </div>
-                        <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-                          · {getTimeDifference(post.createdAt)}
-                        </div>
-                      </div>
-                      <div className="text-texttwo text-xs  font-light">
-                        by {post.creator.username}
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="flex gap-2 items-center">
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/${post.creator.username}`);
-                          }}
-                          className="text-textmain text-sm lg:text-base hover:underline font-normal"
-                        >
-                          {post.creator.username}
-                        </div>
+              {post.image && (
+                <img src={post.image} className="rounded-t-lg w-[100%]" />
+              )}
 
-                        <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
-                          · {getTimeDifference(post.createdAt)}
-                        </div>
-                      </div>
-                    </>
-                  )}
+              {post.content && (
+                <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+                  {post.content}
                 </div>
-              </div>
-              <div className="w-full flex flex-col">
-                <div className="flex flex-col gap-2 py-4  w-full">
-                  {post.image && (
-                    <img
-                      src={post.image}
-                      className="rounded-md w-[100%] md:w-[60%]"
-                    />
-                  )}
-
-                  <div className="text-textmain text-sm lg:text-base font-light">
-                    {post.content}
-                  </div>
-                </div>
-                <div className="flex gap-2 mt-2 items-center text-sm text-texttwo">
+              )}
+              <div className="border-t border-bordermain py-4 flex flex-col gap-4">
+                <div className="flex gap-2 px-3 items-center text-base text-texttwo">
                   <button
-                    className="bg-bordermain text-rosemain px-2   rounded-full flex justify-center items-center gap-2 cursor-pointer"
+                    className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleLike(post.id);
@@ -255,7 +168,7 @@ export const HomeComponent = () => {
                       <div>
                         <FavoriteIcon
                           sx={{
-                            fontSize: 20,
+                            fontSize: 22,
                           }}
                           className="text-rosemain"
                         />
@@ -264,9 +177,9 @@ export const HomeComponent = () => {
                       <div>
                         <FavoriteBorderOutlinedIcon
                           sx={{
-                            fontSize: 20,
+                            fontSize: 22,
                           }}
-                          className="text-rosemain"
+                          className="text-textmain"
                         />
                       </div>
                     )}
@@ -275,11 +188,97 @@ export const HomeComponent = () => {
 
                   <button
                     onClick={() => navigate(`/post/${post.id}`)}
-                    className="bg-bordermain text-indigomain px-2   rounded-full flex justify-center items-center gap-2 cursor-pointer"
+                    className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                   >
-                    <ReplyIcon sx={{ fontSize: 22 }} />
+                    <ReplyIcon sx={{ fontSize: 24 }} />
                     {post.commentsCount}
                   </button>
+                </div>
+                <div className="flex  rounded-lg items-center gap-2 px-3">
+                  <div>
+                    {post.community ? (
+                      <div>
+                        {post.community && (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/community/${post.community.name}`);
+                            }}
+                            className="flex gap-2 mt-2 text-textmain"
+                          >
+                            {post.community && (
+                              <img
+                                src={post.community.image || "/group.png"}
+                                className="w-5 h-5 rounded-lg"
+                                alt="Community"
+                              />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/${post.creator.username}`);
+                        }}
+                      >
+                        <img
+                          src={
+                            post.creator.image
+                              ? post.creator.image
+                              : "/user.png"
+                          }
+                          alt="Profile"
+                          className="w-5 h-5 rounded-lg"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-fit flex gap-2 items-center">
+                    {post.community ? (
+                      <div>
+                        <div className="flex gap-2 items-center">
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/community/${post.community.name}`);
+                            }}
+                          >
+                            {post.community && (
+                              <div className="text-textmain text-sm lg:text-base hover:underline font-normal">
+                                c/ {post.community.name}
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                            · {getTimeDifference(post.createdAt)}
+                          </div>
+                        </div>
+                        <div className="text-texttwo text-xs  font-light">
+                          by {post.creator.username}
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex gap-2 items-center">
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/${post.creator.username}`);
+                            }}
+                            className="text-textmain text-sm lg:text-base hover:underline font-normal"
+                          >
+                            {post.creator.username}
+                          </div>
+
+                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                            · {getTimeDifference(post.createdAt)}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

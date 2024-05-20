@@ -77,7 +77,7 @@ export const FollowersComponent = () => {
               onClick={() => {
                 window.location.reload();
               }}
-              className="border border-bordermain p-1 rounded-full"
+              className="border border-bordermain p-1 rounded-lg"
             >
               <ArrowBackIcon />
             </button>
@@ -87,11 +87,11 @@ export const FollowersComponent = () => {
             followersData.followers.map((followersObj) => (
               <div
                 key={followersObj.id}
-                className=" my-2 rounded-md border border-bordermain px-2 py-1 bg-bordermain"
+                className=" my-2 rounded-lg border border-bordermain px-2 py-1 bg-bordermain"
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
-                    className="h-10 w-10 rounded-full bg-bgmain"
+                    className="h-10 w-10 rounded-lg bg-bgmain"
                     src={
                       followersObj.follower.image
                         ? followersObj.follower.image

@@ -2,14 +2,14 @@ import { SideBar } from "../../../components/Bars/SideBar";
 import { CommentsComponent } from "../../../components/User/Comments/CommentsComponent";
 export const Comments = () => {
   return (
-    <div className="flex justify-between bg-bgmain">
+    <div className="flex justify-evenly bg-bgblack">
       <div className="w-[18%] max-lg:hidden">
         <SideBar />
       </div>
-      <div className="w-full lg:w-[50%]">
+      <div className="w-full lg:w-[40%] bg-bgblack">
         <CommentsComponent />
       </div>
-      <div className="w-[22%] max-lg:hidden"></div>
+      <div className="w-[18%] max-lg:hidden"></div>
     </div>
   );
 };

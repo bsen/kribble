@@ -71,7 +71,7 @@ export const CommunitiesComponent = () => {
               onClick={() => {
                 window.location.reload();
               }}
-              className="border border-bordermain p-1 rounded-full"
+              className="border border-bordermain p-1 rounded-lg"
             >
               <ArrowBackIcon />
             </button>
@@ -81,12 +81,12 @@ export const CommunitiesComponent = () => {
             communityData.communities.map((community, index) => (
               <div
                 key={index}
-                className="border my-2 rounded-md border-bordermain p-4 bg-bgmain"
+                className="border my-2 rounded-lg border-bordermain p-4 bg-bgmain"
               >
                 <div className="flex gap-2 justify-between items-start">
                   <div className="flex gap-2 items-start">
                     <img
-                      className="h-10 w-10 rounded-full bg-bgmain"
+                      className="h-10 w-10 rounded-lg bg-bgmain"
                       src={community.image ? community.image : "/group.png"}
                     />
 

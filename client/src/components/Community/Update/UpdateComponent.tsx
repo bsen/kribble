@@ -185,7 +185,7 @@ export const UpdateCommunityComponent = () => {
           <div className="flex gap-5 justify-evenly items-center">
             <button
               onClick={deleteCommunity}
-              className="text-texttwo bg-rosemain font-normal px-4 py-1  rounded-full"
+              className="text-texttwo bg-rosemain font-normal px-4 py-1  rounded-lg"
             >
               Delete
             </button>
@@ -194,7 +194,7 @@ export const UpdateCommunityComponent = () => {
               onClick={() => {
                 setCommunityDeletingState(false);
               }}
-              className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-full"
+              className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
             >
               Cancel
             </button>
@@ -224,7 +224,7 @@ export const UpdateCommunityComponent = () => {
                 setCommunityDeletingState(true);
               }}
             >
-              <div className="bg-rose-50 rounded-full text-rosemain text-sm font-light py-1 px-4">
+              <div className="bg-rose-50 rounded-lg text-rosemain text-sm font-light py-1 px-4">
                 Delete community
               </div>
             </button>
@@ -235,7 +235,7 @@ export const UpdateCommunityComponent = () => {
             <div className="absolute text-textmain z-50">
               <button>
                 <label htmlFor="image-upload" className="cursor-pointer ">
-                  <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-full" />
+                  <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-lg" />
                 </label>
                 <input
                   id="image-upload"
@@ -254,12 +254,12 @@ export const UpdateCommunityComponent = () => {
                   ? communityData.image
                   : "/group.png"
               }
-              className="rounded-full w-20 h-20 lg:w-24 lg:h-24  z-10 border border-bordermain"
+              className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10 border border-bordermain"
             />
           </div>
 
           <button onClick={updateCommunity}>
-            <div className="text-texttwo bg-indigomain text-base font-light rounded-md py-1 px-4">
+            <div className="text-texttwo bg-indigomain text-base font-light rounded-lg py-1 px-4">
               save
             </div>
           </button>

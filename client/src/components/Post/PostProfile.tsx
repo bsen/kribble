@@ -100,7 +100,7 @@ export const PostProfile = () => {
         {postComments.map((comment) => (
           <div
             key={comment.id}
-            className="my-3 p-3 rounded-md border border-bordermain bg-bgmain"
+            className="my-3 p-3 rounded-lg border border-bordermain bg-bgmain"
           >
             <div className="flex gap-2">
               <div>
@@ -108,7 +108,7 @@ export const PostProfile = () => {
                   <img
                     src="/user.png"
                     alt="Anonymous"
-                    className="w-8 h-8 rounded-full"
+                    className="w-8 h-8 rounded-lg"
                   />
                 ) : (
                   <Link to={`/${comment.creator.username}`}>
@@ -119,7 +119,7 @@ export const PostProfile = () => {
                           : "/user.png"
                       }
                       alt="Profile"
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-lg"
                     />
                   </Link>
                 )}
