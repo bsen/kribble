@@ -179,7 +179,7 @@ export const Post = () => {
           value={post}
           onChange={handlePostChange}
           rows={3}
-          className="w-full bg-bordermain overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-texttwo rounded-lg"
+          className="w-full bg-bordermain overflow-auto no-scrollbar resize-none hover:bg-bgtwo focus:outline-none px-2 py-1 text-texttwo rounded-lg"
           placeholder="Write your thoughts..."
           wrap="soft"
           maxLength={250}
