@@ -39,7 +39,6 @@ export const SearchComponent = () => {
     }
   }, [token, search]);
 
-  // Debounce function
   function debounce<T extends (...args: any[]) => void>(
     func: T,
     delay: number
@@ -71,7 +70,8 @@ export const SearchComponent = () => {
   return (
     <>
       <div className="top-0 fixed w-full lg:w-[50%]">
-        {isSearching && <LinearProgress />}
+        {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
+
         <div className="w-full px-4 h-14 flex justify-between items-center">
           <div className="h-10 bg-bordermain mx-auto w-[75%] hover:bg-bgtwo flex px-4 justify-between items-center border border-bordermain rounded-lg">
             <input

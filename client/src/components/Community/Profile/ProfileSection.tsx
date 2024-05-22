@@ -345,18 +345,20 @@ export const ProfileSection: React.FC = () => {
               </div>
             ))
           ) : (
-            <div className="text-texttwo my-5 font-light text-center text-lg">
-              No posts found
+            <div>
+              {isLoading ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                </div>
+              ) : (
+                <div className="text-texttwo my-5 font-light text-center text-lg">
+                  No posts found
+                </div>
+              )}
             </div>
           )}
         </div>
-        <div>
-          {isLoading && (
-            <div className="w-full my-5 flex justify-center items-center">
-              <CircularProgress />
-            </div>
-          )}
-        </div>
+
         <BottomBar />
       </div>
     </>

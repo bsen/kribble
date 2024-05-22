@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
 import { BottomBar } from "../../Bars/BottomBar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { CircularProgress } from "@mui/material";
 
 interface Communities {
   id: string;
@@ -11,7 +12,12 @@ interface Communities {
   membersCount: string;
   image: string;
 }
-export const CommunitiesComponent = () => {
+interface CommunitiesComponentProps {
+  closeComponent: () => void;
+}
+export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
+  closeComponent,
+}) => {
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [communityData, setCommunityData] = useState<{
@@ -67,10 +73,8 @@ export const CommunitiesComponent = () => {
         >
           <div className="flex text-texttwo  justify-center gap-5 items-center py-2">
             <button
-              onClick={() => {
-                window.location.reload();
-              }}
-              className="border border-bordermain p-1 rounded-full"
+              onClick={closeComponent}
+              className="border border-bordermain p-1 rounded-lg"
             >
               <ArrowBackIcon />
             </button>
@@ -105,13 +109,16 @@ export const CommunitiesComponent = () => {
               </div>
             ))
           ) : (
-            <div className="text-texttwo my-5  font-light text-center text-sm">
-              No communities found.
-            </div>
-          )}
-          {isLoading && (
-            <div className="text-texttwo my-5  font-light text-center text-sm">
-              Loading ...
+            <div>
+              {isLoading ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                </div>
+              ) : (
+                <div className="text-texttwo my-5 font-light text-center text-lg">
+                  No communities found
+                </div>
+              )}
             </div>
           )}
         </div>
