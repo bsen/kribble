@@ -39,14 +39,11 @@ function debounce<T extends (...args: any[]) => void>(
 const colleges = [
   "VIT Vellore",
   "VIT Chennai",
-  "VIT Amaravati",
   "VIT Bhopal",
   "BITS Pilani",
   "BITS Goa",
   "BITS Hyderabad",
-  "SRMIST Kattankulathur",
-  "SRMIST Amaravati",
-  "SRMIST NCR",
+  "SRMIST",
   "MIT Manipal",
   "IIT Bombay",
   "IIT Delhi",
@@ -54,13 +51,8 @@ const colleges = [
   "IIT Kanpur",
   "IIT Kharagpur",
   "IIT Roorkee",
-  "IIT Guwahati",
   "NIT Trichy",
   "NIT Surathkal",
-  "NIT Warangal",
-  "NIT Calicut",
-  "NIT Rourkela",
-  "NIT Kurukshetra",
   "NIT Durgapur",
   "NSUT",
   "DTU",
@@ -275,36 +267,61 @@ export const SignupAuth = () => {
     );
   }
   return (
-    <div className="h-screen w-full p-2  flex flex-col justify-center items-center">
-      <div className="w-[100%] lg:w-[35%]">
-        <div className="text-texttwo text-center mb-6 font-ubuntu font-medium text-3xl">
-          Create your account in FriendCity
-        </div>
-        <div className="items-center justify-center p-2 rounded-lg bg-bgmain">
-          <div className="my-2 justify-center flex gap-2">
+    <div className="lg:flex justify-between items-center">
+      <div className="h-screen p-3 flex justify-center items-center w-full bg-indigomain">
+        <div className="text-texttwo text-center mb-4 font-ubuntu font-medium text-[2.5rem]">
+          FriendCity
+          <div className="text-center text-sm font-thin mb-8 text-textmain">
+            A place where college life meets limitless fun! 🎉 Share your
+            moments, snap cool pics, and dive into vibrant communities. With our
+            anonymous posting, let your thoughts soar freely. But wait, there's
+            more! Join forces with a fellow student, conquer exciting
+            challenges, and skyrocket to the top of the leaderboard! 🚀 Get
+            ready to unleash the epicness, starting at the top 20 colleges.
+            Don't miss out on the adventure – join us now!
+          </div>
+          <div className="flex flex-wrap mb-5 justify-center gap-2">
             <img
               src="/girl.png"
-              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
+              className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+              alt="Girl"
             />
             <img
               src="/boy.png"
-              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
+              className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+              alt="Boy"
             />
             <img
               src="/people.png"
-              className="h-[15%] w-[15%]  rounded-full  bg-bgtwo"
+              className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+              alt="People"
             />
-
             <img
               src="/girl2.png"
-              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
+              className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+              alt="Girl 2"
             />
             <img
               src="/boy2.png"
-              className="h-[15%] w-[15%]  rounded-lg  bg-bgtwo"
+              className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+              alt="Boy 2"
             />
           </div>
-
+          <button
+            onClick={() => {
+              window.scrollTo({
+                top: window.innerHeight,
+                behavior: "smooth",
+              });
+            }}
+            className="lg:hidden rounded-full bg-white text-indigomain px-4 py-1 text-lg"
+          >
+            Join now
+          </button>
+        </div>
+      </div>
+      <div className="flex flex-col h-screen bg-bgmain justify-center items-center p-3 w-full">
+        <div className="items-center p-2 rounded-lg bg-bgtwo w-[80%] lg:w-[50%]">
           <div>
             <div className="font-normal m-1 text-texttwo">Full Name</div>
             <input
@@ -434,17 +451,17 @@ export const SignupAuth = () => {
               Login
             </Link>
           </div>
-          <div className="text-rosemain mt-2 font-ubuntu font-light text-center text-sm">
-            {popup ? popup : ""}
-          </div>
         </div>
+        <div className="text-rosemain mt-2 font-light text-center text-xs">
+          {popup ? popup : <div>‎</div>}
+        </div>
+        <footer className="w-full font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
+          © 2024 FriendCity Ltd.
+          <Link to="/policies" className="underline">
+            Policies
+          </Link>
+        </footer>
       </div>
-      <footer className="w-full font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
-        © 2024 FriendCity Ltd.
-        <Link to="/policies" className="underline">
-          Policies
-        </Link>
-      </footer>
     </div>
   );
 };

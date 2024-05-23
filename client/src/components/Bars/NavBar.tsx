@@ -11,7 +11,7 @@ export const NavBar = () => {
             navigate("/");
           }}
         >
-          <img src="/f.png" className="w-6 h-6" />
+          <img src="/widelogo.png" className="h-6 rounded-full" />
         </div>
       </div>
     </div>
