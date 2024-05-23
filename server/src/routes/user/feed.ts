@@ -1,15 +1,11 @@
 import { Hono } from "hono";
 import { PrismaClient, Prisma } from "@prisma/client/edge";
 import { verify } from "hono/jwt";
-import { withAccelerate } from "@prisma/extension-accelerate";
 
 export const userFeedRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
-    CLOUDFLARE_IMGAES_ACCOUNT_ID: string;
-    CLOUDFLARE_IMGAES_API_TOKEN: string;
-    CLOUDFLARE_IMGAES_POST_URL: string;
   };
 }>();
 
@@ -21,7 +17,7 @@ userFeedRouter.post("/posts", async (c) => {
 
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
+    });
 
     const findUser = await prisma.user.findUnique({ where: { id: userId.id } });
 
@@ -39,12 +35,7 @@ userFeedRouter.post("/posts", async (c) => {
             id: true;
             username: true;
             image: true;
-          };
-        };
-        community: {
-          select: {
-            name: true;
-            image: true;
+            college: true;
           };
         };
       };
@@ -56,18 +47,10 @@ userFeedRouter.post("/posts", async (c) => {
       return Array.from(uniquePosts.values());
     };
 
-    const followingPosts: PostWithDetails[] = await prisma.post.findMany({
+    const sameColegePostsWithUser = await prisma.post.findMany({
       where: {
         creator: {
-          followers: {
-            some: {
-              followerId: findUser.id,
-            },
-          },
-        },
-        anonymity: false,
-        NOT: {
-          creatorId: findUser.id,
+          college: findUser.college,
         },
       },
       include: {
@@ -76,12 +59,7 @@ userFeedRouter.post("/posts", async (c) => {
             id: true,
             username: true,
             image: true,
-          },
-        },
-        community: {
-          select: {
-            name: true,
-            image: true,
+            college: true,
           },
         },
       },
@@ -102,103 +80,7 @@ userFeedRouter.post("/posts", async (c) => {
             id: true,
             username: true,
             image: true,
-          },
-        },
-        community: {
-          select: {
-            name: true,
-            image: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take: take,
-    });
-
-    const communityPosts: PostWithDetails[] = await prisma.post.findMany({
-      where: {
-        community: {
-          members: {
-            some: {
-              userId: findUser.id,
-            },
-          },
-        },
-        NOT: {
-          id: {
-            in: [
-              ...followingPosts.map((post) => post.id),
-              ...userPosts.map((post) => post.id),
-            ],
-          },
-        },
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            username: true,
-            image: true,
-          },
-        },
-        community: {
-          select: {
-            name: true,
-            image: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take: take,
-    });
-
-    const trendingPosts: PostWithDetails[] = await prisma.post.findMany({
-      where: {
-        OR: [
-          {
-            likesCount: {
-              gte: 10,
-            },
-          },
-          {
-            commentsCount: {
-              gte: 10,
-            },
-          },
-        ],
-        community: {
-          posts: {
-            some: {
-              anonymity: true,
-            },
-          },
-        },
-        NOT: {
-          id: {
-            in: [
-              ...followingPosts.map((post) => post.id),
-              ...communityPosts.map((post) => post.id),
-              ...userPosts.map((post) => post.id),
-            ],
-          },
-        },
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            username: true,
-            image: true,
-          },
-        },
-        community: {
-          select: {
-            name: true,
-            image: true,
+            college: true,
           },
         },
       },
@@ -209,10 +91,8 @@ userFeedRouter.post("/posts", async (c) => {
     });
 
     let allPosts: PostWithDetails[] = [
-      ...followingPosts,
-      ...communityPosts,
+      ...sameColegePostsWithUser,
       ...userPosts,
-      ...trendingPosts,
     ];
     allPosts = uniqueById(allPosts);
 
@@ -238,22 +118,8 @@ userFeedRouter.post("/posts", async (c) => {
           },
         });
 
-        const creatorDetails = post.anonymity
-          ? {
-              username: "unknown",
-              image: null,
-            }
-          : {
-              username: post.creator.username,
-              image: post.creator.image,
-            };
-
         return {
           ...post,
-          creator: {
-            ...post.creator,
-            ...creatorDetails,
-          },
           isLiked: isLiked ? true : false,
         };
       })

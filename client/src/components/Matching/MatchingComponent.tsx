@@ -48,7 +48,7 @@ export const MatchingComponent: React.FC = () => {
   if (matchedUserData) {
     return (
       <>
-        <div className="w-full h-screen flex justify-center items-center">
+        <div className="w-full h-screen flex flex-col gap-4 justify-center items-center">
           <div className="flex w-fit bg-bgmain p-3 rounded-lg shadow-sm items-center flex-col justify-center">
             <img
               src={matchedUserData.image || "user.png"}
@@ -72,6 +72,9 @@ export const MatchingComponent: React.FC = () => {
                 {matchedUserData.interest}
               </div>
             )}
+          </div>
+          <div className="text-textmain text-center px-5 font-light">
+            Congratulations! You've matched with {matchedUserData.username} 🎉
           </div>
         </div>
         <BottomBar />
