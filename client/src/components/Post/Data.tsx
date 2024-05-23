@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { LinearProgress } from "@mui/material";
 export const Data = () => {
   interface PostData {
     image: string;
@@ -91,15 +92,11 @@ export const Data = () => {
   };
 
   if (loadingState) {
-    return (
-      <div className="text-texttwo my-5  font-light text-center text-lg">
-        Loading ...
-      </div>
-    );
+    return <LinearProgress sx={{ backgroundColor: "black" }} />;
   }
 
   return (
-    <>
+    <div>
       <div className="my-3 rounded-lg border border-bordermain  bg-bgmain">
         {postData.image && (
           <img src={postData.image} className="rounded-t-lg w-[100%]" />
@@ -121,7 +118,7 @@ export const Data = () => {
                       : "/user.png"
                   }
                   alt="Profile"
-                  className="w-5 h-5 rounded-lg"
+                  className="w-7 h-7 rounded-lg"
                 />
               </div>
               <div className="text-textmain text-sm lg:text-base font-normal">
@@ -177,6 +174,6 @@ export const Data = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

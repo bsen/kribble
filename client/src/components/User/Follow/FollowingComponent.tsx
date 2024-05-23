@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { CircularProgress } from "@mui/material";
 
 interface FollowingsData {
   id: string;
@@ -14,8 +15,12 @@ interface Following {
   username: string;
   image: string;
 }
-
-export const FollowingComponent = () => {
+interface FollowingComponentProps {
+  closeComponent: () => void;
+}
+export const FollowingComponent: React.FC<FollowingComponentProps> = ({
+  closeComponent,
+}) => {
   const { username } = useParams();
   const token = localStorage.getItem("token");
   const [followingsData, setFollowingsData] = useState<{
@@ -65,24 +70,22 @@ export const FollowingComponent = () => {
 
   return (
     <>
-      <div className="h-screen absolute w-[50%] bg-black/60 flex justify-center items-center">
+      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[50%] bg-black/60 flex justify-center items-center">
         <div
-          className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
+          className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
-          <div className="flex text-texttwo  justify-center gap-5 items-center py-2">
+          <div className="flex text-texttwo  justify-center gap-5 items-center">
             <button
-              onClick={() => {
-                window.location.reload();
-              }}
+              onClick={closeComponent}
               className="border border-bordermain p-1 rounded-lg"
             >
               <ArrowBackIcon />
             </button>
             <div className="text-sm font-ubuntu text-center">Following</div>
           </div>
-          {followingsData.followings &&
+          {followingsData.followings.length > 0 ? (
             followingsData.followings.map((followingObj) => (
               <div
                 key={followingObj.id}
@@ -106,15 +109,18 @@ export const FollowingComponent = () => {
                   </div>
                 </div>
               </div>
-            ))}
-          {!followingsData.followings && (
-            <div className="text-texttwo my-5  font-light text-center text-lg">
-              No following found.
-            </div>
-          )}
-          {isLoading && (
-            <div className="text-texttwo my-5  font-light text-center text-lg">
-              Loading ...
+            ))
+          ) : (
+            <div>
+              {isLoading ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                </div>
+              ) : (
+                <div className="text-texttwo my-5 font-light text-center text-lg">
+                  No following found
+                </div>
+              )}
             </div>
           )}
         </div>

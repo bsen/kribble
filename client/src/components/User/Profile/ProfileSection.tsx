@@ -295,7 +295,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                               : "/user.png"
                           }
                           alt="Profile"
-                          className="w-5 h-5 rounded-lg"
+                          className="w-7 h-7 rounded-lg"
                         />
                       </div>
                       <div className="text-textmain text-sm lg:text-base font-normal">
@@ -326,15 +326,16 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
               </div>
             ))
           ) : (
-            <div className="text-texttwo my-5 font-light text-center text-lg">
-              No posts found
-            </div>
-          )}
-        </div>
-        <div>
-          {isLoading && (
-            <div className="w-full my-5 flex justify-center items-center">
-              <CircularProgress />
+            <div>
+              {isLoading ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                </div>
+              ) : (
+                <div className="text-texttwo my-5 font-light text-center text-lg">
+                  No posts found
+                </div>
+              )}
             </div>
           )}
         </div>

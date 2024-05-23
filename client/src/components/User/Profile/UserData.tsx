@@ -8,6 +8,7 @@ import { UserContext } from "../Context/UserContext";
 import { FollowersComponent } from "../Follow/FollowersComponent";
 import { FollowingComponent } from "../Follow/FollowingComponent";
 import { CommunitiesComponent } from "../Communities/CommunitiesComponent";
+import LinearProgress from "@mui/material/LinearProgress";
 
 interface UserData {
   fullname: string;
@@ -102,17 +103,22 @@ export const UserData: React.FC = () => {
     );
   }
   if (loadingState) {
-    return (
-      <div className="text-texttwo my-5  font-light text-center text-lg">
-        Loading ...
-      </div>
-    );
+    return <LinearProgress sx={{ backgroundColor: "black" }} />;
   }
   return (
     <>
-      {showFollowers && <FollowersComponent />}
-      {showFollowing && <FollowingComponent />}
-      {showCommunities && <CommunitiesComponent />}
+      {showFollowers && (
+        <FollowersComponent closeComponent={() => setShowFollowers(false)} />
+      )}
+      {showFollowing && (
+        <FollowingComponent closeComponent={() => setShowFollowing(false)} />
+      )}
+      {showCommunities && (
+        <CommunitiesComponent
+          closeComponent={() => setShowCommunities(false)}
+        />
+      )}
+
       <div className="mt-4 p-3 rounded-lg border border-bordermain bg-bgmain">
         <div className="flex w-full justify-center items-center gap-2">
           <img
@@ -227,7 +233,7 @@ export const UserData: React.FC = () => {
               }}
               className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-lg"
             >
-              Hidden posts
+              Hidden&nbsp;posts
             </button>
             <button
               onClick={() => {

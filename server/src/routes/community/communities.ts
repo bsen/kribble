@@ -32,7 +32,6 @@ communitiesRouter.post("/all/communities", async (c) => {
         id: true,
         image: true,
         name: true,
-        description: true,
         membersCount: true,
         postsCount: true,
       },

@@ -7,7 +7,6 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import { useContext } from "react";
 import { UserContext } from "../User/Context/UserContext";
-import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 export const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -63,22 +62,9 @@ export const SideBar = () => {
           }`}
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
-          <div>Matching</div>
+          <div>Task Match</div>
         </button>
 
-        <button
-          onClick={() => {
-            navigate("/inbox");
-          }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
-            location.pathname === "/inbox"
-              ? "text-textmain text-base bg-bgtwo"
-              : "text-textmain text-sm"
-          }`}
-        >
-          <MailOutlinedIcon sx={{ fontSize: 25 }} />
-          <div>Inbox</div>
-        </button>
         <button
           disabled={isLoading}
           onClick={() => {

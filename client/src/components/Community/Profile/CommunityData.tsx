@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
 import AddIcon from "@mui/icons-material/Add";
 
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 
 interface CommunityData {
   id: string;
@@ -90,11 +90,7 @@ export const CommunityData: React.FC = () => {
   }
 
   if (loadingState) {
-    return (
-      <div className="text-texttwo my-5  font-light text-center text-lg">
-        Loading ...
-      </div>
-    );
+    return <LinearProgress sx={{ backgroundColor: "black" }} />;
   }
 
   return (

@@ -2,9 +2,10 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { BACKEND_URL } from "../../config";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 import { NavBar } from "../Bars/NavBar";
-import { Data } from "./Data";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import { BottomBar } from "../Bars/BottomBar";
 interface Comment {
   id: string;
@@ -84,6 +85,75 @@ export const PostProfile = () => {
       return `${minutesDifference}m ago`;
     }
   };
+  interface PostData {
+    image: string;
+    content: string;
+    creatorId: string;
+    createdAt: string;
+    creator: {
+      username: string;
+      image: string | null;
+    };
+  }
+
+  const [anonymity, setAnonymity] = useState(false);
+  const [popup, setPopup] = useState(false);
+  const [comment, setComment] = useState<string>("");
+  const [loadingState, setLoadingState] = useState<boolean>(false);
+  const [postData, setPostData] = useState<PostData>({
+    image: "",
+    content: "",
+    creatorId: "",
+    createdAt: "",
+    creator: {
+      username: "",
+      image: "",
+    },
+  });
+
+  async function getPost() {
+    try {
+      setLoadingState(true);
+      const response = await axios.post(`${BACKEND_URL}/api/post/data`, {
+        token,
+        postId,
+      });
+      setLoadingState(false);
+      setPostData(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function createComment() {
+    try {
+      if (!comment) {
+        setPopup(true);
+        return;
+      }
+
+      setLoadingState(true);
+      await axios.post(`${BACKEND_URL}/api/user/comment/create`, {
+        token,
+        postId,
+        comment,
+        anonymity,
+      });
+      setLoadingState(false);
+      getComments();
+      setComment("");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getPost();
+  }, []);
+
+  if (loadingState) {
+    return <LinearProgress sx={{ backgroundColor: "black" }} />;
+  }
 
   return (
     <div
@@ -93,7 +163,88 @@ export const PostProfile = () => {
     >
       <NavBar />
 
-      <Data />
+      <div>
+        <div className="my-3 rounded-lg border border-bordermain  bg-bgmain">
+          {postData.image && (
+            <img src={postData.image} className="rounded-t-lg w-[100%]" />
+          )}
+
+          {postData.content && (
+            <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+              {postData.content}
+            </div>
+          )}
+          <div className="border-t border-bordermain py-4 flex flex-col gap-4">
+            <div className="flex w-full justify-between rounded-lg items-center px-3">
+              <div className="flex gap-2 items-center">
+                <div>
+                  <img
+                    src={
+                      postData.creator.image
+                        ? postData.creator.image
+                        : "/user.png"
+                    }
+                    alt="Profile"
+                    className="w-7 h-7 rounded-lg"
+                  />
+                </div>
+                <div className="text-textmain text-sm lg:text-base font-normal">
+                  {postData.creator.username}
+                </div>
+
+                <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                  · {getTimeDifference(postData.createdAt)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="p-3 bg-bgmain rounded-lg">
+          <textarea
+            rows={3}
+            className={`w-full bg-bordermain text-texttwo resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+              popup ? "border border-rosemain" : ""
+            }`}
+            wrap="soft"
+            onChange={(e) => {
+              setPopup(false);
+              setComment(e.target.value);
+            }}
+            maxLength={250}
+            placeholder="Post a reply"
+          />
+
+          <div className="flex w-full my-2 justify-between">
+            <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
+              <div
+                onClick={() => {
+                  setAnonymity((prevState) => !prevState);
+                }}
+              >
+                <VisibilityOffIcon
+                  className={`${anonymity ? "text-rosemain" : "text-texttwo"}`}
+                />
+              </div>
+              {anonymity ? (
+                <div className="text-rosemain">
+                  Your identity will be hidden
+                </div>
+              ) : (
+                <div className="text-texttwo">Hide your identity</div>
+              )}
+            </div>
+            <div>
+              <button
+                onClick={createComment}
+                className="text-texttwo text-base py-1 px-4 rounded-md bg-indigomain"
+              >
+                Comment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         className="overflow-y-auto no-scrollbar touch-action-none"
         ref={ScrollContainerRef}
@@ -120,7 +271,7 @@ export const PostProfile = () => {
                             : "/user.png"
                         }
                         alt="Profile"
-                        className="w-5 h-5 rounded-lg"
+                        className="w-7 h-7 rounded-lg"
                       />
                     </div>
                     <div className="text-textmain text-sm lg:text-base font-normal">
@@ -150,15 +301,16 @@ export const PostProfile = () => {
             </div>
           ))
         ) : (
-          <div className="text-texttwo my-5 font-light text-center text-lg">
-            No posts found
-          </div>
-        )}
-      </div>
-      <div>
-        {isLoadingComments && (
-          <div className="w-full my-5 flex justify-center items-center">
-            <CircularProgress />
+          <div>
+            {isLoadingComments ? (
+              <div className="w-full my-5 flex justify-center items-center">
+                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+              </div>
+            ) : (
+              <div className="text-texttwo my-5 font-light text-center text-lg">
+                No posts found
+              </div>
+            )}
           </div>
         )}
       </div>

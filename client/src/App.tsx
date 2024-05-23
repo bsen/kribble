@@ -14,7 +14,6 @@ import { Search } from "./pages/Search/Search";
 import { UpdateProfile } from "./pages/User/Profile/Update";
 import { UpdateCommunity } from "./pages/Community/Profile/Update";
 import { UserProvider } from "./components/User/Context/UserContext";
-import { Inbox } from "./pages/User/InBox/InBox";
 import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
 import { Community } from "./pages/Community/Profile/Community";
@@ -59,10 +58,6 @@ function App() {
               element={<ProtectedRoute element={<UpdateCommunity />} />}
             />
             <Route
-              path="/inbox/:username"
-              element={<ProtectedRoute element={<Inbox />} />}
-            />
-            <Route
               path="/create/community"
               element={<ProtectedRoute element={<CreateCommunity />} />}
             />
@@ -77,10 +72,6 @@ function App() {
             <Route
               path="/:name/create/post/"
               element={<ProtectedRoute element={<CommunityPost />} />}
-            />
-            <Route
-              path="/inbox"
-              element={<ProtectedRoute element={<Inbox />} />}
             />
             <Route
               path="/post/:postId"

@@ -7,6 +7,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReplyIcon from "@mui/icons-material/Reply";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { NavBar } from "../../Bars/NavBar";
+import { BottomBar } from "../../Bars/BottomBar";
 interface Post {
   id: string;
   creator: {
@@ -213,6 +215,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
+        <NavBar />
         <div
           className="overflow-y-auto no-scrollbar touch-action-none"
           ref={postsScrollContainerRef}
@@ -330,19 +333,21 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
               </div>
             ))
           ) : (
-            <div className="text-texttwo my-5  font-light text-center text-sm">
-              No posts found
-            </div>
-          )}
-        </div>
-        <div>
-          {isLoading && (
-            <div className="w-full my-5 flex justify-center items-center">
-              <CircularProgress />
+            <div>
+              {isLoading ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                </div>
+              ) : (
+                <div className="text-texttwo my-5 font-light text-center text-lg">
+                  No posts found
+                </div>
+              )}
             </div>
           )}
         </div>
       </div>
+      <BottomBar />
     </>
   );
 };
