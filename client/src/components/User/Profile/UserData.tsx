@@ -233,7 +233,7 @@ export const UserData: React.FC = () => {
               }}
               className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-lg"
             >
-              Hidden posts
+              Hidden&nbsp;posts
             </button>
             <button
               onClick={() => {

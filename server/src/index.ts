@@ -6,7 +6,6 @@ import { userCommentRouter } from "./routes/user/comment";
 import { userCommunitiesRouter } from "./routes/user/communities";
 import { userFeedRouter } from "./routes/user/feed";
 import { userFollowRouter } from "./routes/user/follow";
-import { userMatchesRouter } from "./routes/user/matches";
 import { userPostRouter } from "./routes/user/post";
 import { userProfileRouter } from "./routes/user/profile";
 // SEARCH ROUTER IMPORT
@@ -15,8 +14,6 @@ import { searchRouter } from "./routes/search/search";
 import { postRouter } from "./routes/post/post";
 import { postCommentRouter } from "./routes/post/comment";
 import { postLikeRouter } from "./routes/post/like";
-// MESSAGE ROUTER IMPORT
-import { messageRouter } from "./routes/message/message";
 // CONNECT ROUTER IMPORT
 import { matchRouter } from "./routes/match/match";
 // COMMUNITY ROUTER IMPORT
@@ -43,7 +40,6 @@ app.route("/api/user/feed", userFeedRouter);
 app.route("/api/user/post", userPostRouter);
 app.route("/api/user/profile", userProfileRouter);
 app.route("/api/user/follow", userFollowRouter);
-app.route("/api/user/matches", userMatchesRouter);
 app.route("/api/user/comment", userCommentRouter);
 app.route("/api/user/communities", userCommunitiesRouter);
 // SEARCH ROUTER
@@ -52,8 +48,6 @@ app.route("/api/search", searchRouter);
 app.route("/api/post", postRouter);
 app.route("/api/post/like", postLikeRouter);
 app.route("/api/post/comment", postCommentRouter);
-// MESSAGE ROUTER
-app.route("/api/message", messageRouter);
 // CONNECT ROUTER
 app.route("/api/match", matchRouter);
 // COMMUNITY ROUTER

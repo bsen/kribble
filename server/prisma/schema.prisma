@@ -7,44 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model User {
-  id             String     @id @default(uuid())
-  fullname       String
-  email          String     @unique
-  username       String     @unique
-  gender         String?
-  password       String
-  birthday       String?
-  bio            String?
-  college        String?
-  interest       String?
-  image          String?
-  website        String?
-  initiatedMatches ProfileMatch[]            @relation("MatchInitiator")
-  receivedMatches  ProfileMatch[]            @relation("MatchRecipient")
-  following            Following[]           @relation("FollowerRelation")
-  followingCount       Int                   @default(0)
-  followersCount       Int                   @default(0)
-  followers            Following[]           @relation("FollowingRelation")
-  posts                Post[]                @relation("UserPosts")
-  likedPosts           PostLike[]            @relation("UserPostLikes")
-  comments             Comment[]             @relation("UserComments")
-  sentMessages         Message[]             @relation("MessageSender")
-  receivedMessages     Message[]             @relation("MessageReceiver")
-  createdCommunities   Community[]           @relation("Creator")
-  memberOfCommunities  CommunityMembership[] @relation("UserCommunityMembership")
-  taggedInPosts        PostTagging[]         @relation("UserPostTagging")
-  taggedInComments     CommentTagging[]      @relation("UserCommentTagging")
-  createdAt            DateTime              @default(now())
+  id                    String                @id @default(uuid())
+  fullname              String
+  email                 String                @unique
+  username              String                @unique
+  gender                String?
+  password              String
+  birthday              String?
+  bio                   String?
+  college               String?
+  interest              String?
+  image                 String?
+  website               String?
+  following             Following[]           @relation("FollowerRelation")
+  followingCount        Int                   @default(0)
+  followersCount        Int                   @default(0)
+  followers             Following[]           @relation("FollowingRelation")
+  posts                 Post[]                @relation("UserPosts")
+  likedPosts            PostLike[]            @relation("UserPostLikes")
+  comments              Comment[]             @relation("UserComments")
+  createdCommunities    Community[]           @relation("Creator")
+  memberOfCommunities   CommunityMembership[] @relation("UserCommunityMembership")
+  taggedInPosts         PostTagging[]         @relation("UserPostTagging")
+  taggedInComments      CommentTagging[]      @relation("UserCommentTagging")
+  matchesPerson1 Match[] @relation("MatchPerson1")
+  matchesPerson2 Match[] @relation("MatchPerson2")
+  createdAt             DateTime              @default(now())
 }
-model ProfileMatch {
-  id           String   @id @default(uuid())
-  initiator    User     @relation("MatchInitiator", fields: [initiatorId], references: [id])
-  initiatorId  String
-  recipient    User     @relation("MatchRecipient", fields: [recipientId], references: [id])
-  recipientId  String
-  isConfirmed  Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  @@unique([initiatorId, recipientId])
+
+model Match {
+  id         String   @id @default(uuid())
+  person1    User     @relation("MatchPerson1", fields: [person1Id], references: [id])
+  person1Id  String
+  person2    User     @relation("MatchPerson2", fields: [person2Id], references: [id])
+  person2Id  String
+  task       String?
+  taskState  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime @default(dbgenerated("(NOW() + INTERVAL '48 hours')"))
+  isCompleted Boolean  @default(false)
+  @@unique([person1Id, person2Id])
 }
 
 model Following {
@@ -140,15 +142,4 @@ model CommentTagging {
   userId     String
   createdAt  DateTime @default(now())
   @@unique([commentId, userId])
-}
-
-model Message {
-  id         String   @id @default(uuid())
-  sender     User     @relation("MessageSender", fields: [senderId], references: [id])
-  senderId   String
-  receiver   User     @relation("MessageReceiver", fields: [receiverId], references: [id])
-  receiverId String
-  message    String
-  createdAt  DateTime @default(now())
-  ttl        DateTime @default(dbgenerated("(NOW() + INTERVAL '1 day')")) 
 }

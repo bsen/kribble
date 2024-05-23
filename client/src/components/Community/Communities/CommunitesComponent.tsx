@@ -9,7 +9,6 @@ import { BottomBar } from "../../Bars/BottomBar";
 interface Communities {
   id: string;
   name: string;
-  description: string;
   membersCount: string;
   postsCount: string;
   image: string;
@@ -63,7 +62,7 @@ export const CommunitiesComponent = () => {
   return (
     <>
       <div
-        className="h-screen p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
+        className="h-screen overflow-y-auto no-scrollbar py-12 md:py-0"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
@@ -81,15 +80,12 @@ export const CommunitiesComponent = () => {
                 <div className="flex justify-between gap-2">
                   <div className="flex gap-2 ">
                     <img
-                      className="h-9 w-9 rounded-lg bg-bgmain"
+                      className="h-7 w-7 rounded-lg bg-bgmain"
                       src={community.image ? community.image : "/group.png"}
                     />
                     <div className="flex flex-col w-full">
                       <div className="text-textmain text-base lg:text-lg font-medium font-ubuntu">
                         {community.name}
-                      </div>
-                      <div className="text-textmain text-sm  font-normal">
-                        {community.description}
                       </div>
                       <div className="flex gap-2 items-center">
                         <div className="text-textmain font-light  text-sm">

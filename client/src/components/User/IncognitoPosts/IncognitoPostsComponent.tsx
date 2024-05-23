@@ -7,6 +7,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReplyIcon from "@mui/icons-material/Reply";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { NavBar } from "../../Bars/NavBar";
+import { BottomBar } from "../../Bars/BottomBar";
 interface Post {
   id: string;
   creator: {
@@ -213,6 +215,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
+        <NavBar />
         <div
           className="overflow-y-auto no-scrollbar touch-action-none"
           ref={postsScrollContainerRef}
@@ -343,6 +346,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
           )}
         </div>
       </div>
+      <BottomBar />
     </>
   );
 };

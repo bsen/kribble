@@ -295,7 +295,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                               : "/user.png"
                           }
                           alt="Profile"
-                          className="w-5 h-5 rounded-lg"
+                          className="w-7 h-7 rounded-lg"
                         />
                       </div>
                       <div className="text-textmain text-sm lg:text-base font-normal">

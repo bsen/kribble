@@ -303,7 +303,7 @@ export const ProfileSection: React.FC = () => {
                           post.creator.image ? post.creator.image : "/user.png"
                         }
                         alt="Profile"
-                        className="w-5 h-5 rounded-lg"
+                        className="w-7 h-7 rounded-lg"
                       />
 
                       {post.anonymity ? (
