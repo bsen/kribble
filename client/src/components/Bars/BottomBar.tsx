@@ -14,15 +14,13 @@ export const BottomBar = () => {
 
   return (
     <>
-      <div className="lg:hidden bottom-0  h-12 flex items-center justify-evenly border-t border-bordermain  rounded-t-md  bg-bgmain fixed w-full">
+      <div className="lg:hidden bottom-0  h-12 flex items-center justify-evenly border-t border-semidark  rounded-t-md  bg-dark fixed w-full">
         <button
           onClick={() => {
             navigate("/");
           }}
           className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
-            location.pathname === "/"
-              ? "text-indigomain text-lg"
-              : "text-textmain"
+            location.pathname === "/" ? "text-indigomain text-lg" : "text-light"
           }`}
         >
           <HomeOutlinedIcon sx={{ fontSize: 25 }} />
@@ -34,7 +32,7 @@ export const BottomBar = () => {
           className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/communities"
               ? "text-indigomain text-lg"
-              : "text-textmain"
+              : "text-light"
           }`}
         >
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
@@ -47,7 +45,7 @@ export const BottomBar = () => {
           className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/matching"
               ? "text-indigomain text-lg"
-              : "text-textmain"
+              : "text-light"
           }`}
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
@@ -59,7 +57,7 @@ export const BottomBar = () => {
           className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === `/${currentUser}`
               ? "text-indigomain text-lg"
-              : "text-textmain"
+              : "text-light"
           }`}
         >
           <PersonOutlinedIcon sx={{ fontSize: 25 }} />
@@ -71,7 +69,7 @@ export const BottomBar = () => {
           className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
             location.pathname === "/search"
               ? "text-indigomain text-lg"
-              : "text-textmain"
+              : "text-light"
           }`}
         >
           <SearchOutlinedIcon sx={{ fontSize: 25 }} />

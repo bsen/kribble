@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { verify } from "hono/jwt";
 import { withAccelerate } from "@prisma/extension-accelerate";
-
+import { tasks } from "./tasks";
 export const matchRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -10,12 +10,24 @@ export const matchRouter = new Hono<{
   };
 }>();
 
-matchRouter.post("/find/match", async (c) => {
+type Tasks = {
+  Programming: string[];
+  Startup: string[];
+  Drama: string[];
+  Singing: string[];
+  Dancing: string[];
+  Writing: string[];
+  Music: string[];
+  Fashion: string[];
+  Art: string[];
+};
+
+matchRouter.post("/create/match", async (c) => {
   try {
     const body = await c.req.json();
     const token = body.token;
     const SelectedCollege = body.college;
-    const SelectedInterest = body.interest;
+    const SelectedInterest: keyof Tasks = body.interest;
     const userId = await verify(token, c.env.JWT_SECRET);
     console.log(userId, SelectedCollege, SelectedInterest);
     const prisma = new PrismaClient({
@@ -85,20 +97,24 @@ matchRouter.post("/find/match", async (c) => {
     const randomMatch =
       potentialMatches[Math.floor(Math.random() * potentialMatches.length)];
 
+    const randomTask =
+      tasks[SelectedInterest][
+        Math.floor(Math.random() * tasks[SelectedInterest].length)
+      ];
+
     const createMatch = await prisma.match.create({
       data: {
         person1Id: userId.id,
         person2Id: randomMatch.id,
+        task: randomTask,
       },
     });
-
     if (!createMatch) {
       return c.json({
         status: 404,
         message: "Match creation failed, Network error",
       });
     }
-    console.log(createMatch);
     return c.json({ status: 200, message: "Match created" });
   } catch (error) {
     console.error(error);

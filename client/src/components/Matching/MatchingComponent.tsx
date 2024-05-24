@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 interface UserData {
   id: string;
@@ -72,6 +73,7 @@ const colleges = [
 export const MatchingComponent: React.FC = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [showMatches, setShowMatches] = useState(true);
   const [college, setCollege] = useState<string>("");
   const [interest, setInterest] = useState<string>("");
@@ -98,10 +100,9 @@ export const MatchingComponent: React.FC = () => {
       if (!interest) {
         return setPopup("Please select a interest.");
       }
-      console.log(college, interest);
       setPopup("Finding or Creating match...");
       const response = await axios.post(
-        `http://localhost:8787/api/match/find/match`,
+        `${BACKEND_URL}/api/match/create/match`,
         {
           token,
           college,
@@ -111,6 +112,7 @@ export const MatchingComponent: React.FC = () => {
       setPopup("");
       if (response.data.status === 200) {
         fetchMatches();
+        setShowMatches(true);
       } else {
         setPopup(response.data.message);
       }
@@ -126,12 +128,11 @@ export const MatchingComponent: React.FC = () => {
 
   const fetchMatches = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:8787/api/match/matches`,
-        {
-          token,
-        }
-      );
+      setIsLoading(true);
+      const response = await axios.post(`${BACKEND_URL}/api/match/matches`, {
+        token,
+      });
+      setIsLoading(false);
       if (response.data.status === 200) {
         setMatches(response.data.data);
       }
@@ -158,68 +159,88 @@ export const MatchingComponent: React.FC = () => {
   if (showMatches) {
     return (
       <>
-        <div className="h-screen px-2 py-10 w-full flex flex-col gap-5">
+        <div className="h-screen overflow-y-auto flex flex-col items-center no-scrollbar py-12 md:py-0">
+          <NavBar />
+          <div className="text-semilight text-center text-sm font-normal my-2 font-ubuntu  p-2 rounded-lg">
+            Complete tasks within the time limit to score valuable city points .
+            The higher your points, the better your rank on the leaderboards 🏆
+          </div>
+          <div className="w-60 flex flex-col gap-4">
+            {matches.length > 0 ? (
+              matches.map((match) => (
+                <div key={match.id}>
+                  <div className="bg-dark p-2 rounded-lg shadow-sm">
+                    <div className="flex justify-center">
+                      <img
+                        src={
+                          match.person2?.image ??
+                          match.person1?.image ??
+                          "/user.png"
+                        }
+                        className="w-full rounded-lg border border-semidark mb-2 object-cover"
+                      />
+                    </div>
+                    <div
+                      onClick={() => {
+                        navigate(
+                          `/${
+                            match.person2
+                              ? match.person2.username
+                              : match.person1
+                              ? match.person1.username
+                              : ""
+                          }`
+                        );
+                      }}
+                      className="text-left font-light hover:underline underline-offset-2 text-semilight text-lg"
+                    >
+                      {match.person2
+                        ? match.person2.username
+                        : match.person1
+                        ? match.person1.username
+                        : "User"}
+                    </div>
+                    <div className="text-left font-light text-semilight text-sm">
+                      Task: {match.task}
+                    </div>
+                    <div className="text-left font-light text-semilight text-sm">
+                      {match.isTaskCompleted
+                        ? "Task Completed"
+                        : "Task Pending"}
+                    </div>
+
+                    <div className="text-xs  text-indigomain mt-2">
+                      {getFormattedRemainingTime(match.expiresAt)}
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="w-full">
+                {!isLoading && (
+                  <div className="text-semilight my-5 font-light text-center text-sm">
+                    No matches found
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           <button
             onClick={() => {
               setShowMatches(false);
             }}
-            className="bg-bordermain hover:bg-bgmain flex justify-center items-center w-fit text-indigomain ite py-1 px-4 rounded-full  mt-4"
+            className="bg-indigomain my-5 text-center text-semilight w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
           >
             <AddIcon /> Add matches
           </button>
-          <div className="text-textmain text-center text-sm font-normal font-ubuntu bg-indigomain p-2 rounded-lg">
-            Complete tasks within the time limit to score valuable city points .
-            The higher your points, the better your rank on the leaderboards 🏆
-          </div>
-          <div className="w-full flex gap-4 overflow-x-auto no-scrollbar ">
-            {matches.map((match) => (
-              <div key={match.id} className="flex-shrink-0">
-                <div className="bg-bgmain p-2 rounded-lg shadow-sm">
-                  <img
-                    src={
-                      match.person2?.image ??
-                      match.person1?.image ??
-                      "/user.png"
-                    }
-                    className="h-56 w-56 rounded-lg border border-bordermain mb-2"
-                  />
-
-                  <div
-                    onClick={() => {
-                      navigate(
-                        `/${
-                          match.person2
-                            ? match.person2.username
-                            : match.person1
-                            ? match.person1.username
-                            : ""
-                        }`
-                      );
-                    }}
-                    className="text-left font-light hover:underline underline-offset-2 text-texttwo text-lg"
-                  >
-                    {match.person2
-                      ? match.person2.username
-                      : match.person1
-                      ? match.person1.username
-                      : "User"}
-                  </div>
-                  <div className="text-left font-light text-texttwo text-sm">
-                    Task: {match.task}
-                  </div>
-                  <div className="text-left font-light text-texttwo text-sm">
-                    {match.isTaskCompleted ? "Task Completed" : "Task Pending"}
-                  </div>
-
-                  <div className="text-xs  text-indigomain mt-2">
-                    {getFormattedRemainingTime(match.expiresAt)}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {isLoading && (
+            <div className="w-full my-5 flex justify-center items-center">
+              <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+            </div>
+          )}
+          <BottomBar />
         </div>
-        <BottomBar />
       </>
     );
   }
@@ -228,20 +249,20 @@ export const MatchingComponent: React.FC = () => {
     <>
       <NavBar />
       <div className="h-screen flex flex-col justify-center items-center">
-        <div className="gap-4 flex flex-col items-center bg-bgmain p-3 justify-center rounded-lg w-[95%]">
+        <div className="gap-4 flex flex-col items-center bg-dark p-3 justify-center rounded-lg w-[95%]">
           <img src="/people.png" className="h-16 w-16" alt="people" />
           <div className="text-center flex flex-col items-center justify-center gap-1">
-            <div className="text-2xl font-normal text-textmain font-ubuntu">
+            <div className="text-2xl font-normal text-light font-ubuntu">
               Find Your Match
             </div>
-            <div className="text-xs text-texttwo font-light">
+            <div className="text-xs text-semilight font-light">
               Get matched with someone based on College, Interest, connections,
               interests, and college. Complete the assigned task with your match
               within 48 hours to get points and continue matching.
             </div>
           </div>
           <div className="w-full">
-            <div className="text-texttwo text-sm font-light">College</div>
+            <div className="text-semilight text-sm font-light">College</div>
             <FormControl className="w-full">
               <Select
                 sx={{
@@ -249,7 +270,7 @@ export const MatchingComponent: React.FC = () => {
                   color: "rgb(210 210 210);",
                   ".MuiOutlinedInput-notchedOutline": { border: 0 },
                 }}
-                className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
+                className="h-9 w-full text-semilight rounded-lg focus:outline-none bg-semidark"
                 MenuProps={{
                   PaperProps: {
                     style: {
@@ -276,7 +297,7 @@ export const MatchingComponent: React.FC = () => {
             </FormControl>
           </div>
           <div className="w-full">
-            <div className="text-texttwo text-sm font-light">Interest</div>
+            <div className="text-semilight text-sm font-light">Interest</div>
             <FormControl className="w-full">
               <Select
                 sx={{
@@ -284,7 +305,7 @@ export const MatchingComponent: React.FC = () => {
                   color: "rgb(210 210 210);",
                   ".MuiOutlinedInput-notchedOutline": { border: 0 },
                 }}
-                className="h-9 w-full text-white rounded-lg focus:outline-none bg-bordermain"
+                className="h-9 w-full text-white rounded-lg focus:outline-none bg-semidark"
                 MenuProps={{
                   PaperProps: {
                     style: {
@@ -313,7 +334,7 @@ export const MatchingComponent: React.FC = () => {
 
           <button
             onClick={findMatch}
-            className="bg-indigomain text-center text-texttwo w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
+            className="bg-indigomain text-center text-semilight w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
           >
             Create Match
           </button>
@@ -321,15 +342,15 @@ export const MatchingComponent: React.FC = () => {
             onClick={() => {
               setShowMatches(true);
             }}
-            className="bg-bgtwo text-center text-indigomain w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
+            className="bg-semidark text-center text-semilight w-36 font-ubuntu font-light py-1 text-base rounded-lg"
           >
-            Check matches
+            Task matches
           </button>
         </div>
 
         {popup && (
           <div
-            className="absolute bottom-4 text-texttwo font-light text-center text-base"
+            className="absolute bottom-4 text-semilight font-light text-center text-base"
             onClick={clearError}
           >
             {popup}

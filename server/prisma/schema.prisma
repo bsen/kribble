@@ -44,7 +44,7 @@ model Match {
   task       String?
   isTaskCompleted  Boolean  @default(false)
   createdAt  DateTime @default(now())
-  expiresAt  DateTime @default(dbgenerated("(NOW() + INTERVAL '48 hours')"))
+  expiresAt  DateTime @default(dbgenerated("(NOW() + INTERVAL '24 hours')"))
   @@unique([person1Id, person2Id])
 }
 

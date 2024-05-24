@@ -3,22 +3,22 @@ import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 export const About = () => {
   return (
     <div className="h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-4">
-      <div className="w-full lg:w-[50%] border bg-bgmain border-bordermain rounded-lg p-4 mb-8">
-        <div className="text-textmain mb-4 font-semibold text-[1.5rem]">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4 mb-8">
+        <div className="text-light mb-4 font-semibold text-[1.5rem]">
           Welcome to FriendCity
         </div>
-        <div className="text-sm text-texttwo font-light">
+        <div className="text-sm text-semilight font-light">
           Welcome to FriendCity, your dynamic social hub tailored specifically
           for students and teens. FriendCity is your go-to platform for
           connecting, sharing, and fostering friendships that last a lifetime.
         </div>
       </div>
 
-      <div className="w-full lg:w-[50%] border bg-bgmain border-bordermain rounded-lg p-4 mb-8">
-        <div className="text-textmain mb-4 font-semibold text-[1.5rem]">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4 mb-8">
+        <div className="text-light mb-4 font-semibold text-[1.5rem]">
           Privacy and Security
         </div>
-        <div className="text-sm text-texttwo font-light">
+        <div className="text-sm text-semilight font-light">
           Your privacy and security are paramount to us at FriendCity. We've
           implemented robust measures to ensure a safe and secure environment
           for all our users:
@@ -56,11 +56,11 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-[50%] border bg-bgmain border-bordermain rounded-lg p-4 mb-8">
-        <div className="text-textmain mb-4 font-semibold text-[1.5rem]">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4 mb-8">
+        <div className="text-light mb-4 font-semibold text-[1.5rem]">
           Terms of Use
         </div>
-        <div className="text-sm text-texttwo font-light">
+        <div className="text-sm text-semilight font-light">
           Before using FriendCity, please take a moment to familiarize yourself
           with our terms and conditions:
           <ul className="list-disc pl-6">
@@ -109,11 +109,11 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-[50%] border bg-bgmain border-bordermain rounded-lg p-4 mb-8">
-        <div className="text-textmain mb-4 font-semibold text-[1.5rem]">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4 mb-8">
+        <div className="text-light mb-4 font-semibold text-[1.5rem]">
           Community Guidelines
         </div>
-        <div className="text-sm text-texttwo font-light">
+        <div className="text-sm text-semilight font-light">
           We are committed to fostering a positive and safe community
           environment at FriendCity. Please adhere to the following guidelines
           to ensure a pleasant experience for all users:
@@ -142,11 +142,11 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-[50%] border bg-bgmain border-bordermain rounded-lg p-4">
-        <div className="text-textmain flex items-center gap-2 font-semibold mb-4 text-[1.5rem]">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4">
+        <div className="text-light flex items-center gap-2 font-semibold mb-4 text-[1.5rem]">
           Contact Us <MailOutlinedIcon />
         </div>
-        <div className="text-sm text-texttwo font-light">
+        <div className="text-sm text-semilight font-light">
           Have questions or need assistance? Reach out to us at{" "}
           <a
             href="mailto:support@friendcity.in"

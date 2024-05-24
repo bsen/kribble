@@ -164,17 +164,17 @@ export const PostProfile = () => {
       <NavBar />
 
       <div>
-        <div className="my-3 rounded-lg border border-bordermain  bg-bgmain">
+        <div className="my-3 rounded-lg border border-semidark  bg-dark">
           {postData.image && (
             <img src={postData.image} className="rounded-t-lg w-[100%]" />
           )}
 
           {postData.content && (
-            <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+            <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
               {postData.content}
             </div>
           )}
-          <div className="border-t border-bordermain py-4 flex flex-col gap-4">
+          <div className="border-t border-semidark py-4 flex flex-col gap-4">
             <div className="flex w-full justify-between rounded-lg items-center px-3">
               <div className="flex gap-2 items-center">
                 <div>
@@ -188,21 +188,21 @@ export const PostProfile = () => {
                     className="w-7 h-7 rounded-lg"
                   />
                 </div>
-                <div className="text-textmain text-sm lg:text-base font-normal">
+                <div className="text-light text-sm lg:text-base font-normal">
                   {postData.creator.username}
                 </div>
 
-                <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                   · {getTimeDifference(postData.createdAt)}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="p-3 bg-bgmain rounded-lg">
+        <div className="p-3 bg-dark rounded-lg">
           <textarea
             rows={3}
-            className={`w-full bg-bordermain text-texttwo resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+            className={`w-full bg-semidark text-semilight resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
               popup ? "border border-rosemain" : ""
             }`}
             wrap="soft"
@@ -215,14 +215,16 @@ export const PostProfile = () => {
           />
 
           <div className="flex w-full my-2 justify-between">
-            <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
+            <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
               <div
                 onClick={() => {
                   setAnonymity((prevState) => !prevState);
                 }}
               >
                 <VisibilityOffIcon
-                  className={`${anonymity ? "text-rosemain" : "text-texttwo"}`}
+                  className={`${
+                    anonymity ? "text-rosemain" : "text-semilight"
+                  }`}
                 />
               </div>
               {anonymity ? (
@@ -230,13 +232,13 @@ export const PostProfile = () => {
                   Your identity will be hidden
                 </div>
               ) : (
-                <div className="text-texttwo">Hide your identity</div>
+                <div className="text-semilight">Hide your identity</div>
               )}
             </div>
             <div>
               <button
                 onClick={createComment}
-                className="text-texttwo text-base py-1 px-4 rounded-md bg-indigomain"
+                className="text-semilight text-base py-1 px-4 rounded-md bg-indigomain"
               >
                 Comment
               </button>
@@ -253,14 +255,14 @@ export const PostProfile = () => {
           postComments.map((comment, index) => (
             <div
               key={index}
-              className="my-3 rounded-lg border border-bordermain  bg-bgmain"
+              className="my-3 rounded-lg border border-semidark  bg-dark"
             >
               {comment.content && (
-                <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+                <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
                   {comment.content}
                 </div>
               )}
-              <div className="border-t border-bordermain py-4 flex flex-col gap-4">
+              <div className="border-t border-semidark py-4 flex flex-col gap-4">
                 <div className="flex w-full justify-between rounded-lg items-center px-3">
                   <div className="flex gap-2 items-center">
                     <div>
@@ -274,9 +276,9 @@ export const PostProfile = () => {
                         className="w-7 h-7 rounded-lg"
                       />
                     </div>
-                    <div className="text-textmain text-sm lg:text-base font-normal">
+                    <div className="text-light text-sm lg:text-base font-normal">
                       {comment.anonymity ? (
-                        <div className="text-textmain text-sm lg:text-base font-normal">
+                        <div className="text-light text-sm lg:text-base font-normal">
                           {comment.creator.username}
                         </div>
                       ) : (
@@ -285,14 +287,14 @@ export const PostProfile = () => {
                             e.stopPropagation();
                             navigate(`/${comment.creator.username}`);
                           }}
-                          className="text-textmain text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                          className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
                         >
                           {comment.creator.username}
                         </div>
                       )}
                     </div>
 
-                    <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                    <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                       · {getTimeDifference(comment.createdAt)}
                     </div>
                   </div>
@@ -307,7 +309,7 @@ export const PostProfile = () => {
                 <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
               </div>
             ) : (
-              <div className="text-texttwo my-5 font-light text-center text-lg">
+              <div className="text-semilight my-5 font-light text-center text-lg">
                 No posts found
               </div>
             )}

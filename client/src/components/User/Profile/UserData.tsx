@@ -119,11 +119,11 @@ export const UserData: React.FC = () => {
         />
       )}
 
-      <div className="mt-4 p-3 rounded-lg border border-bordermain bg-bgmain">
+      <div className="mt-4 p-3 rounded-lg border border-semidark bg-dark">
         <div className="flex w-full justify-center items-center gap-2">
           <img
             src={userData.image ? userData.image : "/user.png"}
-            className="lg:w-20 lg:h-20 w-16 rounded-lg border border-bordermain"
+            className="lg:w-20 lg:h-20 w-16 rounded-lg border border-semidark"
           />
 
           <div className="w-full">
@@ -134,7 +134,7 @@ export const UserData: React.FC = () => {
                     onClick={() => {
                       navigate("/edit/profile");
                     }}
-                    className="text-left text-texttwo bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
+                    className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
                   >
                     Edit
                   </button>
@@ -144,7 +144,7 @@ export const UserData: React.FC = () => {
                     <button
                       onClick={followUser}
                       disabled={isFollowUserLoading}
-                      className="text-left flex justify-center items-center text-texttwo bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
+                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
                     >
                       {isFollowUserLoading ? (
                         <div>··········</div>
@@ -163,17 +163,17 @@ export const UserData: React.FC = () => {
               </div>
             </div>
             <div>
-              <div className="text-base lg:text-lg font-normal text-textmain">
+              <div className="text-lg font-normal text-light">
                 {userData.username}
               </div>
-              <div className="text-xs text-texttwo font-light font-ubuntu">
+              <div className="text-xs text-semilight font-light font-ubuntu">
                 {userData.fullname}
               </div>
             </div>
           </div>
         </div>
         <div className="mt-2">
-          <div className="flex text-texttwo font-ubuntu items-center gap-2 font-light text-sm">
+          <div className="flex text-semilight font-ubuntu items-center gap-2 font-light text-sm">
             <button onClick={() => setShowFollowers(true)}>
               <div className="flex gap-1 items-center">
                 {userData.followersCount} Followers
@@ -186,13 +186,13 @@ export const UserData: React.FC = () => {
               </div>
             </button>
           </div>
-          <div className="text-sm text-texttwo font-ubuntu font-light">
+          <div className="text-sm text-semilight font-ubuntu font-light">
             {userData.bio ? userData.bio : ""}
           </div>
-          <div className="text-sm text-texttwo font-ubuntu font-light">
+          <div className="text-sm text-semilight font-ubuntu font-light">
             {userData.college ? userData.college : ""}
           </div>
-          <div className="text-sm text-texttwo font-ubuntu font-light">
+          <div className="text-sm text-semilight font-ubuntu font-light">
             {userData.interest ? userData.interest : ""}
           </div>
 
@@ -222,7 +222,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/create/post");
               }}
-              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Post</span>
@@ -231,7 +231,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/hidden/posts");
               }}
-              className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-lg"
+              className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Hidden&nbsp;posts
             </button>
@@ -239,7 +239,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/comments");
               }}
-              className="text-xs text-texttwo font-light bg-indigomain px-3 py-1 rounded-lg"
+              className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Comments
             </button>
@@ -247,7 +247,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 navigate("/create/community");
               }}
-              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Community</span>
@@ -257,7 +257,7 @@ export const UserData: React.FC = () => {
               onClick={() => {
                 setShowCommunities(true);
               }}
-              className="text-xs text-texttwo flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Communities
             </button>

@@ -66,9 +66,9 @@ export const LoginAuth = () => {
     <>
       <div className="lg:flex justify-between items-center">
         <div className="h-screen p-3 flex justify-center items-center w-full bg-indigomain">
-          <div className="text-texttwo text-center mb-4 font-ubuntu font-medium text-[2.5rem]">
+          <div className="text-semilight text-center mb-4 font-ubuntu font-medium text-[2.5rem]">
             FriendCity
-            <div className="text-center text-sm font-thin mb-8 text-textmain">
+            <div className="text-center text-sm font-thin mb-8 text-light">
               A place where college life meets limitless fun! 🎉 Share your
               moments, snap cool pics, and dive into vibrant communities. With
               our anonymous posting, let your thoughts soar freely. But wait,
@@ -80,27 +80,27 @@ export const LoginAuth = () => {
             <div className="flex flex-wrap mb-5 justify-center gap-2">
               <img
                 src="/girl.png"
-                className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+                className="h-[15%] w-[15%] rounded-full bg-semidark"
                 alt="Girl"
               />
               <img
                 src="/boy.png"
-                className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+                className="h-[15%] w-[15%] rounded-full bg-semidark"
                 alt="Boy"
               />
               <img
                 src="/people.png"
-                className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+                className="h-[15%] w-[15%] rounded-full bg-semidark"
                 alt="People"
               />
               <img
                 src="/girl2.png"
-                className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+                className="h-[15%] w-[15%] rounded-full bg-semidark"
                 alt="Girl 2"
               />
               <img
                 src="/boy2.png"
-                className="h-[15%] w-[15%] rounded-full bg-bgtwo"
+                className="h-[15%] w-[15%] rounded-full bg-semidark"
                 alt="Boy 2"
               />
             </div>
@@ -117,41 +117,41 @@ export const LoginAuth = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col h-screen bg-bgmain justify-center items-center p-3 w-full">
-          <div className="items-center p-2 rounded-lg bg-bgtwo w-[80%] lg:w-[50%]">
+        <div className="flex flex-col h-screen bg-dark justify-center items-center p-3 w-full">
+          <div className="items-center p-2 rounded-lg bg-semidark w-[80%] lg:w-[50%]">
             <div>
-              <div className="font-normal m-1 text-texttwo">Email</div>
+              <div className="font-normal m-1 text-semilight">Email</div>
               <input
                 value={email}
                 onChange={(e) => handleEmailChange(e.target.value)}
                 type="email"
-                className="h-9 w-full text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
+                className="h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-semidark"
                 placeholder="Enter your email address"
               />
             </div>
 
             <div>
-              <div className="font-normal m-1 text-texttwo">Password</div>
+              <div className="font-normal m-1 text-semilight">Password</div>
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 onKeyDown={handleKeyDown}
-                className="h-9 w-full text-textmain rounded-lg px-4 focus:outline-none bg-bordermain"
+                className="h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-semidark"
                 placeholder="Enter password"
               />
             </div>
             <button
               onClick={login}
-              className="my-4 w-full text-texttwo bg-indigomain active:bg-bgmain border border-bordermain focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+              className="my-4 w-full text-semilight bg-indigomain active:bg-dark border border-semidark focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
             >
               Login
             </button>
-            <div className="text-center text-md font-light text-textmain">
+            <div className="text-center text-md font-light text-light">
               Don't have an account?
               <Link
                 to="/signup"
-                className="font-normal text-textmain underline underline-offset-4 mx-1"
+                className="font-normal text-light underline underline-offset-4 mx-1"
               >
                 Sign up
               </Link>

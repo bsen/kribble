@@ -72,14 +72,14 @@ export const FollowingComponent: React.FC<FollowingComponentProps> = ({
     <>
       <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[50%] bg-black/60 flex justify-center items-center">
         <div
-          className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
+          className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
-          <div className="flex text-texttwo  justify-center gap-5 items-center">
+          <div className="flex text-semilight  justify-center gap-5 items-center">
             <button
               onClick={closeComponent}
-              className="border border-bordermain p-1 rounded-lg"
+              className="border border-semidark p-1 rounded-lg"
             >
               <ArrowBackIcon />
             </button>
@@ -89,11 +89,11 @@ export const FollowingComponent: React.FC<FollowingComponentProps> = ({
             followingsData.followings.map((followingObj) => (
               <div
                 key={followingObj.id}
-                className=" my-2 rounded-lg border border-bordermain p-2 bg-bordermain"
+                className=" my-2 rounded-lg border border-semidark p-2 bg-semidark"
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
-                    className="h-8 w-8 rounded-lg bg-bgmain"
+                    className="h-8 w-8 rounded-lg bg-dark"
                     src={
                       followingObj.following.image
                         ? followingObj.following.image
@@ -102,7 +102,7 @@ export const FollowingComponent: React.FC<FollowingComponentProps> = ({
                   />
                   <div>
                     <Link to={`/${followingObj.following.username}`}>
-                      <div className="text-textmain text-lg font-ubuntu">
+                      <div className="text-light text-lg font-ubuntu">
                         {followingObj.following.username}
                       </div>
                     </Link>
@@ -117,7 +117,7 @@ export const FollowingComponent: React.FC<FollowingComponentProps> = ({
                   <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
                 </div>
               ) : (
-                <div className="text-texttwo my-5 font-light text-center text-lg">
+                <div className="text-semilight my-5 font-light text-center text-lg">
                   No following found
                 </div>
               )}

@@ -67,14 +67,14 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
     <>
       <div className="h-screen absolute w-[50%] bg-black/60 flex justify-center items-center">
         <div
-          className="bg-bgmain border border-bordermain shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
+          className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 md:py-0"
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
-          <div className="flex text-texttwo  justify-center gap-5 items-center py-2">
+          <div className="flex text-semilight  justify-center gap-5 items-center py-2">
             <button
               onClick={closeComponent}
-              className="border border-bordermain p-1 rounded-lg"
+              className="border border-semidark p-1 rounded-lg"
             >
               <ArrowBackIcon />
             </button>
@@ -84,23 +84,23 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
             communityData.communities.map((community, index) => (
               <div
                 key={index}
-                className="border my-2 rounded-md border-bordermain p-1 bg-bgmain"
+                className="border my-2 rounded-md border-semidark p-1 bg-dark"
               >
                 <div className="flex gap-2 justify-between items-start">
                   <div className="flex gap-2 items-start">
                     <img
-                      className="h-8 w-8 rounded-full bg-bgmain"
+                      className="h-8 w-8 rounded-full bg-dark"
                       src={community.image ? community.image : "/group.png"}
                     />
 
                     <div className="flex flex-col w-full">
                       <Link
                         to={`/community/${community.name}`}
-                        className="text-textmain w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
+                        className="text-light w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
                       >
                         {community.name}
                       </Link>
-                      <div className="text-textmain font-ubuntu  text-sm font-light">
+                      <div className="text-light font-ubuntu  text-sm font-light">
                         {community.membersCount} members
                       </div>
                     </div>
@@ -115,7 +115,7 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
                   <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
                 </div>
               ) : (
-                <div className="text-texttwo my-5 font-light text-center text-lg">
+                <div className="text-semilight my-5 font-light text-center text-lg">
                   No communities found
                 </div>
               )}

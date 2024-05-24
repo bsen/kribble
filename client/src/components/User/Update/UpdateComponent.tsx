@@ -122,56 +122,40 @@ export const UpdateProfileComponent = () => {
     }
 
     const maxFileSize = 10 * 1024 * 1024;
-
     if (file.size > maxFileSize) {
       setPopup("File size is more than 10 mb");
       return;
     }
 
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
-
     if (!allowedTypes.includes(file.type)) {
       setPopup("Only PNG, JPG, and JPEG files are allowed");
       return;
     }
 
     const reader = new FileReader();
-
     reader.onloadend = () => {
       const img = new Image();
       img.src = reader.result as string;
       img.onload = () => {
         const canvas = document.createElement("canvas");
+        const size = Math.min(img.width, img.height);
+
+        canvas.width = size;
+        canvas.height = size;
+
         const ctx = canvas.getContext("2d");
-
-        if (!ctx) {
-          return;
+        if (ctx) {
+          const xOffset = (img.width - size) / 2;
+          const yOffset = (img.height - size) / 2;
+          ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
+          const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
+          setPreviewImage(compressedImageData);
         }
-
-        const aspectRatio = img.width / img.height;
-        const maxSize = 500;
-
-        let width = maxSize;
-        let height = maxSize;
-
-        if (aspectRatio < 1) {
-          width = maxSize * aspectRatio;
-        } else {
-          height = maxSize / aspectRatio;
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-
-        ctx.drawImage(img, 0, 0, width, height);
-        const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
-        setPreviewImage(compressedImageData);
       };
     };
-
     reader.readAsDataURL(file);
   };
-
   async function updateProfile() {
     try {
       let imageToUpload = null;
@@ -219,45 +203,42 @@ export const UpdateProfileComponent = () => {
   }
   if (isLoading) {
     return (
-      <div className="bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-dark w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
   }
   return (
     <>
-      <div className="h-screen text-texttwo">
+      <div className="h-screen text-semilight">
         <div className="w-full">{logoutState && <Logout />}</div>
         <div className="w-full">
           {!logoutState && (
-            <div className=" h-fit bg-bgmain rounded-b-lg  p-3 flex flex-col gap-4">
-              <div className="flex justify-between items-center border-b border-bordermain pb-2">
+            <div className=" h-fit bg-dark rounded-b-lg  p-3 flex flex-col gap-4">
+              <div className="flex justify-between items-center border-b border-semidark pb-2">
                 <button
                   onClick={() => {
                     navigate(`/${currentUser}`);
                   }}
                 >
-                  <ArrowBackIcon
-                    sx={{ fontSize: 30 }}
-                    className="text-textmain"
-                  />
+                  <ArrowBackIcon sx={{ fontSize: 30 }} className="text-light" />
                 </button>
                 <button
                   onClick={() => {
                     setLogoutState(true);
                   }}
                 >
-                  <div className="text-rosemain text-sm font-normal px-2 py-1 bg-bgtwo rounded-lg">
+                  <div className="text-rosemain text-sm font-normal px-2 py-1 bg-semidark rounded-lg">
                     Log out
                   </div>
                 </button>
               </div>
               <div className="w-full flex justify-between items-end">
                 <div className="flex justify-center items-center">
-                  <div className="absolute text-textmain z-50">
+                  <div className="absolute text-light z-50">
                     <button>
                       <label htmlFor="image-upload" className="cursor-pointer ">
-                        <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-lg" />
+                        <CameraAltRoundedIcon className="bg-dark/50 p-1 rounded-lg" />
                       </label>
                       <input
                         id="image-upload"
@@ -281,25 +262,25 @@ export const UpdateProfileComponent = () => {
                 </div>
 
                 <button onClick={updateProfile}>
-                  <div className="text-texttwo bg-indigomain text-base font-light rounded-lg py-1 px-4">
+                  <div className="text-semilight bg-indigomain text-base font-light rounded-lg py-1 px-4">
                     save
                   </div>
                 </button>
               </div>
 
               <div>
-                <div className="text-texttwo text-sm font-light">Name</div>
+                <div className="text-semilight text-sm font-light">Name</div>
                 <input
                   maxLength={20}
                   defaultValue={userData.fullname}
                   onChange={(e) => {
                     setFullName(e.target.value);
                   }}
-                  className=" h-10 w-full bg-bordermain text-texttwo text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
+                  className=" h-10 w-full bg-semidark text-semilight text-base font-light rounded-lg px-2 focus:outline-none border border-semidark"
                 />
               </div>
               <div>
-                <div className="text-texttwo text-sm font-light">Website</div>
+                <div className="text-semilight text-sm font-light">Website</div>
                 <input
                   type="link"
                   maxLength={40}
@@ -307,14 +288,14 @@ export const UpdateProfileComponent = () => {
                   onChange={(e) => {
                     setWebsite(e.target.value);
                   }}
-                  className=" h-10 bg-bordermain text-texttwo w-full text-base font-light rounded-lg px-2 focus:outline-none border border-bordermain"
+                  className=" h-10 bg-semidark text-semilight w-full text-base font-light rounded-lg px-2 focus:outline-none border border-semidark"
                 />
               </div>
               <div>
-                <div className="text-texttwo text-sm  font-light">Bio</div>
+                <div className="text-semilight text-sm  font-light">Bio</div>
                 <textarea
                   rows={2}
-                  className="w-full bg-bordermain text-texttwo text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-bordermain"
+                  className="w-full bg-semidark text-semilight text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-semidark"
                   defaultValue={userData.bio}
                   wrap="soft"
                   maxLength={150}
@@ -324,7 +305,7 @@ export const UpdateProfileComponent = () => {
                 />
               </div>
               <div>
-                <div className="text-texttwo text-sm font-light">College</div>
+                <div className="text-semilight text-sm font-light">College</div>
                 <FormControl className="w-full">
                   <Select
                     sx={{
@@ -332,7 +313,7 @@ export const UpdateProfileComponent = () => {
                       color: "rgb(210 210 210);",
                       ".MuiOutlinedInput-notchedOutline": { border: 0 },
                     }}
-                    className="h-9 w-full text-texttwo rounded-lg focus:outline-none bg-bordermain"
+                    className="h-9 w-full text-semilight rounded-lg focus:outline-none bg-semidark"
                     MenuProps={{
                       PaperProps: {
                         style: {
@@ -359,7 +340,9 @@ export const UpdateProfileComponent = () => {
                 </FormControl>
               </div>
               <div>
-                <div className="text-texttwo text-sm font-light">Interest</div>
+                <div className="text-semilight text-sm font-light">
+                  Interest
+                </div>
                 <FormControl className="w-full">
                   <Select
                     sx={{
@@ -367,7 +350,7 @@ export const UpdateProfileComponent = () => {
                       color: "rgb(210 210 210);",
                       ".MuiOutlinedInput-notchedOutline": { border: 0 },
                     }}
-                    className="h-9 w-full text-white rounded-lg focus:outline-none bg-bordermain"
+                    className="h-9 w-full text-white rounded-lg focus:outline-none bg-semidark"
                     MenuProps={{
                       PaperProps: {
                         style: {

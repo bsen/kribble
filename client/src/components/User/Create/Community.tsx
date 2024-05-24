@@ -77,7 +77,7 @@ export const Community = () => {
   };
   if (isLoading) {
     return (
-      <div className="bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-dark w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
@@ -87,29 +87,27 @@ export const Community = () => {
     <>
       <div className="h-screen flex justify-center items-center px-5 lg:px-0">
         <NavBar />
-        <div className="w-full max-w-md my-5 p-3 rounded-lg bg-bgmain">
+        <div className="w-full max-w-md my-5 p-3 rounded-lg bg-dark">
           <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
             <div>
               <button onClick={handleClose}>
                 <ArrowBackIcon
-                  className="rounded-full text-textmain"
+                  className="rounded-full text-light"
                   sx={{ fontSize: 30 }}
                 />
               </button>
             </div>
-            <div className="text-textmain">Create Community</div>
+            <div className="text-light">Create Community</div>
           </div>
           <div className="flex flex-col gap-4">
             <div>
-              <div className="font-normal m-1 text-textmain">
-                Community Name
-              </div>
+              <div className="font-normal m-1 text-light">Community Name</div>
               <input
                 value={name}
                 onChange={(e) => {
                   handleNameChange(e.target.value);
                 }}
-                className={`w-full border border-bordermain resize-none focus:outline-none p-2 text-texttwo rounded-lg ${
+                className={`w-full border border-semidark resize-none focus:outline-none p-2 text-semilight rounded-lg ${
                   available ? "" : "border border-rosemain"
                 }`}
                 placeholder="Choose a name for your community"
@@ -117,14 +115,14 @@ export const Community = () => {
               />
             </div>
             <div>
-              <div className="m-1 text-textmain font-normal">Description</div>
+              <div className="m-1 text-light font-normal">Description</div>
               <textarea
                 rows={2}
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
-                className="w-full border border-bordermain resize-none focus:outline-none px-2 py-1 text-texttwo rounded-lg"
+                className="w-full border border-semidark resize-none focus:outline-none px-2 py-1 text-semilight rounded-lg"
                 placeholder="Write description for your community"
                 maxLength={150}
               />
@@ -132,7 +130,7 @@ export const Community = () => {
             <div className="flex w-full justify-center">
               <button
                 onClick={createCommunity}
-                className="bg-indigomain w-full text-texttwo px-6 py-2 rounded-lg"
+                className="bg-indigomain w-full text-semilight px-6 py-2 rounded-lg"
               >
                 Create your community
               </button>
