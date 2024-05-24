@@ -330,7 +330,7 @@ export const SignupAuth = () => {
               onChange={(e) => {
                 setFullName(e.target.value);
               }}
-              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-semidark"
+              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
               placeholder="Enter your full name"
             />
           </div>
@@ -342,7 +342,7 @@ export const SignupAuth = () => {
               onChange={(e) => {
                 handleUsernameChange(e.target.value);
               }}
-              className={`w-full text-light h-9 px-4 bg-semidark focus:outline-none  rounded-lg ${
+              className={`w-full text-light h-9 px-4 bg-dark focus:outline-none  rounded-lg ${
                 available ? "" : "border border-rosemain"
               }`}
               placeholder="Select your username"
@@ -355,7 +355,7 @@ export const SignupAuth = () => {
               onChange={(e) => {
                 handleEmailChange(e.target.value);
               }}
-              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-semidark"
+              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
               placeholder="Enter your email address"
             />
           </div>
@@ -367,7 +367,7 @@ export const SignupAuth = () => {
                 handlePasswordChange(e.target.value);
               }}
               onKeyDown={handleKeyDown}
-              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-semidark"
+              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
               placeholder="Enter password"
             />
           </div>
@@ -381,13 +381,15 @@ export const SignupAuth = () => {
                   color: "rgb(210 210 210);",
                   ".MuiOutlinedInput-notchedOutline": { border: 0 },
                 }}
-                className="h-9 w-full text-semilight rounded-lg focus:outline-none bg-semidark"
+                className="h-9 w-full text-semilight rounded-lg focus:outline-none bg-dark"
                 MenuProps={{
                   PaperProps: {
                     style: {
                       maxHeight: 300,
                       width: 250,
                       overflow: "auto",
+                      backgroundColor: "rgb(18 18 18)",
+                      color: "rgb(210 210 210)",
                     },
                   },
                   disableScrollLock: true,
@@ -415,7 +417,7 @@ export const SignupAuth = () => {
                 value={date}
                 onChange={(e) => handleDateChange(e.target.value)}
                 placeholder="Date"
-                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-semidark"
+                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-dark"
               />
 
               <input
@@ -423,7 +425,7 @@ export const SignupAuth = () => {
                 value={month}
                 onChange={(e) => handleMonthChange(e.target.value)}
                 placeholder="Month"
-                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-semidark"
+                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-dark"
               />
 
               <input
@@ -431,14 +433,14 @@ export const SignupAuth = () => {
                 value={year}
                 onChange={(e) => handleYearChange(e.target.value)}
                 placeholder="Year"
-                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-semidark"
+                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-dark"
               />
             </div>
           </div>
           <button
             onClick={signup}
             disabled={isLoading}
-            className="my-4 w-full text-semilight bg-indigomain active:bg-dark  focus:outline-none focus:ring-2 focus:ring-semidark font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+            className="my-4 w-full text-semilight bg-indigomain active:bg-dark  focus:outline-none focus:ring-2 focus:ring-dark font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
           >
             Register
           </button>

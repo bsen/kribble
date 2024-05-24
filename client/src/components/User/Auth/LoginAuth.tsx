@@ -125,7 +125,7 @@ export const LoginAuth = () => {
                 value={email}
                 onChange={(e) => handleEmailChange(e.target.value)}
                 type="email"
-                className="h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-semidark"
+                className="h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
                 placeholder="Enter your email address"
               />
             </div>
@@ -137,7 +137,7 @@ export const LoginAuth = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 onKeyDown={handleKeyDown}
-                className="h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-semidark"
+                className="h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
                 placeholder="Enter password"
               />
             </div>
