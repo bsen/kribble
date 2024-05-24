@@ -114,22 +114,22 @@ export const Post = () => {
   };
   if (isLoading) {
     return (
-      <div className="bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-dark w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
   }
   return (
     <>
-      <div className="w-full bg-bgmain p-4 rounded-lg">
+      <div className="w-full bg-dark p-4 rounded-lg">
         <div className="flex gap-4 items-center">
           <button onClick={handleClose}>
             <ArrowBackIcon
-              className="p-1 bg-indigomain text-texttwo rounded-lg"
+              className="p-1 bg-indigomain text-semilight rounded-lg"
               sx={{ fontSize: 35 }}
             />
           </button>
-          <div className="text-xl flex justify-center items-center gap-5 font-light text-textmain text-center">
+          <div className="text-xl flex justify-center items-center gap-5 font-light text-light text-center">
             <div>Create Post in {name}</div>
           </div>
         </div>
@@ -140,7 +140,7 @@ export const Post = () => {
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="max-w:w-[80%] lg:max-w-[50%] rounded-lg border border-bordermain"
+                  className="max-w:w-[80%] lg:max-w-[50%] rounded-lg border border-semidark"
                 />
                 <button
                   onClick={() => {
@@ -161,7 +161,7 @@ export const Post = () => {
                 <div className="h-[5vh] w-fit rounded-lg  gap-2 flex justify-center items-center">
                   <AddPhotoAlternateIcon
                     sx={{ fontSize: 30 }}
-                    className="text-textmain"
+                    className="text-light"
                   />
                 </div>
               </label>
@@ -180,33 +180,33 @@ export const Post = () => {
           value={post}
           onChange={handlePostChange}
           rows={3}
-          className="w-full bg-bordermain overflow-auto no-scrollbar resize-none hover:bg-bgtwo focus:outline-none px-2 py-1 text-texttwo rounded-lg"
+          className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
           placeholder="Write your thoughts..."
           wrap="soft"
           maxLength={250}
         />
 
         <div className="flex w-full my-2 justify-between">
-          <div className="flex gap-2 text-xs text-texttwo w-fit justify-center items-center">
+          <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
             <div
               onClick={() => {
                 setAnonymity((prevState) => !prevState);
               }}
             >
               <VisibilityOffIcon
-                className={`${anonymity ? "text-rosemain" : "text-texttwo"}`}
+                className={`${anonymity ? "text-rosemain" : "text-semilight"}`}
               />
             </div>
             {anonymity ? (
               <div className="text-rosemain">Your identity will be hidden</div>
             ) : (
-              <div className="text-texttwo">Hide your identity</div>
+              <div className="text-semilight">Hide your identity</div>
             )}
           </div>
           <div>
             <button
               onClick={createCommunityPost}
-              className="text-texttwo text-base py-1 px-6 rounded-lg bg-indigomain"
+              className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
             >
               Post
             </button>

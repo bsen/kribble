@@ -144,21 +144,21 @@ export const HomeComponent = () => {
           postData.posts.map((post, index) => (
             <div
               key={index}
-              className="my-3 rounded-lg border border-bordermain  bg-bgmain"
+              className="my-3 rounded-lg border border-semidark  bg-dark"
             >
               {post.image && (
                 <img src={post.image} className="rounded-t-lg w-[100%]" />
               )}
 
               {post.content && (
-                <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+                <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
                   {post.content}
                 </div>
               )}
-              <div className="border-t border-bordermain py-4 flex flex-col gap-4">
-                <div className="flex gap-2 px-3 items-center text-base text-texttwo">
+              <div className="border-t border-semidark py-4 flex flex-col gap-4">
+                <div className="flex gap-2 px-3 items-center text-base text-semilight">
                   <button
-                    className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                    className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleLike(post.id);
@@ -179,7 +179,7 @@ export const HomeComponent = () => {
                           sx={{
                             fontSize: 22,
                           }}
-                          className="text-textmain"
+                          className="text-light"
                         />
                       </div>
                     )}
@@ -188,7 +188,7 @@ export const HomeComponent = () => {
 
                   <button
                     onClick={() => navigate(`/post/${post.id}`)}
-                    className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                    className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                   >
                     <ReplyIcon sx={{ fontSize: 24 }} />
                     {post.commentsCount}
@@ -235,18 +235,18 @@ export const HomeComponent = () => {
                             }}
                           >
                             {post.community && (
-                              <div className="text-textmain text-sm lg:text-base hover:underline underline-offset-2 font-normal">
+                              <div className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal">
                                 c/ {post.community.name}
                               </div>
                             )}
                           </div>
-                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                             · {getTimeDifference(post.createdAt)}
                           </div>
                         </div>
 
                         {post.anonymity ? (
-                          <div className="text-texttwo text-xs font-light">
+                          <div className="text-semilight text-xs font-light">
                             by {post.creator.username}
                           </div>
                         ) : (
@@ -255,7 +255,7 @@ export const HomeComponent = () => {
                               e.stopPropagation();
                               navigate(`/${post.creator.username}`);
                             }}
-                            className="text-texttwo text-xs font-light hover:underline underline-offset-2"
+                            className="text-semilight text-xs font-light hover:underline underline-offset-2"
                           >
                             by {post.creator.username}
                           </div>
@@ -265,7 +265,7 @@ export const HomeComponent = () => {
                       <>
                         <div className="flex gap-2 items-center">
                           {post.anonymity ? (
-                            <div className="text-textmain text-sm lg:text-base font-normal">
+                            <div className="text-light text-sm lg:text-base font-normal">
                               {post.creator.username}
                             </div>
                           ) : (
@@ -274,13 +274,13 @@ export const HomeComponent = () => {
                                 e.stopPropagation();
                                 navigate(`/${post.creator.username}`);
                               }}
-                              className="text-textmain text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                              className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
                             >
                               {post.creator.username}
                             </div>
                           )}
 
-                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                             · {getTimeDifference(post.createdAt)}
                           </div>
                         </div>
@@ -294,7 +294,7 @@ export const HomeComponent = () => {
         ) : (
           <div>
             {!isLoading && (
-              <div className="text-texttwo my-5 font-light text-center text-lg">
+              <div className="text-semilight my-5 font-light text-center text-lg">
                 No posts found
               </div>
             )}

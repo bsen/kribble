@@ -164,16 +164,16 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
 
   if (deleteState) {
     return (
-      <div className="w-full bg-bgmain h-screen flex justify-center items-center">
-        <div className="flex text-textmain flex-col gap-4 text-base items-center font-ubuntu font-normal">
+      <div className="w-full bg-dark h-screen flex justify-center items-center">
+        <div className="flex text-light flex-col gap-4 text-base items-center font-ubuntu font-normal">
           Do you really want to delete the post ?
-          <span className="text-xs font-light text-texttwo">
+          <span className="text-xs font-light text-semilight">
             note that you can not get back the deleted post
           </span>
           <div className="flex gap-5">
             <button
               onClick={deletePost}
-              className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1 rounded-lg"
+              className="text-light bg-red-500 hover:bg-red-400 font-normal px-4 py-1 rounded-lg"
             >
               Delete
             </button>
@@ -194,7 +194,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
 
   if (loadingState) {
     return (
-      <div className="bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-dark w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
@@ -224,7 +224,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3 p-3 rounded-lg border border-bordermain bg-bgmain"
+                className="my-3 p-3 rounded-lg border border-semidark bg-dark"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2 items-center">
@@ -251,12 +251,12 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                               e.stopPropagation();
                               navigate(`/${post.creator.username}`);
                             }}
-                            className="text-textmain text-sm lg:text-base hover:underline font-normal"
+                            className="text-light text-sm lg:text-base hover:underline font-normal"
                           >
                             {post.creator.username}
                           </div>
 
-                          <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                             · {getTimeDifference(post.createdAt)}
                           </div>
                         </div>
@@ -271,7 +271,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                       }}
                     >
                       <MoreVertIcon
-                        className="text-texttwo"
+                        className="text-semilight"
                         sx={{ fontSize: 20 }}
                       />
                     </button>
@@ -286,14 +286,14 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                       />
                     )}
 
-                    <div className="text-textmain text-sm lg:text-base font-light">
+                    <div className="text-light text-sm lg:text-base font-light">
                       {post.content}
                     </div>
                   </div>
 
-                  <div className="flex gap-2 mt-2 items-center text-sm text-texttwo">
+                  <div className="flex gap-2 mt-2 items-center text-sm text-semilight">
                     <button
-                      className="bg-bordermain text-rosemain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-semidark text-rosemain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleLike(post.id);
@@ -323,7 +323,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
 
                     <button
                       onClick={() => navigate(`/post/${post.id}`)}
-                      className="bg-bordermain text-indigomain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-semidark text-indigomain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     >
                       <ReplyIcon sx={{ fontSize: 22 }} />
                       {post.commentsCount}
@@ -339,7 +339,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                   <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
                 </div>
               ) : (
-                <div className="text-texttwo my-5 font-light text-center text-lg">
+                <div className="text-semilight my-5 font-light text-center text-lg">
                   No posts found
                 </div>
               )}

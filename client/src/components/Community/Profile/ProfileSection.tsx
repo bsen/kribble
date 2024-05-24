@@ -189,7 +189,7 @@ export const ProfileSection: React.FC = () => {
 
   if (loadingState) {
     return (
-      <div className="bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-dark w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
@@ -204,16 +204,16 @@ export const ProfileSection: React.FC = () => {
   }
   if (communityPostDeletionState) {
     return (
-      <div className="w-full bg-bgmain border-l border-r border-bordermain h-screen flex justify-center items-center">
+      <div className="w-full bg-dark border-l border-r border-semidark h-screen flex justify-center items-center">
         <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-normal">
           Do you really want to delete the post
-          <div className="text-xs font-light text-texttwo">
+          <div className="text-xs font-light text-semilight">
             note you can not get back the deleted item!
           </div>
           <div className="flex gap-5">
             <button
               onClick={deleteCommunityPost}
-              className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-lg"
+              className="text-light bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-lg"
             >
               Delete
             </button>
@@ -222,7 +222,7 @@ export const ProfileSection: React.FC = () => {
                 setDeletingPostId("");
                 setCommunityPostDeletionState(false);
               }}
-              className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
+              className="text-black bg-dark hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
             >
               Cancel
             </button>
@@ -246,21 +246,21 @@ export const ProfileSection: React.FC = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3  rounded-lg border border-bordermain  bg-bgmain"
+                className="my-3  rounded-lg border border-semidark  bg-dark"
               >
                 {post.image && (
                   <img src={post.image} className="rounded-t-lg w-[100%]" />
                 )}
 
                 {post.content && (
-                  <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+                  <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
                     {post.content}
                   </div>
                 )}
-                <div className="border-t border-bordermain py-4 flex flex-col gap-4">
-                  <div className="flex gap-2 px-3 items-center text-base text-texttwo">
+                <div className="border-t border-semidark py-4 flex flex-col gap-4">
+                  <div className="flex gap-2 px-3 items-center text-base text-semilight">
                     <button
-                      className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleLike(post.id);
@@ -281,7 +281,7 @@ export const ProfileSection: React.FC = () => {
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-textmain"
+                            className="text-light"
                           />
                         </div>
                       )}
@@ -290,7 +290,7 @@ export const ProfileSection: React.FC = () => {
 
                     <button
                       onClick={() => navigate(`/post/${post.id}`)}
-                      className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     >
                       <ReplyIcon sx={{ fontSize: 24 }} />
                       {post.commentsCount}
@@ -307,7 +307,7 @@ export const ProfileSection: React.FC = () => {
                       />
 
                       {post.anonymity ? (
-                        <div className="text-textmain text-sm lg:text-base font-normal">
+                        <div className="text-light text-sm lg:text-base font-normal">
                           {post.creator.username}
                         </div>
                       ) : (
@@ -316,12 +316,12 @@ export const ProfileSection: React.FC = () => {
                             e.stopPropagation();
                             navigate(`/${post.creator.username}`);
                           }}
-                          className="text-textmain text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                          className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
                         >
                           {post.creator.username}
                         </div>
                       )}
-                      <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                         · {getTimeDifference(post.createdAt)}
                       </div>
                     </div>
@@ -334,7 +334,7 @@ export const ProfileSection: React.FC = () => {
                           }}
                         >
                           <MoreVertIcon
-                            className="text-texttwo"
+                            className="text-semilight"
                             sx={{ fontSize: 20 }}
                           />
                         </button>
@@ -347,7 +347,7 @@ export const ProfileSection: React.FC = () => {
           ) : (
             <div>
               {!isLoading && (
-                <div className="text-texttwo my-5 font-light text-center text-lg">
+                <div className="text-semilight my-5 font-light text-center text-lg">
                   No posts found
                 </div>
               )}

@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
 import axios from "axios";
-import { CircularProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 interface CommunityData {
   id: string;
@@ -152,11 +151,7 @@ export const UpdateCommunityComponent = () => {
     navigate("/");
   };
   if (isLoading) {
-    return (
-      <div className="bg-bgmain w-full flex justify-center items-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LinearProgress sx={{ backgroundColor: "black" }} />;
   }
 
   if (CommunityDeletingState) {
@@ -179,13 +174,13 @@ export const UpdateCommunityComponent = () => {
                 setConfirmation(e.target.value);
               }}
               maxLength={25}
-              className=" h-10 w-full my-5 text-texttwo rounded-lg px-4 focus:outline-none border border-neutral-300"
+              className=" h-10 w-full my-5 text-semilight rounded-lg px-4 focus:outline-none border border-neutral-300"
             />
           </div>
           <div className="flex gap-5 justify-evenly items-center">
             <button
               onClick={deleteCommunity}
-              className="text-texttwo bg-rosemain font-normal px-4 py-1  rounded-lg"
+              className="text-semilight bg-rosemain font-normal px-4 py-1  rounded-lg"
             >
               Delete
             </button>
@@ -194,7 +189,7 @@ export const UpdateCommunityComponent = () => {
               onClick={() => {
                 setCommunityDeletingState(false);
               }}
-              className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
+              className="text-black bg-dark hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
             >
               Cancel
             </button>
@@ -208,7 +203,7 @@ export const UpdateCommunityComponent = () => {
   }
   return (
     <>
-      <div className="bg-bgmain h-fit  p-3 flex flex-col gap-4">
+      <div className="bg-dark h-fit  p-3 flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <button
             className="w-fit flex items-start"
@@ -216,7 +211,7 @@ export const UpdateCommunityComponent = () => {
               navigate(`/community/${communityData.name}`);
             }}
           >
-            <ArrowBackIcon sx={{ fontSize: 30 }} className="text-textmain" />
+            <ArrowBackIcon sx={{ fontSize: 30 }} className="text-light" />
           </button>
           <button
             onClick={() => {
@@ -231,10 +226,10 @@ export const UpdateCommunityComponent = () => {
 
         <div className="w-ful items-start flex justify-between">
           <div className="flex justify-center items-center">
-            <div className="absolute text-textmain z-50">
+            <div className="absolute text-light z-50">
               <button>
                 <label htmlFor="image-upload" className="cursor-pointer ">
-                  <CameraAltRoundedIcon className="bg-bgmain/50 p-1 rounded-lg" />
+                  <CameraAltRoundedIcon className="bg-dark/50 p-1 rounded-lg" />
                 </label>
                 <input
                   id="image-upload"
@@ -253,15 +248,15 @@ export const UpdateCommunityComponent = () => {
                   ? communityData.image
                   : "/group.png"
               }
-              className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10 border border-bordermain"
+              className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10 border border-semidark"
             />
           </div>
         </div>
         <div>
-          <div className="text-texttwo  text-sm font-light">Description</div>
+          <div className="text-semilight  text-sm font-light">Description</div>
           <textarea
             rows={4}
-            className="w-full text-texttwo bg-bordermain px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-bordermain"
+            className="w-full text-semilight bg-semidark px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-semidark"
             defaultValue={communityData.description}
             wrap="soft"
             maxLength={200}
@@ -271,7 +266,7 @@ export const UpdateCommunityComponent = () => {
           />
         </div>
         <button onClick={updateCommunity}>
-          <div className="text-texttwo bg-indigomain text-base font-light rounded-lg py-1">
+          <div className="text-semilight bg-indigomain text-base font-light rounded-lg py-1">
             save
           </div>
         </button>

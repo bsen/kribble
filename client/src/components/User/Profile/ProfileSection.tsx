@@ -174,16 +174,16 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
   if (deleteState) {
     return (
-      <div className="w-full bg-bgmain h-screen flex justify-center items-center">
-        <div className="flex text-textmain flex-col gap-4 text-base items-center font-ubuntu font-normal">
+      <div className="w-full bg-dark h-screen flex justify-center items-center">
+        <div className="flex text-light flex-col gap-4 text-base items-center font-ubuntu font-normal">
           Do you really want to delete the post ?
-          <span className="text-xs font-light text-texttwo">
+          <span className="text-xs font-light text-semilight">
             note that you can not get back the deleted post
           </span>
           <div className="flex gap-5">
             <button
               onClick={deletePost}
-              className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1 rounded-lg"
+              className="text-light bg-red-500 hover:bg-red-400 font-normal px-4 py-1 rounded-lg"
             >
               Delete
             </button>
@@ -204,7 +204,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
   if (loadingState) {
     return (
-      <div className="bg-bgmain w-full flex justify-center items-center">
+      <div className="bg-dark w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
@@ -235,21 +235,21 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3  rounded-lg border border-bordermain  bg-bgmain"
+                className="my-3  rounded-lg border border-semidark  bg-dark"
               >
                 {post.image && (
                   <img src={post.image} className="rounded-t-lg w-[100%]" />
                 )}
 
                 {post.content && (
-                  <div className="text-textmain my-6 px-3 font-ubuntu font-light text-base">
+                  <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
                     {post.content}
                   </div>
                 )}
-                <div className="border-t border-bordermain py-4 flex flex-col gap-4">
-                  <div className="flex gap-2 px-3 items-center text-base text-texttwo">
+                <div className="border-t border-semidark py-4 flex flex-col gap-4">
+                  <div className="flex gap-2 px-3 items-center text-base text-semilight">
                     <button
-                      className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleLike(post.id);
@@ -270,7 +270,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-textmain"
+                            className="text-light"
                           />
                         </div>
                       )}
@@ -279,7 +279,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
                     <button
                       onClick={() => navigate(`/post/${post.id}`)}
-                      className="bg-bordermain text-textmain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     >
                       <ReplyIcon sx={{ fontSize: 24 }} />
                       {post.commentsCount}
@@ -298,11 +298,11 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           className="w-7 h-7 rounded-lg"
                         />
                       </div>
-                      <div className="text-textmain text-sm lg:text-base font-normal">
+                      <div className="text-light text-sm lg:text-base font-normal">
                         {post.creator.username}
                       </div>
 
-                      <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                         · {getTimeDifference(post.createdAt)}
                       </div>
                     </div>
@@ -315,7 +315,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           }}
                         >
                           <MoreVertIcon
-                            className="text-texttwo"
+                            className="text-semilight"
                             sx={{ fontSize: 20 }}
                           />
                         </button>
@@ -328,7 +328,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
           ) : (
             <div>
               {!isLoading && (
-                <div className="text-texttwo my-5 font-light text-center text-lg">
+                <div className="text-semilight my-5 font-light text-center text-lg">
                   No posts found
                 </div>
               )}

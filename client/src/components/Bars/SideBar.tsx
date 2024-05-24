@@ -14,12 +14,12 @@ export const SideBar = () => {
 
   return (
     <>
-      <div className="flex border border-bordermain mt-3 bg-bgmain flex-col items-center p-4 justify-between h-fit rounded-lg">
+      <div className="flex border border-semidark mt-3 bg-dark flex-col items-center p-4 justify-between h-fit rounded-lg">
         <div
           onClick={() => {
             navigate("/");
           }}
-          className="bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 text-transparent bg-clip-text text-4xl font-ubuntu"
+          className="bg-white text-indigo-500  py-1 px-2 rounded-lg text-2xl font-ubuntu font-medium"
         >
           FriendCity
         </div>
@@ -30,8 +30,8 @@ export const SideBar = () => {
           }}
           className={`w-full h-10 px-3 mt-4 rounded-lg  flex items-center justify-start gap-2  font-light  ${
             location.pathname === "/"
-              ? "text-textmain text-base bg-bgtwo"
-              : "text-textmain text-sm"
+              ? "text-light text-base bg-semidark"
+              : "text-light text-sm"
           }`}
         >
           <HomeOutlinedIcon sx={{ fontSize: 25 }} />
@@ -43,8 +43,8 @@ export const SideBar = () => {
           }}
           className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
             location.pathname === "/communities"
-              ? "text-textmain text-base bg-bgtwo"
-              : "text-textmain text-sm"
+              ? "text-light text-base bg-semidark"
+              : "text-light text-sm"
           }`}
         >
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
@@ -57,12 +57,12 @@ export const SideBar = () => {
           }}
           className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
             location.pathname === "/matching"
-              ? "text-textmain text-base bg-bgtwo"
-              : "text-textmain text-sm"
+              ? "text-light text-base bg-semidark"
+              : "text-light text-sm"
           }`}
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
-          <div>Task Match</div>
+          <div>City Match</div>
         </button>
 
         <button
@@ -72,8 +72,8 @@ export const SideBar = () => {
           }}
           className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
             location.pathname === `/${currentUser}`
-              ? "text-textmain text-base bg-bgtwo"
-              : "text-textmain text-sm"
+              ? "text-light text-base bg-semidark"
+              : "text-light text-sm"
           }`}
         >
           <PersonOutlinedIcon sx={{ fontSize: 25 }} />
@@ -85,8 +85,8 @@ export const SideBar = () => {
           }}
           className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
             location.pathname === "/search"
-              ? "text-textmain text-base bg-bgtwo"
-              : "text-textmain text-sm"
+              ? "text-light text-base bg-semidark"
+              : "text-light text-sm"
           }`}
         >
           <SearchOutlinedIcon sx={{ fontSize: 25 }} />
@@ -98,7 +98,7 @@ export const SideBar = () => {
             navigate("/create/post");
           }}
           className={
-            "w-full h-10 px-3 mt-4 rounded-lg  bg-indigomain text-textmain flex items-center justify-start gap-2 text-sm font-light"
+            "w-full h-10 px-3 mt-4 rounded-lg  bg-indigomain text-light flex items-center justify-start gap-2 text-sm font-light"
           }
         >
           <AddIcon sx={{ fontSize: 25 }} />

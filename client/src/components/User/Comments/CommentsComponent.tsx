@@ -107,13 +107,13 @@ export const CommentsComponent = () => {
         <div className="w-full h-screen flex justify-center items-center">
           <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-normal">
             Do you really want to delete the comment
-            <span className="text-xs font-light text-texttwo">
+            <span className="text-xs font-light text-semilight">
               note you can not get back the deleted item!
             </span>
             <div className="flex gap-5">
               <button
                 onClick={deleteComment}
-                className="text-textmain bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-lg"
+                className="text-light bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-lg"
               >
                 Delete
               </button>
@@ -123,7 +123,7 @@ export const CommentsComponent = () => {
                   setDeleteCommentId("");
                   setDeleteCommentPostId("");
                 }}
-                className="text-black bg-bgmain hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
+                className="text-black bg-dark hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
               >
                 Cancel
               </button>
@@ -137,17 +137,17 @@ export const CommentsComponent = () => {
           ref={scrollContainerRef}
         >
           <NavBar />
-          <div className="text-lg font-ubuntu text-texttwo fonr-normal text-center mt-2">
+          <div className="text-lg font-ubuntu text-semilight fonr-normal text-center mt-2">
             Comments
           </div>
           {commentsData.comments.length > 0 ? (
             commentsData.comments.map((comment, index) => (
               <div
                 key={index}
-                className="border bg-bgmain my-2 rounded-lg border-bordermain p-4 hover:bg-bgmain"
+                className="border bg-dark my-2 rounded-lg border-semidark p-4 hover:bg-dark"
               >
                 <div className="flex flex-col gap-2 ">
-                  <div className="text-textmain w-full flex items-center justify-between gap-2 text-sm font-light">
+                  <div className="text-light w-full flex items-center justify-between gap-2 text-sm font-light">
                     <div className="flex gap-2 items-center">
                       <Link to={`/post/${comment.postId}`}>
                         <OpenInNewIcon
@@ -155,11 +155,11 @@ export const CommentsComponent = () => {
                           className="text-indigomain"
                         />
                       </Link>
-                      <div className="text-texttwo text-xs lg:text-sm font-ubuntu">
+                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                         · {getTimeDifference(comment.createdAt)}
                       </div>
                     </div>
-                    <div className="text-texttwo">
+                    <div className="text-semilight">
                       <button
                         onClick={() => {
                           setDeleteCommentId(comment.id);
@@ -171,14 +171,14 @@ export const CommentsComponent = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="text-textmain  text-sm lg:text-base font-light">
+                  <div className="text-light  text-sm lg:text-base font-light">
                     {comment.content}
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="text-texttwo my-5  font-light text-center text-lg">
+            <div className="text-semilight my-5  font-light text-center text-lg">
               No comments found.
             </div>
           )}
