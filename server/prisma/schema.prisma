@@ -42,10 +42,9 @@ model Match {
   person2    User     @relation("MatchPerson2", fields: [person2Id], references: [id])
   person2Id  String
   task       String?
-  taskState  Boolean  @default(false)
+  isTaskCompleted  Boolean  @default(false)
   createdAt  DateTime @default(now())
   expiresAt  DateTime @default(dbgenerated("(NOW() + INTERVAL '48 hours')"))
-  isCompleted Boolean  @default(false)
   @@unique([person1Id, person2Id])
 }
 

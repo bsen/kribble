@@ -166,7 +166,7 @@ export const UserData: React.FC = () => {
               <div className="text-base lg:text-lg font-normal text-textmain">
                 {userData.username}
               </div>
-              <div className="text-xs text-texttwo font-light">
+              <div className="text-xs text-texttwo font-light font-ubuntu">
                 {userData.fullname}
               </div>
             </div>
@@ -186,17 +186,17 @@ export const UserData: React.FC = () => {
               </div>
             </button>
           </div>
-          <div className="text-sm text-textmain font-light">
+          <div className="text-sm text-texttwo font-ubuntu font-light">
             {userData.bio ? userData.bio : ""}
           </div>
-          <div className="text-sm text-textmain font-light">
+          <div className="text-sm text-texttwo font-ubuntu font-light">
             {userData.college ? userData.college : ""}
           </div>
-          <div className="text-sm text-textmain font-light">
+          <div className="text-sm text-texttwo font-ubuntu font-light">
             {userData.interest ? userData.interest : ""}
           </div>
 
-          <div className="text-sm text-indigomain font-light hover:underline">
+          <div className="text-sm text-indigomain font-light font-ubuntu hover:underline">
             <a
               href={`${
                 userData.website &&
