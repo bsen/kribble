@@ -24,28 +24,6 @@ interface MatchData {
   person2: UserData;
 }
 
-const interests = [
-  "Programming",
-  "Startup",
-  "Drama",
-  "Singing",
-  "Dancing",
-  "Writing",
-  "Music",
-  "Fashion",
-  "Art",
-  "Literature",
-  "Sports",
-  "Fitness",
-  "Social Work",
-  "Movies",
-  "Anime",
-  "Travel",
-  "Photography",
-  "Gaming",
-  "Still figuring out",
-];
-
 const colleges = [
   "VIT Vellore",
   "VIT Chennai",
@@ -76,7 +54,6 @@ export const MatchingComponent: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showMatches, setShowMatches] = useState(true);
   const [college, setCollege] = useState<string>("");
-  const [interest, setInterest] = useState<string>("");
   const [matches, setMatches] = useState<MatchData[]>([]);
   const [popup, setPopup] = useState<string>("");
 
@@ -88,17 +65,10 @@ export const MatchingComponent: React.FC = () => {
     setCollege(event.target.value as string);
   };
 
-  const handleInterestChange = (event: SelectChangeEvent) => {
-    setInterest(event.target.value as string);
-  };
-
   const findMatch = async () => {
     try {
       if (!college) {
         return setPopup("Please select a college.");
-      }
-      if (!interest) {
-        return setPopup("Please select a interest.");
       }
       setPopup("Finding or Creating match...");
       const response = await axios.post(
@@ -106,7 +76,6 @@ export const MatchingComponent: React.FC = () => {
         {
           token,
           college,
-          interest,
         }
       );
       setPopup("");
@@ -296,42 +265,6 @@ export const MatchingComponent: React.FC = () => {
               </Select>
             </FormControl>
           </div>
-          <div className="w-full">
-            <div className="text-semilight text-sm font-light">Interest</div>
-            <FormControl className="w-full">
-              <Select
-                sx={{
-                  boxShadow: "none",
-                  color: "rgb(210 210 210);",
-                  ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                }}
-                className="h-9 w-full text-white rounded-lg focus:outline-none bg-semidark"
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      maxHeight: 300,
-                      width: 250,
-                      overflow: "auto",
-                    },
-                  },
-                  disableScrollLock: true,
-                  disablePortal: true,
-                }}
-                onChange={handleInterestChange}
-                value={interest}
-              >
-                <MenuItem value="" disabled>
-                  Select Interest
-                </MenuItem>
-                {interests.map((interest) => (
-                  <MenuItem key={interest} value={interest}>
-                    {interest}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-
           <button
             onClick={findMatch}
             className="bg-indigomain text-center text-semilight w-36 font-ubuntu font-normal py-1 text-base rounded-lg"

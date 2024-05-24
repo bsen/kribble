@@ -27,9 +27,7 @@ matchRouter.post("/create/match", async (c) => {
     const body = await c.req.json();
     const token = body.token;
     const SelectedCollege = body.college;
-    const SelectedInterest: keyof Tasks = body.interest;
     const userId = await verify(token, c.env.JWT_SECRET);
-    console.log(userId, SelectedCollege, SelectedInterest);
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -83,23 +81,25 @@ matchRouter.post("/create/match", async (c) => {
             ],
           },
         },
-        AND: [{ college: SelectedCollege }, { interest: SelectedInterest }],
+        college: SelectedCollege,
       },
     });
 
     if (potentialMatches.length === 0) {
       return c.json({
         status: 404,
-        message: "No potential matches found based on your preferences",
+        message: "No potential matches found based on your college",
       });
     }
 
     const randomMatch =
       potentialMatches[Math.floor(Math.random() * potentialMatches.length)];
 
+    const taskKeys = Object.keys(tasks) as (keyof Tasks)[];
+    const randomTaskKey = taskKeys[Math.floor(Math.random() * taskKeys.length)];
     const randomTask =
-      tasks[SelectedInterest][
-        Math.floor(Math.random() * tasks[SelectedInterest].length)
+      tasks[randomTaskKey][
+        Math.floor(Math.random() * tasks[randomTaskKey].length)
       ];
 
     const createMatch = await prisma.match.create({
