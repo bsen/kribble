@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
 import axios from "axios";
-import { CircularProgress, LinearProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 interface CommunityData {
   id: string;
