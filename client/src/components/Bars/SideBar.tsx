@@ -19,11 +19,10 @@ export const SideBar = () => {
           onClick={() => {
             navigate("/");
           }}
-          className="bg-white text-indigo-500  py-1 px-2 rounded-lg text-2xl font-ubuntu font-medium"
+          className="bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 text-transparent bg-clip-text text-4xl font-ubuntu"
         >
           FriendCity
         </div>
-
         <button
           onClick={() => {
             navigate("/");

@@ -27,88 +27,41 @@ userFeedRouter.post("/posts", async (c) => {
 
     const cursor = body.cursor || null;
     const take = 10;
-
-    type PostWithDetails = Prisma.PostGetPayload<{
-      include: {
-        creator: {
-          select: {
-            id: true;
-            username: true;
-            image: true;
-            college: true;
-          };
-        };
-      };
-    }>;
-
-    const uniqueById = (posts: PostWithDetails[]): PostWithDetails[] => {
-      const uniquePosts = new Map<string, PostWithDetails>();
-      posts.forEach((post) => uniquePosts.set(post.id, post));
-      return Array.from(uniquePosts.values());
-    };
-
-    const sameColegePostsWithUser = await prisma.post.findMany({
-      where: {
-        creator: {
-          college: findUser.college,
-        },
-      },
-      include: {
+    const allPosts = await prisma.post.findMany({
+      select: {
+        id: true,
+        image: true,
+        content: true,
+        likesCount: true,
+        anonymity: true,
         creator: {
           select: {
             id: true,
             username: true,
             image: true,
-            college: true,
           },
         },
+        community: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+        createdAt: true,
+        commentsCount: true,
       },
       orderBy: {
         createdAt: "desc",
       },
       cursor: cursor ? { id: cursor } : undefined,
-      take: take,
+      take: take + 1,
     });
 
-    const userPosts: PostWithDetails[] = await prisma.post.findMany({
-      where: {
-        creatorId: findUser.id,
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            username: true,
-            image: true,
-            college: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take: take,
-    });
-
-    let allPosts: PostWithDetails[] = [
-      ...sameColegePostsWithUser,
-      ...userPosts,
-    ];
-    allPosts = uniqueById(allPosts);
-
-    allPosts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-
-    const start = cursor
-      ? allPosts.findIndex((post) => post.id === cursor) + 1
-      : 0;
-    const paginatedPosts = allPosts.slice(start, start + take);
-    const nextCursor =
-      paginatedPosts.length === take
-        ? paginatedPosts[paginatedPosts.length - 1].id
-        : null;
-
+    const hasMore = allPosts.length > take;
+    const posts = hasMore ? allPosts.slice(0, -1) : allPosts;
+    const nextCursor = hasMore ? allPosts[allPosts.length - 1].id : null;
     const postsWithLikedState = await Promise.all(
-      paginatedPosts.map(async (post) => {
+      posts.map(async (post) => {
         const isLiked = await prisma.postLike.findUnique({
           where: {
             userId_postId: {
@@ -117,14 +70,25 @@ userFeedRouter.post("/posts", async (c) => {
             },
           },
         });
-
+        const creatorDetails = post.anonymity
+          ? {
+              username: "unknown",
+              image: null,
+            }
+          : {
+              username: post.creator.username,
+              image: post.creator.image,
+            };
         return {
           ...post,
+          creator: {
+            ...post.creator,
+            ...creatorDetails,
+          },
           isLiked: isLiked ? true : false,
         };
       })
     );
-
     return c.json({ status: 200, data: postsWithLikedState, nextCursor });
   } catch (error) {
     console.log(error);

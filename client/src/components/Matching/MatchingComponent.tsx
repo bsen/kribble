@@ -218,7 +218,7 @@ export const MatchingComponent: React.FC = () => {
     <>
       <NavBar />
       <div className="h-screen flex flex-col justify-center items-center">
-        <div className="gap-4 flex flex-col items-center bg-dark p-3 justify-center rounded-lg lg:w-[70%]  w-[90%]">
+        <div className="gap-4 flex flex-col items-center bg-dark p-3 py-6 justify-center rounded-lg lg:w-[70%]  w-[90%]">
           <img src="/people.png" className="h-16 w-16" alt="people" />
           <div className="text-center flex flex-col items-center justify-center gap-1">
             <div className="text-2xl font-normal text-light font-ubuntu">
@@ -267,22 +267,21 @@ export const MatchingComponent: React.FC = () => {
               </Select>
             </FormControl>
           </div>
-          <div className="flex justify-evenly w-full items-center">
-            <button
-              onClick={findMatch}
-              className="bg-indigomain text-center text-semilight w-32 font-ubuntu font-normal py-1 text-base rounded-lg"
-            >
-              Create Match
-            </button>
-            <button
-              onClick={() => {
-                setShowMatches(true);
-              }}
-              className="bg-semidark text-center text-semilight w-32 font-ubuntu font-light py-1 text-base rounded-lg"
-            >
-              Task matches
-            </button>
-          </div>
+
+          <button
+            onClick={findMatch}
+            className="bg-indigomain text-center text-semilight w-32 font-ubuntu font-normal py-1 text-base rounded-lg"
+          >
+            Create Match
+          </button>
+          <button
+            onClick={() => {
+              setShowMatches(true);
+            }}
+            className="bg-semidark text-center text-semilight w-32 font-ubuntu font-light py-1 text-base rounded-lg"
+          >
+            Task matches
+          </button>
         </div>
 
         {popup && (
