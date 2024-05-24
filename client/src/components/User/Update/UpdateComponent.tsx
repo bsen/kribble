@@ -4,7 +4,7 @@ import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../../config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 import { Logout } from "../Auth/Logout";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -202,11 +202,7 @@ export const UpdateProfileComponent = () => {
     }
   }
   if (isLoading) {
-    return (
-      <div className="bg-dark w-full flex justify-center items-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LinearProgress sx={{ backgroundColor: "black" }} />;
   }
   return (
     <>
@@ -292,7 +288,7 @@ export const UpdateProfileComponent = () => {
                 />
               </div>
               <div>
-                <div className="text-semilight text-sm  font-light">Bio</div>
+                <div className="text-semilight text-sm font-light">Bio</div>
                 <textarea
                   rows={2}
                   className="w-full bg-semidark text-semilight text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-semidark"

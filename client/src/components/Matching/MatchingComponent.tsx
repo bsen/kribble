@@ -218,7 +218,7 @@ export const MatchingComponent: React.FC = () => {
     <>
       <NavBar />
       <div className="h-screen flex flex-col justify-center items-center">
-        <div className="gap-4 flex flex-col items-center bg-dark p-3 justify-center rounded-lg w-[95%]">
+        <div className="gap-4 flex flex-col items-center bg-dark p-3 justify-center rounded-lg lg:w-[70%]  w-[90%]">
           <img src="/people.png" className="h-16 w-16" alt="people" />
           <div className="text-center flex flex-col items-center justify-center gap-1">
             <div className="text-2xl font-normal text-light font-ubuntu">
@@ -230,8 +230,10 @@ export const MatchingComponent: React.FC = () => {
               within 48 hours to get points and continue matching.
             </div>
           </div>
-          <div className="w-full">
-            <div className="text-semilight text-sm font-light">College</div>
+          <div className="w-full mb-4">
+            <div className="text-semilight text-sm font-light mb-1">
+              College
+            </div>
             <FormControl className="w-full">
               <Select
                 sx={{
@@ -265,20 +267,22 @@ export const MatchingComponent: React.FC = () => {
               </Select>
             </FormControl>
           </div>
-          <button
-            onClick={findMatch}
-            className="bg-indigomain text-center text-semilight w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
-          >
-            Create Match
-          </button>
-          <button
-            onClick={() => {
-              setShowMatches(true);
-            }}
-            className="bg-semidark text-center text-semilight w-36 font-ubuntu font-light py-1 text-base rounded-lg"
-          >
-            Task matches
-          </button>
+          <div className="flex justify-evenly w-full items-center">
+            <button
+              onClick={findMatch}
+              className="bg-indigomain text-center text-semilight w-32 font-ubuntu font-normal py-1 text-base rounded-lg"
+            >
+              Create Match
+            </button>
+            <button
+              onClick={() => {
+                setShowMatches(true);
+              }}
+              className="bg-semidark text-center text-semilight w-32 font-ubuntu font-light py-1 text-base rounded-lg"
+            >
+              Task matches
+            </button>
+          </div>
         </div>
 
         {popup && (

@@ -4,7 +4,7 @@ import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import axios from "axios";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 interface CommunityData {
   id: string;
@@ -152,11 +152,7 @@ export const UpdateCommunityComponent = () => {
     navigate("/");
   };
   if (isLoading) {
-    return (
-      <div className="bg-dark w-full flex justify-center items-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LinearProgress sx={{ backgroundColor: "black" }} />;
   }
 
   if (CommunityDeletingState) {

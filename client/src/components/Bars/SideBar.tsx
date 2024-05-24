@@ -62,7 +62,7 @@ export const SideBar = () => {
           }`}
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
-          <div>Task Match</div>
+          <div>City Match</div>
         </button>
 
         <button
