@@ -204,7 +204,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
   if (loadingState) {
     return (
-      <div className="bg-dark w-full flex justify-center items-center">
+      <div className="w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );

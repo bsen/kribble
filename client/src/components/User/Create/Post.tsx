@@ -113,7 +113,7 @@ export const Post = () => {
   };
   if (isLoading) {
     return (
-      <div className="bg-dark w-full flex justify-center items-center">
+      <div className="w-full flex justify-center items-center">
         <CircularProgress />
       </div>
     );
