@@ -310,30 +310,32 @@ export const Post = () => {
                         {match.matchedUser ? match.matchedUser.username : ""}
                       </div>
                     </div>
-                    <button
-                      onClick={() => {
-                        setTaggedUser(match.matchedUser.username);
-                        setTaskId(match.id);
-                        setTask(match.task);
-                        setShowMatches(false);
-                      }}
-                      className="text-indigomain active:bg-semilight bg-light px-2 w-fit font-medium flex items-center  text-sm rounded-full"
-                    >
-                      <AddIcon /> Tag
-                    </button>
+                    {!match.isTaskCompleted && (
+                      <button
+                        onClick={() => {
+                          setTaggedUser(match.matchedUser.username);
+                          setTaskId(match.id);
+                          setTask(match.task);
+                          setShowMatches(false);
+                        }}
+                        className="text-indigomain active:bg-semilight bg-light px-2 w-fit font-medium flex items-center  text-sm rounded-full"
+                      >
+                        <AddIcon /> Tag
+                      </button>
+                    )}
                   </div>
-                  <div className="text-left font-light text-semilight text-sm">
+                  <div className="text-left font-light mb-2 text-semilight text-sm">
                     Task: {match.task}
                   </div>
-                  <div className="flex items-center gap-2 mt-2 text-xs">
-                    <div className="text-left font-light text-semilight">
-                      {match.isTaskCompleted
-                        ? "Task Completed"
-                        : "Task Pending"}{" "}
+                  <div className="flex items-center gap-2 mt-2 text-xs text-semilight">
+                    <div className="text-left font-light">
+                      {match.isTaskCompleted ? (
+                        <div className="text-green-400">Task Completed</div>
+                      ) : (
+                        <div className="text-rose-400">Task Pending</div>
+                      )}
                     </div>
-                    <div className="text-semilight">
-                      · {getFormattedRemainingTime(match.expiresAt)}
-                    </div>{" "}
+                    <div>· {getFormattedRemainingTime(match.expiresAt)}</div>{" "}
                   </div>
                 </div>
               </div>

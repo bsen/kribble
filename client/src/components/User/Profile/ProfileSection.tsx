@@ -24,6 +24,12 @@ interface Post {
     username: string;
     image: string | null;
   };
+  task: string;
+  taggedUser: {
+    id: string;
+    username: string;
+    image: string;
+  };
   content: string;
   image: string;
   createdAt: string;
@@ -244,6 +250,29 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                 {post.content && (
                   <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
                     {post.content}
+                  </div>
+                )}
+                {post.task && (
+                  <div className="px-3 py-6 bg-semidark">
+                    <div
+                      onClick={() => {
+                        navigate(`/${post.taggedUser.username}`);
+                      }}
+                      className="text-indigomain bg-light w-fit flex items-center gap-2  mb-2 px-2 py-1 rounded-full font-ubuntu font-light text-xs"
+                    >
+                      <img
+                        className="h-4 w-4 rounded-lg"
+                        src={
+                          post.taggedUser.image
+                            ? post.taggedUser.image
+                            : "/user.png"
+                        }
+                      />{" "}
+                      {post.taggedUser.username}
+                    </div>
+                    <div className="text-light font-ubuntu font-light text-sm">
+                      Match task: {post.task}
+                    </div>
                   </div>
                 )}
                 <div className="border-t border-semidark py-4 flex flex-col gap-4">
