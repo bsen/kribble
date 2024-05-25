@@ -120,7 +120,7 @@ export const MatchingComponent: React.FC = () => {
     const formattedHours = hours.toString().padStart(2, "0");
     const formattedMinutes = minutes.toString().padStart(2, "0");
 
-    return `${formattedHours}h ${formattedMinutes}m remaining`;
+    return `${formattedHours}h ${formattedMinutes}m match life remaining`;
   };
   if (showMatches) {
     return (
@@ -162,21 +162,23 @@ export const MatchingComponent: React.FC = () => {
                         {match.matchedUser ? match.matchedUser.username : ""}
                       </div>
                     </div>
-                    <div className="text-left font-light text-semilight text-sm">
+                    <div className="text-left font-light mb-2 text-semilight text-sm">
                       Task: {match.task}
                     </div>
-                    <button className="bg-indigomain my-4 text-center text-semilight w-full font-ubuntu font-normal py-1 text-base rounded-lg">
-                      Post
-                    </button>
-                    <div className="flex items-center gap-2 text-xs">
-                      <div className="text-left font-light text-semilight">
-                        {match.isTaskCompleted
-                          ? "Task Completed"
-                          : "Task Pending"}{" "}
+                    {!match.isTaskCompleted && (
+                      <button className="bg-indigomain text-center text-semilight w-full font-ubuntu font-normal py-1 text-base rounded-lg">
+                        Post
+                      </button>
+                    )}
+                    <div className="flex items-center gap-2 mt-2 text-xs text-semilight">
+                      <div className="text-left font-light">
+                        {match.isTaskCompleted ? (
+                          <div className="text-green-400">Task Completed</div>
+                        ) : (
+                          <div className="text-rose-400">Task Pending</div>
+                        )}
                       </div>
-                      <div className="text-semilight">
-                        · {getFormattedRemainingTime(match.expiresAt)}
-                      </div>{" "}
+                      <div>· {getFormattedRemainingTime(match.expiresAt)}</div>{" "}
                     </div>
                   </div>
                 </div>
