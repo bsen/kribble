@@ -21,7 +21,6 @@ type Tasks = {
   Fashion: string[];
   Art: string[];
 };
-
 matchRouter.post("/create/match", async (c) => {
   try {
     const body = await c.req.json();
@@ -44,16 +43,8 @@ matchRouter.post("/create/match", async (c) => {
 
     const existingMatches = await prisma.match.findMany({
       where: {
-        OR: [
-          {
-            person1Id: userId.id,
-            expiresAt: { gt: new Date() },
-          },
-          {
-            person2Id: userId.id,
-            expiresAt: { gt: new Date() },
-          },
-        ],
+        initiatorId: userId.id,
+        expiresAt: { gt: new Date() },
       },
     });
 
@@ -70,14 +61,13 @@ matchRouter.post("/create/match", async (c) => {
               ...(
                 await prisma.match.findMany({
                   where: {
-                    OR: [{ person1Id: userId.id }, { person2Id: userId.id }],
+                    initiatorId: userId.id,
                   },
                   select: {
-                    person1Id: true,
-                    person2Id: true,
+                    matchedUserId: true,
                   },
                 })
-              ).flatMap((match) => [match.person1Id, match.person2Id]),
+              ).map((match) => match.matchedUserId),
             ],
           },
         },
@@ -104,17 +94,19 @@ matchRouter.post("/create/match", async (c) => {
 
     const createMatch = await prisma.match.create({
       data: {
-        person1Id: userId.id,
-        person2Id: randomMatch.id,
+        initiatorId: userId.id,
+        matchedUserId: randomMatch.id,
         task: randomTask,
       },
     });
+    console.log(createMatch);
     if (!createMatch) {
       return c.json({
         status: 404,
         message: "Match creation failed, Network error",
       });
     }
+
     return c.json({ status: 200, message: "Match created" });
   } catch (error) {
     console.error(error);
@@ -134,21 +126,18 @@ matchRouter.post("/matches", async (c) => {
 
     const matches = await prisma.match.findMany({
       where: {
-        OR: [
-          {
-            person1Id: userId.id,
-            expiresAt: { gt: new Date() },
-          },
-          {
-            person2Id: userId.id,
-            expiresAt: { gt: new Date() },
-          },
-        ],
+        initiatorId: userId.id,
+        expiresAt: { gt: new Date() },
       },
       select: {
         id: true,
-        person1: true,
-        person2: true,
+        matchedUser: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
         task: true,
         isTaskCompleted: true,
         expiresAt: true,
@@ -158,53 +147,7 @@ matchRouter.post("/matches", async (c) => {
       },
     });
 
-    const formattedMatches = matches.map((match) => {
-      const formattedMatch: {
-        person1?: {
-          id: string;
-          username: string;
-          interest: string | null;
-          college: string | null;
-          image: string | null;
-        };
-        person2?: {
-          id: string;
-          username: string;
-          interest: string | null;
-          college: string | null;
-          image: string | null;
-        };
-        id: string | null;
-        task: string | null;
-        isTaskCompleted: boolean;
-        expiresAt: Date;
-      } = {
-        id: match.id,
-        task: match.task,
-        isTaskCompleted: match.isTaskCompleted,
-        expiresAt: match.expiresAt,
-      };
-      if (userId.id === match.person1?.id) {
-        formattedMatch.person2 = {
-          id: match.person2.id,
-          username: match.person2.username,
-          interest: match.person2.interest,
-          college: match.person2.college,
-          image: match.person2.image,
-        };
-      }
-      if (userId.id === match.person2?.id) {
-        formattedMatch.person1 = {
-          id: match.person1.id,
-          username: match.person1.username,
-          interest: match.person1.interest,
-          college: match.person1.college,
-          image: match.person1.image,
-        };
-      }
-      return formattedMatch;
-    });
-    return c.json({ status: 200, data: formattedMatches });
+    return c.json({ status: 200, data: matches });
   } catch (error) {
     console.error(error);
     return c.json({ status: 500, message: "Internal Server Error" });

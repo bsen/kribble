@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Match" ALTER COLUMN "expiresAt" SET DEFAULT (NOW() + INTERVAL '24 hours'),
+ALTER COLUMN "initiatorId" DROP DEFAULT,
+ALTER COLUMN "matchedUserId" DROP DEFAULT;

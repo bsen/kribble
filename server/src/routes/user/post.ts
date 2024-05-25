@@ -19,15 +19,19 @@ userPostRouter.post("/create", async (c) => {
     const file = formData.get("image") || null;
     const post = formData.get("post");
     const token = formData.get("token");
+    const taskId = formData.get("taskId");
+    const taggedUser = formData.get("taggedUser");
     const anonymity = formData.get("anonymity");
     let anonymityBollean;
 
     if (
       typeof post !== "string" ||
       typeof token !== "string" ||
-      typeof anonymity !== "string"
+      typeof anonymity !== "string" ||
+      typeof taskId !== "string" ||
+      typeof taggedUser !== "string"
     ) {
-      return c.json({ status: 400, message: "Invalid post or token" });
+      return c.json({ status: 400, message: "Invalid post data or token" });
     }
 
     const prisma = new PrismaClient({
@@ -46,7 +50,6 @@ userPostRouter.post("/create", async (c) => {
     if (anonymity === "true") {
       anonymityBollean = true;
     }
-
     let variantUrl = null;
 
     if (file) {
@@ -75,21 +78,69 @@ userPostRouter.post("/create", async (c) => {
       }
     }
 
-    const createPost = await prisma.post.create({
-      data: {
-        content: post,
-        anonymity: anonymityBollean,
-        creator: { connect: { id: userId.id } },
-        image: variantUrl || null,
-      },
-    });
-    if (!createPost) {
-      return c.json({ status: 403, message: "Failed to create the post" });
+    if (taskId) {
+      const findTask = await prisma.match.findUnique({
+        where: {
+          id: taskId,
+        },
+        select: {
+          task: true,
+          matchedUser: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+      });
+      if (findTask?.matchedUser.username !== taggedUser) {
+        return c.json({ status: 400, message: "User tagging failed" });
+      }
+      const createPost = await prisma.post.create({
+        data: {
+          content: post,
+          anonymity: anonymityBollean,
+          creator: { connect: { id: userId.id } },
+          image: variantUrl || null,
+          task: findTask.task,
+          taggedUser: { connect: { id: findTask.matchedUser.id } },
+        },
+      });
+      const updateTask = await prisma.match.update({
+        where: {
+          id: taskId,
+        },
+        data: {
+          isTaskCompleted: true,
+        },
+      });
+      if (!createPost || !updateTask) {
+        return c.json({
+          status: 403,
+          message: "Failed to create the tasked post",
+        });
+      }
+      return c.json({
+        status: 200,
+        message: "Community post created successfully",
+      });
+    } else {
+      const createPost = await prisma.post.create({
+        data: {
+          content: post,
+          anonymity: anonymityBollean,
+          creator: { connect: { id: userId.id } },
+          image: variantUrl || null,
+        },
+      });
+      if (!createPost) {
+        return c.json({ status: 403, message: "Failed to create the post" });
+      }
+      return c.json({
+        status: 200,
+        message: "Community post created successfully",
+      });
     }
-    return c.json({
-      status: 200,
-      message: "Community post created successfully",
-    });
   } catch (error) {
     return c.json({ status: 400, message: "Try again later, Network error" });
   }
