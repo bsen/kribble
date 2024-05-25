@@ -85,6 +85,7 @@ userPostRouter.post("/create", async (c) => {
         },
         select: {
           task: true,
+          isTaskCompleted: true,
           matchedUser: {
             select: {
               id: true,
@@ -95,6 +96,9 @@ userPostRouter.post("/create", async (c) => {
       });
       if (findTask?.matchedUser.username !== taggedUser) {
         return c.json({ status: 400, message: "User tagging failed" });
+      }
+      if (findTask.isTaskCompleted === true) {
+        return c.json({ status: 400, message: "Task already completed" });
       }
       const createPost = await prisma.post.create({
         data: {
@@ -217,6 +221,14 @@ userPostRouter.post("/all/posts", async (c) => {
         image: true,
         content: true,
         likesCount: true,
+        task: true,
+        taggedUser: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
         creator: {
           select: {
             id: true,

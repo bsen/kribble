@@ -34,6 +34,14 @@ userFeedRouter.post("/posts", async (c) => {
         content: true,
         likesCount: true,
         anonymity: true,
+        task: true,
+        taggedUser: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
         creator: {
           select: {
             id: true,
