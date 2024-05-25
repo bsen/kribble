@@ -6,6 +6,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
   id                    String                @id @default(uuid())
   fullname              String
@@ -28,24 +29,23 @@ model User {
   comments              Comment[]             @relation("UserComments")
   createdCommunities    Community[]           @relation("Creator")
   memberOfCommunities   CommunityMembership[] @relation("UserCommunityMembership")
-  taggedInPosts         PostTagging[]         @relation("UserPostTagging")
-  taggedInComments      CommentTagging[]      @relation("UserCommentTagging")
-  matchesPerson1 Match[] @relation("MatchPerson1")
-  matchesPerson2 Match[] @relation("MatchPerson2")
+  taggedInPosts         Post[]                @relation("UserPostTagging")
+  InitiatorRelation     Match[]               @relation("Initiator")
+  MatchedUserRelation   Match[]               @relation("MatchedUser")
   createdAt             DateTime              @default(now())
 }
 
 model Match {
-  id         String   @id @default(uuid())
-  person1    User     @relation("MatchPerson1", fields: [person1Id], references: [id])
-  person1Id  String
-  person2    User     @relation("MatchPerson2", fields: [person2Id], references: [id])
-  person2Id  String
-  task       String?
-  isTaskCompleted  Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  expiresAt  DateTime @default(dbgenerated("(NOW() + INTERVAL '24 hours')"))
-  @@unique([person1Id, person2Id])
+  id String @id @default(uuid())
+  initiator User @relation("Initiator", fields: [initiatorId], references: [id])
+  initiatorId String
+  matchedUser User @relation("MatchedUser", fields: [matchedUserId], references: [id])
+  matchedUserId String
+  task String?
+  isTaskCompleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  expiresAt DateTime @default(dbgenerated("(NOW() + INTERVAL '24 hours')"))
+  @@unique([initiatorId, matchedUserId])
 }
 
 model Following {
@@ -97,20 +97,21 @@ model Post {
   community      Community?     @relation("CommunityPosts", fields: [communityId], references: [id])
   communityId    String?
   commentsCount  Int            @default(0)
-  taggedUsers    PostTagging[]  @relation("PostUserTagging")
+  taggedUser     User?          @relation("UserPostTagging", fields: [taggedUserId], references: [id])
+  taggedUserId   String?
   createdAt      DateTime       @default(now())
+  task           String?
 }
 
 model Comment {
-  id             String           @id @default(uuid())
+  id             String   @id @default(uuid())
   content        String
-  creator        User             @relation("UserComments", fields: [creatorId], references: [id])
+  creator        User     @relation("UserComments", fields: [creatorId], references: [id])
   creatorId      String
-  anonymity      Boolean          @default(false)
-  post           Post             @relation("PostComments", fields: [postId], references: [id])
+  anonymity      Boolean  @default(false)
+  post           Post     @relation("PostComments", fields: [postId], references: [id])
   postId         String
-  taggedUsers    CommentTagging[] @relation("CommentUserTagging")
-  createdAt      DateTime         @default(now())
+  createdAt      DateTime @default(now())
 }
 
 model PostLike {
@@ -121,24 +122,4 @@ model PostLike {
   postId    String
   createdAt DateTime @default(now())
   @@unique([userId, postId])
-}
-
-model PostTagging {
-  id        String   @id @default(uuid())
-  post      Post     @relation("PostUserTagging", fields: [postId], references: [id])
-  postId    String
-  user      User     @relation("UserPostTagging", fields: [userId], references: [id])
-  userId    String
-  createdAt DateTime @default(now())
-  @@unique([postId, userId])
-}
-
-model CommentTagging {
-  id         String   @id @default(uuid())
-  comment    Comment  @relation("CommentUserTagging", fields: [commentId], references: [id])
-  commentId  String
-  user       User     @relation("UserCommentTagging", fields: [userId], references: [id])
-  userId     String
-  createdAt  DateTime @default(now())
-  @@unique([commentId, userId])
 }

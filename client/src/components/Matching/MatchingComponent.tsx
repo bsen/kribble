@@ -10,18 +10,16 @@ import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 
-interface UserData {
-  id: string;
-  username: string;
-  image: string | null;
-}
 interface MatchData {
   id: string | null;
-  task: boolean | null;
+  task: string | null;
   isTaskCompleted: boolean;
   expiresAt: string;
-  person1: UserData;
-  person2: UserData;
+  matchedUser: {
+    id: string;
+    username: string;
+    image: string;
+  };
 }
 
 const colleges = [
@@ -124,7 +122,6 @@ export const MatchingComponent: React.FC = () => {
 
     return `${formattedHours}h ${formattedMinutes}m remaining`;
   };
-  console.log(matches);
   if (showMatches) {
     return (
       <>
@@ -134,52 +131,52 @@ export const MatchingComponent: React.FC = () => {
             Complete tasks within the time limit to score valuable city points .
             The higher your points, the better your rank on the leaderboards 🏆
           </div>
-          <div className="w-60 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {matches.length > 0 ? (
               matches.map((match) => (
                 <div key={match.id}>
-                  <div className="bg-dark p-2 rounded-lg shadow-sm">
-                    <div className="flex justify-center">
-                      <img
-                        src={
-                          match.person2?.image ??
-                          match.person1?.image ??
-                          "/user.png"
-                        }
-                        className="w-full rounded-lg border border-semidark mb-2 object-cover"
-                      />
-                    </div>
-                    <div
-                      onClick={() => {
-                        navigate(
-                          `/${
-                            match.person2
-                              ? match.person2.username
-                              : match.person1
-                              ? match.person1.username
-                              : ""
-                          }`
-                        );
-                      }}
-                      className="text-left font-light hover:underline underline-offset-2 text-semilight text-lg"
-                    >
-                      {match.person2
-                        ? match.person2.username
-                        : match.person1
-                        ? match.person1.username
-                        : "User"}
+                  <div className="bg-dark p-3 rounded-lg shadow-sm">
+                    <div className="flex mb-2 items-center justify-start gap-2">
+                      <div className="flex justify-center">
+                        <img
+                          src={
+                            match.matchedUser.image
+                              ? match.matchedUser.image
+                              : "/user.png"
+                          }
+                          className="w-7 h-7 rounded-lg border border-semidark object-cover"
+                        />
+                      </div>
+                      <div
+                        onClick={() => {
+                          navigate(
+                            `/${
+                              match.matchedUser.username
+                                ? match.matchedUser.username
+                                : ""
+                            }`
+                          );
+                        }}
+                        className="text-light w-fit font-medium hover:underline underline-offset-2  text-lg rounded-full"
+                      >
+                        {match.matchedUser ? match.matchedUser.username : ""}
+                      </div>
                     </div>
                     <div className="text-left font-light text-semilight text-sm">
                       Task: {match.task}
                     </div>
-                    <div className="text-left font-light text-semilight text-sm">
-                      {match.isTaskCompleted
-                        ? "Task Completed"
-                        : "Task Pending"}
-                    </div>
-
-                    <div className="text-xs  text-indigomain mt-2">
-                      {getFormattedRemainingTime(match.expiresAt)}
+                    <button className="bg-indigomain my-4 text-center text-semilight w-full font-ubuntu font-normal py-1 text-base rounded-lg">
+                      Post
+                    </button>
+                    <div className="flex items-center gap-2 text-xs">
+                      <div className="text-left font-light text-semilight">
+                        {match.isTaskCompleted
+                          ? "Task Completed"
+                          : "Task Pending"}{" "}
+                      </div>
+                      <div className="text-semilight">
+                        · {getFormattedRemainingTime(match.expiresAt)}
+                      </div>{" "}
                     </div>
                   </div>
                 </div>
@@ -199,7 +196,7 @@ export const MatchingComponent: React.FC = () => {
             onClick={() => {
               setShowMatches(false);
             }}
-            className="bg-indigomain my-5 text-center text-semilight w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
+            className="bg-semidark my-5 text-center text-semilight w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
           >
             <AddIcon /> Add matches
           </button>

@@ -57,7 +57,7 @@ export const LoginAuth = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen w-full text-center">
-        <CircularProgress />
+        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />{" "}
       </div>
     );
   }
@@ -117,7 +117,7 @@ export const LoginAuth = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col h-screen bg-dark justify-center items-center p-3 w-full">
+        <div className="flex flex-col h-screen bg-black justify-center items-center p-3 w-full">
           <div className="items-center p-2 rounded-lg bg-semidark w-[80%] lg:w-[50%]">
             <div>
               <div className="font-normal m-1 text-semilight">Email</div>

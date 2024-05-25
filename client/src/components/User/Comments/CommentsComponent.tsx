@@ -184,7 +184,7 @@ export const CommentsComponent = () => {
           )}
           {isLoadingComments && (
             <div className="text-center my-5">
-              <CircularProgress />
+              <CircularProgress sx={{ color: "rgb(50 50 50);" }} />{" "}
             </div>
           )}
           <BottomBar />

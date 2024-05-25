@@ -262,7 +262,7 @@ export const SignupAuth = () => {
   if (isLoading) {
     return (
       <div className="h-screen flex justify-center items-center w-full">
-        <CircularProgress />
+        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />{" "}
       </div>
     );
   }
@@ -320,7 +320,7 @@ export const SignupAuth = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col h-screen bg-dark justify-center items-center p-3 w-full">
+      <div className="flex flex-col h-screen bg-black justify-center items-center p-3 w-full">
         <div className="items-center p-2 rounded-lg bg-semidark w-[80%] lg:w-[50%]">
           <div>
             <div className="font-normal m-1 text-semilight">Full Name</div>

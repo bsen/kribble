@@ -77,8 +77,8 @@ export const Community = () => {
   };
   if (isLoading) {
     return (
-      <div className="bg-dark w-full flex justify-center items-center">
-        <CircularProgress />
+      <div className="w-full my-5 flex justify-center items-center">
+        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
       </div>
     );
   }
