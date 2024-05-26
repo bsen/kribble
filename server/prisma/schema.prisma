@@ -32,19 +32,26 @@ model User {
   taggedInPosts         Post[]                @relation("UserPostTagging")
   InitiatorRelation     Match[]               @relation("Initiator")
   MatchedUserRelation   Match[]               @relation("MatchedUser")
+  weeklyPoints          Int                   @default(0)
+  totalPoints           Int                   @default(0)
+  userNotification      Notification[]        @relation("UserNotification")
+  notificationsAsFollower Notification[] @relation("FollowerRelationNotification")
+  notificationsAsTagger Notification[] @relation("TaggerRelationNotification")
+  notificationsAsNewCommunityMember Notification[] @relation("NewCommunityMemberRelation")
   createdAt             DateTime              @default(now())
 }
 
 model Match {
-  id String @id @default(uuid())
-  initiator User @relation("Initiator", fields: [initiatorId], references: [id])
-  initiatorId String
-  matchedUser User @relation("MatchedUser", fields: [matchedUserId], references: [id])
-  matchedUserId String
-  task String?
-  isTaskCompleted Boolean @default(false)
-  createdAt DateTime @default(now())
-  expiresAt DateTime @default(dbgenerated("(NOW() + INTERVAL '24 hours')"))
+  id                String @id @default(uuid())
+  initiator         User @relation("Initiator", fields: [initiatorId], references: [id])
+  initiatorId       String
+  matchedUser       User @relation("MatchedUser", fields: [matchedUserId], references: [id])
+  matchedUserId     String
+  task              String?
+  isTaskCompleted   Boolean @default(false)
+  createdAt         DateTime @default(now())
+  expiresAt         DateTime @default(dbgenerated("(NOW() + INTERVAL '24 hours')"))
+  notifications     Notification[] @relation("MatchNotifications")
   @@unique([initiatorId, matchedUserId])
 }
 
@@ -69,7 +76,8 @@ model Community {
   posts          Post[]    @relation("CommunityPosts")
   postsCount     Int       @default(0)
   members        CommunityMembership[] @relation("CommunityMembership")
-  membersCount    Int       @default(0)
+  membersCount   Int       @default(0)
+  notifications  Notification[] @relation("CommunityNotifications")
   createdAt      DateTime  @default(now())
 }
 
@@ -99,6 +107,8 @@ model Post {
   commentsCount  Int            @default(0)
   taggedUser     User?          @relation("UserPostTagging", fields: [taggedUserId], references: [id])
   taggedUserId   String?
+  notifications  Notification[] @relation("PostNotifications")
+
   createdAt      DateTime       @default(now())
   task           String?
 }
@@ -122,4 +132,26 @@ model PostLike {
   postId    String
   createdAt DateTime @default(now())
   @@unique([userId, postId])
+}
+
+model Notification {
+  id            String     @id @default(uuid())
+  user User @relation("UserNotification", fields: [userId], references: [id])
+  userId        String
+  type          String     
+  message       String
+  isRead        Boolean    @default(false)
+  createdAt     DateTime   @default(now())
+  post          Post?      @relation("PostNotifications", fields: [postId], references: [id])
+  postId        String?
+  match         Match?     @relation("MatchNotifications", fields: [matchId], references: [id])
+  matchId       String?
+  follower      User?      @relation("FollowerRelationNotification", fields: [followerId], references: [id])
+  followerId    String?
+  tagger        User?      @relation("TaggerRelationNotification", fields: [taggerId], references: [id])
+  taggerId      String?
+  community     Community? @relation("CommunityNotifications", fields: [communityId], references: [id])
+  communityId   String?
+  newCommunityMember User? @relation("NewCommunityMemberRelation", fields: [newCommunityMemberId], references: [id])
+  newCommunityMemberId String?
 }
