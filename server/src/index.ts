@@ -23,7 +23,7 @@ import { communityJoinRouter } from "./routes/community/join";
 import { communityPostRouter } from "./routes/community/post";
 import { communityProfileRouter } from "./routes/community/profile";
 import { communityDeleteRouter } from "./routes/community/delete";
-
+import { adminRouter } from "./routes/admin/admin";
 const app = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -58,4 +58,7 @@ app.route("/api/community/post", communityPostRouter);
 app.route("/api/community/profile", communityProfileRouter);
 app.route("/api/community/delete", communityDeleteRouter);
 
+// ADMIN ROUTER
+
+app.route("/api/admin/v1/user", adminRouter);
 export default app;
