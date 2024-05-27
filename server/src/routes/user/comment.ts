@@ -77,9 +77,7 @@ userCommentRouter.post("/create", async (c) => {
         anonymity: anonymity,
       },
     });
-    if (!createComment) {
-      return c.json({ status: 400, message: "Failed to comment" });
-    }
+
     const incCount = await prisma.post.update({
       where: {
         id: postId,
@@ -90,8 +88,19 @@ userCommentRouter.post("/create", async (c) => {
         },
       },
     });
-    if (!incCount) {
-      return c.json({ status: 400, message: "Comment count increment failed" });
+    const updatePoints = await prisma.user.update({
+      where: { id: userId.id },
+      data: {
+        weeklyPoints: {
+          increment: 3,
+        },
+        totalPoints: {
+          increment: 3,
+        },
+      },
+    });
+    if (!createComment || !incCount || !updatePoints) {
+      return c.json({ status: 400, message: "Failed to create comment" });
     }
     return c.json({ satus: 200, message: "Commnet created successfully" });
   } catch (error) {
@@ -118,15 +127,6 @@ userCommentRouter.post("/delete", async (c) => {
       return c.json({ status: 400, message: "User not authenticated" });
     }
 
-    const deleteComment = await prisma.comment.delete({
-      where: {
-        creatorId: findUser.id,
-        id: commentId,
-      },
-    });
-    if (!deleteComment) {
-      return c.json({ status: 400, message: "Comment deletion failed" });
-    }
     const decCount = await prisma.post.update({
       where: {
         id: postId,
@@ -137,7 +137,26 @@ userCommentRouter.post("/delete", async (c) => {
         },
       },
     });
-    if (!decCount) {
+    const updatePoints = await prisma.user.update({
+      where: { id: userId.id },
+      data: {
+        weeklyPoints: {
+          decrement: 3,
+        },
+        totalPoints: {
+          decrement: 3,
+        },
+      },
+    });
+
+    const deleteComment = await prisma.comment.delete({
+      where: {
+        creatorId: findUser.id,
+        id: commentId,
+      },
+    });
+
+    if (!deleteComment || !decCount || !updatePoints) {
       return c.json({ status: 400, message: "Comment count decrement failed" });
     }
     return c.json({ status: 200, message: "Comment Deleted successfully" });
