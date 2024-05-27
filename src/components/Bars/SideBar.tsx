@@ -5,6 +5,7 @@ import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import { useContext } from "react";
 import { UserContext } from "../User/Context/UserContext";
 export const SideBar = () => {
@@ -77,6 +78,20 @@ export const SideBar = () => {
         >
           <PersonOutlinedIcon sx={{ fontSize: 25 }} />
           <div>Profile</div>
+        </button>
+        <button
+          disabled={isLoading}
+          onClick={() => {
+            navigate(`/notifications`);
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+            location.pathname === `/notifications`
+              ? "text-light text-base bg-semidark"
+              : "text-light text-sm"
+          }`}
+        >
+          <NotificationsNoneOutlinedIcon sx={{ fontSize: 25 }} />
+          <div>Notifications</div>
         </button>
         <button
           onClick={() => {
