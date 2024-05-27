@@ -20,6 +20,8 @@ interface UserData {
   interest: string;
   followersCount: string;
   followingCount: string;
+  weeklyPoints: string;
+  totalPoints: string;
 }
 
 export const UserData: React.FC = () => {
@@ -43,6 +45,8 @@ export const UserData: React.FC = () => {
     interest: "",
     followersCount: "",
     followingCount: "",
+    weeklyPoints: "",
+    totalPoints: "",
   });
   const [error, setError] = useState<Error | null>(null);
 
@@ -118,6 +122,15 @@ export const UserData: React.FC = () => {
           closeComponent={() => setShowCommunities(false)}
         />
       )}
+      <div className="mt-4 p-1 flex justify-evenly items-center rounded-lg bg-indigomain  text-left text-light font-light text-sm">
+        <div className="flex flex-col items-center justify-center">
+          <div>{userData.weeklyPoints}</div> <div>Weekly points</div>
+        </div>
+        <img src="/medal.png" className="h-16 w-16 rounded-lg" />
+        <div className="flex flex-col items-center justify-center">
+          <div>{userData.totalPoints}</div> <div>Total points</div>
+        </div>
+      </div>
 
       <div className="mt-4 p-3 rounded-lg border border-semidark bg-dark">
         <div className="flex w-full justify-center items-center gap-2">
