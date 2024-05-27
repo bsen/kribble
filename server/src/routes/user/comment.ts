@@ -148,7 +148,6 @@ userCommentRouter.post("/delete", async (c) => {
         },
       },
     });
-
     const deleteComment = await prisma.comment.delete({
       where: {
         creatorId: findUser.id,
