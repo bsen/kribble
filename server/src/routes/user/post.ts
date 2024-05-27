@@ -107,6 +107,7 @@ userPostRouter.post("/create", async (c) => {
           creator: { connect: { id: userId.id } },
           image: variantUrl || null,
           task: findTask.task,
+          isTaskPost: true,
           taggedUser: { connect: { id: findTask.matchedUser.id } },
         },
       });
@@ -118,7 +119,18 @@ userPostRouter.post("/create", async (c) => {
           isTaskCompleted: true,
         },
       });
-      if (!createPost || !updateTask) {
+      const updatePoints = await prisma.user.update({
+        where: { id: userId.id },
+        data: {
+          weeklyPoints: {
+            increment: 20,
+          },
+          totalPoints: {
+            increment: 20,
+          },
+        },
+      });
+      if (!createPost || !updateTask || !updatePoints) {
         return c.json({
           status: 403,
           message: "Failed to create the tasked post",
@@ -137,7 +149,18 @@ userPostRouter.post("/create", async (c) => {
           image: variantUrl || null,
         },
       });
-      if (!createPost) {
+      const updatePoints = await prisma.user.update({
+        where: { id: userId.id },
+        data: {
+          weeklyPoints: {
+            increment: 10,
+          },
+          totalPoints: {
+            increment: 10,
+          },
+        },
+      });
+      if (!createPost || !updatePoints) {
         return c.json({ status: 403, message: "Failed to create the post" });
       }
       return c.json({
@@ -163,29 +186,79 @@ userPostRouter.post("/delete", async (c) => {
     if (!userData) {
       return c.json({ status: 401, message: "Unauthorized" });
     }
-
-    const deleteLikes = await prisma.postLike.deleteMany({
-      where: {
-        postId: postId,
-      },
-    });
-
-    const deleteComments = await prisma.comment.deleteMany({
-      where: {
-        postId: postId,
-      },
-    });
-    const deletepost = await prisma.post.delete({
+    const findPost = await prisma.post.findFirst({
       where: {
         id: postId,
       },
     });
 
-    if (!deletepost || !deleteLikes || !deleteComments) {
-      return c.json({ status: 403, message: "Post deletion failed" });
-    }
+    if (findPost?.isTaskPost === true) {
+      const updatePoints = await prisma.user.update({
+        where: { id: userId.id },
+        data: {
+          weeklyPoints: {
+            decrement: 20,
+          },
+          totalPoints: {
+            decrement: 20,
+          },
+        },
+      });
+      const deleteLikes = await prisma.postLike.deleteMany({
+        where: {
+          postId: postId,
+        },
+      });
 
-    return c.json({ status: 200, message: "Post deleted successfuly" });
+      const deleteComments = await prisma.comment.deleteMany({
+        where: {
+          postId: postId,
+        },
+      });
+
+      const deletepost = await prisma.post.delete({
+        where: {
+          id: postId,
+        },
+      });
+      if (!deletepost || !deleteLikes || !deleteComments || !updatePoints) {
+        return c.json({ status: 403, message: "Post deletion failed" });
+      }
+      return c.json({ status: 200, message: "Post deleted successfuly" });
+    } else {
+      const updatePoints = await prisma.user.update({
+        where: { id: userId.id },
+        data: {
+          weeklyPoints: {
+            decrement: 10,
+          },
+          totalPoints: {
+            decrement: 10,
+          },
+        },
+      });
+      const deleteLikes = await prisma.postLike.deleteMany({
+        where: {
+          postId: postId,
+        },
+      });
+
+      const deleteComments = await prisma.comment.deleteMany({
+        where: {
+          postId: postId,
+        },
+      });
+
+      const deletepost = await prisma.post.delete({
+        where: {
+          id: postId,
+        },
+      });
+      if (!deletepost || !deleteLikes || !deleteComments || !updatePoints) {
+        return c.json({ status: 403, message: "Post deletion failed" });
+      }
+      return c.json({ status: 200, message: "Post deleted successfuly" });
+    }
   } catch (error) {
     console.log(error);
     return c.json({ status: 400 });

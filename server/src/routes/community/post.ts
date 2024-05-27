@@ -101,8 +101,18 @@ communityPostRouter.post("/create", async (c) => {
         postsCount: { increment: 1 },
       },
     });
-
-    if (!createPost || !countInc) {
+    const updatePoints = await prisma.user.update({
+      where: { id: userId.id },
+      data: {
+        weeklyPoints: {
+          increment: 15,
+        },
+        totalPoints: {
+          increment: 15,
+        },
+      },
+    });
+    if (!createPost || !countInc || !updatePoints) {
       return c.json({
         status: 403,
         message: "Failed to create the community post",
@@ -172,7 +182,25 @@ communityPostRouter.post("/delete", async (c) => {
         },
       });
 
-      if (!deletePost || !deleteLikes || !deleteComments || !updateCount) {
+      const updatePoints = await prisma.user.update({
+        where: { id: userId.id },
+        data: {
+          weeklyPoints: {
+            decrement: 10,
+          },
+          totalPoints: {
+            decrement: 10,
+          },
+        },
+      });
+
+      if (
+        !deletePost ||
+        !deleteLikes ||
+        !deleteComments ||
+        !updateCount ||
+        !updatePoints
+      ) {
         return c.json({ status: 403, message: "Post deletion failed" });
       }
 
