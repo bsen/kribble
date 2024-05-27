@@ -122,7 +122,7 @@ export const UserData: React.FC = () => {
           closeComponent={() => setShowCommunities(false)}
         />
       )}
-      <div className="mt-4 p-3 flex justify-evenly items-center rounded-lg bg-indigomain  text-left text-light font-light text-sm">
+      <div className="mt-4 p-3 flex justify-evenly items-center rounded-lg bg-indigomain  text-left text-light text-sm">
         <div className="flex flex-col items-center justify-center">
           <div>{userData.weeklyPoints}</div> <div>Weekly points</div>
         </div>
