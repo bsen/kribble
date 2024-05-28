@@ -18,6 +18,7 @@ import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
 import { Community } from "./pages/Community/Profile/Community";
 import { Notifications } from "./pages/Notifications/Notification";
+import { LeaderBoard } from "./pages/LeaderBoard/LeaderBoard";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -49,6 +50,10 @@ function App() {
             <Route
               path="/comments"
               element={<ProtectedRoute element={<Comments />} />}
+            />
+            <Route
+              path="/leaderboard"
+              element={<ProtectedRoute element={<LeaderBoard />} />}
             />
             <Route
               path="/hidden/posts"

@@ -6,6 +6,7 @@ import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import { useContext } from "react";
 import { UserContext } from "../User/Context/UserContext";
 export const SideBar = () => {
@@ -49,6 +50,19 @@ export const SideBar = () => {
         >
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
           <div>Communities</div>
+        </button>
+        <button
+          onClick={() => {
+            navigate("/leaderboard");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+            location.pathname === "/leaderboard"
+              ? "text-light text-base bg-semidark"
+              : "text-light text-sm"
+          }`}
+        >
+          <LeaderboardIcon sx={{ fontSize: 25 }} />
+          <div>Leader board</div>
         </button>
 
         <button

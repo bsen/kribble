@@ -109,7 +109,7 @@ export const CommunitiesComponent = () => {
               </div>
             ) : (
               <div className="text-semilight my-5 font-light text-center text-lg">
-                No posts found
+                No communities found
               </div>
             )}
           </div>
