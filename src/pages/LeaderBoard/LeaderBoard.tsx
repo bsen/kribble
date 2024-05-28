@@ -1,5 +1,5 @@
 import { SideBar } from "../../components/Bars/SideBar";
-import LeaderBoardComponent from "../../components/LeaderBoard/LeaderBoardComponent";
+import { LeaderBoardComponent } from "../../components/LeaderBoard/LeaderBoardComponent";
 export const LeaderBoard = () => {
   return (
     <div className="flex justify-evenly">
