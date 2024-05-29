@@ -119,11 +119,14 @@ export const CommunityData: React.FC = () => {
                   <button
                     onClick={handleJoinCommunity}
                     disabled={isJoiningLoading}
-                    className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
+                    className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-16 py-1 text-sm"
                   >
                     <div className="flex items-center justify-center">
                       {isJoiningLoading ? (
-                        <CircularProgress size="20px" className="text-sm" />
+                        <CircularProgress
+                          size="20px"
+                          sx={{ color: "rgb(50 50 50);" }}
+                        />
                       ) : (
                         <div>
                           {isJoined ? <div>Joined</div> : <div>Join</div>}
