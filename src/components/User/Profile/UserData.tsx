@@ -9,6 +9,7 @@ import { FollowersComponent } from "../Follow/FollowersComponent";
 import { FollowingComponent } from "../Follow/FollowingComponent";
 import { CommunitiesComponent } from "../Communities/CommunitiesComponent";
 import LinearProgress from "@mui/material/LinearProgress";
+import { CircularProgress } from "@mui/material";
 
 interface UserData {
   fullname: string;
@@ -157,10 +158,13 @@ export const UserData: React.FC = () => {
                     <button
                       onClick={followUser}
                       disabled={isFollowUserLoading}
-                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
+                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-20 py-1 text-sm"
                     >
                       {isFollowUserLoading ? (
-                        <div>··········</div>
+                        <CircularProgress
+                          size="20px"
+                          sx={{ color: "rgb(50 50 50);" }}
+                        />
                       ) : (
                         <div>
                           {isFollowing ? (
