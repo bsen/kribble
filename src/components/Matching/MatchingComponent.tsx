@@ -125,7 +125,7 @@ export const MatchingComponent: React.FC = () => {
   if (showMatches) {
     return (
       <>
-        <div className="h-screen overflow-y-auto flex flex-col items-center no-scrollbar py-12 md:py-0">
+        <div className="h-screen overflow-y-auto flex flex-col items-center no-scrollbar py-12 ">
           <NavBar />
           <div className="text-semilight text-center text-sm font-normal my-2 font-ubuntu  p-2 rounded-lg">
             Complete tasks within the time limit to score valuable city points .

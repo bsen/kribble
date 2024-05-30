@@ -123,7 +123,7 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
 
   return (
     <>
-      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[50%] bg-black/60 flex justify-center items-center">
+      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[40%] bg-black/60 flex justify-center items-center">
         <div
           className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
           onScroll={handleScroll}
@@ -191,7 +191,7 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
                   <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
                 </div>
               ) : (
-                <div className="text-semilight my-5 font-light text-center text-lg">
+                <div className="text-semilight my-5 font-light text-center text-sm">
                   No notifications found
                 </div>
               )}

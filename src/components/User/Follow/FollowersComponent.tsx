@@ -120,7 +120,7 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
                   <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
                 </div>
               ) : (
-                <div className="text-semilight my-5 font-light text-center text-lg">
+                <div className="text-semilight my-5 font-light text-center text-sm">
                   No followers found
                 </div>
               )}
