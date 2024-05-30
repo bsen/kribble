@@ -9,9 +9,9 @@ import axios from "axios";
 import { BACKEND_URL } from "../../../config";
 
 interface UserContextType {
-  currentUser: any; // Update this type according to your user data structure
+  currentUser: any;
   isLoading: boolean;
-  setCurrentUser: Dispatch<SetStateAction<any>>; // Type for the setCurrentUser function
+  setCurrentUser: Dispatch<SetStateAction<any>>;
 }
 
 const defaultValue: UserContextType = {

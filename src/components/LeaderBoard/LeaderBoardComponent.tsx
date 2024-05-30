@@ -43,7 +43,7 @@ export const LeaderBoardComponent = () => {
 
   return (
     <>
-      <div className="h-screen overflow-y-auto no-scrollbar py-12 md:py-0">
+      <div className="h-screen overflow-y-auto no-scrollbar py-12 ">
         <div className="text-lg font-ubuntu text-semilight fonr-normal text-center mt-2">
           Leaders
         </div>

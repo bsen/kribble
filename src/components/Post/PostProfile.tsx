@@ -157,7 +157,7 @@ export const PostProfile = () => {
 
   return (
     <div
-      className="h-screen  overflow-y-auto no-scrollbar py-12 md:py-0"
+      className="h-screen  overflow-y-auto no-scrollbar py-12 "
       onScroll={handleScroll}
       ref={scrollContainerRef}
     >
