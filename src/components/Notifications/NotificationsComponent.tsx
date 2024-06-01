@@ -3,54 +3,27 @@ import { useEffect, useRef, useState } from "react";
 import { BACKEND_URL } from "../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { CircularProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface NotificationData {
   id: string;
-  type: string;
   message: string;
   isRead: boolean;
   createdAt: string;
-  follower: {
+  triggeringUser: {
     id: string;
-    fullname: string;
     username: string;
     image: string;
-  } | null;
+  };
   post: {
     id: string;
-    content: string;
-    image: string;
-    creator: {
-      id: string;
-      fullname: string;
-      username: string;
-      image: string;
-    };
-  } | null;
-  likedBy: {
-    id: string;
-    username: string;
-    image: string;
   } | null;
   comment: {
     id: string;
-    content: string;
-    creator: {
-      id: string;
-      fullname: string;
-      username: string;
-      image: string;
-    };
   } | null;
-  taggerUser: {
+  community: {
     id: string;
-    username: string;
-    image: string;
-  } | null;
-  newCommunityMember: {
-    id: string;
-    username: string;
-    image: string;
+    name: string;
   } | null;
 }
 
@@ -71,6 +44,7 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
   });
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   async function getNotifications(cursor?: string) {
     try {
@@ -121,6 +95,20 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
     }
   };
 
+  const handleNotificationClick = (notification: NotificationData) => {
+    if (notification.post) {
+      navigate(`/post/${notification.post.id}`);
+    } else if (notification.community) {
+      navigate(`/community/${notification.community.name}`);
+    } else {
+      navigate(`/${notification.triggeringUser.username}`);
+    }
+  };
+
+  const handleUserClick = (username: string) => {
+    navigate(`/${username}`);
+  };
+
   return (
     <>
       <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[40%] bg-black/60 flex justify-center items-center">
@@ -129,7 +117,7 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
-          <div className="flex text-semilight  justify-center gap-5 items-center">
+          <div className="flex text-semilight justify-center gap-5 items-center">
             <button
               onClick={closeComponent}
               className="border border-semidark p-1 rounded-lg"
@@ -142,45 +130,32 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
             notificationsData.notifications.map((notification) => (
               <div
                 key={notification.id}
-                className=" my-2 rounded-lg border border-semidark p-2 bg-semidark"
+                className="my-2 rounded-lg border border-semidark p-2 bg-semidark cursor-pointer"
+                onClick={() => handleNotificationClick(notification)}
               >
                 <div>
-                  <div className="text-light text-lg font-ubuntu">
+                  <div
+                    className="flex gap-2 items-center cursor-pointer w-fit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUserClick(notification.triggeringUser.username);
+                    }}
+                  >
+                    <img
+                      className="h-7 w-7 rounded-lg bg-dark"
+                      src={
+                        notification.triggeringUser.image
+                          ? notification.triggeringUser.image
+                          : "/user.png"
+                      }
+                    />
+                    <div className="text-light text-sm font-medium">
+                      {notification.triggeringUser.username}
+                    </div>
+                  </div>
+                  <div className="text-sm text-semilight mt-1">
                     {notification.message}
                   </div>
-                  {notification.post && (
-                    <div>
-                      <p>Post: {notification.post.content}</p>
-                      <img
-                        src={notification.post.image}
-                        alt="Post"
-                        className="h-20 w-20"
-                      />
-                    </div>
-                  )}
-                  {notification.comment && (
-                    <div>
-                      <p>Comment: {notification.comment.content}</p>
-                    </div>
-                  )}
-                  {notification.follower && (
-                    <div>
-                      <p>Follower: {notification.follower.username}</p>
-                    </div>
-                  )}
-                  {notification.taggerUser && (
-                    <div>
-                      <p>Tagged By: {notification.taggerUser.username}</p>
-                    </div>
-                  )}
-                  {notification.newCommunityMember && (
-                    <div>
-                      <p>
-                        New Community Member:{" "}
-                        {notification.newCommunityMember.username}
-                      </p>
-                    </div>
-                  )}
                 </div>
               </div>
             ))
@@ -188,7 +163,7 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
             <div>
               {isLoading ? (
                 <div className="w-full my-5 flex justify-center items-center">
-                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                  <CircularProgress sx={{ color: "rgb(50 50 50)" }} />
                 </div>
               ) : (
                 <div className="text-semilight my-5 font-light text-center text-sm">

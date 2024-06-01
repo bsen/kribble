@@ -5,6 +5,7 @@ import { BACKEND_URL } from "../../config";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import { NavBar } from "../Bars/NavBar";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import ReportIcon from "@mui/icons-material/Report";
 
 import { BottomBar } from "../Bars/BottomBar";
 interface Comment {
@@ -25,6 +26,10 @@ export const PostProfile = () => {
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const ScrollContainerRef = useRef<HTMLDivElement>(null);
+  const [ReportingState, setReportingState] = useState(false);
+  const [reportingContentId, setReportingContentId] = useState<
+    string | undefined
+  >(undefined);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -147,12 +152,46 @@ export const PostProfile = () => {
     }
   }
 
+  const reportContent = async () => {
+    await axios.post(`${BACKEND_URL}/api/report/post-comment/report-content`, {
+      token,
+      reportingContentId,
+    });
+  };
+
   useEffect(() => {
     getPost();
   }, []);
 
   if (loadingState) {
     return <LinearProgress sx={{ backgroundColor: "black" }} />;
+  }
+
+  if (ReportingState) {
+    return (
+      <div className="w-full bg-black h-screen flex justify-center items-center">
+        <div className="flex text-light flex-col gap-4 text-base items-center font-ubuntu font-normal">
+          Do you really want to report the content ?
+          <div className="flex gap-5">
+            <button
+              onClick={reportContent}
+              className="text-light bg-red-500 font-normal px-4 py-1 text-sm rounded-lg"
+            >
+              Report
+            </button>
+            <button
+              onClick={() => {
+                setReportingState(false);
+                setReportingContentId("");
+              }}
+              className="text-dark bg-stone-50 font-normal px-4 py-1 text-sm rounded-lg"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -196,6 +235,14 @@ export const PostProfile = () => {
                   · {getTimeDifference(postData.createdAt)}
                 </div>
               </div>
+              <button
+                onClick={() => {
+                  setReportingContentId(postId);
+                  setReportingState(true);
+                }}
+              >
+                <ReportIcon sx={{ fontSize: 22 }} className="text-rosemain" />
+              </button>
             </div>
           </div>
         </div>
@@ -264,39 +311,52 @@ export const PostProfile = () => {
               )}
               <div className="border-t border-semidark py-4 flex flex-col gap-4">
                 <div className="flex w-full justify-between rounded-lg items-center px-3">
-                  <div className="flex gap-2 items-center">
-                    <div>
-                      <img
-                        src={
-                          comment.creator.image
-                            ? comment.creator.image
-                            : "/user.png"
-                        }
-                        alt="Profile"
-                        className="w-7 h-7 rounded-lg"
-                      />
-                    </div>
-                    <div className="text-light text-sm lg:text-base font-normal">
-                      {comment.anonymity ? (
-                        <div className="text-light text-sm lg:text-base font-normal">
-                          {comment.creator.username}
-                        </div>
-                      ) : (
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/${comment.creator.username}`);
-                          }}
-                          className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
-                        >
-                          {comment.creator.username}
-                        </div>
-                      )}
-                    </div>
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex gap-2 items-center">
+                      <div>
+                        <img
+                          src={
+                            comment.creator.image
+                              ? comment.creator.image
+                              : "/user.png"
+                          }
+                          alt="Profile"
+                          className="w-7 h-7 rounded-lg"
+                        />
+                      </div>
+                      <div className="text-light text-sm lg:text-base font-normal">
+                        {comment.anonymity ? (
+                          <div className="text-light text-sm lg:text-base font-normal">
+                            {comment.creator.username}
+                          </div>
+                        ) : (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/${comment.creator.username}`);
+                            }}
+                            className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                          >
+                            {comment.creator.username}
+                          </div>
+                        )}
+                      </div>
 
-                    <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                      · {getTimeDifference(comment.createdAt)}
+                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                        · {getTimeDifference(comment.createdAt)}
+                      </div>
                     </div>
+                    <button
+                      onClick={() => {
+                        setReportingContentId(comment.id);
+                        setReportingState(true);
+                      }}
+                    >
+                      <ReportIcon
+                        sx={{ fontSize: 22 }}
+                        className="text-semilight"
+                      />
+                    </button>
                   </div>
                 </div>
               </div>

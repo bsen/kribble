@@ -41,9 +41,8 @@ export const ProfileSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingState, setLoadingState] = useState(false);
   const [isCreator, setIsCreator] = useState(Boolean);
-  const [communityPostDeletionState, setCommunityPostDeletionState] =
-    useState(false);
-  const [deletingPostId, setDeletingPostId] = useState("");
+  const [deleteState, setDeleteState] = useState(false);
+  const [postDeleteId, setPostDeleteId] = useState("");
 
   const [communityData, setCommunityData] = useState<CommunityData>({
     id: "",
@@ -161,10 +160,10 @@ export const ProfileSection: React.FC = () => {
     await axios.post(`${BACKEND_URL}/api/community/post/delete`, {
       token,
       id,
-      deletingPostId,
+      postDeleteId,
     });
-    setDeletingPostId("");
-    setCommunityPostDeletionState(false);
+    setPostDeleteId("");
+    setDeleteState(false);
     setLoadingState(false);
     window.location.reload();
   };
@@ -202,27 +201,26 @@ export const ProfileSection: React.FC = () => {
       </div>
     );
   }
-  if (communityPostDeletionState) {
+  if (deleteState) {
     return (
-      <div className="w-full bg-dark border-l border-r border-semidark h-screen flex justify-center items-center">
-        <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-normal">
-          Do you really want to delete the post
-          <div className="text-xs font-light text-semilight">
-            note you can not get back the deleted item!
-          </div>
+      <div className="w-full bg-black h-screen flex justify-center items-center">
+        <div className="flex text-light text-center flex-col gap-6 text-base items-center font-ubuntu font-normal">
+          Do you really want to delete the post ?
+          <br />
+          Note that you can not get back the deleted post
           <div className="flex gap-5">
             <button
               onClick={deleteCommunityPost}
-              className="text-light bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-lg"
+              className="text-light bg-red-500 font-normal px-4 py-1 text-sm rounded-lg"
             >
               Delete
             </button>
             <button
               onClick={() => {
-                setDeletingPostId("");
-                setCommunityPostDeletionState(false);
+                setDeleteState(false);
+                setPostDeleteId("");
               }}
-              className="text-black bg-dark hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
+              className="text-dark bg-stone-50 font-normal px-4 py-1 text-sm rounded-lg"
             >
               Cancel
             </button>
@@ -329,8 +327,8 @@ export const ProfileSection: React.FC = () => {
                       {isCreator && (
                         <button
                           onClick={() => {
-                            setDeletingPostId(post.id);
-                            setCommunityPostDeletionState(true);
+                            setPostDeleteId(post.id);
+                            setDeleteState(true);
                           }}
                         >
                           <MoreVertIcon

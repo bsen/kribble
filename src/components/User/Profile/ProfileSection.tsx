@@ -180,16 +180,15 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
 
   if (deleteState) {
     return (
-      <div className="w-full bg-dark h-screen flex justify-center items-center">
-        <div className="flex text-light flex-col gap-4 text-base items-center font-ubuntu font-normal">
+      <div className="w-full bg-black h-screen flex justify-center items-center">
+        <div className="flex text-light text-center flex-col gap-6 text-base items-center font-ubuntu font-normal">
           Do you really want to delete the post ?
-          <span className="text-xs font-light text-semilight">
-            note that you can not get back the deleted post
-          </span>
+          <br />
+          Note that you can not get back the deleted post
           <div className="flex gap-5">
             <button
               onClick={deletePost}
-              className="text-light bg-red-500 hover:bg-red-400 font-normal px-4 py-1 rounded-lg"
+              className="text-light bg-red-500 font-normal px-4 py-1 text-sm rounded-lg"
             >
               Delete
             </button>
@@ -198,7 +197,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                 setDeleteState(false);
                 setPostDeleteId("");
               }}
-              className="text-black bg-stone-50 hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
+              className="text-dark bg-stone-50 font-normal px-4 py-1 text-sm rounded-lg"
             >
               Cancel
             </button>
