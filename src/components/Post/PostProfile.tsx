@@ -354,7 +354,7 @@ export const PostProfile = () => {
                     >
                       <ReportIcon
                         sx={{ fontSize: 22 }}
-                        className="text-rosemain"
+                        className="text-semilight"
                       />
                     </button>
                   </div>
