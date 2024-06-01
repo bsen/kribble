@@ -89,7 +89,7 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
                 <div className="flex gap-2 justify-between items-start">
                   <div className="flex gap-2 items-start">
                     <img
-                      className="h-8 w-8 rounded-full bg-dark"
+                      className="h-7 w-7 rounded-full bg-dark"
                       src={community.image ? community.image : "/group.png"}
                     />
 

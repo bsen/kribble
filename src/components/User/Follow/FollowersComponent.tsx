@@ -96,7 +96,7 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
-                    className="h-8 w-8 rounded-lg bg-dark"
+                    className="h-7 w-7 rounded-lg bg-dark"
                     src={
                       followersObj.follower.image
                         ? followersObj.follower.image

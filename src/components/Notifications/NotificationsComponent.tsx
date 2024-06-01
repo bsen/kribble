@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { BACKEND_URL } from "../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { CircularProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface NotificationData {
   id: string;
@@ -16,11 +17,9 @@ interface NotificationData {
   };
   post: {
     id: string;
-    content: string;
   } | null;
   comment: {
     id: string;
-    content: string;
   } | null;
   community: {
     id: string;
@@ -45,6 +44,7 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
   });
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   async function getNotifications(cursor?: string) {
     try {
@@ -95,6 +95,20 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
     }
   };
 
+  const handleNotificationClick = (notification: NotificationData) => {
+    if (notification.post) {
+      navigate(`/post/${notification.post.id}`);
+    } else if (notification.community) {
+      navigate(`/community/${notification.community.name}`);
+    } else {
+      navigate(`/${notification.triggeringUser.username}`);
+    }
+  };
+
+  const handleUserClick = (username: string) => {
+    navigate(`/${username}`);
+  };
+
   return (
     <>
       <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[40%] bg-black/60 flex justify-center items-center">
@@ -116,39 +130,31 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
             notificationsData.notifications.map((notification) => (
               <div
                 key={notification.id}
-                className="my-2 rounded-lg border border-semidark p-2 bg-semidark"
+                className="my-2 rounded-lg border border-semidark p-2 bg-semidark cursor-pointer"
+                onClick={() => handleNotificationClick(notification)}
               >
                 <div>
-                  <div className="flex gap-2 items-center">
+                  <div
+                    className="flex gap-2 items-center cursor-pointer w-fit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUserClick(notification.triggeringUser.username);
+                    }}
+                  >
                     <img
-                      className="h-5 w-5 rounded-lg bg-dark"
+                      className="h-7 w-7 rounded-lg bg-dark"
                       src={
                         notification.triggeringUser.image
                           ? notification.triggeringUser.image
                           : "/user.png"
                       }
                     />
-                    <div className="text-semilight text-sm font-normal">
+                    <div className="text-light text-sm font-medium">
                       {notification.triggeringUser.username}
                     </div>
                   </div>
-                  <div className="text-sm text-semilight">
+                  <div className="text-sm text-semilight mt-1">
                     {notification.message}
-                    {notification.post && (
-                      <div>
-                        <p>Post: {notification.post.content}</p>
-                      </div>
-                    )}
-                    {notification.comment && (
-                      <div>
-                        <p>Comment: {notification.comment.content}</p>
-                      </div>
-                    )}
-                    {notification.community && (
-                      <div>
-                        <p>Community: {notification.community.name}</p>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
