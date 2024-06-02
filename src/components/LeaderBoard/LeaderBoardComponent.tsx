@@ -22,8 +22,8 @@ export const LeaderBoardComponent = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${BACKEND_URL}/api/leaderboard/users/leaderboard?type=${leaderboardType}`,
-        { token }
+        `${BACKEND_URL}/api/leaderboard/users/leaderboard`,
+        { token, leaderboardType }
       );
       setLeadersData(response.data.leaders);
       setIsLoading(false);
