@@ -107,9 +107,7 @@ export const Community = () => {
                 onChange={(e) => {
                   handleNameChange(e.target.value);
                 }}
-                className={`w-full border border-semidark resize-none focus:outline-none p-2 text-semilight rounded-lg ${
-                  available ? "" : "border border-rosemain"
-                }`}
+                className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
                 placeholder="Choose a name for your community"
                 maxLength={20}
               />
@@ -122,7 +120,7 @@ export const Community = () => {
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
-                className="w-full border border-semidark resize-none focus:outline-none px-2 py-1 text-semilight rounded-lg"
+                className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
                 placeholder="Write description for your community"
                 maxLength={150}
               />
