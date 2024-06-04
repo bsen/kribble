@@ -86,7 +86,7 @@ export const Post = () => {
       formData.append("anonymity", String(anonymity));
 
       if (previewImage) {
-        const fileName = "croppedImage.jpeg";
+        const fileName = "communityPostImage.jpeg";
         const fileType = "image/jpeg";
         const binaryString = atob(previewImage.split(",")[1]);
         const arrayBuffer = new ArrayBuffer(binaryString.length);

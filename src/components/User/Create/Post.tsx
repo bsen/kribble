@@ -104,7 +104,7 @@ export const Post = () => {
       formData.append("token", token || "");
       formData.append("anonymity", String(anonymity));
       if (previewImage) {
-        const fileName = "croppedImage.jpeg";
+        const fileName = "postImage.jpeg";
         const fileType = "image/jpeg";
         const binaryString = atob(previewImage.split(",")[1]);
         const arrayBuffer = new ArrayBuffer(binaryString.length);
@@ -117,10 +117,18 @@ export const Post = () => {
         formData.append("image", file);
       }
 
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
       const response = await axios.post(
         `${BACKEND_URL}/api/user/post/create`,
-        formData
+        formData,
+        config
       );
+
       setPopup(response.data.message);
       setIsLoading(false);
       navigate("/");

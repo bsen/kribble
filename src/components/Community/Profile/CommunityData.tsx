@@ -95,7 +95,7 @@ export const CommunityData: React.FC = () => {
 
   return (
     <>
-      <div className="p-2 mt-4 rounded-lg border border-semidark bg-dark">
+      <div className="p-3 mt-4 rounded-lg border border-semidark bg-dark">
         <div className="flex justify-between w-full items-center gap-2">
           <img
             src={communityData.image ? communityData.image : "/group.png"}
@@ -141,7 +141,7 @@ export const CommunityData: React.FC = () => {
               {communityData.name}
             </div>
             <div className="flex text-light items-center gap-2 font-light text-sm">
-              <Link to={`/followers`}>
+              <Link to={`${communityData.name}/members`}>
                 <div className="flex gap-1 items-center">
                   {communityData.membersCount} Members
                 </div>

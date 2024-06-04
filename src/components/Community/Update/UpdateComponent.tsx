@@ -74,13 +74,11 @@ export const UpdateCommunityComponent = () => {
 
         const ctx = canvas.getContext("2d");
         if (ctx) {
-          ctx.beginPath();
-          ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
-          ctx.closePath();
-          ctx.clip();
-          ctx.drawImage(img, 0, 0);
-          const roundImage = canvas.toDataURL();
-          setPreviewImage(roundImage);
+          const xOffset = (img.width - size) / 2;
+          const yOffset = (img.height - size) / 2;
+          ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
+          const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
+          setPreviewImage(compressedImageData);
         }
       };
     };
@@ -118,7 +116,7 @@ export const UpdateCommunityComponent = () => {
       if (imageToUpload) {
         formdata.append("image", imageToUpload);
       }
-      formdata.append("id", communityData.id);
+      formdata.append("communityId", communityData.id);
       formdata.append("description", NewDescription);
       formdata.append("token", token ? token : "");
 
