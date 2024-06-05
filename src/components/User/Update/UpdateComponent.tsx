@@ -208,7 +208,6 @@ export const UpdateProfileComponent = () => {
                   </div>
                   <input
                     type="link"
-                    maxLength={40}
                     defaultValue={userData.website}
                     onChange={(e) => {
                       setWebsite(e.target.value);

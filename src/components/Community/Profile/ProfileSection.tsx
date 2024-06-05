@@ -296,14 +296,25 @@ export const ProfileSection: React.FC = () => {
                   </div>
                   <div className="flex w-full justify-between rounded-lg items-center px-3">
                     <div className="flex gap-2 items-center">
-                      <img
-                        src={
-                          post.creator.image ? post.creator.image : "/user.png"
-                        }
-                        alt="Profile"
-                        className="w-7 h-7 rounded-lg"
-                      />
-
+                      <div>
+                        {post.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        )}
+                      </div>
                       {post.anonymity ? (
                         <div className="text-light text-sm lg:text-base font-normal">
                           {post.creator.username}

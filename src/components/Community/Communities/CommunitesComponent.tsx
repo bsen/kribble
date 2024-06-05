@@ -9,8 +9,6 @@ import { BottomBar } from "../../Bars/BottomBar";
 interface Communities {
   id: string;
   name: string;
-  membersCount: string;
-  postsCount: string;
   image: string;
 }
 export const CommunitiesComponent = () => {
@@ -86,14 +84,6 @@ export const CommunitiesComponent = () => {
                     <div className="flex flex-col w-full">
                       <div className="text-light text-base lg:text-lg font-medium font-ubuntu">
                         {community.name}
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        <div className="text-light font-light  text-sm">
-                          {community.membersCount} members
-                        </div>
-                        <div className="text-light font-light  text-sm">
-                          {community.postsCount} posts
-                        </div>
                       </div>
                     </div>
                   </div>

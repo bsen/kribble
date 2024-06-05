@@ -270,7 +270,7 @@ export const PostProfile = () => {
         </div>
         <div className="p-3 bg-dark rounded-lg">
           <textarea
-            rows={3}
+            rows={4}
             className={`w-full bg-semidark text-semilight resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-lg  ${
               popup ? "border border-rosemain" : ""
             }`}
@@ -279,7 +279,7 @@ export const PostProfile = () => {
               setPopup(false);
               setComment(e.target.value);
             }}
-            maxLength={250}
+            maxLength={500}
             placeholder="Post a reply"
           />
 

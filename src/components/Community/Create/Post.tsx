@@ -158,7 +158,8 @@ export const Post = () => {
                 htmlFor="image-upload"
                 className="cursor-pointer block text-center"
               >
-                <div className="h-[5vh] w-fit rounded-lg  gap-2 flex justify-center items-center">
+                <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
+                  Add Image
                   <AddPhotoAlternateIcon
                     sx={{ fontSize: 30 }}
                     className="text-light"
@@ -179,11 +180,11 @@ export const Post = () => {
         <textarea
           value={post}
           onChange={handlePostChange}
-          rows={3}
+          rows={4}
           className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
           placeholder="Write your thoughts..."
           wrap="soft"
-          maxLength={250}
+          maxLength={500}
         />
 
         <div className="flex w-full my-2 justify-between">

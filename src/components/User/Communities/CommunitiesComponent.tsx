@@ -9,7 +9,6 @@ import { CircularProgress } from "@mui/material";
 interface Communities {
   id: string;
   name: string;
-  membersCount: string;
   image: string;
 }
 interface CommunitiesComponentProps {
@@ -65,13 +64,13 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
 
   return (
     <>
-      <div className="h-screen absolute lg:w-[40%] bg-black/80 flex justify-center items-center">
+      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[40%] bg-black/80 flex justify-center items-center">
         <div
-          className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 "
+          className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
-          <div className="flex text-semilight  justify-center gap-5 items-center py-2">
+          <div className="flex text-semilight  justify-center gap-5 items-center">
             <button
               onClick={closeComponent}
               className="border border-semidark p-1 rounded-lg"
@@ -100,9 +99,6 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
                       >
                         {community.name}
                       </Link>
-                      <div className="text-light font-ubuntu  text-sm font-light">
-                        {community.membersCount} members
-                      </div>
                     </div>
                   </div>
                 </div>

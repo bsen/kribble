@@ -219,7 +219,7 @@ export const Post = () => {
                 className="cursor-pointer block text-center"
               >
                 <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
-                  Add photo
+                  Add Image
                   <AddPhotoAlternateIcon
                     sx={{ fontSize: 30 }}
                     className="text-light"
@@ -249,7 +249,7 @@ export const Post = () => {
         <textarea
           value={post}
           onChange={handlePostChange}
-          rows={3}
+          rows={4}
           className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
           placeholder="Write your thoughts..."
           wrap="soft"
