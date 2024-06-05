@@ -11,7 +11,6 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 interface Post {
   id: string;
   creator: {
-    id: string;
     username: string;
     image: string | null;
   };
@@ -241,15 +240,23 @@ export const HomeComponent = () => {
                       </div>
                     ) : (
                       <div>
-                        <img
-                          src={
-                            post.creator.image
-                              ? post.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
+                        {post.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        )}
                       </div>
                     )}
                   </div>

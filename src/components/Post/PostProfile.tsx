@@ -95,6 +95,7 @@ export const PostProfile = () => {
     content: string;
     creatorId: string;
     createdAt: string;
+    anonymity: boolean;
     creator: {
       username: string;
       image: string | null;
@@ -110,6 +111,7 @@ export const PostProfile = () => {
     content: "",
     creatorId: "",
     createdAt: "",
+    anonymity: false,
     creator: {
       username: "",
       image: "",
@@ -217,19 +219,39 @@ export const PostProfile = () => {
             <div className="flex w-full justify-between rounded-lg items-center px-3">
               <div className="flex gap-2 items-center">
                 <div>
-                  <img
-                    src={
-                      postData.creator.image
-                        ? postData.creator.image
-                        : "/user.png"
-                    }
-                    alt="Profile"
-                    className="w-7 h-7 rounded-lg"
-                  />
+                  {postData.anonymity ? (
+                    <img
+                      src="/mask.png"
+                      alt="Profile"
+                      className="w-7 h-7 rounded-lg"
+                    />
+                  ) : (
+                    <img
+                      src={
+                        postData.creator.image
+                          ? postData.creator.image
+                          : "/user.png"
+                      }
+                      alt="Profile"
+                      className="w-7 h-7 rounded-lg"
+                    />
+                  )}
                 </div>
-                <div className="text-light text-sm lg:text-base font-normal">
-                  {postData.creator.username}
-                </div>
+                {postData.anonymity ? (
+                  <div className="text-light text-sm lg:text-base font-normal">
+                    {postData.creator.username}
+                  </div>
+                ) : (
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/${postData.creator.username}`);
+                    }}
+                    className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                  >
+                    {postData.creator.username}
+                  </div>
+                )}
 
                 <div className="text-semilight text-xs lg:text-sm font-ubuntu">
                   · {getTimeDifference(postData.createdAt)}
@@ -314,15 +336,23 @@ export const PostProfile = () => {
                   <div className="flex items-center justify-between w-full">
                     <div className="flex gap-2 items-center">
                       <div>
-                        <img
-                          src={
-                            comment.creator.image
-                              ? comment.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
+                        {comment.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              comment.creator.image
+                                ? comment.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        )}
                       </div>
                       <div className="text-light text-sm lg:text-base font-normal">
                         {comment.anonymity ? (

@@ -6,12 +6,6 @@ import { auth } from "./Firebase/config";
 import { Link, useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
-import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
 
 interface DebouncedFunction<T extends (...args: any[]) => void> {
   (...args: Parameters<T>): void;
@@ -42,28 +36,6 @@ function debounce<T extends (...args: any[]) => void>(
   return debouncedFunc;
 }
 
-const interestOptions = [
-  "Programming",
-  "Startup",
-  "Drama",
-  "Singing",
-  "Dancing",
-  "Writing",
-  "Music",
-  "Fashion",
-  "Art",
-  "Literature",
-  "Sports",
-  "Fitness",
-  "Social Work",
-  "Movies",
-  "Anime",
-  "Travel",
-  "Photography",
-  "Gaming",
-  "Still figuring out",
-];
-
 export const SignupAuth = () => {
   const navigate = useNavigate();
   const { setCurrentUser } = useContext(UserContext);
@@ -73,10 +45,10 @@ export const SignupAuth = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [popup, setPopup] = useState<string>("");
-  const [month, setMonth] = useState<string>("");
+
   const [date, setDate] = useState<string>("");
+  const [month, setMonth] = useState<string>("");
   const [year, setYear] = useState<string>("");
-  const [interests, setInterests] = useState<string[]>([]);
 
   const validateUsername = (char: string) => /^[a-z0-9_]$/i.test(char);
   const validatePassword = (char: string) => /^[A-Za-z0-9@#]$/i.test(char);
@@ -100,7 +72,9 @@ export const SignupAuth = () => {
     const newDate = text.replace(/\D/g, "");
     setDate(newDate);
     setPopup(
-      newDate.length !== 2 ? "Please provide a valid date (two characters)" : ""
+      newDate.length !== 2 && newDate !== "0"
+        ? "Please provide a valid date (two characters)"
+        : ""
     );
   };
 
@@ -108,7 +82,7 @@ export const SignupAuth = () => {
     const newMonth = text.replace(/\D/g, "");
     setMonth(newMonth);
     setPopup(
-      newMonth.length !== 2
+      newMonth.length !== 2 && newMonth !== "0"
         ? "Please provide a valid month (two characters)"
         : ""
     );
@@ -118,7 +92,7 @@ export const SignupAuth = () => {
     const newYear = text.replace(/\D/g, "");
     setYear(newYear);
     setPopup(
-      newYear.length !== 4
+      newYear.length !== 4 && newYear !== "0"
         ? "Please provide a valid year (four characters)"
         : ""
     );
@@ -153,9 +127,9 @@ export const SignupAuth = () => {
   const isThirteen = () => {
     const today = new Date();
     const birthDate = new Date(
-      parseInt(year),
-      parseInt(month) - 1,
-      parseInt(date)
+      parseInt(year?.toString() || "0") - 1,
+      parseInt(month?.toString() || "0") - 1,
+      parseInt(date?.toString() || "0") - 1
     );
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
@@ -185,13 +159,6 @@ export const SignupAuth = () => {
     }
   };
 
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
-    const {
-      target: { value },
-    } = event;
-    setInterests(typeof value === "string" ? value.split(",") : value);
-  };
-
   const signup = async () => {
     setPopup("");
     if (!email) {
@@ -207,11 +174,28 @@ export const SignupAuth = () => {
     if (password.length < 6) {
       return setPopup("Password length should be minimum 6");
     }
-    if (date.length < 2 || month.length < 2 || year.length < 4) {
+    if (
+      !date ||
+      !month ||
+      !year ||
+      String(year).length < 4 ||
+      String(month).length < 2 ||
+      String(date).length < 2
+    ) {
       return setPopup("Date format must be like DD/MM/YYYY");
     }
+
     if (!isThirteen()) {
       return setPopup("You must be at least 13 years old to register");
+    }
+
+    if (parseInt(month) === 2 && parseInt(date) === 29) {
+      const isLeapYear =
+        (parseInt(year) % 4 === 0 && parseInt(year) % 100 !== 0) ||
+        parseInt(year) % 400 === 0;
+      if (!isLeapYear) {
+        return setPopup("Invalid date");
+      }
     }
 
     const userdata = { username, email, password, year, month, date };
@@ -256,12 +240,10 @@ export const SignupAuth = () => {
           FriendCity
           <div className="text-center text-sm font-thin mb-8 text-light">
             A place where college life meets limitless fun! 🎉 Share your
-            moments, snap cool pics, and dive into vibrant communities. With our
-            anonymous posting, let your thoughts soar freely. But wait, there's
-            more! Join forces with a fellow student, conquer exciting
-            challenges, and skyrocket to the top of the leaderboard! 🚀 Get
-            ready to unleash the epicness, starting at the top 20 colleges.
-            Don't miss out on the adventure – join us now!
+            moments, cool pics, and dive into vibrant communities. With our
+            anonymous posting, let your thoughts soar freely, conquer exciting
+            challenges, and skyrocket to the top of the leaderboard! 🚀. Get
+            ready to unleash the epicness – join us now!
           </div>
           <div className="flex flex-wrap mb-5 justify-center gap-2">
             <img
@@ -308,13 +290,14 @@ export const SignupAuth = () => {
           <div className="w-full">
             <button
               type="button"
-              className="rounded-md text-sm p-2 text-dark bg-light flex items-center gap-4 w-full h-9"
+              className="rounded-md text-sm p-2 text-dark bg-light flex items-center gap-4 w-full h-7"
               onClick={handleGoogle}
             >
               <img src="/google.png" className="h-6 w-6" />
               Verify with Google
             </button>
           </div>
+
           {email && (
             <div className="w-full">
               <div className="text-semilight text-sm font-ubuntu mb-1">
@@ -337,7 +320,7 @@ export const SignupAuth = () => {
               maxLength={24}
               onChange={(e) => handleUsernameChange(e.target.value)}
               placeholder="Username"
-              className={`w-full text-dark h-9 px-4 bg-light focus:outline-none  rounded-lg ${
+              className={`w-full text-dark h-7 px-4 bg-light focus:outline-none  rounded-lg ${
                 available ? "" : "border border-rosemain"
               }`}
               required
@@ -349,7 +332,7 @@ export const SignupAuth = () => {
               Password
             </div>
             <input
-              type="password"
+              type="text"
               value={password}
               onChange={(e) => handlePasswordChange(e.target.value)}
               placeholder="Password"
@@ -401,62 +384,11 @@ export const SignupAuth = () => {
               />
             </div>
           </div>
-          <div className="w-full">
-            <div className="text-semilight text-sm font-ubuntu mb-1">
-              Interests
-            </div>
-            <FormControl className="w-full">
-              <Select
-                multiple
-                value={interests}
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                renderValue={(selected) => (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 0.5,
-                    }}
-                  >
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                sx={{
-                  boxShadow: "none",
-                  color: "rgb(210 210 210);",
-                  ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                }}
-                className=" w-full text-semilight rounded-lg focus:outline-none bg-light"
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      maxHeight: 300,
-                      width: 250,
-                      overflow: "auto",
-                      backgroundColor: "rgb(18 18 18)",
-                      color: "rgb(210 210 210)",
-                    },
-                  },
-                  disableScrollLock: true,
-                  disablePortal: true,
-                }}
-              >
-                {interestOptions.map((interest) => (
-                  <MenuItem key={interest} value={interest}>
-                    {interest}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
 
           <button
             type="button"
             onClick={signup}
-            className="bg-indigomain w-full rounded-lg text-white py-1.5 px-10"
+            className="bg-indigomain w-full mt-2 rounded-lg text-white py-1.5 px-10"
           >
             Sign Up
           </button>

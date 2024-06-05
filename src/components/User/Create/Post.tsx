@@ -253,7 +253,7 @@ export const Post = () => {
           className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
           placeholder="Write your thoughts..."
           wrap="soft"
-          maxLength={250}
+          maxLength={500}
         />
 
         <div className="flex w-full my-2 justify-between">
@@ -332,18 +332,20 @@ export const Post = () => {
                       </button>
                     )}
                   </div>
-                  <div className="text-left font-light mb-2 text-semilight text-sm">
-                    Task: {match.task}
-                  </div>
-                  <div className="flex items-center gap-2 mt-2 text-xs text-semilight">
-                    <div className="text-left font-light">
-                      {match.isTaskCompleted ? (
-                        <div className="text-green-400">Task Completed</div>
-                      ) : (
-                        <div className="text-rose-400">Task Pending</div>
-                      )}
+                  <div className=" mt-3 text-xs text-semilight">
+                    <div className="flex items-center gap-2">
+                      <div className="text-left font-light">
+                        {match.isTaskCompleted ? (
+                          <div className="text-green-400">Task Completed</div>
+                        ) : (
+                          <div className="text-orange-400">Task Pending</div>
+                        )}
+                      </div>
+                      <div>· {getFormattedRemainingTime(match.expiresAt)}</div>{" "}
                     </div>
-                    <div>· {getFormattedRemainingTime(match.expiresAt)}</div>{" "}
+                    <div className="text-left font-light mb-2 text-semilight text-sm">
+                      Task: {match.task}
+                    </div>
                   </div>
                 </div>
               </div>

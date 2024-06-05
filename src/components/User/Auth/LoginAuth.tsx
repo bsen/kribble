@@ -70,12 +70,10 @@ export const LoginAuth = () => {
             FriendCity
             <div className="text-center text-sm font-thin mb-8 text-light">
               A place where college life meets limitless fun! 🎉 Share your
-              moments, snap cool pics, and dive into vibrant communities. With
-              our anonymous posting, let your thoughts soar freely. But wait,
-              there's more! Join forces with a fellow student, conquer exciting
-              challenges, and skyrocket to the top of the leaderboard! 🚀 Get
-              ready to unleash the epicness, starting at the top 20 colleges.
-              Don't miss out on the adventure – join us now!
+              moments, cool pics, and dive into vibrant communities. With our
+              anonymous posting, let your thoughts soar freely, conquer exciting
+              challenges, and skyrocket to the top of the leaderboard! 🚀. Get
+              ready to unleash the epicness – join us now!
             </div>
             <div className="flex flex-wrap mb-5 justify-center gap-2">
               <img
@@ -118,32 +116,36 @@ export const LoginAuth = () => {
           </div>
         </div>
         <div className="ww-full md:w-[50%] bg-black flex flex-col items-center justify-center  h-screen">
-          <div className="w-[80%] bg-dark p-5 rounded-lg flex flex-col items-center  gap-5">
+          <div className="w-[80%] bg-dark p-5 rounded-lg flex flex-col items-center gap-5">
             <div className="w-full">
-              <div className="font-normal m-1 text-semilight">Email</div>
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Email
+              </div>
               <input
                 value={email}
                 onChange={(e) => handleEmailChange(e.target.value)}
                 type="email"
-                className="h-9 w-full text-dark rounded-lg px-4 focus:outline-none bg-light"
+                className="h-7 w-full text-dark rounded-lg px-4 focus:outline-none bg-light"
                 placeholder="Enter your email address"
               />
             </div>
 
             <div className="w-full">
-              <div className="font-normal m-1 text-semilight">Password</div>
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Password
+              </div>
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 onKeyDown={handleKeyDown}
-                className="h-9 w-full text-dark rounded-lg px-4 focus:outline-none bg-light"
+                className="h-7 w-full text-dark rounded-lg px-4 focus:outline-none bg-light"
                 placeholder="Enter password"
               />
             </div>
             <button
               onClick={login}
-              className="bg-indigomain w-full rounded-lg text-white py-1.5 px-10"
+              className="bg-indigomain w-full mt-2 rounded-lg text-white py-1.5 px-10"
             >
               Login
             </button>

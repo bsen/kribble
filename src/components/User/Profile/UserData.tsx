@@ -12,17 +12,12 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { CircularProgress } from "@mui/material";
 
 interface UserData {
-  fullname: string;
   username: string;
   image: string;
   bio: string;
   website: string;
-  college: string;
-  interest: string;
   followersCount: string;
   followingCount: string;
-  weeklyPoints: string;
-  totalPoints: string;
 }
 
 export const UserData: React.FC = () => {
@@ -37,17 +32,12 @@ export const UserData: React.FC = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollowUserLoading, setIsFollowUserLoading] = useState(false);
   const [userData, setUserData] = useState<UserData>({
-    fullname: "",
     username: "",
     image: "",
     bio: "",
     website: "",
-    college: "",
-    interest: "",
     followersCount: "",
     followingCount: "",
-    weeklyPoints: "",
-    totalPoints: "",
   });
   const [error, setError] = useState<Error | null>(null);
 
@@ -123,15 +113,6 @@ export const UserData: React.FC = () => {
           closeComponent={() => setShowCommunities(false)}
         />
       )}
-      <div className="mt-4 p-3 flex justify-evenly items-center rounded-lg bg-indigomain  text-left text-light text-sm">
-        <div className="flex flex-col items-center justify-center">
-          <div>{userData.weeklyPoints}</div> <div>Weekly points</div>
-        </div>
-        <img src="/medal.png" className="h-12 w-12 rounded-lg" />
-        <div className="flex flex-col items-center justify-center">
-          <div>{userData.totalPoints}</div> <div>Total points</div>
-        </div>
-      </div>
 
       <div className="mt-4 p-3 rounded-lg border border-semidark bg-dark">
         <div className="flex w-full justify-center items-center gap-2">
@@ -179,56 +160,44 @@ export const UserData: React.FC = () => {
                 )}
               </div>
             </div>
-            <div>
-              <div className="text-lg font-normal text-light">
-                {userData.username}
-              </div>
-              <div className="text-xs text-semilight font-light font-ubuntu">
-                {userData.fullname}
-              </div>
+
+            <div className="text-lg font-normal text-light">
+              {userData.username}
+            </div>
+            <div className="flex text-semilight font-ubuntu items-center gap-2 font-light text-sm">
+              <button onClick={() => setShowFollowers(true)}>
+                <div className="flex gap-1 items-center">
+                  {userData.followersCount} Followers
+                </div>
+              </button>
+              {currentUser === username && (
+                <button onClick={() => setShowFollowing(true)}>
+                  <div className="flex gap-1 items-center">
+                    {userData.followingCount} Following
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         </div>
         <div className="mt-2">
-          <div className="flex text-semilight font-ubuntu items-center gap-2 font-light text-sm">
-            <button onClick={() => setShowFollowers(true)}>
-              <div className="flex gap-1 items-center">
-                {userData.followersCount} Followers
-              </div>
-            </button>
-
-            <button onClick={() => setShowFollowing(true)}>
-              <div className="flex gap-1 items-center">
-                {userData.followingCount} Following
-              </div>
-            </button>
-          </div>
           <div className="text-sm text-semilight font-ubuntu font-light">
             {userData.bio ? userData.bio : ""}
           </div>
-          <div className="text-sm text-semilight font-ubuntu font-light">
-            {userData.college ? userData.college : ""}
-          </div>
-          <div className="text-sm text-semilight font-ubuntu font-light">
-            {userData.interest ? userData.interest : ""}
-          </div>
 
           <div className="text-sm text-indigomain font-light font-ubuntu hover:underline">
-            <a
-              href={`${
-                userData.website &&
-                (userData.website.startsWith("http://") ||
-                  userData.website.startsWith("https://"))
-                  ? userData.website
-                  : "https://" +
-                    (userData.website ? userData.website : "www.kribble.net")
-              }`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {userData.website ? userData.website : "website"}{" "}
-              <OpenInNewIcon sx={{ fontSize: 15 }} />
-            </a>
+            {userData.website &&
+              (userData.website.startsWith("http://") ||
+                userData.website.startsWith("https://")) && (
+                <a
+                  href={userData.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {userData.website}
+                  <OpenInNewIcon sx={{ fontSize: 15 }} />
+                </a>
+              )}
           </div>
         </div>
       </div>
