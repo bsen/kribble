@@ -157,7 +157,7 @@ export const MatchingComponent: React.FC = () => {
                             }`
                           );
                         }}
-                        className="text-light w-fit font-medium hover:underline underline-offset-2  text-lg rounded-full"
+                        className="text-light w-fit font-medium hover:underline underline-offset-2  text-lg rounded-lg"
                       >
                         {match.matchedUser ? match.matchedUser.username : ""}
                       </div>

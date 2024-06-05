@@ -167,7 +167,7 @@ export const HomeComponent = () => {
                     onClick={() => {
                       navigate(`/${post.taggedUser.username}`);
                     }}
-                    className="text-indigomain bg-light w-fit flex items-center gap-2  mb-2 px-2 py-1 rounded-full font-ubuntu font-light text-xs"
+                    className="text-indigomain bg-light w-fit flex items-center gap-2  mb-2 px-2 py-1 rounded-lg font-ubuntu font-light text-xs"
                   >
                     <img
                       className="h-4 w-4 rounded-lg"

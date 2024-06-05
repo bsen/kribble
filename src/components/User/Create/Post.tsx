@@ -313,7 +313,7 @@ export const Post = () => {
                             }`
                           );
                         }}
-                        className="text-light w-fit font-medium hover:underline underline-offset-2  text-lg rounded-full"
+                        className="text-light w-fit font-medium hover:underline underline-offset-2  text-lg rounded-lg"
                       >
                         {match.matchedUser ? match.matchedUser.username : ""}
                       </div>
@@ -326,7 +326,7 @@ export const Post = () => {
                           setTask(match.task);
                           setShowMatches(false);
                         }}
-                        className="text-indigomain active:bg-semilight bg-light px-2 w-fit font-medium flex items-center  text-sm rounded-full"
+                        className="text-indigomain active:bg-semilight bg-light px-2 w-fit font-medium flex items-center  text-sm rounded-lg"
                       >
                         <AddIcon /> Tag
                       </button>

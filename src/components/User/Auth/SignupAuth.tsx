@@ -1,12 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { BACKEND_URL } from "../../../config";
 import axios from "axios";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "./Firebase/config";
 import { Link, useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
+import Box from "@mui/material/Box";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
+
 interface DebouncedFunction<T extends (...args: any[]) => void> {
   (...args: Parameters<T>): void;
   cancel: () => void;
@@ -36,28 +42,26 @@ function debounce<T extends (...args: any[]) => void>(
   return debouncedFunc;
 }
 
-const colleges = [
-  "VIT Vellore",
-  "VIT Chennai",
-  "VIT Bhopal",
-  "BITS Pilani",
-  "BITS Goa",
-  "BITS Hyderabad",
-  "SRMIST",
-  "MIT Manipal",
-  "IIT Bombay",
-  "IIT Delhi",
-  "IIT Madras",
-  "IIT Kanpur",
-  "IIT Kharagpur",
-  "IIT Roorkee",
-  "NIT Trichy",
-  "NIT Surathkal",
-  "NIT Durgapur",
-  "NSUT",
-  "DTU",
-  "IGDTUW",
-  "Other",
+const interestOptions = [
+  "Programming",
+  "Startup",
+  "Drama",
+  "Singing",
+  "Dancing",
+  "Writing",
+  "Music",
+  "Fashion",
+  "Art",
+  "Literature",
+  "Sports",
+  "Fitness",
+  "Social Work",
+  "Movies",
+  "Anime",
+  "Travel",
+  "Photography",
+  "Gaming",
+  "Still figuring out",
 ];
 
 export const SignupAuth = () => {
@@ -65,23 +69,17 @@ export const SignupAuth = () => {
   const { setCurrentUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [available, setAvailable] = useState<boolean>(true);
-  const [fullname, setFullName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [college, setCollege] = useState<string>("");
   const [popup, setPopup] = useState<string>("");
   const [month, setMonth] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [year, setYear] = useState<string>("");
+  const [interests, setInterests] = useState<string[]>([]);
 
-  const validateUsername = (char: string) => {
-    return char.match(/^[a-z0-9_]$/i);
-  };
-
-  const validatePassword = (char: string) => {
-    return char.match(/^[A-Za-z0-9@#]$/i);
-  };
+  const validateUsername = (char: string) => /^[a-z0-9_]$/i.test(char);
+  const validatePassword = (char: string) => /^[A-Za-z0-9@#]$/i.test(char);
 
   const handleUsernameChange = (text: string) => {
     const newUsername = text
@@ -93,64 +91,48 @@ export const SignupAuth = () => {
     debouncedCheckName(newUsername);
   };
 
-  const handleEmailChange = (text: string) => {
-    const newEmail = text.toLowerCase();
-    setEmail(newEmail);
-  };
-
   const handlePasswordChange = (text: string) => {
     const newPassword = text.split("").filter(validatePassword).join("");
     setPassword(newPassword);
-  };
-  const handleCollegeChange = (event: SelectChangeEvent) => {
-    setCollege(event.target.value as string);
   };
 
   const handleDateChange = (text: string) => {
     const newDate = text.replace(/\D/g, "");
     setDate(newDate);
-
-    if (newDate.length !== 2) {
-      setPopup("Please provide a valid date (two characters)");
-    } else {
-      setPopup("");
-    }
+    setPopup(
+      newDate.length !== 2 ? "Please provide a valid date (two characters)" : ""
+    );
   };
 
   const handleMonthChange = (text: string) => {
     const newMonth = text.replace(/\D/g, "");
     setMonth(newMonth);
-
-    if (newMonth.length !== 2) {
-      setPopup("Please provide a valid month (two characters)");
-    } else {
-      setPopup("");
-    }
+    setPopup(
+      newMonth.length !== 2
+        ? "Please provide a valid month (two characters)"
+        : ""
+    );
   };
 
   const handleYearChange = (text: string) => {
     const newYear = text.replace(/\D/g, "");
     setYear(newYear);
-
-    if (newYear.length !== 4) {
-      setPopup("Please provide a valid year (four characters)");
-    } else {
-      setPopup("");
-    }
+    setPopup(
+      newYear.length !== 4
+        ? "Please provide a valid year (four characters)"
+        : ""
+    );
   };
 
   const checkName = async (username: string) => {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/user/auth/username/check`,
-        {
-          username: username,
-        }
+        { username }
       );
-
-      if (response.data.status === 101) {
+      if (response.data.status === 401) {
         setAvailable(false);
-        setPopup("This username is already taken");
+        setPopup(response.data.message);
       } else {
         setAvailable(true);
         setPopup("");
@@ -165,81 +147,8 @@ export const SignupAuth = () => {
 
   useEffect(() => {
     debouncedCheckName(username);
-
-    return () => {
-      debouncedCheckName.cancel();
-    };
+    return () => debouncedCheckName.cancel();
   }, [username]);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      signup();
-    }
-  };
-
-  async function signup() {
-    setPopup("");
-    if (
-      !fullname ||
-      !username ||
-      !email ||
-      !college ||
-      !password ||
-      !year ||
-      !month ||
-      !date
-    ) {
-      setPopup("All the fields are necessary");
-      return;
-    }
-
-    if (username === "unknown" || username === "anonymous") {
-      setPopup("This username can't be taken");
-      return;
-    }
-
-    if (password.length < 6) {
-      setPopup("Password length should be minimum 6");
-      return;
-    }
-
-    if (!isThirteen()) {
-      setPopup("You must be at least 13 years old to register");
-      return;
-    }
-
-    const userdata = {
-      fullname,
-      username,
-      email,
-      password,
-      college,
-      year,
-      month,
-      date,
-    };
-
-    try {
-      setIsLoading(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/user/auth/signup`,
-        userdata
-      );
-      if (response.data.status === 200) {
-        setPopup("Sign up successful");
-        localStorage.setItem("token", response.data.token);
-        setCurrentUser(response.data.username);
-        navigate("/");
-      } else {
-        setPopup(response.data.message);
-      }
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      setPopup("Network error, try again later");
-    }
-  }
 
   const isThirteen = () => {
     const today = new Date();
@@ -259,16 +168,90 @@ export const SignupAuth = () => {
     return age >= 13;
   };
 
+  const handleGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const email = result.user.email;
+      if (email) {
+        setEmail(email);
+        setPopup("");
+      } else {
+        setPopup("Failed to retrieve email from Google");
+      }
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+      setPopup("Google Sign-In failed. Please try again.");
+    }
+  };
+
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const {
+      target: { value },
+    } = event;
+    setInterests(typeof value === "string" ? value.split(",") : value);
+  };
+
+  const signup = async () => {
+    setPopup("");
+    if (!email) {
+      return setPopup("Please verify an Email with Google");
+    }
+    if (!username) {
+      return setPopup("Enter a Username");
+    }
+    if (username === "anonymous") {
+      return setPopup("This Username can't be taken");
+    }
+
+    if (password.length < 6) {
+      return setPopup("Password length should be minimum 6");
+    }
+    if (date.length < 2 || month.length < 2 || year.length < 4) {
+      return setPopup("Date format must be like DD/MM/YYYY");
+    }
+    if (!isThirteen()) {
+      return setPopup("You must be at least 13 years old to register");
+    }
+
+    const userdata = { username, email, password, year, month, date };
+
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/user/auth/signup`,
+        userdata
+      );
+      if (response.data.status === 901) {
+        setPopup(response.data.message);
+        setEmail("");
+      }
+      if (response.data.status === 200) {
+        setPopup("Sign up successful");
+        localStorage.setItem("token", response.data.token);
+        setCurrentUser(response.data.username);
+        navigate("/");
+      } else {
+        setPopup(response.data.message);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setPopup("Network error, try again later");
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="h-screen flex justify-center items-center w-full">
-        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />{" "}
+        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
       </div>
     );
   }
+
   return (
-    <div className="lg:flex justify-between items-center">
-      <div className="h-screen p-3 flex justify-center items-center w-full bg-indigomain">
+    <div className="md:flex justify-between items-center">
+      <div className="h-screen p-3 w-full md:w-[50%] flex justify-center items-center bg-indigomain">
         <div className="text-semilight text-center mb-4 font-ubuntu font-medium text-[2.5rem]">
           FriendCity
           <div className="text-center text-sm font-thin mb-8 text-light">
@@ -283,27 +266,27 @@ export const SignupAuth = () => {
           <div className="flex flex-wrap mb-5 justify-center gap-2">
             <img
               src="/girl.png"
-              className="h-[15%] w-[15%] rounded-full bg-semidark"
+              className="h-[15%] w-[15%] rounded-lg bg-semidark"
               alt="Girl"
             />
             <img
               src="/boy.png"
-              className="h-[15%] w-[15%] rounded-full bg-semidark"
+              className="h-[15%] w-[15%] rounded-lg bg-semidark"
               alt="Boy"
             />
             <img
               src="/people.png"
-              className="h-[15%] w-[15%] rounded-full bg-semidark"
+              className="h-[15%] w-[15%] rounded-lg bg-semidark"
               alt="People"
             />
             <img
               src="/girl2.png"
-              className="h-[15%] w-[15%] rounded-full bg-semidark"
+              className="h-[15%] w-[15%] rounded-lg bg-semidark"
               alt="Girl 2"
             />
             <img
               src="/boy2.png"
-              className="h-[15%] w-[15%] rounded-full bg-semidark"
+              className="h-[15%] w-[15%] rounded-lg bg-semidark"
               alt="Boy 2"
             />
           </div>
@@ -314,74 +297,139 @@ export const SignupAuth = () => {
                 behavior: "smooth",
               });
             }}
-            className="lg:hidden rounded-full bg-white text-indigomain px-4 py-1 text-lg"
+            className="lg:hidden rounded-lg bg-white text-indigomain px-4 py-1 text-lg"
           >
-            Join now
+            Sign up
           </button>
         </div>
       </div>
-      <div className="flex flex-col h-screen bg-black justify-center items-center p-3 w-full">
-        <div className="items-center p-2 rounded-lg bg-semidark w-[80%] lg:w-[50%]">
-          <div>
-            <div className="font-normal m-1 text-semilight">Full Name</div>
-            <input
-              value={fullname}
-              maxLength={20}
-              onChange={(e) => {
-                setFullName(e.target.value);
-              }}
-              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
-              placeholder="Enter your full name"
-            />
+      <div className="ww-full md:w-[50%] bg-black flex flex-col items-center justify-center  h-screen">
+        <div className="w-[80%] bg-dark p-5 rounded-lg flex flex-col items-center  gap-5">
+          <div className="w-full">
+            <button
+              type="button"
+              className="rounded-md text-sm p-2 text-dark bg-light flex items-center gap-4 w-full h-9"
+              onClick={handleGoogle}
+            >
+              <img src="/google.png" className="h-6 w-6" />
+              Verify with Google
+            </button>
           </div>
-          <div>
-            <div className="font-normal m-1 text-semilight">Username</div>
+          {email && (
+            <div className="w-full">
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Email
+              </div>
+
+              <div className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2">
+                {email}
+              </div>
+            </div>
+          )}
+
+          <div className="w-full">
+            <div className="text-semilight text-sm font-ubuntu mb-1">
+              Username
+            </div>
             <input
+              type="text"
               value={username}
-              maxLength={20}
-              onChange={(e) => {
-                handleUsernameChange(e.target.value);
-              }}
-              className={`w-full text-light h-9 px-4 bg-dark focus:outline-none  rounded-lg ${
+              maxLength={24}
+              onChange={(e) => handleUsernameChange(e.target.value)}
+              placeholder="Username"
+              className={`w-full text-dark h-9 px-4 bg-light focus:outline-none  rounded-lg ${
                 available ? "" : "border border-rosemain"
               }`}
-              placeholder="Select your username"
-            />
-          </div>
-          <div>
-            <div className="font-normal m-1 text-semilight">Email</div>
-            <input
-              value={email}
-              onChange={(e) => {
-                handleEmailChange(e.target.value);
-              }}
-              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
-              placeholder="Enter your email address"
-            />
-          </div>
-          <div>
-            <div className="font-normal m-1 text-semilight">Password</div>
-            <input
-              value={password}
-              onChange={(e) => {
-                handlePasswordChange(e.target.value);
-              }}
-              onKeyDown={handleKeyDown}
-              className=" h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
-              placeholder="Enter password"
+              required
             />
           </div>
 
-          <div>
-            <div className="font-normal m-1 text-semilight">College</div>
+          <div className="w-full">
+            <div className="text-semilight text-sm font-ubuntu mb-1">
+              Password
+            </div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => handlePasswordChange(e.target.value)}
+              placeholder="Password"
+              className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+              required
+            />
+          </div>
+          <div className="w-full flex gap-2">
+            <div className="w-1/3">
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Date
+              </div>
+              <input
+                type="text"
+                value={date}
+                onChange={(e) => handleDateChange(e.target.value)}
+                placeholder="DD"
+                maxLength={2}
+                className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                required
+              />
+            </div>
+            <div className="w-1/3">
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Month
+              </div>
+              <input
+                type="text"
+                value={month}
+                onChange={(e) => handleMonthChange(e.target.value)}
+                placeholder="MM"
+                maxLength={2}
+                className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                required
+              />
+            </div>
+            <div className="w-1/3">
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Year
+              </div>
+              <input
+                type="text"
+                value={year}
+                onChange={(e) => handleYearChange(e.target.value)}
+                placeholder="YYYY"
+                maxLength={4}
+                className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                required
+              />
+            </div>
+          </div>
+          <div className="w-full">
+            <div className="text-semilight text-sm font-ubuntu mb-1">
+              Interests
+            </div>
             <FormControl className="w-full">
               <Select
+                multiple
+                value={interests}
+                onChange={handleChange}
+                input={<OutlinedInput />}
+                renderValue={(selected) => (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 0.5,
+                    }}
+                  >
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
                 sx={{
                   boxShadow: "none",
                   color: "rgb(210 210 210);",
                   ".MuiOutlinedInput-notchedOutline": { border: 0 },
                 }}
-                className="h-9 w-full text-semilight rounded-lg focus:outline-none bg-dark"
+                className=" w-full text-semilight rounded-lg focus:outline-none bg-light"
                 MenuProps={{
                   PaperProps: {
                     style: {
@@ -395,67 +443,31 @@ export const SignupAuth = () => {
                   disableScrollLock: true,
                   disablePortal: true,
                 }}
-                onChange={handleCollegeChange}
-                value={college}
               >
-                <MenuItem value="" disabled>
-                  Select Campus
-                </MenuItem>
-                {colleges.map((college) => (
-                  <MenuItem key={college} value={college}>
-                    {college}
+                {interestOptions.map((interest) => (
+                  <MenuItem key={interest} value={interest}>
+                    {interest}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </div>
-          <div>
-            <div className="font-normal m-1 text-semilight">Date of birth</div>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={date}
-                onChange={(e) => handleDateChange(e.target.value)}
-                placeholder="Date"
-                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-dark"
-              />
 
-              <input
-                type="text"
-                value={month}
-                onChange={(e) => handleMonthChange(e.target.value)}
-                placeholder="Month"
-                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-dark"
-              />
-
-              <input
-                type="text"
-                value={year}
-                onChange={(e) => handleYearChange(e.target.value)}
-                placeholder="Year"
-                className="h-9 w-[25%] text-light rounded-lg px-4 focus:outline-none bg-dark"
-              />
-            </div>
-          </div>
           <button
+            type="button"
             onClick={signup}
-            disabled={isLoading}
-            className="my-4 w-full text-semilight bg-indigomain active:bg-dark  focus:outline-none focus:ring-2 focus:ring-dark font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+            className="bg-indigomain w-full rounded-lg text-white py-1.5 px-10"
           >
-            Register
+            Sign Up
           </button>
-          <div className="text-center text-md font-light text-light">
-            Already have an account?
-            <Link
-              to="/login"
-              className="font-normal text-light underline underline-offset-4 mx-1"
-            >
-              Login
+          <div className="text-center">
+            <Link to="/login" className="text-sm text-semilight font-ubuntu">
+              Already have an account? Log in
             </Link>
           </div>
-        </div>
-        <div className="text-rosemain mt-2 font-light text-center text-xs">
-          {popup ? popup : <div>‎</div>}
+          {popup && (
+            <div className="text-rosemain text-sm text-center">{popup}</div>
+          )}
         </div>
         <footer className="w-full font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
           © 2024 FriendCity Ltd.
@@ -463,7 +475,7 @@ export const SignupAuth = () => {
             Policies
           </Link>
         </footer>
-      </div>
+      </div>{" "}
     </div>
   );
 };

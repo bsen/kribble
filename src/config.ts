@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://prod-server.friendcity.in";
+export const BACKEND_URL = "http://localhost:8080";

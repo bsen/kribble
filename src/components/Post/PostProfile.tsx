@@ -249,7 +249,7 @@ export const PostProfile = () => {
         <div className="p-3 bg-dark rounded-lg">
           <textarea
             rows={3}
-            className={`w-full bg-semidark text-semilight resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-xl  ${
+            className={`w-full bg-semidark text-semilight resize-none over overflow-auto no-scrollbar px-2 py-1 focus:outline-none rounded-lg  ${
               popup ? "border border-rosemain" : ""
             }`}
             wrap="soft"
