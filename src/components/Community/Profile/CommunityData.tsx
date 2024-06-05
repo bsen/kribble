@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -141,11 +141,9 @@ export const CommunityData: React.FC = () => {
               {communityData.name}
             </div>
             <div className="flex text-light items-center gap-2 font-light text-sm">
-              <Link to={`${communityData.name}/members`}>
-                <div className="flex gap-1 items-center">
-                  {communityData.membersCount} Members
-                </div>
-              </Link>
+              <div className="flex gap-1 items-center">
+                {communityData.membersCount} Members
+              </div>
               <div className="flex gap-1 items-center">
                 {communityData.postsCount} Posts
               </div>
