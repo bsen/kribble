@@ -4,16 +4,12 @@ import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import { LinearProgress } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
-interface CommunityData {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-}
+import { useLocation, useNavigate } from "react-router-dom";
+import { NavBar } from "../../Bars/NavBar";
+import { BottomBar } from "../../Bars/BottomBar";
+
 export const UpdateCommunityComponent = () => {
   const navigate = useNavigate();
-  const { name } = useParams();
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [newDescription, setNewDescription] = useState("");
@@ -21,26 +17,14 @@ export const UpdateCommunityComponent = () => {
   const [popup, setPopup] = useState("");
   const [CommunityDeletingState, setCommunityDeletingState] = useState(false);
   const [confirmation, setConfirmation] = useState("");
-  const [communityData, setCommunityData] = useState<CommunityData>({
+  const location = useLocation();
+
+  const communityData = location.state?.communityData || {
     id: "",
     name: "",
     image: "",
     description: "",
-  });
-  const getCommunityData = async () => {
-    try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/community/profile/edit/data`,
-        { token, name }
-      );
-      setCommunityData(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
-  useEffect(() => {
-    getCommunityData();
-  }, []);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -90,7 +74,7 @@ export const UpdateCommunityComponent = () => {
 
       if (typeof previewImage === "string") {
         try {
-          const fileName = "communityImage.jpeg";
+          const fileName = "profile.jpeg";
           const fileType = "image/jpeg";
 
           const binaryString = atob(previewImage.split(",")[1]);
@@ -200,9 +184,10 @@ export const UpdateCommunityComponent = () => {
     );
   }
   return (
-    <>
-      <div className="bg-dark h-fit  p-3 flex flex-col gap-4">
-        <div className="flex justify-between items-center">
+    <div className="py-12">
+      <NavBar />
+      <div className="bg-dark h-fit mt-3 p-3 flex flex-col gap-4 rounded-lg">
+        <div className="flex justify-between items-center border-b border-semidark pb-3">
           <button
             className="w-fit flex items-start"
             onClick={() => {
@@ -222,7 +207,7 @@ export const UpdateCommunityComponent = () => {
           </button>
         </div>
 
-        <div className="w-ful items-start flex justify-between">
+        <div className="w-full flex justify-between items-end">
           <div className="flex justify-center items-center">
             <div className="absolute text-light z-50">
               <button>
@@ -244,30 +229,31 @@ export const UpdateCommunityComponent = () => {
                   ? previewImage
                   : communityData.image
                   ? communityData.image
-                  : "/group.png"
+                  : "/user.png"
               }
-              className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10 border border-semidark"
+              className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10"
             />
           </div>
+
+          <button onClick={updateCommunity}>
+            <div className="text-semilight bg-indigomain text-base font-light rounded-lg py-1 px-4">
+              save
+            </div>
+          </button>
         </div>
         <div>
           <div className="text-semilight  text-sm font-light">Description</div>
           <textarea
-            rows={4}
+            rows={2}
             className="w-full text-semilight bg-semidark px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-semidark"
             defaultValue={communityData.description}
             wrap="soft"
-            maxLength={200}
+            maxLength={150}
             onChange={(e) => {
               setNewDescription(e.target.value);
             }}
           />
         </div>
-        <button onClick={updateCommunity}>
-          <div className="text-semilight bg-indigomain text-base font-light rounded-lg py-1">
-            save
-          </div>
-        </button>
 
         {popup ? (
           <div className="text-rosemain font-ubuntu font-light text-center text-sm">
@@ -277,6 +263,7 @@ export const UpdateCommunityComponent = () => {
           <div>‎</div>
         )}
       </div>
-    </>
+      <BottomBar />
+    </div>
   );
 };

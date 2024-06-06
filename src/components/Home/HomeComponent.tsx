@@ -11,7 +11,6 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 interface Post {
   id: string;
   creator: {
-    id: string;
     username: string;
     image: string | null;
   };
@@ -167,7 +166,7 @@ export const HomeComponent = () => {
                     onClick={() => {
                       navigate(`/${post.taggedUser.username}`);
                     }}
-                    className="text-indigomain bg-light w-fit flex items-center gap-2  mb-2 px-2 py-1 rounded-full font-ubuntu font-light text-xs"
+                    className="text-indigomain bg-light w-fit flex items-center gap-2  mb-2 px-2 py-1 rounded-lg font-ubuntu font-light text-xs"
                   >
                     <img
                       className="h-4 w-4 rounded-lg"
@@ -241,15 +240,23 @@ export const HomeComponent = () => {
                       </div>
                     ) : (
                       <div>
-                        <img
-                          src={
-                            post.creator.image
-                              ? post.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
+                        {post.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        )}
                       </div>
                     )}
                   </div>

@@ -164,16 +164,14 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
 
   if (deleteState) {
     return (
-      <div className="w-full bg-dark h-screen flex justify-center items-center">
-        <div className="flex text-light flex-col gap-4 text-base items-center font-ubuntu font-normal">
-          Do you really want to delete the post ?
-          <span className="text-xs font-light text-semilight">
-            note that you can not get back the deleted post
-          </span>
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="flex text-light flex-col gap-4 text-center text-sm items-center font-ubuntu font-normal">
+          Do you really want to delete the post ?<br /> note that you can not
+          get back the deleted post
           <div className="flex gap-5">
             <button
               onClick={deletePost}
-              className="text-light bg-red-500 hover:bg-red-400 font-normal px-4 py-1 rounded-lg"
+              className="text-light bg-rosemain font-normal px-4 py-1 rounded-lg"
             >
               Delete
             </button>
@@ -182,7 +180,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                 setDeleteState(false);
                 setPostDeleteId("");
               }}
-              className="text-black bg-stone-50 hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
+              className="text-dark bg-semilight font-normal px-4 py-1 border border-neutral-300 rounded-lg"
             >
               Cancel
             </button>
@@ -239,7 +237,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                           post.creator.image ? post.creator.image : "/user.png"
                         }
                         alt="Profile"
-                        className="w-9 h-9 rounded-lg"
+                        className="w-7 h-7 rounded-lg"
                       />
                     </div>
 
@@ -339,7 +337,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                   <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
                 </div>
               ) : (
-                <div className="text-semilight my-5 font-light text-center text-lg">
+                <div className="text-semilight my-5 font-light text-center text-sm">
                   No posts found
                 </div>
               )}

@@ -12,17 +12,12 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { CircularProgress } from "@mui/material";
 
 interface UserData {
-  fullname: string;
   username: string;
   image: string;
   bio: string;
   website: string;
-  college: string;
-  interest: string;
   followersCount: string;
   followingCount: string;
-  weeklyPoints: string;
-  totalPoints: string;
 }
 
 export const UserData: React.FC = () => {
@@ -35,21 +30,16 @@ export const UserData: React.FC = () => {
   const [showFollowing, setShowFollowing] = useState(false);
   const [showCommunities, setShowCommunities] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const [isFollowUserLoading, setIsFollowUserLoading] = useState(false);
   const [userData, setUserData] = useState<UserData>({
-    fullname: "",
     username: "",
     image: "",
     bio: "",
     website: "",
-    college: "",
-    interest: "",
     followersCount: "",
     followingCount: "",
-    weeklyPoints: "",
-    totalPoints: "",
   });
-  const [error, setError] = useState<Error | null>(null);
 
   const getUserData = useCallback(async () => {
     try {
@@ -58,10 +48,14 @@ export const UserData: React.FC = () => {
         `${BACKEND_URL}/api/user/profile/data`,
         { token, username }
       );
-      setUserData(response.data.message);
-      setIsFollowing(response.data.following);
+      if (!response.data.userdata) {
+        setError(new Error("Profile not found"));
+      } else {
+        setUserData(response.data.userdata);
+        setIsFollowing(response.data.following);
+      }
       setLoadingState(false);
-    } catch (error) {
+    } catch (error: any) {
       setError(error as Error);
       setLoadingState(false);
     }
@@ -100,10 +94,14 @@ export const UserData: React.FC = () => {
     }
   }, [isFollowing, token, username]);
 
+  const navigateToEditProfile = useCallback(() => {
+    navigate("/edit/profile", { state: { userData } });
+  }, [navigate, userData]);
+
   if (error) {
     return (
       <div className="text-center my-10 text-red-500 font-normal">
-        An error occurred: {error.message}
+        {error.message}
       </div>
     );
   }
@@ -123,17 +121,8 @@ export const UserData: React.FC = () => {
           closeComponent={() => setShowCommunities(false)}
         />
       )}
-      <div className="mt-4 p-3 flex justify-evenly items-center rounded-lg bg-indigomain  text-left text-light text-sm">
-        <div className="flex flex-col items-center justify-center">
-          <div>{userData.weeklyPoints}</div> <div>Weekly points</div>
-        </div>
-        <img src="/medal.png" className="h-12 w-12 rounded-lg" />
-        <div className="flex flex-col items-center justify-center">
-          <div>{userData.totalPoints}</div> <div>Total points</div>
-        </div>
-      </div>
 
-      <div className="mt-4 p-3 rounded-lg border border-semidark bg-dark">
+      <div className="mt-3 p-3 rounded-lg border border-semidark bg-dark">
         <div className="flex w-full justify-center items-center gap-2">
           <img
             src={userData.image ? userData.image : "/user.png"}
@@ -145,10 +134,8 @@ export const UserData: React.FC = () => {
               <div>
                 {currentUser === username && (
                   <button
-                    onClick={() => {
-                      navigate("/edit/profile");
-                    }}
-                    className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
+                    onClick={navigateToEditProfile}
+                    className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
                   >
                     Edit
                   </button>
@@ -158,7 +145,7 @@ export const UserData: React.FC = () => {
                     <button
                       onClick={followUser}
                       disabled={isFollowUserLoading}
-                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-20 py-1 text-sm"
+                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-20 py-0.5 text-sm"
                     >
                       {isFollowUserLoading ? (
                         <CircularProgress
@@ -179,56 +166,42 @@ export const UserData: React.FC = () => {
                 )}
               </div>
             </div>
-            <div>
-              <div className="text-lg font-normal text-light">
-                {userData.username}
-              </div>
-              <div className="text-xs text-semilight font-light font-ubuntu">
-                {userData.fullname}
-              </div>
+
+            <div className="text-base font-normal text-light">
+              {userData.username}
+            </div>
+            <div className="flex text-semilight font-ubuntu items-center gap-2 font-light text-sm">
+              <button onClick={() => setShowFollowers(true)}>
+                <div className="flex gap-1 items-center">
+                  {userData.followersCount} Followers
+                </div>
+              </button>
+              {currentUser === username && (
+                <button onClick={() => setShowFollowing(true)}>
+                  <div className="flex gap-1 items-center">
+                    {userData.followingCount} Following
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         </div>
         <div className="mt-2">
-          <div className="flex text-semilight font-ubuntu items-center gap-2 font-light text-sm">
-            <button onClick={() => setShowFollowers(true)}>
-              <div className="flex gap-1 items-center">
-                {userData.followersCount} Followers
-              </div>
-            </button>
-
-            <button onClick={() => setShowFollowing(true)}>
-              <div className="flex gap-1 items-center">
-                {userData.followingCount} Following
-              </div>
-            </button>
-          </div>
           <div className="text-sm text-semilight font-ubuntu font-light">
             {userData.bio ? userData.bio : ""}
           </div>
-          <div className="text-sm text-semilight font-ubuntu font-light">
-            {userData.college ? userData.college : ""}
-          </div>
-          <div className="text-sm text-semilight font-ubuntu font-light">
-            {userData.interest ? userData.interest : ""}
-          </div>
 
           <div className="text-sm text-indigomain font-light font-ubuntu hover:underline">
-            <a
-              href={`${
-                userData.website &&
-                (userData.website.startsWith("http://") ||
-                  userData.website.startsWith("https://"))
-                  ? userData.website
-                  : "https://" +
-                    (userData.website ? userData.website : "www.kribble.net")
-              }`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {userData.website ? userData.website : "website"}{" "}
-              <OpenInNewIcon sx={{ fontSize: 15 }} />
-            </a>
+            {userData.website && (
+              <a
+                href={userData.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {userData.website}
+                <OpenInNewIcon sx={{ fontSize: 15 }} />
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -259,6 +232,14 @@ export const UserData: React.FC = () => {
               className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Comments
+            </button>{" "}
+            <button
+              onClick={() => {
+                setShowCommunities(true);
+              }}
+              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+            >
+              Communities
             </button>
             <button
               onClick={() => {
@@ -268,15 +249,6 @@ export const UserData: React.FC = () => {
             >
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Community</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setShowCommunities(true);
-              }}
-              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-            >
-              Communities
             </button>
           </div>
         )}

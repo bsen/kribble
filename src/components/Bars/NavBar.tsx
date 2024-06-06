@@ -36,7 +36,7 @@ export const NavBar = () => {
           closeComponent={() => setShowNotifications(false)}
         />
       )}
-      <div className="top-0 rounded-b-lg h-12 border-b  border-semidark bg-dark fixed w-[40%]">
+      <div className="top-0 rounded-b-lg h-12 border-b  border-semidark bg-dark fixed w-full lg:w-[40%]">
         <div className="w-full px-4 h-full text-xl font-ubuntu  flex justify-between items-center text-light">
           <div
             onClick={() => {
@@ -54,8 +54,8 @@ export const NavBar = () => {
             >
               {newNotification && (
                 <span className="absolute right-14 top-4 flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-lg bg-sky-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-lg h-2 w-2 bg-sky-500"></span>
                 </span>
               )}
               <NotificationsNoneOutlinedIcon

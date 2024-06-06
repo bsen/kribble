@@ -64,43 +64,41 @@ export const LoginAuth = () => {
 
   return (
     <>
-      <div className="lg:flex justify-between items-center">
-        <div className="h-screen p-3 flex justify-center items-center w-full bg-indigomain">
+      <div className="md:flex justify-between items-center">
+        <div className="h-screen p-3 w-full md:w-[50%] flex justify-center items-center bg-indigomain">
           <div className="text-semilight text-center mb-4 font-ubuntu font-medium text-[2.5rem]">
             FriendCity
             <div className="text-center text-sm font-thin mb-8 text-light">
               A place where college life meets limitless fun! 🎉 Share your
-              moments, snap cool pics, and dive into vibrant communities. With
-              our anonymous posting, let your thoughts soar freely. But wait,
-              there's more! Join forces with a fellow student, conquer exciting
-              challenges, and skyrocket to the top of the leaderboard! 🚀 Get
-              ready to unleash the epicness, starting at the top 20 colleges.
-              Don't miss out on the adventure – join us now!
+              moments, cool pics, and dive into vibrant communities. With our
+              anonymous posting, let your thoughts soar freely, conquer exciting
+              challenges, and skyrocket to the top of the leaderboard! 🚀. Get
+              ready to unleash the epicness – join us now!
             </div>
             <div className="flex flex-wrap mb-5 justify-center gap-2">
               <img
                 src="/girl.png"
-                className="h-[15%] w-[15%] rounded-full bg-semidark"
+                className="h-[15%] w-[15%] rounded-lg bg-semidark"
                 alt="Girl"
               />
               <img
                 src="/boy.png"
-                className="h-[15%] w-[15%] rounded-full bg-semidark"
+                className="h-[15%] w-[15%] rounded-lg bg-semidark"
                 alt="Boy"
               />
               <img
                 src="/people.png"
-                className="h-[15%] w-[15%] rounded-full bg-semidark"
+                className="h-[15%] w-[15%] rounded-lg bg-semidark"
                 alt="People"
               />
               <img
                 src="/girl2.png"
-                className="h-[15%] w-[15%] rounded-full bg-semidark"
+                className="h-[15%] w-[15%] rounded-lg bg-semidark"
                 alt="Girl 2"
               />
               <img
                 src="/boy2.png"
-                className="h-[15%] w-[15%] rounded-full bg-semidark"
+                className="h-[15%] w-[15%] rounded-lg bg-semidark"
                 alt="Boy 2"
               />
             </div>
@@ -111,55 +109,55 @@ export const LoginAuth = () => {
                   behavior: "smooth",
                 });
               }}
-              className="lg:hidden rounded-full bg-white text-indigomain px-4 py-1 text-lg"
+              className="lg:hidden rounded-lg bg-white text-indigomain px-4 py-1 text-lg"
             >
               Join now
             </button>
           </div>
         </div>
-        <div className="flex flex-col h-screen bg-black justify-center items-center p-3 w-full">
-          <div className="items-center p-2 rounded-lg bg-semidark w-[80%] lg:w-[50%]">
-            <div>
-              <div className="font-normal m-1 text-semilight">Email</div>
+        <div className="ww-full md:w-[50%] bg-black flex flex-col items-center justify-center  h-screen">
+          <div className="w-[80%] bg-dark p-5 rounded-lg flex flex-col items-center gap-5">
+            <div className="w-full">
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Email
+              </div>
               <input
                 value={email}
                 onChange={(e) => handleEmailChange(e.target.value)}
                 type="email"
-                className="h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
+                className="h-7 w-full text-dark rounded-lg px-4 focus:outline-none bg-light"
                 placeholder="Enter your email address"
               />
             </div>
 
-            <div>
-              <div className="font-normal m-1 text-semilight">Password</div>
+            <div className="w-full">
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Password
+              </div>
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 onKeyDown={handleKeyDown}
-                className="h-9 w-full text-light rounded-lg px-4 focus:outline-none bg-dark"
+                className="h-7 w-full text-dark rounded-lg px-4 focus:outline-none bg-light"
                 placeholder="Enter password"
               />
             </div>
             <button
               onClick={login}
-              className="my-4 w-full text-semilight bg-indigomain active:bg-dark border border-semidark focus:outline-none focus:ring-2 focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+              className="bg-indigomain w-full mt-2 rounded-lg text-white py-1.5 px-10"
             >
               Login
             </button>
-            <div className="text-center text-md font-light text-light">
-              Don't have an account?
-              <Link
-                to="/signup"
-                className="font-normal text-light underline underline-offset-4 mx-1"
-              >
-                Sign up
+            <div className="text-center">
+              <Link to="/signup" className="text-sm text-semilight font-ubuntu">
+                Don't have an account? Signup
               </Link>
             </div>
           </div>
-          <div className="text-rosemain mt-2 font-light text-center text-xs">
-            {popup ? popup : <div>‎</div>}
-          </div>
+          {popup && (
+            <div className="text-rosemain text-sm text-center">{popup}</div>
+          )}
           <footer className="w-full font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
             © 2024 FriendCity Ltd.
             <Link to="/policies" className="underline">

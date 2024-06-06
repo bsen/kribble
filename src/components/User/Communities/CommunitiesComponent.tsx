@@ -9,7 +9,6 @@ import { CircularProgress } from "@mui/material";
 interface Communities {
   id: string;
   name: string;
-  membersCount: string;
   image: string;
 }
 interface CommunitiesComponentProps {
@@ -65,13 +64,13 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
 
   return (
     <>
-      <div className="h-screen absolute w-[50%] bg-black/60 flex justify-center items-center">
+      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[40%] bg-black/80 flex justify-center items-center">
         <div
-          className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar py-12 "
+          className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
           onScroll={handleScroll}
           ref={scrollContainerRef}
         >
-          <div className="flex text-semilight  justify-center gap-5 items-center py-2">
+          <div className="flex text-semilight  justify-center gap-5 items-center">
             <button
               onClick={closeComponent}
               className="border border-semidark p-1 rounded-lg"
@@ -82,27 +81,21 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
           </div>
           {communityData.communities.length > 0 ? (
             communityData.communities.map((community, index) => (
-              <div
-                key={index}
-                className="border my-2 rounded-md border-semidark p-1 bg-dark"
-              >
+              <div key={index} className="mt-2 rounded-md p-1 bg-semidark">
                 <div className="flex gap-2 justify-between items-start">
                   <div className="flex gap-2 items-start">
                     <img
-                      className="h-7 w-7 rounded-full bg-dark"
+                      className="h-7 w-7 rounded-lg bg-dark"
                       src={community.image ? community.image : "/group.png"}
                     />
 
                     <div className="flex flex-col w-full">
                       <Link
                         to={`/community/${community.name}`}
-                        className="text-light w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
+                        className="text-light w-fit hover:underline underline-offset-2 text-base font-medium font-ubuntu"
                       >
                         {community.name}
                       </Link>
-                      <div className="text-light font-ubuntu  text-sm font-light">
-                        {community.membersCount} members
-                      </div>
                     </div>
                   </div>
                 </div>

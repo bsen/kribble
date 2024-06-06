@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { BottomBar } from "../Bars/BottomBar";
 import LinearProgress from "@mui/material/LinearProgress";
+import { NavBar } from "../Bars/NavBar";
 
 interface User {
   username: string;
@@ -68,12 +69,13 @@ export const SearchComponent = () => {
   }, [search, debouncedSearch]);
 
   return (
-    <>
-      <div className="top-0 fixed w-full lg:w-[50%]">
+    <div>
+      <NavBar />
+      <div className="top-14 fixed w-full lg:w-[40%]">
         {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
 
-        <div className="w-full px-4 h-14 flex justify-between items-center">
-          <div className="h-10 bg-semidark mx-auto w-[75%] hover:bg-semidark flex px-4 justify-between items-center border border-semidark rounded-lg">
+        <div className="w-full h-14 flex justify-between items-center">
+          <div className="h-10 bg-semidark mx-auto w-full hover:bg-semidark flex px-4 justify-between items-center border border-semidark rounded-lg">
             <input
               type="text"
               onChange={(e) => setSearch(e.target.value)}
@@ -96,7 +98,7 @@ export const SearchComponent = () => {
                         <img
                           src={user.image ? user.image : "/user.png"}
                           alt="Profile"
-                          className="h-9 w-9 rounded-lg"
+                          className="h-7 w-7 rounded-lg"
                         />
                       </div>
                       <div className="text-light text-lg">{user.username}</div>
@@ -116,7 +118,7 @@ export const SearchComponent = () => {
                         <img
                           src={community.image ? community.image : "/group.png"}
                           alt="Profile"
-                          className="h-9 w-9 rounded-lg"
+                          className="h-7 w-7 rounded-lg"
                         />
                       </div>
                       <div className="items-center">
@@ -143,6 +145,6 @@ export const SearchComponent = () => {
         </div>
         <BottomBar />
       </div>
-    </>
+    </div>
   );
 };

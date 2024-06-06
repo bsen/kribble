@@ -8,7 +8,7 @@ export default {
         semidark: "rgb(30 30 30);",
         light: "rgb(220 220 220);",
         semilight: "rgb(200 200 200);",
-        rosemain: "rgb(232, 32, 62);",
+        rosemain: "rgb(200, 50, 50);",
         indigomain: "rgb(79 70 229);",
       },
       fontFamily: {

@@ -16,7 +16,7 @@
     "@mui/material": "^5.15.13",
     "@vercel/analytics": "^1.2.2",
     "axios": "^1.6.7",
-    "firebase": "^10.9.0",
+    "firebase": "^10.12.2",
     "framer-motion": "^11.0.13",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
@@ -25,12 +25,14 @@
     "react-player": "^2.16.0",
     "react-router-dom": "^6.22.3",
     "react-swipeable": "^7.0.1",
-    "string-width": "^1.0.2"
+    "string-width": "^1.0.2",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
+    "@types/valid-url": "^1.0.7",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",

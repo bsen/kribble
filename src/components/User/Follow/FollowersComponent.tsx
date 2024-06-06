@@ -73,7 +73,7 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
 
   return (
     <>
-      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[50%] bg-black/60 flex justify-center items-center">
+      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[40%] bg-black/80 flex justify-center items-center">
         <div
           className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
           onScroll={handleScroll}
@@ -92,7 +92,7 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
             followersData.followers.map((followersObj) => (
               <div
                 key={followersObj.id}
-                className=" my-2 rounded-lg border border-semidark p-2 bg-semidark"
+                className=" mt-2 rounded-lg p-1 bg-semidark"
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
@@ -105,7 +105,7 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
                   />
                   <div>
                     <Link to={`/${followersObj.follower.username}`}>
-                      <div className="text-light text-lg font-ubuntu">
+                      <div className="text-light text-base font-ubuntu">
                         {followersObj.follower.username}
                       </div>
                     </Link>

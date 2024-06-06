@@ -9,8 +9,6 @@ import { BottomBar } from "../../Bars/BottomBar";
 interface Communities {
   id: string;
   name: string;
-  membersCount: string;
-  postsCount: string;
   image: string;
 }
 export const CommunitiesComponent = () => {
@@ -67,14 +65,12 @@ export const CommunitiesComponent = () => {
         ref={scrollContainerRef}
       >
         <NavBar />
-        <div className="text-lg font-ubuntu text-semilight fonr-normal text-center mt-2">
-          Communities
-        </div>
+
         {communityData.communities.length > 0 ? (
           communityData.communities.map((community, index) => (
             <div
               key={index}
-              className="my-4 p-2 rounded-lg border border-semidark  bg-dark"
+              className="mt-2 p-2 rounded-lg border border-semidark  bg-dark"
             >
               <Link to={`/community/${community.name}`}>
                 <div className="flex justify-between gap-2">
@@ -86,14 +82,6 @@ export const CommunitiesComponent = () => {
                     <div className="flex flex-col w-full">
                       <div className="text-light text-base lg:text-lg font-medium font-ubuntu">
                         {community.name}
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        <div className="text-light font-light  text-sm">
-                          {community.membersCount} members
-                        </div>
-                        <div className="text-light font-light  text-sm">
-                          {community.postsCount} posts
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -108,7 +96,7 @@ export const CommunitiesComponent = () => {
                 <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
               </div>
             ) : (
-              <div className="text-semilight my-5 font-light text-center text-lg">
+              <div className="text-semilight my-5 font-light text-center text-sm">
                 No communities found
               </div>
             )}
