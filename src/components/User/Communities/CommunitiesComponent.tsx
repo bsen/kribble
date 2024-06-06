@@ -81,10 +81,7 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
           </div>
           {communityData.communities.length > 0 ? (
             communityData.communities.map((community, index) => (
-              <div
-                key={index}
-                className="border my-2 rounded-md border-semidark p-1 bg-dark"
-              >
+              <div key={index} className="mt-2 rounded-md p-1 bg-semidark">
                 <div className="flex gap-2 justify-between items-start">
                   <div className="flex gap-2 items-start">
                     <img
@@ -95,7 +92,7 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
                     <div className="flex flex-col w-full">
                       <Link
                         to={`/community/${community.name}`}
-                        className="text-light w-fit hover:underline underline-offset-2 text-base lg:text-lg font-medium font-ubuntu"
+                        className="text-light w-fit hover:underline underline-offset-2 text-base font-medium font-ubuntu"
                       >
                         {community.name}
                       </Link>

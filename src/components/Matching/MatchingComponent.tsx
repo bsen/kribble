@@ -97,11 +97,11 @@ export const MatchingComponent: React.FC = () => {
             <AddIcon /> Add matches
           </button>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           {matches.length > 0 ? (
             matches.map((match) => (
               <div key={match.id}>
-                <div className="bg-dark p-3 mb-3 rounded-lg shadow-sm">
+                <div className="bg-dark p-3 rounded-lg shadow-sm">
                   <div className="flex mb-2 items-center justify-start gap-2">
                     <div className="flex justify-center">
                       <img
@@ -167,12 +167,6 @@ export const MatchingComponent: React.FC = () => {
             </div>
           )}
         </div>
-        <button
-          onClick={findMatch}
-          className="bg-semidark my-5 text-center text-semilight px-4 font-ubuntu font-normal py-0.5 text-sm rounded-lg"
-        >
-          <AddIcon /> Add matches
-        </button>
         {isLoading && (
           <div className="w-full my-5 flex justify-center items-center">
             <CircularProgress sx={{ color: "rgb(50 50 50);" }} />

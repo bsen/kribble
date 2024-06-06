@@ -5,6 +5,35 @@ import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { NavBar } from "../../Bars/NavBar";
 import { CircularProgress } from "@mui/material";
+import { BottomBar } from "../../Bars/BottomBar";
+interface DebouncedFunction<T extends (...args: any[]) => void> {
+  (...args: Parameters<T>): void;
+  cancel: () => void;
+}
+
+function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  delay: number
+): DebouncedFunction<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | null;
+
+  const cancel = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
+  const debouncedFunc: DebouncedFunction<T> = (...args: Parameters<T>) => {
+    cancel();
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+
+  debouncedFunc.cancel = cancel;
+  return debouncedFunc;
+}
 
 export const Community = () => {
   const token = localStorage.getItem("token");
@@ -24,25 +53,30 @@ export const Community = () => {
       .toLowerCase();
     setName(newName);
   };
-  async function checkName() {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/community/create/name/check`,
-      { name }
-    );
-    if (response.data.status === 101) {
-      setPopup("This community name is already taken");
-      return setAvailable(false);
+
+  const checkName = async (name: string) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/community/create/name/check`,
+        { name }
+      );
+      if (response.data.status === 401) {
+        setAvailable(false);
+        setPopup(response.data.message);
+      } else {
+        setAvailable(true);
+        setPopup("");
+      }
+    } catch (error) {
+      console.error(error);
+      setPopup("Network error, please try again later");
     }
-    if (response.data.status === 102) {
-      setPopup("");
-      return setAvailable(true);
-    }
-  }
+  };
+
+  const debouncedCheckName = debounce(checkName, 1000);
   useEffect(() => {
-    setPopup("");
-    setTimeout(() => {
-      checkName();
-    }, 1000);
+    debouncedCheckName(name);
+    return () => debouncedCheckName.cancel();
   }, [name]);
 
   async function createCommunity() {
@@ -107,7 +141,9 @@ export const Community = () => {
                 onChange={(e) => {
                   handleNameChange(e.target.value);
                 }}
-                className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
+                className={`w-full overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 rounded-lg ${
+                  available ? "" : "border border-rosemain"
+                } bg-semidark text-semilight`}
                 placeholder="Choose a name for your community"
                 maxLength={20}
               />
@@ -138,6 +174,7 @@ export const Community = () => {
             </div>
           </div>
         </div>
+        <BottomBar />
       </div>
     </>
   );

@@ -6,6 +6,7 @@ import axios from "axios";
 import { LinearProgress } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavBar } from "../../Bars/NavBar";
+import { BottomBar } from "../../Bars/BottomBar";
 
 export const UpdateCommunityComponent = () => {
   const navigate = useNavigate();
@@ -262,6 +263,7 @@ export const UpdateCommunityComponent = () => {
           <div>‎</div>
         )}
       </div>
+      <BottomBar />
     </div>
   );
 };

@@ -89,7 +89,7 @@ export const FollowingComponent: React.FC<FollowingComponentProps> = ({
             followingsData.followings.map((followingObj) => (
               <div
                 key={followingObj.id}
-                className=" my-2 rounded-lg border border-semidark p-2 bg-semidark"
+                className=" mt-2 rounded-lg p-1 bg-semidark"
               >
                 <div className="flex justify-start items-center gap-2">
                   <img
@@ -102,7 +102,7 @@ export const FollowingComponent: React.FC<FollowingComponentProps> = ({
                   />
                   <div>
                     <Link to={`/${followingObj.following.username}`}>
-                      <div className="text-light text-lg font-ubuntu">
+                      <div className="text-light text-base font-ubuntu">
                         {followingObj.following.username}
                       </div>
                     </Link>

@@ -8,6 +8,8 @@ import { CircularProgress } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import { BottomBar } from "../../Bars/BottomBar";
+import { NavBar } from "../../Bars/NavBar";
 
 interface MatchData {
   id: string;
@@ -181,185 +183,192 @@ export const Post = () => {
   }
   return (
     <>
-      <div className="w-full bg-dark p-4 rounded-lg">
-        <div className="flex gap-4 items-center">
-          <button onClick={handleClose}>
-            <ArrowBackIcon
-              className="p-1 bg-indigomain text-semilight rounded-lg"
-              sx={{ fontSize: 35 }}
-            />
-          </button>
-          <div className="text-xl flex justify-center items-center gap-5 font-light text-semilight text-center">
-            <div>Create Post</div>
-          </div>
-        </div>
-        <div className="w-full h-full rounded-lg flex flex-col justify-center">
-          {previewImage ? (
-            <div className="w-[100%] flex items-end justify-center p-4">
-              <div className="flex flex-col items-center">
-                <img
-                  src={previewImage}
-                  alt="Preview"
-                  className="max-w:w-[80%] lg:max-w-[50%] rounded-lg border border-semidark"
-                />
-                <button
-                  onClick={() => {
-                    setPreviewImage("");
-                  }}
-                  className="text-black mt-2 rounded-lg"
-                >
-                  <DeleteIcon
-                    sx={{ fontSize: 20 }}
-                    className="text-semilight"
-                  />
-                </button>
-              </div>
+      <div className="py-12">
+        <NavBar />
+        <div className="w-full mt-3 bg-dark p-4 rounded-lg">
+          <div className="flex gap-4 items-center">
+            <button onClick={handleClose}>
+              <ArrowBackIcon
+                className="p-1 bg-indigomain text-semilight rounded-lg"
+                sx={{ fontSize: 35 }}
+              />
+            </button>
+            <div className="text-xl flex justify-center items-center gap-5 font-light text-semilight text-center">
+              <div>Create Post</div>
             </div>
-          ) : (
-            <div className="flex justify-end">
-              <label
-                htmlFor="image-upload"
-                className="cursor-pointer block text-center"
-              >
-                <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
-                  Add Image
-                  <AddPhotoAlternateIcon
-                    sx={{ fontSize: 30 }}
-                    className="text-light"
+          </div>
+          <div className="w-full h-full rounded-lg flex flex-col justify-center">
+            {previewImage ? (
+              <div className="w-[100%] flex items-end justify-center p-4">
+                <div className="flex flex-col items-center">
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className="max-w:w-[80%] lg:max-w-[50%] rounded-lg border border-semidark"
                   />
+                  <button
+                    onClick={() => {
+                      setPreviewImage("");
+                    }}
+                    className="text-black mt-2 rounded-lg"
+                  >
+                    <DeleteIcon
+                      sx={{ fontSize: 20 }}
+                      className="text-semilight"
+                    />
+                  </button>
                 </div>
-              </label>
-              <input
-                onChange={handleImageUpload}
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                className="hidden"
-              />
-            </div>
-          )}
-        </div>
-        {taggedUser && task && (
-          <div className="p-3 bg-semidark rounded-lg mb-2">
-            <div className="text-light font-light  text-sm">
-              Tagging @{taggedUser}
-              <br />
-              Task: {task}
-            </div>
-          </div>
-        )}
-
-        <textarea
-          value={post}
-          onChange={handlePostChange}
-          rows={4}
-          className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
-          placeholder="Write your thoughts..."
-          wrap="soft"
-          maxLength={500}
-        />
-
-        <div className="flex w-full my-2 justify-between">
-          <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
-            <div
-              onClick={() => {
-                setAnonymity((prevState) => !prevState);
-              }}
-            >
-              <VisibilityOffIcon
-                className={`${anonymity ? "text-rosemain" : "text-semilight"}`}
-              />
-            </div>
-            {anonymity ? (
-              <div className="text-rosemain">Your identity will be hidden</div>
+              </div>
             ) : (
-              <div className="text-semilight">Hide your identity</div>
+              <div className="flex justify-end">
+                <label
+                  htmlFor="image-upload"
+                  className="cursor-pointer block text-center"
+                >
+                  <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
+                    Add Image
+                    <AddPhotoAlternateIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-light"
+                    />
+                  </div>
+                </label>
+                <input
+                  onChange={handleImageUpload}
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                />
+              </div>
             )}
           </div>
-          <div>
-            <button
-              onClick={createUserPost}
-              className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
-            >
-              Post
-            </button>
+          {taggedUser && task && (
+            <div className="p-3 bg-semidark rounded-lg mb-2">
+              <div className="text-light font-light  text-sm">
+                Tagging @{taggedUser}
+                <br />
+                Task: {task}
+              </div>
+            </div>
+          )}
+
+          <textarea
+            value={post}
+            onChange={handlePostChange}
+            rows={4}
+            className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
+            placeholder="Write your thoughts..."
+            wrap="soft"
+            maxLength={500}
+          />
+
+          <div className="flex w-full my-2 justify-between">
+            <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
+              <div
+                onClick={() => {
+                  setAnonymity((prevState) => !prevState);
+                }}
+              >
+                <VisibilityOffIcon
+                  className={`${
+                    anonymity ? "text-rosemain" : "text-semilight"
+                  }`}
+                />
+              </div>
+              {anonymity ? (
+                <div className="text-rosemain">
+                  Your identity will be hidden
+                </div>
+              ) : (
+                <div className="text-semilight">Hide your identity</div>
+              )}
+            </div>
+            <div>
+              <button
+                onClick={createUserPost}
+                className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
+              >
+                Post
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className=" my-2 rounded-lg text-semilight">
-        <div className="flex flex-col gap-4">
-          <div className="my-2 text-semilight font-ubuntu font-light text-center">
-            Tag matches
-          </div>
-          {matches.length > 0 &&
-            showMatches &&
-            matches.map((match) => (
-              <div key={match.id}>
-                <div className="bg-dark p-3 rounded-lg shadow-sm">
-                  <div className="flex mb-2 items-center justify-between">
-                    <div className="flex gap-2 items-center justify-center">
-                      <img
-                        src={
-                          match.matchedUser.image
-                            ? match.matchedUser.image
-                            : "/user.png"
-                        }
-                        className="w-7 h-7 rounded-lg border border-semidark object-cover"
-                      />
-                      <div
-                        onClick={() => {
-                          navigate(
-                            `/${
-                              match.matchedUser.username
-                                ? match.matchedUser.username
-                                : ""
-                            }`
-                          );
-                        }}
-                        className="text-light w-fit font-medium hover:underline underline-offset-2  text-lg rounded-lg"
-                      >
-                        {match.matchedUser ? match.matchedUser.username : ""}
+        <div className=" my-2 rounded-lg text-semilight">
+          <div className="flex flex-col gap-2">
+            {matches.length > 0 &&
+              showMatches &&
+              matches.map((match) => (
+                <div key={match.id}>
+                  <div className="bg-dark p-3 rounded-lg shadow-sm">
+                    <div className="flex mb-2 items-center justify-between">
+                      <div className="flex gap-2 items-center justify-center">
+                        <img
+                          src={
+                            match.matchedUser.image
+                              ? match.matchedUser.image
+                              : "/user.png"
+                          }
+                          className="w-7 h-7 rounded-lg border border-semidark object-cover"
+                        />
+                        <div
+                          onClick={() => {
+                            navigate(
+                              `/${
+                                match.matchedUser.username
+                                  ? match.matchedUser.username
+                                  : ""
+                              }`
+                            );
+                          }}
+                          className="text-light w-fit font-medium hover:underline underline-offset-2  text-lg rounded-lg"
+                        >
+                          {match.matchedUser ? match.matchedUser.username : ""}
+                        </div>
                       </div>
+                      {!match.isTaskCompleted && (
+                        <button
+                          onClick={() => {
+                            setTaggedUser(match.matchedUser.username);
+                            setTaskId(match.id);
+                            setTask(match.task);
+                            setShowMatches(false);
+                          }}
+                          className="text-indigomain active:bg-semilight bg-light px-2 w-fit font-medium flex items-center  text-sm rounded-lg"
+                        >
+                          <AddIcon /> Tag
+                        </button>
+                      )}
                     </div>
-                    {!match.isTaskCompleted && (
-                      <button
-                        onClick={() => {
-                          setTaggedUser(match.matchedUser.username);
-                          setTaskId(match.id);
-                          setTask(match.task);
-                          setShowMatches(false);
-                        }}
-                        className="text-indigomain active:bg-semilight bg-light px-2 w-fit font-medium flex items-center  text-sm rounded-lg"
-                      >
-                        <AddIcon /> Tag
-                      </button>
-                    )}
-                  </div>
-                  <div className=" mt-3 text-xs text-semilight">
-                    <div className="flex items-center gap-2">
-                      <div className="text-left font-light">
-                        {match.isTaskCompleted ? (
-                          <div className="text-green-400">Task Completed</div>
-                        ) : (
-                          <div className="text-orange-400">Task Pending</div>
-                        )}
+                    <div className=" text-xs text-semilight">
+                      <div className="flex items-center gap-2">
+                        <div className="text-left font-light">
+                          {match.isTaskCompleted ? (
+                            <div className="text-green-400">Task Completed</div>
+                          ) : (
+                            <div className="text-orange-400">Task Pending</div>
+                          )}
+                        </div>
+                        <div>
+                          · {getFormattedRemainingTime(match.expiresAt)}
+                        </div>{" "}
                       </div>
-                      <div>· {getFormattedRemainingTime(match.expiresAt)}</div>{" "}
-                    </div>
-                    <div className="text-left font-light mb-2 text-semilight text-sm">
-                      Task: {match.task}
+                      <div className="text-left font-light mb-2 text-semilight text-sm">
+                        Task: {match.task}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
+        {popup && (
+          <div className="text-red-400 font-light text-center text-xs my-2">
+            {popup}
+          </div>
+        )}
+        <BottomBar />
       </div>
-      {popup && (
-        <div className="text-red-400 font-light text-center text-xs my-2">
-          {popup}
-        </div>
-      )}
     </>
   );
 };

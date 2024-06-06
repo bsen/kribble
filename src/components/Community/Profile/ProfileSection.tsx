@@ -290,7 +290,7 @@ export const ProfileSection: React.FC = () => {
       >
         <NavBar />
 
-        <div className="p-3 mt-4 rounded-lg border border-semidark bg-dark">
+        <div className="p-3 mt-3 rounded-lg border border-semidark bg-dark">
           <div className="flex justify-between w-full items-center gap-2">
             <img
               src={communityData.image ? communityData.image : "/group.png"}

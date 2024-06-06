@@ -7,6 +7,8 @@ import axios from "axios";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { BACKEND_URL } from "../../../config";
 import { CircularProgress } from "@mui/material";
+import { NavBar } from "../../Bars/NavBar";
+import { BottomBar } from "../../Bars/BottomBar";
 
 export const Post = () => {
   const { name } = useParams();
@@ -121,106 +123,114 @@ export const Post = () => {
   }
   return (
     <>
-      <div className="w-full bg-dark p-4 rounded-lg">
-        <div className="flex gap-4 items-center">
-          <button onClick={handleClose}>
-            <ArrowBackIcon
-              className="p-1 bg-indigomain text-semilight rounded-lg"
-              sx={{ fontSize: 35 }}
-            />
-          </button>
-          <div className="text-xl flex justify-center items-center gap-5 font-light text-light text-center">
-            <div>Create Post in {name}</div>
-          </div>
-        </div>
-        <div className="w-full h-full rounded-lg flex flex-col justify-center">
-          {previewImage ? (
-            <div className="w-[100%] flex items-end justify-center p-4">
-              <div className="flex flex-col items-center">
-                <img
-                  src={previewImage}
-                  alt="Preview"
-                  className="max-w:w-[80%] lg:max-w-[50%] rounded-lg border border-semidark"
-                />
-                <button
-                  onClick={() => {
-                    setPreviewImage("");
-                  }}
-                  className="text-black mt-2 rounded-lg"
-                >
-                  <DeleteIcon
-                    sx={{ fontSize: 20 }}
-                    className="text-semilight"
-                  />
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex justify-end">
-              <label
-                htmlFor="image-upload"
-                className="cursor-pointer block text-center"
-              >
-                <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
-                  Add Image
-                  <AddPhotoAlternateIcon
-                    sx={{ fontSize: 30 }}
-                    className="text-light"
-                  />
-                </div>
-              </label>
-              <input
-                onChange={handleImageUpload}
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                className="hidden"
+      <div className="py-12">
+        <NavBar />
+        <div className="w-full bg-dark mt-3 p-4 rounded-lg">
+          <div className="flex gap-4 items-center">
+            <button onClick={handleClose}>
+              <ArrowBackIcon
+                className="p-1 bg-indigomain text-semilight rounded-lg"
+                sx={{ fontSize: 35 }}
               />
+            </button>
+            <div className="text-xl flex justify-center items-center gap-5 font-light text-light text-center">
+              <div>Create Post in {name}</div>
+            </div>
+          </div>
+          <div className="w-full h-full rounded-lg flex flex-col justify-center">
+            {previewImage ? (
+              <div className="w-[100%] flex items-end justify-center p-4">
+                <div className="flex flex-col items-center">
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className="max-w:w-[80%] lg:max-w-[50%] rounded-lg border border-semidark"
+                  />
+                  <button
+                    onClick={() => {
+                      setPreviewImage("");
+                    }}
+                    className="text-black mt-2 rounded-lg"
+                  >
+                    <DeleteIcon
+                      sx={{ fontSize: 20 }}
+                      className="text-semilight"
+                    />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex justify-end">
+                <label
+                  htmlFor="image-upload"
+                  className="cursor-pointer block text-center"
+                >
+                  <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
+                    Add Image
+                    <AddPhotoAlternateIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-light"
+                    />
+                  </div>
+                </label>
+                <input
+                  onChange={handleImageUpload}
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                />
+              </div>
+            )}
+          </div>
+
+          <textarea
+            value={post}
+            onChange={handlePostChange}
+            rows={4}
+            className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
+            placeholder="Write your thoughts..."
+            wrap="soft"
+            maxLength={500}
+          />
+
+          <div className="flex w-full my-2 justify-between">
+            <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
+              <div
+                onClick={() => {
+                  setAnonymity((prevState) => !prevState);
+                }}
+              >
+                <VisibilityOffIcon
+                  className={`${
+                    anonymity ? "text-rosemain" : "text-semilight"
+                  }`}
+                />
+              </div>
+              {anonymity ? (
+                <div className="text-rosemain">
+                  Your identity will be hidden
+                </div>
+              ) : (
+                <div className="text-semilight">Hide your identity</div>
+              )}
+            </div>
+            <div>
+              <button
+                onClick={createCommunityPost}
+                className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
+              >
+                Post
+              </button>
+            </div>
+          </div>
+          {popup && (
+            <div className="text-red-400 font-light text-center text-xs my-2">
+              {popup}
             </div>
           )}
         </div>
-
-        <textarea
-          value={post}
-          onChange={handlePostChange}
-          rows={4}
-          className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
-          placeholder="Write your thoughts..."
-          wrap="soft"
-          maxLength={500}
-        />
-
-        <div className="flex w-full my-2 justify-between">
-          <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
-            <div
-              onClick={() => {
-                setAnonymity((prevState) => !prevState);
-              }}
-            >
-              <VisibilityOffIcon
-                className={`${anonymity ? "text-rosemain" : "text-semilight"}`}
-              />
-            </div>
-            {anonymity ? (
-              <div className="text-rosemain">Your identity will be hidden</div>
-            ) : (
-              <div className="text-semilight">Hide your identity</div>
-            )}
-          </div>
-          <div>
-            <button
-              onClick={createCommunityPost}
-              className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
-            >
-              Post
-            </button>
-          </div>
-        </div>
-        {popup && (
-          <div className="text-red-400 font-light text-center text-xs my-2">
-            {popup}
-          </div>
-        )}
+        <BottomBar />
       </div>
     </>
   );

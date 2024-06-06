@@ -122,7 +122,7 @@ export const UserData: React.FC = () => {
         />
       )}
 
-      <div className="mt-4 p-3 rounded-lg border border-semidark bg-dark">
+      <div className="mt-3 p-3 rounded-lg border border-semidark bg-dark">
         <div className="flex w-full justify-center items-center gap-2">
           <img
             src={userData.image ? userData.image : "/user.png"}
@@ -232,6 +232,14 @@ export const UserData: React.FC = () => {
               className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Comments
+            </button>{" "}
+            <button
+              onClick={() => {
+                setShowCommunities(true);
+              }}
+              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+            >
+              Communities
             </button>
             <button
               onClick={() => {
@@ -241,15 +249,6 @@ export const UserData: React.FC = () => {
             >
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Community</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setShowCommunities(true);
-              }}
-              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-            >
-              Communities
             </button>
           </div>
         )}

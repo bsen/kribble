@@ -130,7 +130,7 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
             notificationsData.notifications.map((notification) => (
               <div
                 key={notification.id}
-                className="my-2 rounded-lg border border-semidark p-2 bg-semidark cursor-pointer"
+                className="mt-2 rounded-lg border border-semidark p-2 bg-semidark cursor-pointer"
                 onClick={() => handleNotificationClick(notification)}
               >
                 <div>
