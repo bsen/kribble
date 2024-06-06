@@ -4,17 +4,11 @@ import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import { LinearProgress } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavBar } from "../../Bars/NavBar";
-interface CommunityData {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-}
+
 export const UpdateCommunityComponent = () => {
   const navigate = useNavigate();
-  const { name } = useParams();
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [newDescription, setNewDescription] = useState("");
@@ -22,26 +16,14 @@ export const UpdateCommunityComponent = () => {
   const [popup, setPopup] = useState("");
   const [CommunityDeletingState, setCommunityDeletingState] = useState(false);
   const [confirmation, setConfirmation] = useState("");
-  const [communityData, setCommunityData] = useState<CommunityData>({
+  const location = useLocation();
+
+  const communityData = location.state?.communityData || {
     id: "",
     name: "",
     image: "",
     description: "",
-  });
-  const getCommunityData = async () => {
-    try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/community/profile/edit/data`,
-        { token, name }
-      );
-      setCommunityData(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
-  useEffect(() => {
-    getCommunityData();
-  }, []);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -91,7 +73,7 @@ export const UpdateCommunityComponent = () => {
 
       if (typeof previewImage === "string") {
         try {
-          const fileName = "communityImage.jpeg";
+          const fileName = "profile.jpeg";
           const fileType = "image/jpeg";
 
           const binaryString = atob(previewImage.split(",")[1]);

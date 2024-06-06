@@ -8,11 +8,16 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
-import { CommunityData } from "./CommunityData";
+import AddIcon from "@mui/icons-material/Add";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 interface CommunityData {
   id: string;
+  name: string;
+  image: string;
+  description: string;
+  membersCount: string;
+  postsCount: string;
 }
 interface Post {
   id: string;
@@ -43,10 +48,75 @@ export const ProfileSection: React.FC = () => {
   const [isCreator, setIsCreator] = useState(Boolean);
   const [deleteState, setDeleteState] = useState(false);
   const [postDeleteId, setPostDeleteId] = useState("");
-
+  const [isJoined, setIsJoined] = useState(false);
+  const [isJoiningLoading, setIsJoiningLoading] = useState(false);
   const [communityData, setCommunityData] = useState<CommunityData>({
     id: "",
+    name: "",
+    image: "",
+    description: "",
+    membersCount: "",
+    postsCount: "",
   });
+  const getCommunityData = async () => {
+    try {
+      setLoadingState(true);
+
+      const response = await axios.post(
+        `${BACKEND_URL}/api/community/profile/data`,
+        { token, name }
+      );
+      if (!response.data.data) {
+        setError(new Error("Community not found"));
+      } else {
+        setCommunityData(response.data.data);
+        setIsCreator(response.data.creator);
+        setIsJoined(response.data.joined);
+      }
+      setLoadingState(false);
+    } catch (error: any) {
+      setError(error as Error);
+      setLoadingState(false);
+    }
+  };
+
+  useEffect(() => {
+    getCommunityData();
+  }, []);
+
+  const handleJoinCommunity = async () => {
+    try {
+      setIsJoiningLoading(true);
+      setIsJoined((prevState) => !prevState);
+      setCommunityData((prevData) => ({
+        ...prevData,
+        membersCount: isJoined
+          ? (parseInt(prevData.membersCount) - 1).toString()
+          : (parseInt(prevData.membersCount) + 1).toString(),
+      }));
+
+      const details = { token, name };
+      await axios.post(`${BACKEND_URL}/api/community/join/join/leave`, details);
+    } catch (error) {
+      setError(error as Error);
+      setIsJoined((prevState) => !prevState);
+      setCommunityData((prevData) => ({
+        ...prevData,
+        membersCount: isJoined
+          ? (parseInt(prevData.membersCount) + 1).toString()
+          : (parseInt(prevData.membersCount) - 1).toString(),
+      }));
+    } finally {
+      setIsJoiningLoading(false);
+    }
+  };
+
+  const navigateToEditCommunity = useCallback(() => {
+    navigate(`/edit/community/${communityData.name}`, {
+      state: { communityData },
+    });
+  }, [navigate, communityData]);
+
   const [postData, setPostData] = useState<{
     posts: Post[];
     nextCursor: string | null;
@@ -54,24 +124,6 @@ export const ProfileSection: React.FC = () => {
     posts: [],
     nextCursor: null,
   });
-  const getCommunityData = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/community/profile/data`,
-        { token, name }
-      );
-      setCommunityData(response.data.data);
-      setIsCreator(response.data.creator);
-      setIsLoading(false);
-    } catch (error) {
-      setError(error as Error);
-    }
-  };
-
-  useEffect(() => {
-    getCommunityData();
-  }, []);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -197,7 +249,7 @@ export const ProfileSection: React.FC = () => {
   if (error) {
     return (
       <div className="text-center my-10 text-red-500 font-normal">
-        An error occurred: {error.message}
+        {error.message}
       </div>
     );
   }
@@ -238,7 +290,83 @@ export const ProfileSection: React.FC = () => {
       >
         <NavBar />
 
-        <CommunityData />
+        <div className="p-3 mt-4 rounded-lg border border-semidark bg-dark">
+          <div className="flex justify-between w-full items-center gap-2">
+            <img
+              src={communityData.image ? communityData.image : "/group.png"}
+              className="lg:w-20 lg:h-20 w-16 h-16 rounded-lg border border-semidark"
+            />
+            <div className="w-full">
+              <div className="flex justify-end items-center">
+                <div>
+                  {isCreator && (
+                    <button
+                      onClick={navigateToEditCommunity}
+                      className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                    >
+                      Edit
+                    </button>
+                  )}
+
+                  {!isCreator && (
+                    <button
+                      onClick={handleJoinCommunity}
+                      disabled={isJoiningLoading}
+                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-16 py-0.5 text-sm"
+                    >
+                      <div className="flex items-center justify-center">
+                        {isJoiningLoading ? (
+                          <CircularProgress
+                            size="20px"
+                            sx={{ color: "rgb(50 50 50);" }}
+                          />
+                        ) : (
+                          <div>
+                            {isJoined ? <div>Joined</div> : <div>Join</div>}
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="text-lg lg:text-xl font-normal text-light">
+                {communityData.name}
+              </div>
+              <div className="flex text-light items-center gap-2 font-light text-sm">
+                <div className="flex gap-1 items-center">
+                  {communityData.membersCount} Members
+                </div>
+                <div className="flex gap-1 items-center">
+                  {communityData.postsCount} Posts
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-sm my-2 text-light font-light">
+            {communityData.description
+              ? communityData.description
+              : "description"}
+          </div>
+
+          <div
+            className="w-fit flex justify-start items-center"
+            onClick={() => {
+              navigate(`/${communityData.name}/create/post`);
+            }}
+          >
+            <div
+              className={
+                "flex w-fit justify-between text-sm items-center text-semilight font-light bg-indigomain px-4 py-1 rounded-lg"
+              }
+            >
+              <AddIcon sx={{ fontSize: 20 }} />
+              <p>Post</p>
+            </div>
+          </div>
+        </div>
+
         <div>
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (

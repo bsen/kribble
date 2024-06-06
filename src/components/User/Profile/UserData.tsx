@@ -30,6 +30,7 @@ export const UserData: React.FC = () => {
   const [showFollowing, setShowFollowing] = useState(false);
   const [showCommunities, setShowCommunities] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const [isFollowUserLoading, setIsFollowUserLoading] = useState(false);
   const [userData, setUserData] = useState<UserData>({
     username: "",
@@ -39,7 +40,6 @@ export const UserData: React.FC = () => {
     followersCount: "",
     followingCount: "",
   });
-  const [error, setError] = useState<Error | null>(null);
 
   const getUserData = useCallback(async () => {
     try {
@@ -48,10 +48,14 @@ export const UserData: React.FC = () => {
         `${BACKEND_URL}/api/user/profile/data`,
         { token, username }
       );
-      setUserData(response.data.message);
-      setIsFollowing(response.data.following);
+      if (!response.data.userdata) {
+        setError(new Error("Profile not found"));
+      } else {
+        setUserData(response.data.userdata);
+        setIsFollowing(response.data.following);
+      }
       setLoadingState(false);
-    } catch (error) {
+    } catch (error: any) {
       setError(error as Error);
       setLoadingState(false);
     }
@@ -90,10 +94,14 @@ export const UserData: React.FC = () => {
     }
   }, [isFollowing, token, username]);
 
+  const navigateToEditProfile = useCallback(() => {
+    navigate("/edit/profile", { state: { userData } });
+  }, [navigate, userData]);
+
   if (error) {
     return (
       <div className="text-center my-10 text-red-500 font-normal">
-        An error occurred: {error.message}
+        {error.message}
       </div>
     );
   }
@@ -126,10 +134,8 @@ export const UserData: React.FC = () => {
               <div>
                 {currentUser === username && (
                   <button
-                    onClick={() => {
-                      navigate("/edit/profile");
-                    }}
-                    className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-1 text-sm"
+                    onClick={navigateToEditProfile}
+                    className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
                   >
                     Edit
                   </button>
@@ -139,7 +145,7 @@ export const UserData: React.FC = () => {
                     <button
                       onClick={followUser}
                       disabled={isFollowUserLoading}
-                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-20 py-1 text-sm"
+                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-20 py-0.5 text-sm"
                     >
                       {isFollowUserLoading ? (
                         <CircularProgress
@@ -161,7 +167,7 @@ export const UserData: React.FC = () => {
               </div>
             </div>
 
-            <div className="text-lg font-normal text-light">
+            <div className="text-base font-normal text-light">
               {userData.username}
             </div>
             <div className="flex text-semilight font-ubuntu items-center gap-2 font-light text-sm">
@@ -186,18 +192,16 @@ export const UserData: React.FC = () => {
           </div>
 
           <div className="text-sm text-indigomain font-light font-ubuntu hover:underline">
-            {userData.website &&
-              (userData.website.startsWith("http://") ||
-                userData.website.startsWith("https://")) && (
-                <a
-                  href={userData.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {userData.website}
-                  <OpenInNewIcon sx={{ fontSize: 15 }} />
-                </a>
-              )}
+            {userData.website && (
+              <a
+                href={userData.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {userData.website}
+                <OpenInNewIcon sx={{ fontSize: 15 }} />
+              </a>
+            )}
           </div>
         </div>
       </div>

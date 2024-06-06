@@ -17,6 +17,7 @@ import { UserProvider } from "./components/User/Context/UserContext";
 import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
 import { Community } from "./pages/Community/Profile/Community";
+import { CityTalks } from "./pages/CityTalks/CityTalks";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -80,6 +81,10 @@ function App() {
             <Route
               path="/matching"
               element={<ProtectedRoute element={<Matching />} />}
+            />
+            <Route
+              path="/citytalks"
+              element={<ProtectedRoute element={<CityTalks />} />}
             />
             <Route
               path="/edit/profile"

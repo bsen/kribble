@@ -54,10 +54,10 @@ export const SideBar = () => {
         </button>
         <button
           onClick={() => {
-            navigate("/search");
+            navigate("/citytalks");
           }}
           className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
-            location.pathname === "/search"
+            location.pathname === "/citytalks"
               ? "text-light text-base bg-semidark"
               : "text-light text-sm"
           }`}

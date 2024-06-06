@@ -86,7 +86,7 @@ export const Post = () => {
       formData.append("anonymity", String(anonymity));
 
       if (previewImage) {
-        const fileName = "communityPostImage.jpeg";
+        const fileName = "post.jpeg";
         const fileType = "image/jpeg";
         const binaryString = atob(previewImage.split(",")[1]);
         const arrayBuffer = new ArrayBuffer(binaryString.length);
@@ -148,7 +148,10 @@ export const Post = () => {
                   }}
                   className="text-black mt-2 rounded-lg"
                 >
-                  <DeleteIcon sx={{ fontSize: 25 }} />
+                  <DeleteIcon
+                    sx={{ fontSize: 20 }}
+                    className="text-semilight"
+                  />
                 </button>
               </div>
             </div>

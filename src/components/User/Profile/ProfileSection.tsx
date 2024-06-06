@@ -20,8 +20,11 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 interface Post {
   id: string;
   creator: {
-    id: string;
     username: string;
+    image: string | null;
+  };
+  community: {
+    name: string;
     image: string | null;
   };
   task: string;
@@ -33,8 +36,9 @@ interface Post {
   content: string;
   image: string;
   createdAt: string;
-  likesCount: string;
   commentsCount: string;
+  likesCount: string;
+  anonymity: string;
   isLiked: boolean;
 }
 
@@ -59,7 +63,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     posts: [],
     nextCursor: null,
   });
-
   const getAllPosts = useCallback(
     async (cursor: string | null | undefined, truncate: boolean) => {
       try {
@@ -68,14 +71,18 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
           `${BACKEND_URL}/api/user/post/all/posts`,
           { token, cursor, username }
         );
-        setPostData((prevData) => ({
-          posts: truncate
-            ? [...response.data.posts]
-            : [...prevData.posts, ...response.data.posts],
-          nextCursor: response.data.nextCursor,
-        }));
+        if (!response.data.posts) {
+          setError(new Error("Profile not found"));
+        } else {
+          setPostData((prevData) => ({
+            posts: truncate
+              ? [...response.data.posts]
+              : [...prevData.posts, ...response.data.posts],
+            nextCursor: response.data.nextCursor,
+          }));
+        }
         setIsLoading(false);
-      } catch (error) {
+      } catch (error: any) {
         setError(error as Error);
         setIsLoading(false);
       }
@@ -178,6 +185,14 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     }
   }, []);
 
+  if (error) {
+    return (
+      <div className="text-center my-10 text-rosemain font-normal">
+        {error.message}
+      </div>
+    );
+  }
+
   if (deleteState) {
     return (
       <div className="w-full bg-black h-screen flex justify-center items-center">
@@ -211,14 +226,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     return (
       <div className="w-full my-5 flex justify-center items-center">
         <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-center my-10 text-red-500 font-normal">
-        An error occurred: {error.message}
       </div>
     );
   }
@@ -313,25 +320,107 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                       {post.commentsCount}
                     </button>
                   </div>
-                  <div className="flex w-full justify-between rounded-lg items-center px-3">
-                    <div className="flex gap-2 items-center">
+                  <div className="flex w-full justify-between rounded-lg items-center">
+                    <div className="flex rounded-lg items-center gap-2 px-3">
                       <div>
-                        <img
-                          src={
-                            post.creator.image
-                              ? post.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
+                        {post.community ? (
+                          <div>
+                            {post.community && (
+                              <div>
+                                {post.community && (
+                                  <img
+                                    src={post.community.image || "/group.png"}
+                                    className="w-7 h-7 rounded-lg"
+                                    alt="Community"
+                                  />
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div>
+                            {post.anonymity ? (
+                              <img
+                                src="/mask.png"
+                                alt="Profile"
+                                className="w-7 h-7 rounded-lg"
+                              />
+                            ) : (
+                              <img
+                                src={
+                                  post.creator.image
+                                    ? post.creator.image
+                                    : "/user.png"
+                                }
+                                alt="Profile"
+                                className="w-7 h-7 rounded-lg"
+                              />
+                            )}
+                          </div>
+                        )}
                       </div>
-                      <div className="text-light text-sm lg:text-base font-normal">
-                        {post.creator.username}
-                      </div>
+                      <div className="w-fit flex gap-2 items-center">
+                        {post.community ? (
+                          <div>
+                            <div className="flex gap-2 items-center">
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/community/${post.community.name}`);
+                                }}
+                              >
+                                {post.community && (
+                                  <div className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal">
+                                    c/ {post.community.name}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                                · {getTimeDifference(post.createdAt)}
+                              </div>
+                            </div>
 
-                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                        · {getTimeDifference(post.createdAt)}
+                            {post.anonymity ? (
+                              <div className="text-semilight text-xs font-light">
+                                by {post.creator.username}
+                              </div>
+                            ) : (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/${post.creator.username}`);
+                                }}
+                                className="text-semilight text-xs font-light hover:underline underline-offset-2"
+                              >
+                                by {post.creator.username}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <>
+                            <div className="flex gap-2 items-center">
+                              {post.anonymity ? (
+                                <div className="text-light text-sm lg:text-base font-normal">
+                                  {post.creator.username}
+                                </div>
+                              ) : (
+                                <div
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/${post.creator.username}`);
+                                  }}
+                                  className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                                >
+                                  {post.creator.username}
+                                </div>
+                              )}
+
+                              <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                                · {getTimeDifference(post.createdAt)}
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                     <div>
@@ -343,7 +432,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           }}
                         >
                           <MoreVertIcon
-                            className="text-semilight"
+                            className="text-semilight mr-2"
                             sx={{ fontSize: 20 }}
                           />
                         </button>

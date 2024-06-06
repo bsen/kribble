@@ -1,55 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import { BACKEND_URL } from "../../../config";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Logout } from "../Auth/Logout";
 import { NavBar } from "../../Bars/NavBar";
+import validUrl from "valid-url";
 
 export const UpdateProfileComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [bio, setBio] = useState("");
   const [website, setWebsite] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [popup, setPopup] = useState("");
   const [logoutState, setLogoutState] = useState(false);
-  const [userData, setUserData] = useState<{
-    username: string;
-    bio: string;
-    image: string;
-    website: string;
-  }>({
+  const location = useLocation();
+  const userData = location.state?.userData || {
     username: "",
     bio: "",
     image: "",
     website: "",
-  });
-
-  async function getData() {
-    try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/user/profile/data/editting`,
-        {
-          token,
-        }
-      );
-
-      setUserData(response.data.editdata);
-      setCurrentUser(response.data.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  useEffect(() => {
-    getData();
-  }, []);
-
+  };
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
 
@@ -94,11 +69,14 @@ export const UpdateProfileComponent = () => {
   };
   async function updateProfile() {
     try {
-      let imageToUpload = null;
+      if (!validUrl.isUri(website)) {
+        return setPopup("Please provide a valid meeting link");
+      }
 
+      let imageToUpload = null;
       if (previewImage) {
         if (typeof previewImage === "string") {
-          const fileName = "profileImage.jpeg";
+          const fileName = "profile.jpeg";
           const fileType = "image/jpeg";
           const binaryString = window.atob(previewImage.split(",")[1]);
           const bytes = new Uint8Array(binaryString.length);
@@ -127,7 +105,7 @@ export const UpdateProfileComponent = () => {
       setIsLoading(true);
       await axios.post(`${BACKEND_URL}/api/user/profile/update`, formdata);
       setIsLoading(false);
-      navigate(`/${currentUser}`);
+      navigate(`/${userData.username}`);
     } catch (error) {
       console.log("Error updating profile:", error);
     }
@@ -147,7 +125,7 @@ export const UpdateProfileComponent = () => {
                 <div className="flex justify-between items-center border-b border-semidark pb-2">
                   <button
                     onClick={() => {
-                      navigate(`/${currentUser}`);
+                      navigate(`/${userData.username}`);
                     }}
                   >
                     <ArrowBackIcon
