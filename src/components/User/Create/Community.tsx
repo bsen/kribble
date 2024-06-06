@@ -92,7 +92,7 @@ export const Community = () => {
             <div>
               <button onClick={handleClose}>
                 <ArrowBackIcon
-                  className="rounded-lg text-light"
+                  className="rounded-full text-light"
                   sx={{ fontSize: 30 }}
                 />
               </button>

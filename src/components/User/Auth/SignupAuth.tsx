@@ -117,7 +117,7 @@ export const SignupAuth = () => {
     }
   };
 
-  const debouncedCheckName = debounce(checkName, 1500);
+  const debouncedCheckName = debounce(checkName, 1000);
 
   useEffect(() => {
     debouncedCheckName(username);

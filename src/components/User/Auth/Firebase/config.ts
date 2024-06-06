@@ -2,12 +2,12 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCeebSVmTPoiYZ_yyEtvVNzZiOTPK02RXA",
-  authDomain: "algabay-ai-auth.firebaseapp.com",
-  projectId: "algabay-ai-auth",
-  storageBucket: "algabay-ai-auth.appspot.com",
-  messagingSenderId: "1037554339952",
-  appId: "1:1037554339952:web:bed0c908602305e16c64b5",
+  apiKey: "AIzaSyCskmMrzpOrGMi9Bvyi2pCECM17FWRC0tI",
+  authDomain: "friendcity-in.firebaseapp.com",
+  projectId: "friendcity-in",
+  storageBucket: "friendcity-in.appspot.com",
+  messagingSenderId: "547226412943",
+  appId: "1:547226412943:web:f991e5d26a340c57f48dfa",
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();

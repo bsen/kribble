@@ -101,95 +101,95 @@ export const CommentsComponent = () => {
       return `${minutesDifference}m ago`;
     }
   };
+  if (deleteState) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="flex text-light flex-col gap-4 text-center text-sm items-center font-ubuntu font-normal">
+          Do you really want to delete the comment ?<br /> note that you can not
+          get back the deleted comment
+          <div className="flex gap-5">
+            <button
+              onClick={deleteComment}
+              className="text-light bg-rosemain font-normal px-4 py-1  rounded-lg"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => {
+                setDeleteState(false);
+                setDeleteCommentId("");
+                setDeleteCommentPostId("");
+              }}
+              className="text-dark bg-semilight font-normal px-4 py-1 border border-neutral-300 rounded-lg"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
-      {deleteState ? (
-        <div className="w-full h-screen flex justify-center items-center">
-          <div className="flex flex-col gap-4 text-base  items-center font-ubuntu font-normal">
-            Do you really want to delete the comment
-            <span className="text-xs font-light text-semilight">
-              note you can not get back the deleted item!
-            </span>
-            <div className="flex gap-5">
-              <button
-                onClick={deleteComment}
-                className="text-light bg-red-500 hover:bg-red-400 font-normal px-4 py-1  rounded-lg"
-              >
-                Delete
-              </button>
-              <button
-                onClick={() => {
-                  setDeleteState(false);
-                  setDeleteCommentId("");
-                  setDeleteCommentPostId("");
-                }}
-                className="text-black bg-dark hover:bg-neutral-200 font-normal px-4 py-1 border border-neutral-300 rounded-lg"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div
-          className="h-screen overflow-y-auto no-scrollbar py-12 "
-          onScroll={handleScroll}
-          ref={scrollContainerRef}
-        >
-          <NavBar />
-          <div className="text-lg font-ubuntu text-semilight fonr-normal text-center mt-2">
-            Comments
-          </div>
-          {commentsData.comments.length > 0 ? (
-            commentsData.comments.map((comment, index) => (
-              <div
-                key={index}
-                className="border bg-dark my-2 rounded-lg border-semidark p-4 hover:bg-dark"
-              >
-                <div className="flex flex-col gap-2 ">
-                  <div className="text-light w-full flex items-center justify-between gap-2 text-sm font-light">
-                    <div className="flex gap-2 items-center">
-                      <Link to={`/post/${comment.postId}`}>
-                        <OpenInNewIcon
-                          sx={{ fontSize: 18 }}
-                          className="text-indigomain"
-                        />
-                      </Link>
-                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                        · {getTimeDifference(comment.createdAt)}
-                      </div>
-                    </div>
-                    <div className="text-semilight">
-                      <button
-                        onClick={() => {
-                          setDeleteCommentId(comment.id);
-                          setDeleteCommentPostId(comment.postId);
-                          setDeleteState(true);
-                        }}
-                      >
-                        <MoreVertIcon sx={{ fontSize: 18 }} />
-                      </button>
+      <div
+        className="h-screen overflow-y-auto no-scrollbar py-12 "
+        onScroll={handleScroll}
+        ref={scrollContainerRef}
+      >
+        <NavBar />
+        {commentsData.comments.length > 0 ? (
+          commentsData.comments.map((comment, index) => (
+            <div
+              key={index}
+              className="border bg-dark my-2 rounded-lg border-semidark p-4 hover:bg-dark"
+            >
+              <div className="flex flex-col gap-2 ">
+                <div className="text-light w-full flex items-center justify-between gap-2 text-sm font-light">
+                  <div className="flex gap-2 items-center">
+                    <Link to={`/post/${comment.postId}`}>
+                      <OpenInNewIcon
+                        sx={{ fontSize: 18 }}
+                        className="text-indigomain"
+                      />
+                    </Link>
+                    <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                      · {getTimeDifference(comment.createdAt)}
                     </div>
                   </div>
-                  <div className="text-light  text-sm lg:text-base font-light">
-                    {comment.content}
+                  <div className="text-semilight">
+                    <button
+                      onClick={() => {
+                        setDeleteCommentId(comment.id);
+                        setDeleteCommentPostId(comment.postId);
+                        setDeleteState(true);
+                      }}
+                    >
+                      <MoreVertIcon sx={{ fontSize: 18 }} />
+                    </button>
                   </div>
                 </div>
+                <div className="text-light  text-sm lg:text-base font-light">
+                  {comment.content}
+                </div>
               </div>
-            ))
-          ) : (
-            <div className="text-semilight my-5  font-light text-center text-lg">
-              No comments found.
             </div>
-          )}
-          {isLoadingComments && (
-            <div className="text-center my-5">
-              <CircularProgress sx={{ color: "rgb(50 50 50);" }} />{" "}
-            </div>
-          )}
-          <BottomBar />
-        </div>
-      )}
+          ))
+        ) : (
+          <div>
+            {isLoadingComments ? (
+              <div className="w-full my-5 flex justify-center items-center">
+                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+              </div>
+            ) : (
+              <div className="text-semilight my-5 font-light text-center text-sm">
+                No Comments found
+              </div>
+            )}
+          </div>
+        )}
+
+        <BottomBar />
+      </div>
     </>
   );
 };
