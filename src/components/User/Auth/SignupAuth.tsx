@@ -6,7 +6,7 @@ import { auth } from "./Firebase/config";
 import { Link, useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
-
+import { EMAIL_AUTH_KEY } from "../../../config";
 interface DebouncedFunction<T extends (...args: any[]) => void> {
   (...args: Parameters<T>): void;
   cancel: () => void;
@@ -118,7 +118,6 @@ export const SignupAuth = () => {
   };
 
   const debouncedCheckName = debounce(checkName, 1000);
-
   useEffect(() => {
     debouncedCheckName(username);
     return () => debouncedCheckName.cancel();
@@ -146,6 +145,7 @@ export const SignupAuth = () => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
+      console.log(result);
       const email = result.user.email;
       if (email) {
         setEmail(email);
@@ -198,7 +198,15 @@ export const SignupAuth = () => {
       }
     }
 
-    const userdata = { username, email, password, year, month, date };
+    const userdata = {
+      username,
+      email,
+      password,
+      year,
+      month,
+      date,
+      EMAIL_AUTH_KEY,
+    };
 
     try {
       setIsLoading(true);
@@ -290,7 +298,7 @@ export const SignupAuth = () => {
           <div className="w-full">
             <button
               type="button"
-              className="rounded-md text-sm p-2 text-dark bg-light flex items-center gap-4 w-full h-7"
+              className="rounded-md text-base p-2 text-semidark bg-light flex items-center gap-4 w-full"
               onClick={handleGoogle}
             >
               <img src="/google.png" className="h-6 w-6" />
@@ -320,7 +328,7 @@ export const SignupAuth = () => {
               maxLength={24}
               onChange={(e) => handleUsernameChange(e.target.value)}
               placeholder="Username"
-              className={`w-full text-dark h-7 px-4 bg-light focus:outline-none  rounded-lg ${
+              className={`w-full text-dark p-2 bg-light focus:outline-none  rounded-lg ${
                 available ? "" : "border border-rosemain"
               }`}
               required
