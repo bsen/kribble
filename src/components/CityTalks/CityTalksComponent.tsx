@@ -138,22 +138,22 @@ export const CityTalksComponent = () => {
     <div className="h-screen overflow-y-auto flex flex-col items-center no-scrollbar py-12">
       <NavBar />
       {!writingState && (
-        <div className="w-full flex flex-col items-center text-semilight bg-dark text-center text-sm font-normal mt-3 font-ubuntu p-2 rounded-lg">
+        <div className="w-full mb-3 flex flex-col items-center text-semilight bg-dark text-center text-sm font-normal mt-3 font-ubuntu p-2 rounded-lg">
           <div>
-            Get help or lend a hand with anything, from study tips 📚 to finding
-            the best pizza 🍕. Connect for detailed discussions, share insights,
-            and arrange meetups with a quick meeting link.
+            From study tips 📚 to finding the best pizza 🍕, Connect for
+            detailed discussions, share insights, and arrange meetups with a
+            quick meeting link.
           </div>
           <button
             onClick={() => setWritingState(true)}
-            className="bg-indigomain mt-5 text-center text-semilight w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
+            className="bg-indigomain mt-5 text-center text-semilight px-4 font-ubuntu font-normal py-0.5 text-sm rounded-lg"
           >
             <AddIcon /> Ask for Help
           </button>
         </div>
       )}
       {writingState && (
-        <div className="w-full mt-3 bg-dark p-3 flex flex-col gap-2 rounded-lg">
+        <div className="w-full my-3 bg-dark p-3 flex flex-col gap-2 rounded-lg">
           <div className="text-semilight text-center text-sm font-normal mb-3">
             <p>
               Provide a brief description of your request and meeting schedule.
@@ -203,64 +203,66 @@ export const CityTalksComponent = () => {
           </div>
         </div>
       )}
-      <div
-        className="w-full flex flex-col items-center"
-        ref={scrollContainerRef}
-      >
-        {cityTalksPosts.length > 0 ? (
-          cityTalksPosts.map((post) => (
-            <div
-              key={post.id}
-              className="my-3 rounded-lg border border-semidark bg-dark w-full"
-            >
-              <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
-                {post.description}
-                <br />
-                <a
-                  href={post.meetingLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 underline"
-                >
-                  {post.meetingLink}
-                </a>
-              </div>
+      {!writingState && (
+        <div
+          className="w-full flex flex-col items-center"
+          ref={scrollContainerRef}
+        >
+          {cityTalksPosts.length > 0 ? (
+            cityTalksPosts.map((post) => (
+              <div
+                key={post.id}
+                className="mb-3 rounded-lg border border-semidark bg-dark w-full"
+              >
+                <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
+                  {post.description}
+                  <br />
+                  <a
+                    href={post.meetingLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    {post.meetingLink}
+                  </a>
+                </div>
 
-              <div className="border-t border-semidark py-4 flex flex-col gap-4">
-                <div className="flex w-full justify-between rounded-lg items-center px-3">
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex gap-2 items-center">
-                      <img
-                        src={post.user.image ? post.user.image : "/user.png"}
-                        alt="Profile"
-                        className="w-7 h-7 rounded-lg"
-                      />
-                      <div className="text-light text-sm lg:text-base font-normal">
-                        {post.user.username}
-                      </div>
-                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                        · {getFormattedRemainingTime(post.expiresAt)}
+                <div className="border-t border-semidark py-4 flex flex-col gap-4">
+                  <div className="flex w-full justify-between rounded-lg items-center px-3">
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex gap-2 items-center">
+                        <img
+                          src={post.user.image ? post.user.image : "/user.png"}
+                          alt="Profile"
+                          className="w-7 h-7 rounded-lg"
+                        />
+                        <div className="text-light text-sm lg:text-base font-normal">
+                          {post.user.username}
+                        </div>
+                        <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                          · {getFormattedRemainingTime(post.expiresAt)}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div>
+              {isLoadingCityTalksPosts ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                </div>
+              ) : (
+                <div className="text-semilight my-5 font-light text-center text-lg">
+                  No posts found
+                </div>
+              )}
             </div>
-          ))
-        ) : (
-          <div>
-            {isLoadingCityTalksPosts ? (
-              <div className="w-full my-5 flex justify-center items-center">
-                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-              </div>
-            ) : (
-              <div className="text-semilight my-5 font-light text-center text-lg">
-                No posts found
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
       {popup && (
         <div className="text-rosemain mt-2 text-sm text-center">{popup}</div>
       )}

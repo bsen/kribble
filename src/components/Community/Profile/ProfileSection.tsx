@@ -208,10 +208,10 @@ export const ProfileSection: React.FC = () => {
 
   const deleteCommunityPost = async () => {
     setLoadingState(true);
-    const id = communityData.id;
+    const communityId = communityData.id;
     await axios.post(`${BACKEND_URL}/api/community/post/delete`, {
       token,
-      id,
+      communityId,
       postDeleteId,
     });
     setPostDeleteId("");
@@ -240,7 +240,7 @@ export const ProfileSection: React.FC = () => {
 
   if (loadingState) {
     return (
-      <div className="w-full my-5 flex justify-center items-center">
+      <div className="w-full mt-14 flex justify-center items-center">
         <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
       </div>
     );

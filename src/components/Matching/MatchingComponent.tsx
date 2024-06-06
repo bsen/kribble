@@ -85,15 +85,23 @@ export const MatchingComponent: React.FC = () => {
     <>
       <div className="h-screen overflow-y-auto flex flex-col items-center no-scrollbar py-12 ">
         <NavBar />
-        <div className="text-semilight bg-dark text-center text-sm font-normal my-2 font-ubuntu  p-2 rounded-lg">
-          Complete tasks within the time limit to score valuable city points .
-          The higher your points, the better your rank on the leaderboards 🏆
+        <div className="w-full mb-3 flex flex-col items-center text-semilight bg-dark text-center text-sm font-normal mt-3 font-ubuntu p-2 rounded-lg">
+          <div>
+            Complete tasks within the time limit to score valuable city points .
+            The higher your points, the better your rank on the leaderboards 🏆
+          </div>
+          <button
+            onClick={findMatch}
+            className="bg-indigomain mt-5 text-center text-semilight px-4 font-ubuntu font-normal py-0.5 text-sm rounded-lg"
+          >
+            <AddIcon /> Add matches
+          </button>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col">
           {matches.length > 0 ? (
             matches.map((match) => (
               <div key={match.id}>
-                <div className="bg-dark p-3 rounded-lg shadow-sm">
+                <div className="bg-dark p-3 mb-3 rounded-lg shadow-sm">
                   <div className="flex mb-2 items-center justify-start gap-2">
                     <div className="flex justify-center">
                       <img
@@ -161,7 +169,7 @@ export const MatchingComponent: React.FC = () => {
         </div>
         <button
           onClick={findMatch}
-          className="bg-semidark my-5 text-center text-semilight w-36 font-ubuntu font-normal py-1 text-base rounded-lg"
+          className="bg-semidark my-5 text-center text-semilight px-4 font-ubuntu font-normal py-0.5 text-sm rounded-lg"
         >
           <AddIcon /> Add matches
         </button>

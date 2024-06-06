@@ -192,6 +192,13 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
       </div>
     );
   }
+  if (loadingState) {
+    return (
+      <div className="w-full my-5 flex justify-center items-center">
+        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+      </div>
+    );
+  }
 
   if (deleteState) {
     return (
@@ -222,14 +229,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     );
   }
 
-  if (loadingState) {
-    return (
-      <div className="w-full my-5 flex justify-center items-center">
-        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-      </div>
-    );
-  }
-
   return (
     <>
       <div
@@ -252,7 +251,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                 {post.image && (
                   <img src={post.image} className="rounded-t-lg w-[100%]" />
                 )}
-
                 {post.content && (
                   <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
                     {post.content}
@@ -320,8 +318,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                       {post.commentsCount}
                     </button>
                   </div>
-                  <div className="flex w-full justify-between rounded-lg items-center">
-                    <div className="flex rounded-lg items-center gap-2 px-3">
+                  <div className="flex w-full px-3 justify-between rounded-lg items-center">
+                    <div className="flex rounded-lg items-center gap-2 ">
                       <div>
                         {post.community ? (
                           <div>
@@ -432,7 +430,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           }}
                         >
                           <MoreVertIcon
-                            className="text-semilight mr-2"
+                            className="text-semilight"
                             sx={{ fontSize: 20 }}
                           />
                         </button>
