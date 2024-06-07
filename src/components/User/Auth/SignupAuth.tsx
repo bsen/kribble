@@ -214,7 +214,8 @@ export const SignupAuth = () => {
         `${BACKEND_URL}/api/user/auth/signup`,
         userdata
       );
-      if (response.data.status === 901) {
+      if (response.data.status === 401) {
+        setIsLoading(false);
         setPopup(response.data.message);
         setEmail("");
       }
@@ -224,6 +225,7 @@ export const SignupAuth = () => {
         setCurrentUser(response.data.username);
         navigate("/");
       } else {
+        setIsLoading(false);
         setPopup(response.data.message);
       }
       setIsLoading(false);
