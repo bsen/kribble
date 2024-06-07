@@ -155,10 +155,13 @@ export const PostProfile = () => {
   }
 
   const reportContent = async () => {
+    setLoadingState(true);
     await axios.post(`${BACKEND_URL}/api/report/post-comment/report-content`, {
       token,
       reportingContentId,
     });
+    setReportingState(false);
+    setLoadingState(false);
   };
 
   useEffect(() => {
