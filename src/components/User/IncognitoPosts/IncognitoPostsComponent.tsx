@@ -233,9 +233,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                       }}
                     >
                       <img
-                        src={
-                          post.creator.image ? post.creator.image : "/user.png"
-                        }
+                        src="/mask.png"
                         alt="Profile"
                         className="w-7 h-7 rounded-lg"
                       />
