@@ -74,6 +74,8 @@ export const LoginAuth = () => {
               anonymous posting, let your thoughts soar freely. Conquer exciting
               challenges with CityMatch and join dynamic discussions with
               CityTalks. 🚀 Get ready to unleash the epicness – join us now!
+
+           
             </div>
             <div className="flex flex-wrap mb-5 justify-center gap-2">
               <img
