@@ -147,14 +147,15 @@ export const About = () => {
           Contact Us <MailOutlinedIcon />
         </div>
         <div className="text-sm text-semilight font-light">
-          Have questions or need assistance? Reach out to us at{" "}
+          Need assistance? Have a suggestion or feature request for us? Want to
+          share your feedback or ideas for improvement? Reach out to us at&nbsp;
           <a
             href="mailto:support@friendcity.in"
             className="text-blue-500 hover:underline"
           >
             support@friendcity.in
           </a>
-          . We're here to help!
+          . We're all ears!
         </div>
       </div>
     </div>

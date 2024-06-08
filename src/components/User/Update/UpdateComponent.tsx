@@ -207,6 +207,18 @@ export const UpdateProfileComponent = () => {
                     }}
                   />
                 </div>
+                <div className="text-xs text-semilight font-light text-center">
+                  Need assistance? Have a suggestion or feature request for us?
+                  Want to share your feedback or ideas for improvement? Reach
+                  out to us at&nbsp;
+                  <a
+                    href="mailto:support@friendcity.in"
+                    className="text-blue-500 hover:underline"
+                  >
+                    support@friendcity.in
+                  </a>
+                  . We're all ears!
+                </div>
                 <div className="text-rosemain font-ubuntu font-light text-center text-sm">
                   {popup ? popup : <div>‎</div>}
                 </div>
