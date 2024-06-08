@@ -69,8 +69,10 @@ export const UpdateProfileComponent = () => {
   };
   async function updateProfile() {
     try {
-      if (!validUrl.isUri(website)) {
-        return setPopup("Please provide a valid meeting link");
+      if (website) {
+        if (!validUrl.isUri(website)) {
+          return setPopup("Please provide a valid meeting link");
+        }
       }
 
       let imageToUpload = null;

@@ -116,7 +116,9 @@ export const SearchComponent = () => {
                       <div className="text-sm font-normal text-light">c/</div>
                       <div>
                         <img
-                          src={community.image ? community.image : "/group.png"}
+                          src={
+                            community.image ? community.image : "/people.png"
+                          }
                           alt="Profile"
                           className="h-7 w-7 rounded-lg"
                         />
