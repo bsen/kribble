@@ -249,7 +249,6 @@ export const SignupAuth = () => {
         <div className="text-semilight text-center mb-4 font-ubuntu font-medium text-[2.5rem]">
           FriendCity
           <div className="text-center text-sm font-thin mb-8 text-light">
-
             A place Where college life meets limitless fun! 🎉 Share your
             moments, post cool pics, and dive into vibrant communities. With
             anonymous posting, let your thoughts soar freely. Conquer exciting
