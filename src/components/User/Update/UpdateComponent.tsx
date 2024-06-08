@@ -193,7 +193,6 @@ export const UpdateProfileComponent = () => {
                     className=" h-10 bg-semidark text-semilight w-full text-base font-light rounded-lg px-2 focus:outline-none border border-semidark"
                   />
                 </div>
-
                 <div>
                   <div className="text-semilight text-sm font-light">Bio</div>
                   <textarea
@@ -207,7 +206,10 @@ export const UpdateProfileComponent = () => {
                     }}
                   />
                 </div>
-                <div className="text-xs text-semilight font-light text-center">
+                <div className="text-rosemain font-ubuntu font-light text-center text-sm">
+                  {popup ? popup : <div>‎</div>}
+                </div>
+                <div className="text-xs text-semilight font-light text-center mb-2">
                   Need assistance? Have a suggestion or feature request for us?
                   Want to share your feedback or ideas for improvement? Reach
                   out to us at&nbsp;
@@ -218,9 +220,6 @@ export const UpdateProfileComponent = () => {
                     support@friendcity.in
                   </a>
                   . We're all ears!
-                </div>
-                <div className="text-rosemain font-ubuntu font-light text-center text-sm">
-                  {popup ? popup : <div>‎</div>}
                 </div>
               </div>
             </div>
