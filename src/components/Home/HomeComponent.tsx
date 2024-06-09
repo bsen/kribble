@@ -188,8 +188,12 @@ export const HomeComponent = () => {
                   <button
                     className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      handleLike(post.id);
+                      if (token) {
+                        e.stopPropagation();
+                        handleLike(post.id);
+                      } else {
+                        navigate("/login");
+                      }
                     }}
                   >
                     {post.isLiked ? (

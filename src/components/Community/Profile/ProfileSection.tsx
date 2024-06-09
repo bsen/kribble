@@ -298,37 +298,50 @@ export const ProfileSection: React.FC = () => {
             />
             <div className="w-full">
               <div className="flex justify-end items-center">
-                <div>
-                  {isCreator && (
-                    <button
-                      onClick={navigateToEditCommunity}
-                      className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
-                    >
-                      Edit
-                    </button>
-                  )}
+                {token && (
+                  <div>
+                    {isCreator && (
+                      <button
+                        onClick={navigateToEditCommunity}
+                        className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                      >
+                        Edit
+                      </button>
+                    )}
 
-                  {!isCreator && (
-                    <button
-                      onClick={handleJoinCommunity}
-                      disabled={isJoiningLoading}
-                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-16 py-0.5 text-sm"
-                    >
-                      <div className="flex items-center justify-center">
-                        {isJoiningLoading ? (
-                          <CircularProgress
-                            size="20px"
-                            sx={{ color: "rgb(50 50 50);" }}
-                          />
-                        ) : (
-                          <div>
-                            {isJoined ? <div>Joined</div> : <div>Join</div>}
-                          </div>
-                        )}
-                      </div>
-                    </button>
-                  )}
-                </div>
+                    {!isCreator && (
+                      <button
+                        onClick={handleJoinCommunity}
+                        disabled={isJoiningLoading}
+                        className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                      >
+                        <div className="flex items-center justify-center">
+                          {isJoiningLoading ? (
+                            <CircularProgress
+                              size="15px"
+                              className="my-0.5"
+                              sx={{ color: "rgb(200 200 200);" }}
+                            />
+                          ) : (
+                            <div>
+                              {isJoined ? <div>Joined</div> : <div>Join</div>}
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    )}
+                  </div>
+                )}
+                {!token && (
+                  <button
+                    onClick={() => {
+                      navigate("/login");
+                    }}
+                    className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                  >
+                    Join
+                  </button>
+                )}
               </div>
               <div className="text-lg lg:text-xl font-normal text-light">
                 {communityData.name}

@@ -132,37 +132,52 @@ export const UserData: React.FC = () => {
           <div className="w-full">
             <div className="flex items-center justify-end">
               <div>
-                {currentUser === username && (
-                  <button
-                    onClick={navigateToEditProfile}
-                    className="text-left text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
-                  >
-                    Edit
-                  </button>
-                )}
-                {currentUser !== username && (
-                  <div className="flex my-2 gap-4 justify-between items-center">
-                    <button
-                      onClick={followUser}
-                      disabled={isFollowUserLoading}
-                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg w-20 py-0.5 text-sm"
-                    >
-                      {isFollowUserLoading ? (
-                        <CircularProgress
-                          size="20px"
-                          sx={{ color: "rgb(50 50 50);" }}
-                        />
-                      ) : (
-                        <div>
-                          {isFollowing ? (
-                            <div>Unfollow</div>
+                {token && (
+                  <div>
+                    {currentUser === username && (
+                      <button
+                        onClick={navigateToEditProfile}
+                        className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                      >
+                        Edit
+                      </button>
+                    )}
+                    {currentUser !== username && (
+                      <div className="flex my-2 gap-4 justify-between items-center">
+                        <button
+                          onClick={followUser}
+                          disabled={isFollowUserLoading}
+                          className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                        >
+                          {isFollowUserLoading ? (
+                            <CircularProgress
+                              size="15px"
+                              className="my-0.5"
+                              sx={{ color: "rgb(200 200 200);" }}
+                            />
                           ) : (
-                            <div>Follow</div>
+                            <div>
+                              {isFollowing ? (
+                                <div>Unfollow</div>
+                              ) : (
+                                <div>Follow</div>
+                              )}
+                            </div>
                           )}
-                        </div>
-                      )}
-                    </button>
+                        </button>
+                      </div>
+                    )}
                   </div>
+                )}
+                {!token && (
+                  <button
+                    onClick={() => {
+                      navigate("/login");
+                    }}
+                    className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                  >
+                    Follow
+                  </button>
                 )}
               </div>
             </div>

@@ -88,7 +88,7 @@ export const SearchComponent = () => {
 
         <div>
           {users.length !== 0 || communities.length !== 0 ? (
-            <div>
+            <div className="h-screen overflow-y-auto no-scrollbar pb-40">
               <div>
                 {users.map((user) => (
                   <Link to={`/${user.username}`} key={user.username}>

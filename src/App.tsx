@@ -26,22 +26,29 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const token = localStorage.getItem("token");
   return token ? element : <Navigate to="/login" replace />;
 };
-
+const PublicRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
+  const token = localStorage.getItem("token");
+  return token ? <Navigate to="/" replace /> : element;
+};
 function App() {
   return (
     <>
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<ProtectedRoute element={<Home />} />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/policies" element={<About />} />
-
+            <Route path="/" element={<Home />} />
             <Route
-              path="/:username"
-              element={<ProtectedRoute element={<Profile />} />}
+              path="/signup"
+              element={<PublicRoute element={<Signup />} />}
             />
+            <Route
+              path="/login"
+              element={<PublicRoute element={<Login />} />}
+            />
+            <Route path="/policies" element={<About />} />
+            <Route path="/:username" element={<Profile />} />
+            <Route path="/communities" element={<Communities />} />
+            <Route path="/community/:name" element={<Community />} />
             <Route
               path="/comments"
               element={<ProtectedRoute element={<Comments />} />}
@@ -51,20 +58,12 @@ function App() {
               element={<ProtectedRoute element={<IncognitoPosts />} />}
             />
             <Route
-              path="/communities"
-              element={<ProtectedRoute element={<Communities />} />}
-            />
-            <Route
               path="/edit/community/:name"
               element={<ProtectedRoute element={<UpdateCommunity />} />}
             />
             <Route
               path="/create/community"
               element={<ProtectedRoute element={<CreateCommunity />} />}
-            />
-            <Route
-              path="/community/:name"
-              element={<ProtectedRoute element={<Community />} />}
             />
             <Route
               path="/create/post"

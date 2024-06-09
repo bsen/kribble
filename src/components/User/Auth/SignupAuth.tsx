@@ -244,180 +244,127 @@ export const SignupAuth = () => {
   }
 
   return (
-    <div className="md:flex justify-between items-center">
-      <div className="h-screen p-3 w-full md:w-[50%] flex justify-center items-center bg-indigomain">
-        <div className="text-semilight text-center mb-4 font-ubuntu font-medium text-[2.5rem]">
+    <div className="h-screen flex flex-col justify-center bg-indigomain items-center">
+      <div className="w-72 bg-dark p-5 rounded-lg flex flex-col items-center gap-5">
+        <div className="text-semilight text-center font-ubuntu font-medium text-[2.5rem]">
           FriendCity
-          <div className="text-center text-sm font-thin mb-8 text-light">
-            A place Where college life meets limitless fun! 🎉 Share your
-            moments, post cool pics, and dive into vibrant communities. With
-            anonymous posting, let your thoughts soar freely. Conquer exciting
-            challenges with CityMatch and join dynamic discussions with
-            CityTalks. 🚀 Get ready to unleash the epicness – join us now!
+          <div className="text-center text-sm font-thin  text-light">
+            Share your thoughts 🚀, pics, and dive into vibrant communities.
+            With anonymous posting, let your thoughts soar freely.
           </div>
-          <div className="flex flex-wrap mb-5 justify-center gap-2">
-            <img
-              src="/girl.png"
-              className="h-[15%] w-[15%] rounded-lg bg-semidark"
-              alt="Girl"
-            />
-            <img
-              src="/boy.png"
-              className="h-[15%] w-[15%] rounded-lg bg-semidark"
-              alt="Boy"
-            />
-            <img
-              src="/people.png"
-              className="h-[15%] w-[15%] rounded-lg bg-semidark"
-              alt="People"
-            />
-            <img
-              src="/girl2.png"
-              className="h-[15%] w-[15%] rounded-lg bg-semidark"
-              alt="Girl 2"
-            />
-            <img
-              src="/boy2.png"
-              className="h-[15%] w-[15%] rounded-lg bg-semidark"
-              alt="Boy 2"
-            />
-          </div>
+        </div>
+        <div className="w-full">
           <button
-            onClick={() => {
-              window.scrollTo({
-                top: window.innerHeight,
-                behavior: "smooth",
-              });
-            }}
-            className="lg:hidden rounded-lg bg-white text-indigomain px-4 py-1 text-lg"
+            type="button"
+            className="rounded-md text-base p-2 text-neutral-500 bg-light flex items-center gap-4 w-full"
+            onClick={handleGoogle}
           >
-            Sign up
+            <img src="/google.png" className="h-6 w-6" />
+            Verify with Google
           </button>
         </div>
-      </div>
-      <div className="ww-full md:w-[50%] bg-black flex flex-col items-center justify-center  h-screen">
-        <div className="w-[80%] bg-dark p-5 rounded-lg flex flex-col items-center  gap-5">
+
+        {email && (
           <div className="w-full">
-            <button
-              type="button"
-              className="rounded-md text-base p-2 text-semidark bg-light flex items-center gap-4 w-full"
-              onClick={handleGoogle}
-            >
-              <img src="/google.png" className="h-6 w-6" />
-              Verify with Google
-            </button>
+            <div className="text-semilight text-sm font-ubuntu mb-1">Email</div>
+
+            <div className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2">
+              {email}
+            </div>
           </div>
+        )}
 
-          {email && (
-            <div className="w-full">
-              <div className="text-semilight text-sm font-ubuntu mb-1">
-                Email
-              </div>
+        <div className="w-full">
+          <div className="text-semilight text-sm font-ubuntu mb-1">
+            Username
+          </div>
+          <input
+            type="text"
+            value={username}
+            maxLength={24}
+            onChange={(e) => handleUsernameChange(e.target.value)}
+            placeholder="Username"
+            className={`w-full text-dark p-2 bg-light focus:outline-none  rounded-lg ${
+              available ? "" : "border border-rosemain"
+            }`}
+            required
+          />
+        </div>
 
-              <div className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2">
-                {email}
-              </div>
-            </div>
-          )}
-
-          <div className="w-full">
-            <div className="text-semilight text-sm font-ubuntu mb-1">
-              Username
-            </div>
+        <div className="w-full">
+          <div className="text-semilight text-sm font-ubuntu mb-1">
+            Password
+          </div>
+          <input
+            type="text"
+            value={password}
+            onChange={(e) => handlePasswordChange(e.target.value)}
+            placeholder="Password"
+            className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+            required
+          />
+        </div>
+        <div className="w-full flex gap-2">
+          <div className="w-1/3">
+            <div className="text-semilight text-sm font-ubuntu mb-1">Date</div>
             <input
               type="text"
-              value={username}
-              maxLength={24}
-              onChange={(e) => handleUsernameChange(e.target.value)}
-              placeholder="Username"
-              className={`w-full text-dark p-2 bg-light focus:outline-none  rounded-lg ${
-                available ? "" : "border border-rosemain"
-              }`}
-              required
-            />
-          </div>
-
-          <div className="w-full">
-            <div className="text-semilight text-sm font-ubuntu mb-1">
-              Password
-            </div>
-            <input
-              type="text"
-              value={password}
-              onChange={(e) => handlePasswordChange(e.target.value)}
-              placeholder="Password"
+              value={date}
+              onChange={(e) => handleDateChange(e.target.value)}
+              placeholder="DD"
+              maxLength={2}
               className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
               required
             />
           </div>
-          <div className="w-full flex gap-2">
-            <div className="w-1/3">
-              <div className="text-semilight text-sm font-ubuntu mb-1">
-                Date
-              </div>
-              <input
-                type="text"
-                value={date}
-                onChange={(e) => handleDateChange(e.target.value)}
-                placeholder="DD"
-                maxLength={2}
-                className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
-                required
-              />
-            </div>
-            <div className="w-1/3">
-              <div className="text-semilight text-sm font-ubuntu mb-1">
-                Month
-              </div>
-              <input
-                type="text"
-                value={month}
-                onChange={(e) => handleMonthChange(e.target.value)}
-                placeholder="MM"
-                maxLength={2}
-                className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
-                required
-              />
-            </div>
-            <div className="w-1/3">
-              <div className="text-semilight text-sm font-ubuntu mb-1">
-                Year
-              </div>
-              <input
-                type="text"
-                value={year}
-                onChange={(e) => handleYearChange(e.target.value)}
-                placeholder="YYYY"
-                maxLength={4}
-                className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
-                required
-              />
-            </div>
+          <div className="w-1/3">
+            <div className="text-semilight text-sm font-ubuntu mb-1">Month</div>
+            <input
+              type="text"
+              value={month}
+              onChange={(e) => handleMonthChange(e.target.value)}
+              placeholder="MM"
+              maxLength={2}
+              className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+              required
+            />
           </div>
-
-          <button
-            type="button"
-            onClick={signup}
-            className="bg-indigomain w-full mt-2 rounded-lg text-white py-1.5 px-10"
-          >
-            Sign Up
-          </button>
-          <div className="text-center">
-            <Link to="/login" className="text-sm text-semilight font-ubuntu">
-              Already have an account? Log in
-            </Link>
+          <div className="w-1/3">
+            <div className="text-semilight text-sm font-ubuntu mb-1">Year</div>
+            <input
+              type="text"
+              value={year}
+              onChange={(e) => handleYearChange(e.target.value)}
+              placeholder="YYYY"
+              maxLength={4}
+              className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+              required
+            />
           </div>
-          {popup && (
-            <div className="text-rosemain text-sm text-center">{popup}</div>
-          )}
         </div>
+
+        <button
+          type="button"
+          onClick={signup}
+          className="bg-indigomain w-full mt-2 rounded-lg text-white py-1.5 px-10"
+        >
+          Sign Up
+        </button>
+        <div className="text-center">
+          <Link to="/login" className="text-sm text-semilight font-ubuntu">
+            Already have an account? Log in
+          </Link>
+        </div>
+        {popup && (
+          <div className="text-rosemain text-sm text-center">{popup}</div>
+        )}
         <footer className="w-full font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
           © 2024 FriendCity Ltd.
           <Link to="/policies" className="underline">
             Policies
           </Link>
         </footer>
-      </div>{" "}
+      </div>
     </div>
   );
 };

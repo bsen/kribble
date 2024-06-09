@@ -64,96 +64,50 @@ export const LoginAuth = () => {
 
   return (
     <>
-      <div className="md:flex justify-between items-center">
-        <div className="h-screen p-3 w-full md:w-[50%] flex justify-center items-center bg-indigomain">
-          <div className="text-semilight text-center mb-4 font-ubuntu font-medium text-[2.5rem]">
+      <div className="h-screen flex flex-col justify-center bg-indigomain items-center">
+        <div className="w-72 bg-dark p-5 rounded-lg flex flex-col items-center gap-5">
+          <div className="text-semilight text-center font-ubuntu font-medium text-[2.5rem]">
             FriendCity
-            <div className="text-center text-sm font-thin mb-8 text-light">
-              A place Where college life meets limitless fun! 🎉 Share your
-              moments, post cool pics, and dive into vibrant communities. With
-              anonymous posting, let your thoughts soar freely. Conquer exciting
-              challenges with CityMatch and join dynamic discussions with
-              CityTalks. 🚀 Get ready to unleash the epicness – join us now!
+            <div className="text-center text-sm font-thin  text-light">
+              Share your thoughts 🚀, pics, and dive into vibrant communities.
+              With anonymous posting, let your thoughts soar freely.
             </div>
-            <div className="flex flex-wrap mb-5 justify-center gap-2">
-              <img
-                src="/girl.png"
-                className="h-[15%] w-[15%] rounded-lg bg-semidark"
-                alt="Girl"
-              />
-              <img
-                src="/boy.png"
-                className="h-[15%] w-[15%] rounded-lg bg-semidark"
-                alt="Boy"
-              />
-              <img
-                src="/people.png"
-                className="h-[15%] w-[15%] rounded-lg bg-semidark"
-                alt="People"
-              />
-              <img
-                src="/girl2.png"
-                className="h-[15%] w-[15%] rounded-lg bg-semidark"
-                alt="Girl 2"
-              />
-              <img
-                src="/boy2.png"
-                className="h-[15%] w-[15%] rounded-lg bg-semidark"
-                alt="Boy 2"
-              />
-            </div>
-            <button
-              onClick={() => {
-                window.scrollTo({
-                  top: window.innerHeight,
-                  behavior: "smooth",
-                });
-              }}
-              className="lg:hidden rounded-lg bg-white text-indigomain px-4 py-1 text-lg"
-            >
-              Join now
-            </button>
           </div>
-        </div>
-        <div className="ww-full md:w-[50%] bg-black flex flex-col items-center justify-center  h-screen">
-          <div className="w-[80%] bg-dark p-5 rounded-lg flex flex-col items-center gap-5">
-            <div className="w-full">
-              <div className="text-semilight text-sm font-ubuntu mb-1">
-                Email
-              </div>
-              <input
-                value={email}
-                onChange={(e) => handleEmailChange(e.target.value)}
-                type="email"
-                className="w-full text-dark rounded-lg p-2 focus:outline-none bg-light"
-                placeholder="Enter your email address"
-              />
-            </div>
 
-            <div className="w-full">
-              <div className="text-semilight text-sm font-ubuntu mb-1">
-                Password
-              </div>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                onKeyDown={handleKeyDown}
-                className=" w-full text-dark rounded-lg p-2 focus:outline-none bg-light"
-                placeholder="Enter password"
-              />
+          <div className="w-full">
+            <div className="text-semilight text-sm font-ubuntu mb-1">Email</div>
+            <input
+              value={email}
+              onChange={(e) => handleEmailChange(e.target.value)}
+              type="email"
+              className="w-full text-dark rounded-lg p-2 focus:outline-none bg-light"
+              placeholder="Enter your email address"
+            />
+          </div>
+
+          <div className="w-full">
+            <div className="text-semilight text-sm font-ubuntu mb-1">
+              Password
             </div>
-            <button
-              onClick={login}
-              className="bg-indigomain w-full mt-2 rounded-lg text-white py-1.5 px-10"
-            >
-              Login
-            </button>
-            <div className="text-center">
-              <Link to="/signup" className="text-sm text-semilight font-ubuntu">
-                Don't have an account? Signup
-              </Link>
-            </div>
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              onKeyDown={handleKeyDown}
+              className=" w-full text-dark rounded-lg p-2 focus:outline-none bg-light"
+              placeholder="Enter password"
+            />
+          </div>
+          <button
+            onClick={login}
+            className="bg-indigomain w-full mt-2 rounded-lg text-white py-1.5 px-10"
+          >
+            Login
+          </button>
+          <div className="text-center">
+            <Link to="/signup" className="text-sm text-semilight font-ubuntu">
+              Don't have an account? Signup
+            </Link>
           </div>
           {popup && (
             <div className="text-rosemain text-sm text-center">{popup}</div>
