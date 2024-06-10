@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import DuoIcon from "@mui/icons-material/Duo";
+
 export const BottomBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,18 +45,7 @@ export const BottomBar = () => {
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
         </button>
-        <button
-          onClick={() => {
-            navigate(`/citytalks`);
-          }}
-          className={` rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
-            location.pathname === `/citytalks`
-              ? "text-indigomain text-lg"
-              : "text-light"
-          }`}
-        >
-          <DuoIcon sx={{ fontSize: 25 }} />
-        </button>
+
         <button
           onClick={() => {
             navigate("/search");
