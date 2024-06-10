@@ -192,7 +192,7 @@ export const HomeComponent = () => {
                         e.stopPropagation();
                         handleLike(post.id);
                       } else {
-                        navigate("/login");
+                        navigate("/signup");
                       }
                     }}
                   >

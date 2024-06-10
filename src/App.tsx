@@ -17,14 +17,14 @@ import { UserProvider } from "./components/User/Context/UserContext";
 import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
 import { Community } from "./pages/Community/Profile/Community";
-import { CityTalks } from "./pages/CityTalks/CityTalks";
+
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const token = localStorage.getItem("token");
-  return token ? element : <Navigate to="/login" replace />;
+  return token ? element : <Navigate to="/signup" replace />;
 };
 const PublicRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -46,9 +46,18 @@ function App() {
               element={<PublicRoute element={<Login />} />}
             />
             <Route path="/policies" element={<About />} />
-            <Route path="/:username" element={<Profile />} />
-            <Route path="/communities" element={<Communities />} />
-            <Route path="/community/:name" element={<Community />} />
+            <Route
+              path="/:username"
+              element={<ProtectedRoute element={<Profile />} />}
+            />
+            <Route
+              path="/community/:name"
+              element={<ProtectedRoute element={<Community />} />}
+            />
+            <Route
+              path="/communities"
+              element={<ProtectedRoute element={<Communities />} />}
+            />
             <Route
               path="/comments"
               element={<ProtectedRoute element={<Comments />} />}
@@ -81,10 +90,7 @@ function App() {
               path="/matching"
               element={<ProtectedRoute element={<Matching />} />}
             />
-            <Route
-              path="/citytalks"
-              element={<ProtectedRoute element={<CityTalks />} />}
-            />
+
             <Route
               path="/edit/profile"
               element={<ProtectedRoute element={<UpdateProfile />} />}

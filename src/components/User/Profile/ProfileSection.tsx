@@ -288,7 +288,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           e.stopPropagation();
                           handleLike(post.id);
                         } else {
-                          navigate("/login");
+                          navigate("/signup");
                         }
                       }}
                     >

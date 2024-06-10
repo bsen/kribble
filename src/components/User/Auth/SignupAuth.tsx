@@ -244,112 +244,114 @@ export const SignupAuth = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-center bg-indigomain items-center">
-      <div className="w-72 bg-dark p-5 rounded-lg flex flex-col items-center gap-5">
+    <div className="h-screen flex flex-col justify-center bg-black items-center">
+      <div className="w-72 bg-dark p-5 rounded-lg flex flex-col items-center gap-4">
         <div className="text-semilight text-center font-ubuntu font-medium text-[2.5rem]">
-          FriendCity
+          <div className="bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 text-transparent font-normal bg-clip-text text-4xl mb-4 font-ubuntu">
+            FriendCity
+          </div>
           <div className="text-center text-sm font-thin  text-light">
             Share your thoughts 🚀, pics, and dive into vibrant communities.
             With anonymous posting, let your thoughts soar freely.
           </div>
         </div>
-        <div className="w-full">
-          <button
-            type="button"
-            className="rounded-md text-base p-2 text-neutral-500 bg-light flex items-center gap-4 w-full"
-            onClick={handleGoogle}
-          >
-            <img src="/google.png" className="h-6 w-6" />
-            Verify with Google
-          </button>
-        </div>
-
-        {email && (
+        {!email && (
           <div className="w-full">
-            <div className="text-semilight text-sm font-ubuntu mb-1">Email</div>
-
-            <div className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2">
-              {email}
-            </div>
+            <button
+              type="button"
+              className="rounded-md text-base p-2 text-light bg-indigomain flex items-center gap-4 w-full"
+              onClick={handleGoogle}
+            >
+              <img src="/google.png" className="h-6 w-6" />
+              Verify with Google
+            </button>
           </div>
         )}
 
-        <div className="w-full">
-          <div className="text-semilight text-sm font-ubuntu mb-1">
-            Username
-          </div>
-          <input
-            type="text"
-            value={username}
-            maxLength={24}
-            onChange={(e) => handleUsernameChange(e.target.value)}
-            placeholder="Username"
-            className={`w-full text-dark p-2 bg-light focus:outline-none  rounded-lg ${
-              available ? "" : "border border-rosemain"
-            }`}
-            required
-          />
-        </div>
-
-        <div className="w-full">
-          <div className="text-semilight text-sm font-ubuntu mb-1">
-            Password
-          </div>
-          <input
-            type="text"
-            value={password}
-            onChange={(e) => handlePasswordChange(e.target.value)}
-            placeholder="Password"
-            className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
-            required
-          />
-        </div>
-        <div className="w-full flex gap-2">
-          <div className="w-1/3">
-            <div className="text-semilight text-sm font-ubuntu mb-1">Date</div>
-            <input
-              type="text"
-              value={date}
-              onChange={(e) => handleDateChange(e.target.value)}
-              placeholder="DD"
-              maxLength={2}
-              className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
-              required
-            />
-          </div>
-          <div className="w-1/3">
-            <div className="text-semilight text-sm font-ubuntu mb-1">Month</div>
-            <input
-              type="text"
-              value={month}
-              onChange={(e) => handleMonthChange(e.target.value)}
-              placeholder="MM"
-              maxLength={2}
-              className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
-              required
-            />
-          </div>
-          <div className="w-1/3">
-            <div className="text-semilight text-sm font-ubuntu mb-1">Year</div>
-            <input
-              type="text"
-              value={year}
-              onChange={(e) => handleYearChange(e.target.value)}
-              placeholder="YYYY"
-              maxLength={4}
-              className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
-              required
-            />
-          </div>
-        </div>
-
-        <button
-          type="button"
-          onClick={signup}
-          className="bg-indigomain w-full mt-2 rounded-lg text-white py-1.5 px-10"
-        >
-          Sign Up
-        </button>
+        {email && (
+          <>
+            <div className="w-full">
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Username
+              </div>
+              <input
+                type="text"
+                value={username}
+                maxLength={24}
+                onChange={(e) => handleUsernameChange(e.target.value)}
+                placeholder="Username"
+                className={`w-full text-dark p-2 bg-light focus:outline-none  rounded-lg ${
+                  available ? "" : "border border-rosemain"
+                }`}
+                required
+              />
+            </div>
+            <div className="w-full">
+              <div className="text-semilight text-sm font-ubuntu mb-1">
+                Password
+              </div>
+              <input
+                type="text"
+                value={password}
+                onChange={(e) => handlePasswordChange(e.target.value)}
+                placeholder="Password"
+                className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                required
+              />
+            </div>
+            <div className="w-full flex gap-2">
+              <div className="w-1/3">
+                <div className="text-semilight text-sm font-ubuntu mb-1">
+                  Date
+                </div>
+                <input
+                  type="text"
+                  value={date}
+                  onChange={(e) => handleDateChange(e.target.value)}
+                  placeholder="DD"
+                  maxLength={2}
+                  className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                  required
+                />
+              </div>
+              <div className="w-1/3">
+                <div className="text-semilight text-sm font-ubuntu mb-1">
+                  Month
+                </div>
+                <input
+                  type="text"
+                  value={month}
+                  onChange={(e) => handleMonthChange(e.target.value)}
+                  placeholder="MM"
+                  maxLength={2}
+                  className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                  required
+                />
+              </div>
+              <div className="w-1/3">
+                <div className="text-semilight text-sm font-ubuntu mb-1">
+                  Year
+                </div>
+                <input
+                  type="text"
+                  value={year}
+                  onChange={(e) => handleYearChange(e.target.value)}
+                  placeholder="YYYY"
+                  maxLength={4}
+                  className="bg-light w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                  required
+                />
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={signup}
+              className="bg-indigomain w-full mt-2 rounded-lg text-white h-10"
+            >
+              Sign Up
+            </button>
+          </>
+        )}
         <div className="text-center">
           <Link to="/login" className="text-sm text-semilight font-ubuntu">
             Already have an account? Log in

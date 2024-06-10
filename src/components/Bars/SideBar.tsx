@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import DuoIcon from "@mui/icons-material/Duo";
+
 export const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,20 +50,7 @@ export const SideBar = () => {
           }`}
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
-          <div>City Match</div>
-        </button>
-        <button
-          onClick={() => {
-            navigate("/citytalks");
-          }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
-            location.pathname === "/citytalks"
-              ? "text-light text-base bg-semidark"
-              : "text-light text-sm"
-          }`}
-        >
-          <DuoIcon sx={{ fontSize: 25 }} />
-          <div>City Talks</div>
+          <div>Match</div>
         </button>
 
         <button
