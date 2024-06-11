@@ -36,7 +36,7 @@ function App() {
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<ProtectedRoute element={<Home />} />} />
             <Route
               path="/signup"
               element={<PublicRoute element={<Signup />} />}
@@ -46,6 +46,7 @@ function App() {
               element={<PublicRoute element={<Login />} />}
             />
             <Route path="/policies" element={<About />} />
+
             <Route
               path="/:username"
               element={<ProtectedRoute element={<Profile />} />}
