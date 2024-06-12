@@ -64,7 +64,7 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
 
   return (
     <>
-      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[40%] bg-black/80 flex justify-center items-center">
+      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[32%] bg-black/80 flex justify-center items-center">
         <div
           className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
           onScroll={handleScroll}
@@ -86,7 +86,7 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
                   <div className="flex gap-2 items-start">
                     <img
                       className="h-7 w-7 rounded-lg bg-dark"
-                      src={community.image ? community.image : "/people.png"}
+                      src={community.image ? community.image : "/group.png"}
                     />
 
                     <div className="flex flex-col w-full">

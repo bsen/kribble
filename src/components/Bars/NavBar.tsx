@@ -1,15 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import PersonIcon from "@mui/icons-material/Person";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../User/Context/UserContext";
+import { useEffect, useState } from "react";
 import { NotificationsComponent } from "../Notifications/NotificationsComponent";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
 export const NavBar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const { currentUser, isLoading } = useContext(UserContext);
   const [showNotifications, setShowNotifications] = useState(false);
   const [newNotification, setNewNotification] = useState(false);
 
@@ -36,7 +33,7 @@ export const NavBar = () => {
           closeComponent={() => setShowNotifications(false)}
         />
       )}
-      <div className="top-0 rounded-b-lg h-12 border-b border-l border-r  border-semidark bg-dark fixed w-full lg:w-[40%]">
+      <div className="top-0 rounded-b-md h-12 border-b  border-semidark bg-dark fixed w-full lg:w-[32%]">
         <div className="w-full px-4 h-full text-xl font-ubuntu  flex justify-between items-center text-light">
           <div
             onClick={() => {
@@ -63,15 +60,6 @@ export const NavBar = () => {
                   sx={{ fontSize: 23 }}
                   className="text-semilight"
                 />
-              </button>
-
-              <button
-                disabled={isLoading}
-                onClick={() => {
-                  navigate(`/${currentUser}`);
-                }}
-              >
-                <PersonIcon sx={{ fontSize: 25 }} className="text-semilight" />
               </button>
             </div>
           )}

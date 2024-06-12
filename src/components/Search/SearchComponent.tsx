@@ -71,7 +71,7 @@ export const SearchComponent = () => {
   return (
     <div>
       <NavBar />
-      <div className="top-14 fixed w-full lg:w-[40%]">
+      <div className="top-14 fixed w-full lg:w-[32%]">
         {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
 
         <div className="w-full h-14 flex justify-between items-center">
@@ -116,9 +116,7 @@ export const SearchComponent = () => {
                       <div className="text-sm font-normal text-light">c/</div>
                       <div>
                         <img
-                          src={
-                            community.image ? community.image : "/people.png"
-                          }
+                          src={community.image ? community.image : "/group.png"}
                           alt="Profile"
                           className="h-7 w-7 rounded-lg"
                         />

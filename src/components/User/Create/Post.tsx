@@ -9,6 +9,7 @@ import { CircularProgress, LinearProgress } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import imageCompression from "browser-image-compression";
 import SearchIcon from "@mui/icons-material/Search";
 import { BottomBar } from "../../Bars/BottomBar";
 import { NavBar } from "../../Bars/NavBar";
@@ -33,16 +34,17 @@ export const Post = () => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files ? event.target.files[0] : null;
-
     if (!file) {
       return;
     }
 
     const maxFileSize = 10 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      setPopup("File size is more than 10 mb");
+      setPopup("File size is more than 10 MB");
       return;
     }
 
@@ -52,32 +54,41 @@ export const Post = () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const img = new Image();
-      img.src = reader.result as string;
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const size = Math.min(img.width, img.height);
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1440,
+        useWebWorker: true,
+      });
 
-        canvas.width = size;
-        canvas.height = size;
-
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          if (file.type === "image/png") {
-            ctx.fillStyle = "white";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const img = new Image();
+        img.src = reader.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const size = Math.min(img.width, img.height);
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            if (file.type === "image/png") {
+              ctx.fillStyle = "black";
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            const xOffset = (img.width - size) / 2;
+            const yOffset = (img.height - size) / 2;
+            ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
+            const compressedImageData = canvas.toDataURL("image/jpeg");
+            setPreviewImage(compressedImageData);
           }
-          const xOffset = (img.width - size) / 2;
-          const yOffset = (img.height - size) / 2;
-          ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
-          const compressedImageData = canvas.toDataURL("image/jpeg");
-          setPreviewImage(compressedImageData);
-        }
+        };
       };
-    };
-    reader.readAsDataURL(file);
+
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("Error compressing image:", error);
+    }
   };
 
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

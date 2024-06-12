@@ -229,7 +229,7 @@ export const UpdateCommunityComponent = () => {
                   ? previewImage
                   : communityData.image
                   ? communityData.image
-                  : "/people.png"
+                  : "/group.png"
               }
               className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10"
             />

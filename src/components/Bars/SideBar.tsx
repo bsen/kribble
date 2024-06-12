@@ -2,12 +2,16 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
-//import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
+import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { UserContext } from "../User/Context/UserContext";
+import { useContext } from "react";
+import PersonIcon from "@mui/icons-material/Person";
 
 export const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { currentUser, isLoading } = useContext(UserContext);
 
   return (
     <>
@@ -16,10 +20,10 @@ export const SideBar = () => {
           onClick={() => {
             navigate("/");
           }}
-          className={`w-full h-10 px-3 rounded-lg  flex items-center justify-start gap-2  font-light  ${
+          className={`w-full h-10 px-3 rounded-lg  flex items-center justify-start gap-2   font-medium ${
             location.pathname === "/"
-              ? "text-light text-base bg-semidark"
-              : "text-light text-sm"
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
           }`}
         >
           <HomeOutlinedIcon sx={{ fontSize: 25 }} />
@@ -29,38 +33,53 @@ export const SideBar = () => {
           onClick={() => {
             navigate("/communities");
           }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-medium  ${
             location.pathname === "/communities"
-              ? "text-light text-base bg-semidark"
-              : "text-light text-sm"
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
           }`}
         >
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
           <div>Communities</div>
         </button>
 
-        {/* <button
+        <button
           onClick={() => {
             navigate("/matching");
           }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-medium  ${
             location.pathname === "/matching"
-              ? "text-light text-base bg-semidark"
-              : "text-light text-sm"
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
           }`}
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
           <div>Match</div>
-        </button> */}
+        </button>
+
+        <button
+          disabled={isLoading}
+          onClick={() => {
+            navigate(`/${currentUser}`);
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-medium  ${
+            location.pathname === `/${currentUser}`
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
+          }`}
+        >
+          <PersonIcon sx={{ fontSize: 25 }} />
+          <div>Profile</div>
+        </button>
 
         <button
           onClick={() => {
             navigate("/search");
           }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-light  ${
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-medium  ${
             location.pathname === "/search"
-              ? "text-light text-base bg-semidark"
-              : "text-light text-sm"
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
           }`}
         >
           <SearchOutlinedIcon sx={{ fontSize: 25 }} />
@@ -72,7 +91,7 @@ export const SideBar = () => {
             navigate("/create/post");
           }}
           className={
-            "w-full h-10 px-3 mt-4 rounded-lg  bg-indigomain text-light flex items-center justify-start gap-2 text-sm font-light"
+            "w-full py-2 px-3 mt-4 rounded-lg  bg-indigomain text-white flex items-center justify-start gap-2 text-base font-medium"
           }
         >
           <AddIcon sx={{ fontSize: 25 }} />

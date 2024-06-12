@@ -3,13 +3,13 @@ import { CommentsComponent } from "../../../components/User/Comments/CommentsCom
 export const Comments = () => {
   return (
     <div className="flex justify-evenly">
-      <div className="w-[18%] max-lg:hidden">
+      <div className="w-[16%] max-md:hidden">
         <SideBar />
       </div>
-      <div className="w-full lg:w-[40%]">
+      <div className="w-full lg:w-[32%]">
         <CommentsComponent />
       </div>
-      <div className="w-[18%] max-lg:hidden"></div>
+      <div className="w-[16%] max-md:hidden"></div>
     </div>
   );
 };

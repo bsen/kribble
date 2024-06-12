@@ -233,7 +233,7 @@ export const HomeComponent = () => {
                           <div>
                             {post.community && (
                               <img
-                                src={post.community.image || "/people.png"}
+                                src={post.community.image || "/group.png"}
                                 className="w-7 h-7 rounded-lg"
                                 alt="Community"
                               />

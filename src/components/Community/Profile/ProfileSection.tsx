@@ -293,7 +293,7 @@ export const ProfileSection: React.FC = () => {
         <div className="p-3 mt-3 rounded-lg border border-semidark bg-dark">
           <div className="flex justify-between w-full items-center gap-2">
             <img
-              src={communityData.image ? communityData.image : "/people.png"}
+              src={communityData.image ? communityData.image : "/group.png"}
               className="lg:w-20 lg:h-20 w-16 h-16 rounded-lg border border-semidark"
             />
             <div className="w-full">

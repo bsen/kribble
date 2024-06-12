@@ -77,7 +77,7 @@ export const CommunitiesComponent = () => {
                   <div className="flex gap-2 ">
                     <img
                       className="h-7 w-7 rounded-lg bg-dark"
-                      src={community.image ? community.image : "/people.png"}
+                      src={community.image ? community.image : "/group.png"}
                     />
                     <div className="flex flex-col w-full">
                       <div className="text-light text-base lg:text-lg font-medium font-ubuntu">
