@@ -33,7 +33,7 @@ export const BottomBar = () => {
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
         </button>
 
-        <button
+        {/* <button
           onClick={() => {
             navigate("/matching");
           }}
@@ -44,7 +44,7 @@ export const BottomBar = () => {
           }`}
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
-        </button>
+        </button> */}
 
         <button
           onClick={() => {

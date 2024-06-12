@@ -38,6 +38,10 @@ function App() {
           <Routes>
             <Route path="/" element={<ProtectedRoute element={<Home />} />} />
             <Route
+              path="/:username"
+              element={<ProtectedRoute element={<Profile />} />}
+            />
+            <Route
               path="/signup"
               element={<PublicRoute element={<Signup />} />}
             />
@@ -47,10 +51,6 @@ function App() {
             />
             <Route path="/policies" element={<About />} />
 
-            <Route
-              path="/:username"
-              element={<ProtectedRoute element={<Profile />} />}
-            />
             <Route
               path="/community/:name"
               element={<ProtectedRoute element={<Community />} />}

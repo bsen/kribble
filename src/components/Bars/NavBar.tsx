@@ -36,7 +36,7 @@ export const NavBar = () => {
           closeComponent={() => setShowNotifications(false)}
         />
       )}
-      <div className="top-0 rounded-b-lg h-12 border-b  border-semidark bg-dark fixed w-full lg:w-[40%]">
+      <div className="top-0 rounded-b-lg h-12 border-b border-l border-r  border-semidark bg-dark fixed w-full lg:w-[40%]">
         <div className="w-full px-4 h-full text-xl font-ubuntu  flex justify-between items-center text-light">
           <div
             onClick={() => {

@@ -14,7 +14,7 @@ export const UpdateProfileComponent = () => {
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [bio, setBio] = useState("");
-  const [website, setWebsite] = useState("");
+  const [instagramLink, setInstagramLink] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [popup, setPopup] = useState("");
   const [logoutState, setLogoutState] = useState(false);
@@ -23,7 +23,7 @@ export const UpdateProfileComponent = () => {
     username: "",
     bio: "",
     image: "",
-    website: "",
+    instagramLink: "",
   };
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -69,8 +69,8 @@ export const UpdateProfileComponent = () => {
   };
   async function updateProfile() {
     try {
-      if (website) {
-        if (!validUrl.isUri(website)) {
+      if (instagramLink) {
+        if (!validUrl.isUri(instagramLink)) {
           return setPopup("Please provide a valid meeting link");
         }
       }
@@ -94,7 +94,7 @@ export const UpdateProfileComponent = () => {
       }
 
       let newBio = bio || userData.bio || "";
-      let newWebsite = website || userData.website || "";
+      let newInstagramLink = instagramLink || userData.instagramLink || "";
 
       const formdata = new FormData();
       if (imageToUpload) {
@@ -102,7 +102,7 @@ export const UpdateProfileComponent = () => {
       }
 
       formdata.append("bio", newBio);
-      formdata.append("website", newWebsite);
+      formdata.append("instagramLink", newInstagramLink);
       formdata.append("token", token ? token : "");
       setIsLoading(true);
       await axios.post(`${BACKEND_URL}/api/user/profile/update`, formdata);
@@ -188,9 +188,9 @@ export const UpdateProfileComponent = () => {
                   </div>
                   <input
                     type="link"
-                    defaultValue={userData.website}
+                    defaultValue={userData.instagramLink}
                     onChange={(e) => {
-                      setWebsite(e.target.value);
+                      setInstagramLink(e.target.value);
                     }}
                     className=" h-10 bg-semidark text-semilight w-full text-base font-light rounded-lg px-2 focus:outline-none border border-semidark"
                   />

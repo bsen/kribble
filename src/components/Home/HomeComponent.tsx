@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
-import ReplyIcon from "@mui/icons-material/Reply";
+import NotesIcon from "@mui/icons-material/Notes";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
@@ -18,7 +18,6 @@ interface Post {
     name: string;
     image: string | null;
   };
-  task: string;
   taggedUser: {
     id: string;
     username: string;
@@ -160,71 +159,71 @@ export const HomeComponent = () => {
                   {post.content}
                 </div>
               )}
-              {post.task && (
-                <div className="px-3 py-6 bg-semidark">
-                  <div
-                    onClick={() => {
-                      navigate(`/${post.taggedUser.username}`);
-                    }}
-                    className="text-indigomain bg-light w-fit flex items-center gap-2  mb-2 px-2 py-1 rounded-lg font-ubuntu font-light text-xs"
-                  >
-                    <img
-                      className="h-4 w-4 rounded-lg"
-                      src={
-                        post.taggedUser.image
-                          ? post.taggedUser.image
-                          : "/user.png"
-                      }
-                    />{" "}
-                    {post.taggedUser.username}
-                  </div>
-                  <div className="text-light font-ubuntu font-light text-sm">
-                    Task: {post.task}
-                  </div>
-                </div>
-              )}
-              <div className="border-t border-semidark py-4 flex flex-col gap-4">
-                <div className="flex gap-2 px-3 items-center text-base text-semilight">
-                  <button
-                    className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                    onClick={(e) => {
-                      if (token) {
-                        e.stopPropagation();
-                        handleLike(post.id);
-                      } else {
-                        navigate("/signup");
-                      }
-                    }}
-                  >
-                    {post.isLiked ? (
-                      <div>
-                        <FavoriteIcon
-                          sx={{
-                            fontSize: 22,
-                          }}
-                          className="text-rosemain"
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <FavoriteBorderOutlinedIcon
-                          sx={{
-                            fontSize: 22,
-                          }}
-                          className="text-light"
-                        />
-                      </div>
-                    )}
-                    {post.likesCount}
-                  </button>
 
-                  <button
-                    onClick={() => navigate(`/post/${post.id}`)}
-                    className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                  >
-                    <ReplyIcon sx={{ fontSize: 24 }} />
-                    {post.commentsCount}
-                  </button>
+              <div className="border-t border-semidark py-4 flex flex-col gap-4">
+                <div className="flex px-3 items-center justify-between text-base text-semilight">
+                  <div className="flex gap-2 items-center">
+                    <button
+                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      onClick={(e) => {
+                        if (token) {
+                          e.stopPropagation();
+                          handleLike(post.id);
+                        } else {
+                          navigate("/signup");
+                        }
+                      }}
+                    >
+                      {post.isLiked ? (
+                        <div>
+                          <FavoriteIcon
+                            sx={{
+                              fontSize: 22,
+                            }}
+                            className="text-rosemain"
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <FavoriteBorderOutlinedIcon
+                            sx={{
+                              fontSize: 22,
+                            }}
+                            className="text-light"
+                          />
+                        </div>
+                      )}
+                      {post.likesCount}
+                    </button>
+
+                    <button
+                      onClick={() => navigate(`/post/${post.id}`)}
+                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                    >
+                      <NotesIcon sx={{ fontSize: 24 }} />
+                      {post.commentsCount}
+                    </button>
+                  </div>
+                  {post.taggedUser && (
+                    <div className="">
+                      <div
+                        onClick={() => {
+                          navigate(`/${post.taggedUser.username}`);
+                        }}
+                        className="text-indigomain bg-light w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
+                      >
+                        <img
+                          className="h-4 w-4 rounded-lg"
+                          src={
+                            post.taggedUser.image
+                              ? post.taggedUser.image
+                              : "/user.png"
+                          }
+                        />
+                        {post.taggedUser.username}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="flex rounded-lg items-center gap-2 px-3">
                   <div>

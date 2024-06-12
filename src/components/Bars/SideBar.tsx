@@ -39,7 +39,7 @@ export const SideBar = () => {
           <div>Communities</div>
         </button>
 
-        <button
+        {/* <button
           onClick={() => {
             navigate("/matching");
           }}
@@ -51,7 +51,7 @@ export const SideBar = () => {
         >
           <AllInclusiveIcon sx={{ fontSize: 25 }} />
           <div>Match</div>
-        </button>
+        </button> */}
 
         <button
           onClick={() => {

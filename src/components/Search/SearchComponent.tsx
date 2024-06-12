@@ -75,12 +75,12 @@ export const SearchComponent = () => {
         {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
 
         <div className="w-full h-14 flex justify-between items-center">
-          <div className="h-10 bg-semidark mx-auto w-full hover:bg-semidark flex px-4 justify-between items-center border border-semidark rounded-lg">
+          <div className="h-10 bg-dark mx-auto w-full hover:bg-semidark flex px-4 justify-between items-center border border-semidark rounded-lg">
             <input
               type="text"
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search"
-              className="w-full h-full bg-semidark hover:bg-semidark text-semilight focus:outline-none"
+              className="w-full h-full bg-dark hover:bg-semidark text-semilight focus:outline-none"
             />
             <SearchIcon className="text-semilight" />
           </div>

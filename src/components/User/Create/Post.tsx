@@ -1,41 +1,37 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
+import CloseIcon from "@mui/icons-material/Close";
 import { BACKEND_URL } from "../../../config";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
 import { BottomBar } from "../../Bars/BottomBar";
 import { NavBar } from "../../Bars/NavBar";
 
-interface MatchData {
-  id: string;
-  task: string;
-  isTaskCompleted: boolean;
-  expiresAt: string;
-  matchedUser: {
-    id: string;
-    username: string;
-    image: string;
-  };
+interface User {
+  username: string;
+  image: string;
 }
 
 export const Post = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [taggedUser, setTaggedUser] = useState("");
-  const [taskId, setTaskId] = useState("");
-  const [task, setTask] = useState("");
+  const [taggedUserName, setTaggedUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showMatches, setShowMatches] = useState(true);
   const [post, setPost] = useState("");
-  const [matches, setMatches] = useState<MatchData[]>([]);
   const [previewImage, setPreviewImage] = useState("");
   const [anonymity, setAnonymity] = useState(false);
+  const [isSearchState, setIsSearchState] = useState(false);
   const [popup, setPopup] = useState("");
+
+  const [search, setSearch] = useState<string>("");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [users, setUsers] = useState<User[]>([]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -69,10 +65,14 @@ export const Post = () => {
 
         const ctx = canvas.getContext("2d");
         if (ctx) {
+          if (file.type === "image/png") {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
           const xOffset = (img.width - size) / 2;
           const yOffset = (img.height - size) / 2;
           ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
-          const compressedImageData = canvas.toDataURL("image/jpeg", 0.8);
+          const compressedImageData = canvas.toDataURL("image/jpeg");
           setPreviewImage(compressedImageData);
         }
       };
@@ -100,8 +100,7 @@ export const Post = () => {
     try {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append("taskId", taskId ? taskId : "");
-      formData.append("taggedUser", taggedUser);
+      formData.append("taggedUserName", taggedUserName);
       formData.append("post", post);
       formData.append("token", token || "");
       formData.append("anonymity", String(anonymity));
@@ -141,39 +140,48 @@ export const Post = () => {
     }
   };
 
-  const fetchMatches = async () => {
+  const fetchSearchResults = useCallback(async () => {
+    setIsSearching(true);
     try {
-      setIsLoading(true);
-      const response = await axios.post(`${BACKEND_URL}/api/match/matches`, {
+      const response = await axios.post(`${BACKEND_URL}/api/search/data`, {
         token,
+        search,
       });
-      setIsLoading(false);
-      if (response.data.status === 200) {
-        setMatches(response.data.data);
-      }
+      setUsers(response.data.users);
     } catch (error) {
-      console.error("Error while fetching matches:", error);
+      console.error("Error fetching search results:", error);
+    } finally {
+      setIsSearching(false);
     }
-  };
+  }, [token, search]);
+
+  function debounce<T extends (...args: any[]) => void>(
+    func: T,
+    delay: number
+  ): T {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return ((...args: Parameters<T>) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    }) as T;
+  }
+
+  const debouncedSearch = useCallback(debounce(fetchSearchResults, 1000), [
+    fetchSearchResults,
+  ]);
 
   useEffect(() => {
-    fetchMatches();
-  }, []);
-  const getFormattedRemainingTime = (expiresAt: string) => {
-    const expirationDate = new Date(expiresAt);
-    const currentDate = new Date();
-    const diffInMilliseconds = expirationDate.getTime() - currentDate.getTime();
+    if (search.length !== 0) {
+      debouncedSearch();
+    } else {
+      setUsers([]);
+    }
+  }, [search, debouncedSearch]);
 
-    const hours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
-    const minutes = Math.floor(
-      (diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60)
-    );
-
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-
-    return `${formattedHours}h ${formattedMinutes}m remaining`;
-  };
   if (isLoading) {
     return (
       <div className="w-full my-5 flex justify-center items-center">
@@ -181,6 +189,63 @@ export const Post = () => {
       </div>
     );
   }
+
+  if (isSearchState) {
+    return (
+      <div className="bg-black/80 h-screen flex justify-center items-center">
+        <div className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar">
+          <div className="w-full h-12 flex justify-between items-center">
+            <div className="h-10 bg-semidark mx-auto w-full flex px-4 justify-between items-center rounded-lg">
+              <input
+                type="text"
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search"
+                className="w-full h-full bg-semidark  text-semilight focus:outline-none"
+              />
+              <SearchIcon className="text-semilight" />
+            </div>
+          </div>
+          {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
+          <div>
+            {users.length !== 0 ? (
+              <div>
+                {users.map((user) => (
+                  <div
+                    onClick={() => {
+                      setTaggedUserName(user.username);
+                      setIsSearchState(false);
+                    }}
+                    className="flex border my-1 bg-dark rounded-lg border-semidark py-1.5 justify-between items-center px-2 hover:bg-semidark"
+                  >
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={user.image ? user.image : "/user.png"}
+                        alt="Profile"
+                        className="h-7 w-7 rounded-lg"
+                      />
+                      <div className="text-light text-sm">{user.username}</div>
+                    </div>
+                    <AddIcon className="text-light" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                {isSearching ? (
+                  ""
+                ) : (
+                  <div className="text-semilight my-5 font-light text-center text-sm">
+                    Search result not found
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="py-12">
@@ -220,10 +285,10 @@ export const Post = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex justify-end">
+              <div>
                 <label
                   htmlFor="image-upload"
-                  className="cursor-pointer block text-center"
+                  className="cursor-pointer text-center  border-dashed border border-semidark my-2 h-20 rounded-lg bg-dark flex items-center justify-center"
                 >
                   <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
                     Add Image
@@ -243,15 +308,6 @@ export const Post = () => {
               </div>
             )}
           </div>
-          {taggedUser && task && (
-            <div className="p-3 bg-semidark rounded-lg mb-2">
-              <div className="text-light font-light  text-sm">
-                Tagging @{taggedUser}
-                <br />
-                Task: {task}
-              </div>
-            </div>
-          )}
 
           <textarea
             value={post}
@@ -263,7 +319,7 @@ export const Post = () => {
             maxLength={500}
           />
 
-          <div className="flex w-full my-2 justify-between">
+          <div className="flex w-full my-2 justify-between items-center">
             <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
               <div
                 onClick={() => {
@@ -276,15 +332,33 @@ export const Post = () => {
                   }`}
                 />
               </div>
-              {anonymity ? (
-                <div className="text-rosemain">
-                  Your identity will be hidden
-                </div>
-              ) : (
-                <div className="text-semilight">Hide your identity</div>
-              )}
+              {anonymity ? <div className="text-rosemain">Anonymous</div> : ""}
             </div>
-            <div>
+
+            <div className="flex items-center gap-4 text-light">
+              {taggedUserName && (
+                <div className="text-sm bg-semidark px-2 py-0.5 rounded-lg flex items-center gap-1">
+                  <div
+                    onClick={() => {
+                      setTaggedUserName("");
+                    }}
+                  >
+                    <CloseIcon sx={{ fontSize: 20 }} />
+                  </div>{" "}
+                  {taggedUserName}
+                </div>
+              )}
+              {!taggedUserName && (
+                <button
+                  onClick={() => {
+                    setTaggedUserName("");
+                    setIsSearchState(true);
+                  }}
+                  className="text-sm bg-semidark px-2 py-0.5 rounded-lg flex items-center gap-1"
+                >
+                  <AddIcon sx={{ fontSize: 20 }} /> Tag
+                </button>
+              )}
               <button
                 onClick={createUserPost}
                 className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
@@ -294,74 +368,7 @@ export const Post = () => {
             </div>
           </div>
         </div>
-        <div className=" my-2 rounded-lg text-semilight">
-          <div className="flex flex-col gap-2">
-            {matches.length > 0 &&
-              showMatches &&
-              matches.map((match) => (
-                <div key={match.id}>
-                  <div className="bg-dark p-3 rounded-lg shadow-sm">
-                    <div className="flex mb-2 items-center justify-between">
-                      <div className="flex gap-2 items-center justify-center">
-                        <img
-                          src={
-                            match.matchedUser.image
-                              ? match.matchedUser.image
-                              : "/user.png"
-                          }
-                          className="w-7 h-7 rounded-lg border border-semidark object-cover"
-                        />
-                        <div
-                          onClick={() => {
-                            navigate(
-                              `/${
-                                match.matchedUser.username
-                                  ? match.matchedUser.username
-                                  : ""
-                              }`
-                            );
-                          }}
-                          className="text-light w-fit font-medium hover:underline underline-offset-2  text-lg rounded-lg"
-                        >
-                          {match.matchedUser ? match.matchedUser.username : ""}
-                        </div>
-                      </div>
-                      {!match.isTaskCompleted && (
-                        <button
-                          onClick={() => {
-                            setTaggedUser(match.matchedUser.username);
-                            setTaskId(match.id);
-                            setTask(match.task);
-                            setShowMatches(false);
-                          }}
-                          className="text-indigomain active:bg-semilight bg-light px-2 w-fit font-medium flex items-center  text-sm rounded-lg"
-                        >
-                          <AddIcon /> Tag
-                        </button>
-                      )}
-                    </div>
-                    <div className=" text-xs text-semilight">
-                      <div className="flex items-center gap-2">
-                        <div className="text-left font-light">
-                          {match.isTaskCompleted ? (
-                            <div className="text-green-400">Task Completed</div>
-                          ) : (
-                            <div className="text-orange-400">Task Pending</div>
-                          )}
-                        </div>
-                        <div>
-                          · {getFormattedRemainingTime(match.expiresAt)}
-                        </div>{" "}
-                      </div>
-                      <div className="text-left font-light mb-2 text-semilight text-sm">
-                        Task: {match.task}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
+
         {popup && (
           <div className="text-red-400 font-light text-center text-xs my-2">
             {popup}
