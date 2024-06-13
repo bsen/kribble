@@ -41,7 +41,7 @@ export const NavBar = () => {
             }}
             className="bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 text-transparent font-normal bg-clip-text text-2xl font-ubuntu"
           >
-            FriendCity
+            friendcity
           </div>
           {token && (
             <div className="flex items-center gap-4">
@@ -51,7 +51,7 @@ export const NavBar = () => {
                 }}
               >
                 {newNotification && (
-                  <span className="absolute right-14 top-4 flex h-2 w-2">
+                  <span className="absolute right-4 top-4 flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-lg bg-sky-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-lg h-2 w-2 bg-sky-500"></span>
                   </span>

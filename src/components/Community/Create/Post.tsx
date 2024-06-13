@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -7,18 +7,32 @@ import axios from "axios";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import imageCompression from "browser-image-compression";
 import { BACKEND_URL } from "../../../config";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 import { NavBar } from "../../Bars/NavBar";
+import CloseIcon from "@mui/icons-material/Close";
 import { BottomBar } from "../../Bars/BottomBar";
+import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add";
+
+interface User {
+  username: string;
+  image: string;
+}
 
 export const Post = () => {
   const { name } = useParams();
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
-  const [post, setPost] = useState("");
+  const [content, setContent] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [anonymity, setAnonymity] = useState(false);
   const [popup, setPopup] = useState("");
+  const [taggedUserName, setTaggedUserName] = useState("");
+
+  const [search, setSearch] = useState<string>("");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [isSearchState, setIsSearchState] = useState(false);
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -77,18 +91,18 @@ export const Post = () => {
     }
   };
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPost(e.target.value);
+    setContent(e.target.value);
   };
 
   const handleClose = () => {
-    setPost("");
+    setContent("");
     setPreviewImage("");
     history.go(-1);
   };
 
   const createCommunityPost = async () => {
     setPopup("");
-    if (!post) {
+    if (!content) {
       setPopup("Write something");
       return;
     }
@@ -96,11 +110,11 @@ export const Post = () => {
     try {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append("post", post);
+      formData.append("content", content);
       formData.append("communityName", name || "");
       formData.append("token", token || "");
       formData.append("anonymity", String(anonymity));
-
+      formData.append("taggedUserName", taggedUserName);
       if (previewImage) {
         const fileName = "post.jpeg";
         const fileType = "image/jpeg";
@@ -114,7 +128,6 @@ export const Post = () => {
         const file = new File([blob], fileName, { type: fileType });
         formData.append("image", file);
       }
-
       const response = await axios.post(
         `${BACKEND_URL}/api/community/post/create`,
         formData
@@ -128,6 +141,49 @@ export const Post = () => {
       setIsLoading(false);
     }
   };
+
+  const fetchSearchResults = useCallback(async () => {
+    setIsSearching(true);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/search/data`, {
+        token,
+        search,
+      });
+      setUsers(response.data.users);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    } finally {
+      setIsSearching(false);
+    }
+  }, [token, search]);
+
+  function debounce<T extends (...args: any[]) => void>(
+    func: T,
+    delay: number
+  ): T {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return ((...args: Parameters<T>) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    }) as T;
+  }
+
+  const debouncedSearch = useCallback(debounce(fetchSearchResults, 1000), [
+    fetchSearchResults,
+  ]);
+
+  useEffect(() => {
+    if (search.length !== 0) {
+      debouncedSearch();
+    } else {
+      setUsers([]);
+    }
+  }, [search, debouncedSearch]);
+
   if (isLoading) {
     return (
       <div className="w-full my-5 flex justify-center items-center">
@@ -135,11 +191,76 @@ export const Post = () => {
       </div>
     );
   }
+
+  if (isSearchState) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <div className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar">
+          <div className="w-full h-12 flex justify-between gap-2 items-center">
+            <div
+              onClick={() => {
+                setTaggedUserName("");
+                setIsSearchState(false);
+              }}
+            >
+              <CloseIcon className="text-semilight" sx={{ fontSize: 25 }} />
+            </div>
+            <div className="h-10 bg-semidark mx-auto w-full flex px-4 justify-between items-center rounded-lg">
+              <input
+                type="text"
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search user"
+                className="w-full h-full bg-semidark  text-semilight focus:outline-none"
+              />
+              <SearchIcon className="text-semilight" />
+            </div>
+          </div>
+          {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
+          <div>
+            {users.length !== 0 ? (
+              <div>
+                {users.map((user) => (
+                  <div
+                    onClick={() => {
+                      setTaggedUserName(user.username);
+                      setIsSearchState(false);
+                    }}
+                    className="flex border my-1 bg-dark rounded-lg border-semidark py-1.5 justify-between items-center px-2 hover:bg-semidark"
+                  >
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={user.image ? user.image : "/user.png"}
+                        alt="Profile"
+                        className="h-7 w-7 rounded-lg"
+                      />
+                      <div className="text-light text-sm">{user.username}</div>
+                    </div>
+                    <AddIcon className="text-light" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                {isSearching ? (
+                  ""
+                ) : (
+                  <div className="text-semilight my-5 font-light text-center text-sm">
+                    Search result not found
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="py-12">
         <NavBar />
-        <div className="w-full bg-dark mt-3 p-4 rounded-lg">
+        <div className="w-full bg-dark mt-2 p-4 rounded-lg">
           <div className="flex gap-4 items-center">
             <button onClick={handleClose}>
               <ArrowBackIcon
@@ -148,7 +269,7 @@ export const Post = () => {
               />
             </button>
             <div className="text-xl flex justify-center items-center gap-5 font-light text-light text-center">
-              <div>Create Post in {name}</div>
+              <div>Create Post in c/{name}</div>
             </div>
           </div>
           <div className="w-full h-full rounded-lg flex flex-col justify-center">
@@ -174,10 +295,10 @@ export const Post = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex justify-end">
+              <div>
                 <label
                   htmlFor="image-upload"
-                  className="cursor-pointer block text-center"
+                  className="cursor-pointer text-center my-2 h-20 rounded-lg bg-semidark flex items-center justify-center"
                 >
                   <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
                     Add Image
@@ -197,9 +318,8 @@ export const Post = () => {
               </div>
             )}
           </div>
-
           <textarea
-            value={post}
+            value={content}
             onChange={handlePostChange}
             rows={4}
             className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
@@ -221,15 +341,33 @@ export const Post = () => {
                   }`}
                 />
               </div>
-              {anonymity ? (
-                <div className="text-rosemain">
-                  Your identity will be hidden
-                </div>
-              ) : (
-                <div className="text-semilight">Hide your identity</div>
-              )}
+              {anonymity ? <div className="text-rosemain">Anonymous</div> : ""}
             </div>
-            <div>
+
+            <div className="flex items-center gap-4 text-light">
+              {taggedUserName && (
+                <div className="text-sm bg-semidark px-2 py-0.5 rounded-lg flex items-center gap-1">
+                  <div
+                    onClick={() => {
+                      setTaggedUserName("");
+                    }}
+                  >
+                    <CloseIcon sx={{ fontSize: 20 }} />
+                  </div>{" "}
+                  {taggedUserName}
+                </div>
+              )}
+              {!taggedUserName && (
+                <button
+                  onClick={() => {
+                    setTaggedUserName("");
+                    setIsSearchState(true);
+                  }}
+                  className="text-sm bg-semidark px-2 py-0.5 rounded-lg flex items-center gap-1"
+                >
+                  <AddIcon sx={{ fontSize: 20 }} /> Tag
+                </button>
+              )}
               <button
                 onClick={createCommunityPost}
                 className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"

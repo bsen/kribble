@@ -85,7 +85,7 @@ export const MatchingComponent: React.FC = () => {
     <>
       <div className="h-screen overflow-y-auto flex flex-col items-center no-scrollbar py-12 ">
         <NavBar />
-        <div className="w-full mb-3 flex flex-col items-center text-semilight bg-dark text-center text-sm font-normal mt-3 font-ubuntu p-2 rounded-lg">
+        <div className="w-full mb-3 flex flex-col items-center text-semilight bg-dark text-center text-sm font-normal mt-2 font-ubuntu p-2 rounded-lg">
           <div>
             Complete tasks within the time limit to score valuable city points .
             The higher your points, the better your rank on the leaderboards 🏆
@@ -128,7 +128,7 @@ export const MatchingComponent: React.FC = () => {
                       {match.matchedUser ? match.matchedUser.username : ""}
                     </div>
                   </div>
-                  <div className=" my-3 text-xs text-semilight">
+                  <div className=" my-2 text-xs text-semilight">
                     <div className="flex items-center gap-2">
                       <div className="text-left font-light">
                         {match.isTaskCompleted ? (

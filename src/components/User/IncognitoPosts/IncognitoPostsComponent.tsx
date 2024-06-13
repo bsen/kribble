@@ -5,22 +5,31 @@ import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ReplyIcon from "@mui/icons-material/Reply";
+import NotesIcon from "@mui/icons-material/Notes";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
 interface Post {
   id: string;
   creator: {
-    id: string;
     username: string;
     image: string | null;
+  };
+  community: {
+    name: string;
+    image: string | null;
+  };
+  taggedUser: {
+    id: string;
+    username: string;
+    image: string;
   };
   content: string;
   image: string;
   createdAt: string;
-  likesCount: string;
   commentsCount: string;
+  likesCount: string;
+  anonymity: string;
   isLiked: boolean;
 }
 
@@ -222,42 +231,165 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3 p-3 rounded-lg border border-semidark bg-dark"
+                className="my-2 rounded-lg border border-semidark  bg-dark"
               >
-                <div className="flex items-center justify-between">
+                <div className="p-3 flex items-center justify-between">
                   <div className="flex gap-2 items-center">
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/${post.creator.username}`);
-                      }}
-                    >
-                      <img
-                        src="/mask.png"
-                        alt="Profile"
-                        className="w-7 h-7 rounded-lg"
-                      />
-                    </div>
-
-                    <div className="w-fit flex gap-2 items-center">
-                      <>
-                        <div className="flex gap-2 items-center">
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/${post.creator.username}`);
-                            }}
-                            className="text-light text-sm lg:text-base hover:underline font-normal"
-                          >
-                            {post.creator.username}
+                    {post.community ? (
+                      <div>
+                        {post.community && (
+                          <div>
+                            {post.community && (
+                              <img
+                                src={post.community.image || "/group.png"}
+                                className="w-7 h-7 rounded-lg"
+                                alt="Community"
+                              />
+                            )}
                           </div>
-
-                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                            · {getTimeDifference(post.createdAt)}
+                        )}
+                      </div>
+                    ) : (
+                      <div>
+                        {post.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        )}
+                      </div>
+                    )}
+                    <div className="w-fit flex gap-2 items-center">
+                      {post.community ? (
+                        <div>
+                          <div className="flex gap-2 items-center">
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/community/${post.community.name}`);
+                              }}
+                            >
+                              {post.community && (
+                                <div className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal">
+                                  c/ {post.community.name}
+                                </div>
+                              )}
+                            </div>
+                            <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
                           </div>
                         </div>
-                      </>
+                      ) : (
+                        <>
+                          <div className="flex gap-2 items-center">
+                            {post.anonymity ? (
+                              <div className="text-light text-sm lg:text-base font-normal">
+                                {post.creator.username}
+                              </div>
+                            ) : (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/${post.creator.username}`);
+                                }}
+                                className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                              >
+                                {post.creator.username}
+                              </div>
+                            )}
+
+                            <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>{" "}
+                  </div>
+                  {post.taggedUser && (
+                    <div className="">
+                      <div
+                        onClick={() => {
+                          navigate(`/${post.taggedUser.username}`);
+                        }}
+                        className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
+                      >
+                        <img
+                          className="h-4 w-4 rounded-lg"
+                          src={
+                            post.taggedUser.image
+                              ? post.taggedUser.image
+                              : "/user.png"
+                          }
+                        />
+                        {post.taggedUser.username}
+                      </div>
                     </div>
+                  )}
+                </div>
+
+                {post.image && <img src={post.image} className=" w-[100%]" />}
+
+                {post.content && (
+                  <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
+                    {post.content}
+                  </div>
+                )}
+
+                <div className="p-3 flex items-center justify-between">
+                  <div className="flex gap-2 items-center">
+                    <button
+                      className="bg-semidark  text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      onClick={(e) => {
+                        if (token) {
+                          e.stopPropagation();
+                          handleLike(post.id);
+                        } else {
+                          navigate("/signup");
+                        }
+                      }}
+                    >
+                      {post.isLiked ? (
+                        <div>
+                          <FavoriteIcon
+                            sx={{
+                              fontSize: 22,
+                            }}
+                            className="text-rosemain"
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <FavoriteBorderOutlinedIcon
+                            sx={{
+                              fontSize: 22,
+                            }}
+                            className="text-light hover:text-rosemain"
+                          />
+                        </div>
+                      )}
+                      {post.likesCount}
+                    </button>
+
+                    <button
+                      onClick={() => navigate(`/post/${post.id}`)}
+                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                    >
+                      <NotesIcon sx={{ fontSize: 24 }} />
+                      {post.commentsCount}
+                    </button>
                   </div>
                   <div>
                     <button
@@ -270,59 +402,6 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                         className="text-semilight"
                         sx={{ fontSize: 20 }}
                       />
-                    </button>
-                  </div>
-                </div>
-                <div className="w-full flex flex-col">
-                  <div className="flex flex-col gap-2 py-4 w-full">
-                    {post.image && (
-                      <img
-                        src={post.image}
-                        className="rounded-lg w-[100%] md:w-[60%]"
-                      />
-                    )}
-
-                    <div className="text-light text-sm lg:text-base font-light">
-                      {post.content}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 mt-2 items-center text-sm text-semilight">
-                    <button
-                      className="bg-semidark text-rosemain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleLike(post.id);
-                      }}
-                    >
-                      {post.isLiked ? (
-                        <div>
-                          <FavoriteIcon
-                            sx={{
-                              fontSize: 20,
-                            }}
-                            className="text-rosemain"
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          <FavoriteBorderOutlinedIcon
-                            sx={{
-                              fontSize: 20,
-                            }}
-                            className="text-rosemain"
-                          />
-                        </div>
-                      )}
-                      {post.likesCount}
-                    </button>
-
-                    <button
-                      onClick={() => navigate(`/post/${post.id}`)}
-                      className="bg-semidark text-indigomain px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                    >
-                      <ReplyIcon sx={{ fontSize: 22 }} />
-                      {post.commentsCount}
                     </button>
                   </div>
                 </div>

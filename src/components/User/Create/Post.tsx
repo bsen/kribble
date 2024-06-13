@@ -24,15 +24,15 @@ export const Post = () => {
   const token = localStorage.getItem("token");
   const [taggedUserName, setTaggedUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [post, setPost] = useState("");
+  const [content, setContent] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [anonymity, setAnonymity] = useState(false);
-  const [isSearchState, setIsSearchState] = useState(false);
   const [popup, setPopup] = useState("");
 
   const [search, setSearch] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [isSearchState, setIsSearchState] = useState(false);
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -92,18 +92,18 @@ export const Post = () => {
   };
 
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPost(e.target.value);
+    setContent(e.target.value);
   };
 
   const handleClose = () => {
-    setPost("");
+    setContent("");
     setPreviewImage("");
     history.go(-1);
   };
 
   const createUserPost = async () => {
     setPopup("");
-    if (!post) {
+    if (!content) {
       setPopup("Write something");
       return;
     }
@@ -112,7 +112,7 @@ export const Post = () => {
       setIsLoading(true);
       const formData = new FormData();
       formData.append("taggedUserName", taggedUserName);
-      formData.append("post", post);
+      formData.append("content", content);
       formData.append("token", token || "");
       formData.append("anonymity", String(anonymity));
       if (previewImage) {
@@ -203,14 +203,22 @@ export const Post = () => {
 
   if (isSearchState) {
     return (
-      <div className="bg-black/80 h-screen flex justify-center items-center">
+      <div className="h-screen flex justify-center items-center">
         <div className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar">
-          <div className="w-full h-12 flex justify-between items-center">
+          <div className="w-full h-12 flex justify-between gap-2 items-center">
+            <div
+              onClick={() => {
+                setTaggedUserName("");
+                setIsSearchState(false);
+              }}
+            >
+              <CloseIcon className="text-semilight" sx={{ fontSize: 25 }} />
+            </div>
             <div className="h-10 bg-semidark mx-auto w-full flex px-4 justify-between items-center rounded-lg">
               <input
                 type="text"
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search"
+                placeholder="Search user"
                 className="w-full h-full bg-semidark  text-semilight focus:outline-none"
               />
               <SearchIcon className="text-semilight" />
@@ -261,7 +269,7 @@ export const Post = () => {
     <>
       <div className="py-12">
         <NavBar />
-        <div className="w-full mt-3 bg-dark p-4 rounded-lg">
+        <div className="w-full mt-2 bg-dark p-4 rounded-lg">
           <div className="flex gap-4 items-center">
             <button onClick={handleClose}>
               <ArrowBackIcon
@@ -299,7 +307,7 @@ export const Post = () => {
               <div>
                 <label
                   htmlFor="image-upload"
-                  className="cursor-pointer text-center  border-dashed border border-semidark my-2 h-20 rounded-lg bg-dark flex items-center justify-center"
+                  className="cursor-pointer text-center my-2 h-20 rounded-lg bg-semidark flex items-center justify-center"
                 >
                   <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
                     Add Image
@@ -321,7 +329,7 @@ export const Post = () => {
           </div>
 
           <textarea
-            value={post}
+            value={content}
             onChange={handlePostChange}
             rows={4}
             className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"

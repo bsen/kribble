@@ -11,12 +11,13 @@ import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ReplyIcon from "@mui/icons-material/Reply";
+import NotesIcon from "@mui/icons-material/Notes";
 import { BottomBar } from "../../Bars/BottomBar";
 import { NavBar } from "../../Bars/NavBar";
 import { UserData } from "./UserData";
 import { UserContext } from "../Context/UserContext";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+
 interface Post {
   id: string;
   creator: {
@@ -27,7 +28,6 @@ interface Post {
     name: string;
     image: string | null;
   };
-  task: string;
   taggedUser: {
     id: string;
     username: string;
@@ -246,43 +246,127 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3  rounded-lg border border-semidark  bg-dark"
+                className="my-2 rounded-lg border border-semidark  bg-dark"
               >
-                {post.image && (
-                  <img src={post.image} className="rounded-t-lg w-[100%]" />
-                )}
+                <div className="p-3 flex items-center justify-between">
+                  <div className="flex gap-2 items-center">
+                    {post.community ? (
+                      <div>
+                        {post.community && (
+                          <div>
+                            {post.community && (
+                              <img
+                                src={post.community.image || "/group.png"}
+                                className="w-7 h-7 rounded-lg"
+                                alt="Community"
+                              />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div>
+                        {post.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        )}
+                      </div>
+                    )}
+                    <div className="w-fit flex gap-2 items-center">
+                      {post.community ? (
+                        <div>
+                          <div className="flex gap-2 items-center">
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/community/${post.community.name}`);
+                              }}
+                            >
+                              {post.community && (
+                                <div className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal">
+                                  c/ {post.community.name}
+                                </div>
+                              )}
+                            </div>
+                            <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex gap-2 items-center">
+                            {post.anonymity ? (
+                              <div className="text-light text-sm lg:text-base font-normal">
+                                {post.creator.username}
+                              </div>
+                            ) : (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/${post.creator.username}`);
+                                }}
+                                className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                              >
+                                {post.creator.username}
+                              </div>
+                            )}
+
+                            <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>{" "}
+                  </div>
+                  {post.taggedUser && (
+                    <div className="">
+                      <div
+                        onClick={() => {
+                          navigate(`/${post.taggedUser.username}`);
+                        }}
+                        className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
+                      >
+                        <img
+                          className="h-4 w-4 rounded-lg"
+                          src={
+                            post.taggedUser.image
+                              ? post.taggedUser.image
+                              : "/user.png"
+                          }
+                        />
+                        {post.taggedUser.username}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {post.image && <img src={post.image} className=" w-[100%]" />}
+
                 {post.content && (
-                  <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
+                  <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
                     {post.content}
                   </div>
                 )}
-                {post.task && (
-                  <div className="px-3 py-6 bg-semidark">
-                    <div
-                      onClick={() => {
-                        navigate(`/${post.taggedUser.username}`);
-                      }}
-                      className="text-indigomain bg-light w-fit flex items-center gap-2  mb-2 px-2 py-1 rounded-lg font-ubuntu font-light text-xs"
-                    >
-                      <img
-                        className="h-4 w-4 rounded-lg"
-                        src={
-                          post.taggedUser.image
-                            ? post.taggedUser.image
-                            : "/user.png"
-                        }
-                      />{" "}
-                      {post.taggedUser.username}
-                    </div>
-                    <div className="text-light font-ubuntu font-light text-sm">
-                      Match task: {post.task}
-                    </div>
-                  </div>
-                )}
-                <div className="border-t border-semidark py-4 flex flex-col gap-4">
-                  <div className="flex gap-2 px-3 items-center text-base text-semilight">
+
+                <div className="p-3 flex items-center justify-between">
+                  <div className="flex gap-2 items-center">
                     <button
-                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-semidark  text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                       onClick={(e) => {
                         if (token) {
                           e.stopPropagation();
@@ -307,7 +391,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-light"
+                            className="text-light hover:text-rosemain"
                           />
                         </div>
                       )}
@@ -318,128 +402,24 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                       onClick={() => navigate(`/post/${post.id}`)}
                       className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     >
-                      <ReplyIcon sx={{ fontSize: 24 }} />
+                      <NotesIcon sx={{ fontSize: 24 }} />
                       {post.commentsCount}
                     </button>
                   </div>
-                  <div className="flex w-full px-3 justify-between rounded-lg items-center">
-                    <div className="flex rounded-lg items-center gap-2 ">
-                      <div>
-                        {post.community ? (
-                          <div>
-                            {post.community && (
-                              <div>
-                                {post.community && (
-                                  <img
-                                    src={post.community.image || "/people.png"}
-                                    className="w-7 h-7 rounded-lg"
-                                    alt="Community"
-                                  />
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <div>
-                            {post.anonymity ? (
-                              <img
-                                src="/mask.png"
-                                alt="Profile"
-                                className="w-7 h-7 rounded-lg"
-                              />
-                            ) : (
-                              <img
-                                src={
-                                  post.creator.image
-                                    ? post.creator.image
-                                    : "/user.png"
-                                }
-                                alt="Profile"
-                                className="w-7 h-7 rounded-lg"
-                              />
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      <div className="w-fit flex gap-2 items-center">
-                        {post.community ? (
-                          <div>
-                            <div className="flex gap-2 items-center">
-                              <div
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigate(`/community/${post.community.name}`);
-                                }}
-                              >
-                                {post.community && (
-                                  <div className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal">
-                                    c/ {post.community.name}
-                                  </div>
-                                )}
-                              </div>
-                              <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                                · {getTimeDifference(post.createdAt)}
-                              </div>
-                            </div>
-
-                            {post.anonymity ? (
-                              <div className="text-semilight text-xs font-light">
-                                by {post.creator.username}
-                              </div>
-                            ) : (
-                              <div
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigate(`/${post.creator.username}`);
-                                }}
-                                className="text-semilight text-xs font-light hover:underline underline-offset-2"
-                              >
-                                by {post.creator.username}
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <>
-                            <div className="flex gap-2 items-center">
-                              {post.anonymity ? (
-                                <div className="text-light text-sm lg:text-base font-normal">
-                                  {post.creator.username}
-                                </div>
-                              ) : (
-                                <div
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigate(`/${post.creator.username}`);
-                                  }}
-                                  className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
-                                >
-                                  {post.creator.username}
-                                </div>
-                              )}
-
-                              <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                                · {getTimeDifference(post.createdAt)}
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    <div>
-                      {currentUser === username && (
-                        <button
-                          onClick={() => {
-                            setPostDeleteId(post.id);
-                            setDeleteState(true);
-                          }}
-                        >
-                          <MoreVertIcon
-                            className="text-semilight"
-                            sx={{ fontSize: 20 }}
-                          />
-                        </button>
-                      )}
-                    </div>
+                  <div>
+                    {currentUser === username && (
+                      <button
+                        onClick={() => {
+                          setPostDeleteId(post.id);
+                          setDeleteState(true);
+                        }}
+                      >
+                        <MoreVertIcon
+                          className="text-semilight"
+                          sx={{ fontSize: 20 }}
+                        />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

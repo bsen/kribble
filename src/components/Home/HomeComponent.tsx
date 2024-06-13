@@ -148,121 +148,45 @@ export const HomeComponent = () => {
           postData.posts.map((post, index) => (
             <div
               key={index}
-              className="my-3 rounded-lg border border-semidark  bg-dark"
+              className="my-2 rounded-lg border border-semidark  bg-dark"
             >
-              {post.image && (
-                <img src={post.image} className="rounded-t-lg w-[100%]" />
-              )}
-
-              {post.content && (
-                <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
-                  {post.content}
-                </div>
-              )}
-
-              <div className="border-t border-semidark py-4 flex flex-col gap-4">
-                <div className="flex px-3 items-center justify-between text-base text-semilight">
-                  <div className="flex gap-2 items-center">
-                    <button
-                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                      onClick={(e) => {
-                        if (token) {
-                          e.stopPropagation();
-                          handleLike(post.id);
-                        } else {
-                          navigate("/signup");
-                        }
-                      }}
-                    >
-                      {post.isLiked ? (
+              <div className="p-3 flex items-center justify-between">
+                <div className="flex gap-2 items-center">
+                  {post.community ? (
+                    <div>
+                      {post.community && (
                         <div>
-                          <FavoriteIcon
-                            sx={{
-                              fontSize: 22,
-                            }}
-                            className="text-rosemain"
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          <FavoriteBorderOutlinedIcon
-                            sx={{
-                              fontSize: 22,
-                            }}
-                            className="text-light"
-                          />
+                          {post.community && (
+                            <img
+                              src={post.community.image || "/group.png"}
+                              className="w-7 h-7 rounded-lg"
+                              alt="Community"
+                            />
+                          )}
                         </div>
                       )}
-                      {post.likesCount}
-                    </button>
-
-                    <button
-                      onClick={() => navigate(`/post/${post.id}`)}
-                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                    >
-                      <NotesIcon sx={{ fontSize: 24 }} />
-                      {post.commentsCount}
-                    </button>
-                  </div>
-                  {post.taggedUser && (
-                    <div className="">
-                      <div
-                        onClick={() => {
-                          navigate(`/${post.taggedUser.username}`);
-                        }}
-                        className="text-indigomain bg-light w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
-                      >
+                    </div>
+                  ) : (
+                    <div>
+                      {post.anonymity ? (
                         <img
-                          className="h-4 w-4 rounded-lg"
+                          src="/mask.png"
+                          alt="Profile"
+                          className="w-7 h-7 rounded-lg"
+                        />
+                      ) : (
+                        <img
                           src={
-                            post.taggedUser.image
-                              ? post.taggedUser.image
+                            post.creator.image
+                              ? post.creator.image
                               : "/user.png"
                           }
+                          alt="Profile"
+                          className="w-7 h-7 rounded-lg"
                         />
-                        {post.taggedUser.username}
-                      </div>
+                      )}
                     </div>
                   )}
-                </div>
-                <div className="flex rounded-lg items-center gap-2 px-3">
-                  <div>
-                    {post.community ? (
-                      <div>
-                        {post.community && (
-                          <div>
-                            {post.community && (
-                              <img
-                                src={post.community.image || "/group.png"}
-                                className="w-7 h-7 rounded-lg"
-                                alt="Community"
-                              />
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div>
-                        {post.anonymity ? (
-                          <img
-                            src="/mask.png"
-                            alt="Profile"
-                            className="w-7 h-7 rounded-lg"
-                          />
-                        ) : (
-                          <img
-                            src={
-                              post.creator.image
-                                ? post.creator.image
-                                : "/user.png"
-                            }
-                            alt="Profile"
-                            className="w-7 h-7 rounded-lg"
-                          />
-                        )}
-                      </div>
-                    )}
-                  </div>
                   <div className="w-fit flex gap-2 items-center">
                     {post.community ? (
                       <div>
@@ -283,22 +207,6 @@ export const HomeComponent = () => {
                             · {getTimeDifference(post.createdAt)}
                           </div>
                         </div>
-
-                        {post.anonymity ? (
-                          <div className="text-semilight text-xs font-light">
-                            by {post.creator.username}
-                          </div>
-                        ) : (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/${post.creator.username}`);
-                            }}
-                            className="text-semilight text-xs font-light hover:underline underline-offset-2"
-                          >
-                            by {post.creator.username}
-                          </div>
-                        )}
                       </div>
                     ) : (
                       <>
@@ -325,7 +233,80 @@ export const HomeComponent = () => {
                         </div>
                       </>
                     )}
+                  </div>{" "}
+                </div>
+                {post.taggedUser && (
+                  <div className="">
+                    <div
+                      onClick={() => {
+                        navigate(`/${post.taggedUser.username}`);
+                      }}
+                      className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
+                    >
+                      <img
+                        className="h-4 w-4 rounded-lg"
+                        src={
+                          post.taggedUser.image
+                            ? post.taggedUser.image
+                            : "/user.png"
+                        }
+                      />
+                      {post.taggedUser.username}
+                    </div>
                   </div>
+                )}
+              </div>
+
+              {post.image && <img src={post.image} className=" w-[100%]" />}
+
+              {post.content && (
+                <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
+                  {post.content}
+                </div>
+              )}
+
+              <div className="p-3 flex items-center justify-between">
+                <div className="flex gap-2 items-center">
+                  <button
+                    className="bg-semidark  text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                    onClick={(e) => {
+                      if (token) {
+                        e.stopPropagation();
+                        handleLike(post.id);
+                      } else {
+                        navigate("/signup");
+                      }
+                    }}
+                  >
+                    {post.isLiked ? (
+                      <div>
+                        <FavoriteIcon
+                          sx={{
+                            fontSize: 22,
+                          }}
+                          className="text-rosemain"
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <FavoriteBorderOutlinedIcon
+                          sx={{
+                            fontSize: 22,
+                          }}
+                          className="text-light hover:text-rosemain"
+                        />
+                      </div>
+                    )}
+                    {post.likesCount}
+                  </button>
+
+                  <button
+                    onClick={() => navigate(`/post/${post.id}`)}
+                    className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                  >
+                    <NotesIcon sx={{ fontSize: 24 }} />
+                    {post.commentsCount}
+                  </button>
                 </div>
               </div>
             </div>

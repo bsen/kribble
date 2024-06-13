@@ -186,7 +186,7 @@ export const UpdateCommunityComponent = () => {
   return (
     <div className="py-12">
       <NavBar />
-      <div className="bg-dark h-fit mt-3 p-3 flex flex-col gap-4 rounded-lg">
+      <div className="bg-dark h-fit mt-2 p-3 flex flex-col gap-4 rounded-lg">
         <div className="flex justify-between items-center border-b border-semidark pb-3">
           <button
             className="w-fit flex items-start"

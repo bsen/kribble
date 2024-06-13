@@ -3,8 +3,8 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { CircularProgress } from "@mui/material";
-import ReplyIcon from "@mui/icons-material/Reply";
+import { CircularProgress, LinearProgress } from "@mui/material";
+import NotesIcon from "@mui/icons-material/Notes";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
@@ -26,9 +26,10 @@ interface Post {
     username: string;
     image: string | null;
   };
-  community: {
-    name: string;
-    image: string | null;
+  taggedUser: {
+    id: string;
+    username: string;
+    image: string;
   };
   content: string;
   image: string;
@@ -44,7 +45,7 @@ export const ProfileSection: React.FC = () => {
   const [error, setError] = useState<Error | null>(null);
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingState, setLoadingState] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false);
   const [isCreator, setIsCreator] = useState(Boolean);
   const [deleteState, setDeleteState] = useState(false);
   const [postDeleteId, setPostDeleteId] = useState("");
@@ -60,7 +61,7 @@ export const ProfileSection: React.FC = () => {
   });
   const getCommunityData = async () => {
     try {
-      setLoadingState(true);
+      setProfileLoading(true);
 
       const response = await axios.post(
         `${BACKEND_URL}/api/community/profile/data`,
@@ -73,10 +74,10 @@ export const ProfileSection: React.FC = () => {
         setIsCreator(response.data.creator);
         setIsJoined(response.data.joined);
       }
-      setLoadingState(false);
+      setProfileLoading(false);
     } catch (error: any) {
       setError(error as Error);
-      setLoadingState(false);
+      setProfileLoading(false);
     }
   };
 
@@ -207,7 +208,8 @@ export const ProfileSection: React.FC = () => {
   );
 
   const deleteCommunityPost = async () => {
-    setLoadingState(true);
+    setIsLoading(true);
+    setDeleteState(false);
     const communityId = communityData.id;
     await axios.post(`${BACKEND_URL}/api/community/post/delete`, {
       token,
@@ -216,7 +218,7 @@ export const ProfileSection: React.FC = () => {
     });
     setPostDeleteId("");
     setDeleteState(false);
-    setLoadingState(false);
+    setIsLoading(false);
     window.location.reload();
   };
 
@@ -237,14 +239,6 @@ export const ProfileSection: React.FC = () => {
       return `${minutesDifference}m ago`;
     }
   };
-
-  if (loadingState) {
-    return (
-      <div className="w-full mt-14 flex justify-center items-center">
-        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -289,120 +283,192 @@ export const ProfileSection: React.FC = () => {
         ref={scrollContainerRef}
       >
         <NavBar />
+        {profileLoading && <LinearProgress sx={{ backgroundColor: "black" }} />}
+        {!profileLoading && (
+          <div className="p-3 mt-2 rounded-lg border border-semidark bg-dark">
+            <div className="flex justify-between w-full items-center gap-2">
+              <img
+                src={communityData.image ? communityData.image : "/group.png"}
+                className="lg:w-20 lg:h-20 w-16 h-16 rounded-lg border border-semidark"
+              />
+              <div className="w-full">
+                <div className="flex justify-end items-center">
+                  {token && (
+                    <div>
+                      {isCreator && (
+                        <button
+                          onClick={navigateToEditCommunity}
+                          className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                        >
+                          Edit
+                        </button>
+                      )}
 
-        <div className="p-3 mt-3 rounded-lg border border-semidark bg-dark">
-          <div className="flex justify-between w-full items-center gap-2">
-            <img
-              src={communityData.image ? communityData.image : "/group.png"}
-              className="lg:w-20 lg:h-20 w-16 h-16 rounded-lg border border-semidark"
-            />
-            <div className="w-full">
-              <div className="flex justify-end items-center">
-                {token && (
-                  <div>
-                    {isCreator && (
-                      <button
-                        onClick={navigateToEditCommunity}
-                        className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
-                      >
-                        Edit
-                      </button>
-                    )}
-
-                    {!isCreator && (
-                      <button
-                        onClick={handleJoinCommunity}
-                        disabled={isJoiningLoading}
-                        className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
-                      >
-                        <div className="flex items-center justify-center">
-                          {isJoiningLoading ? (
-                            <CircularProgress
-                              size="15px"
-                              className="my-0.5"
-                              sx={{ color: "rgb(200 200 200);" }}
-                            />
-                          ) : (
-                            <div>
-                              {isJoined ? <div>Joined</div> : <div>Join</div>}
-                            </div>
-                          )}
-                        </div>
-                      </button>
-                    )}
+                      {!isCreator && (
+                        <button
+                          onClick={handleJoinCommunity}
+                          disabled={isJoiningLoading}
+                          className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                        >
+                          <div className="flex items-center justify-center">
+                            {isJoiningLoading ? (
+                              <CircularProgress
+                                size="15px"
+                                className="my-0.5"
+                                sx={{ color: "rgb(200 200 200);" }}
+                              />
+                            ) : (
+                              <div>
+                                {isJoined ? <div>Joined</div> : <div>Join</div>}
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      )}
+                    </div>
+                  )}
+                  {!token && (
+                    <button
+                      onClick={() => {
+                        navigate("/login");
+                      }}
+                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                    >
+                      Join
+                    </button>
+                  )}
+                </div>
+                <div className="text-lg lg:text-xl font-normal text-light">
+                  {communityData.name}
+                </div>
+                <div className="flex text-light items-center gap-2 font-light text-sm">
+                  <div className="flex gap-1 items-center">
+                    {communityData.membersCount} Members
                   </div>
-                )}
-                {!token && (
-                  <button
-                    onClick={() => {
-                      navigate("/login");
-                    }}
-                    className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
-                  >
-                    Join
-                  </button>
-                )}
-              </div>
-              <div className="text-lg lg:text-xl font-normal text-light">
-                {communityData.name}
-              </div>
-              <div className="flex text-light items-center gap-2 font-light text-sm">
-                <div className="flex gap-1 items-center">
-                  {communityData.membersCount} Members
-                </div>
-                <div className="flex gap-1 items-center">
-                  {communityData.postsCount} Posts
+                  <div className="flex gap-1 items-center">
+                    {communityData.postsCount} Posts
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="text-sm my-2 text-light font-light">
-            {communityData.description
-              ? communityData.description
-              : "description"}
-          </div>
+            <div className="text-sm my-2 text-light font-light">
+              {communityData.description
+                ? communityData.description
+                : "description"}
+            </div>
 
-          <div
-            className="w-fit flex justify-start items-center"
-            onClick={() => {
-              navigate(`/${communityData.name}/create/post`);
-            }}
-          >
             <div
-              className={
-                "flex w-fit justify-between text-sm items-center text-semilight font-light bg-indigomain px-4 py-1 rounded-lg"
-              }
+              className="w-fit flex justify-start items-center"
+              onClick={() => {
+                navigate(`/${communityData.name}/create/post`);
+              }}
             >
-              <AddIcon sx={{ fontSize: 20 }} />
-              <p>Post</p>
+              <div
+                className={
+                  "flex w-fit justify-between text-sm items-center text-semilight font-light bg-indigomain px-4 py-1 rounded-lg"
+                }
+              >
+                <AddIcon sx={{ fontSize: 20 }} />
+                <p>Post</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <div>
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (
               <div
                 key={index}
-                className="my-3  rounded-lg border border-semidark  bg-dark"
+                className="my-2 rounded-lg border border-semidark  bg-dark"
               >
-                {post.image && (
-                  <img src={post.image} className="rounded-t-lg w-[100%]" />
-                )}
+                <div className="p-3 flex items-center justify-between">
+                  <div className="flex gap-2 items-center">
+                    <div>
+                      {post.anonymity ? (
+                        <img
+                          src="/mask.png"
+                          alt="Profile"
+                          className="w-7 h-7 rounded-lg"
+                        />
+                      ) : (
+                        <img
+                          src={
+                            post.creator.image
+                              ? post.creator.image
+                              : "/user.png"
+                          }
+                          alt="Profile"
+                          className="w-7 h-7 rounded-lg"
+                        />
+                      )}
+                    </div>
+                    <div className="w-fit flex gap-2 items-center">
+                      <div className="flex gap-2 items-center">
+                        {post.anonymity ? (
+                          <div className="text-light text-sm lg:text-base font-normal">
+                            {post.creator.username}
+                          </div>
+                        ) : (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/${post.creator.username}`);
+                            }}
+                            className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                          >
+                            {post.creator.username}
+                          </div>
+                        )}
+
+                        <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                          · {getTimeDifference(post.createdAt)}
+                        </div>
+                      </div>
+                    </div>{" "}
+                  </div>
+                  {post.taggedUser && (
+                    <div className="">
+                      <div
+                        onClick={() => {
+                          navigate(`/${post.taggedUser.username}`);
+                        }}
+                        className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
+                      >
+                        <img
+                          className="h-4 w-4 rounded-lg"
+                          src={
+                            post.taggedUser.image
+                              ? post.taggedUser.image
+                              : "/user.png"
+                          }
+                        />
+                        {post.taggedUser.username}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {post.image && <img src={post.image} className=" w-[100%]" />}
 
                 {post.content && (
-                  <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
+                  <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
                     {post.content}
                   </div>
                 )}
-                <div className="border-t border-semidark py-4 flex flex-col gap-4">
-                  <div className="flex gap-2 px-3 items-center text-base text-semilight">
+
+                <div className="p-3 flex items-center justify-between">
+                  <div className="flex gap-2 items-center">
                     <button
-                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      className="bg-semidark  text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                       onClick={(e) => {
-                        e.stopPropagation();
-                        handleLike(post.id);
+                        if (token) {
+                          e.stopPropagation();
+                          handleLike(post.id);
+                        } else {
+                          navigate("/signup");
+                        }
                       }}
                     >
                       {post.isLiked ? (
@@ -420,7 +486,7 @@ export const ProfileSection: React.FC = () => {
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-light"
+                            className="text-light hover:text-rosemain"
                           />
                         </div>
                       )}
@@ -431,65 +497,24 @@ export const ProfileSection: React.FC = () => {
                       onClick={() => navigate(`/post/${post.id}`)}
                       className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
                     >
-                      <ReplyIcon sx={{ fontSize: 24 }} />
+                      <NotesIcon sx={{ fontSize: 24 }} />
                       {post.commentsCount}
                     </button>
                   </div>
-                  <div className="flex w-full justify-between rounded-lg items-center px-3">
-                    <div className="flex gap-2 items-center">
-                      <div>
-                        {post.anonymity ? (
-                          <img
-                            src="/mask.png"
-                            alt="Profile"
-                            className="w-7 h-7 rounded-lg"
-                          />
-                        ) : (
-                          <img
-                            src={
-                              post.creator.image
-                                ? post.creator.image
-                                : "/user.png"
-                            }
-                            alt="Profile"
-                            className="w-7 h-7 rounded-lg"
-                          />
-                        )}
-                      </div>
-                      {post.anonymity ? (
-                        <div className="text-light text-sm lg:text-base font-normal">
-                          {post.creator.username}
-                        </div>
-                      ) : (
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/${post.creator.username}`);
-                          }}
-                          className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
-                        >
-                          {post.creator.username}
-                        </div>
-                      )}
-                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                        · {getTimeDifference(post.createdAt)}
-                      </div>
-                    </div>
-                    <div>
-                      {isCreator && (
-                        <button
-                          onClick={() => {
-                            setPostDeleteId(post.id);
-                            setDeleteState(true);
-                          }}
-                        >
-                          <MoreVertIcon
-                            className="text-semilight"
-                            sx={{ fontSize: 20 }}
-                          />
-                        </button>
-                      )}
-                    </div>
+                  <div>
+                    {isCreator && (
+                      <button
+                        onClick={() => {
+                          setPostDeleteId(post.id);
+                          setDeleteState(true);
+                        }}
+                      >
+                        <MoreVertIcon
+                          className="text-semilight"
+                          sx={{ fontSize: 20 }}
+                        />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -509,6 +534,7 @@ export const ProfileSection: React.FC = () => {
             </div>
           )}
         </div>
+
         <BottomBar />
       </div>
     </>

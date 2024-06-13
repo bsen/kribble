@@ -15,7 +15,7 @@ interface UserData {
   username: string;
   image: string;
   bio: string;
-  website: string;
+  instagramLink: string;
   followersCount: string;
   followingCount: string;
 }
@@ -36,7 +36,7 @@ export const UserData: React.FC = () => {
     username: "",
     image: "",
     bio: "",
-    website: "",
+    instagramLink: "",
     followersCount: "",
     followingCount: "",
   });
@@ -122,7 +122,7 @@ export const UserData: React.FC = () => {
         />
       )}
 
-      <div className="mt-3 p-3 rounded-lg border border-semidark bg-dark">
+      <div className="mt-2 p-3 rounded-lg border border-semidark bg-dark">
         <div className="flex w-full justify-center items-center gap-2">
           <img
             src={userData.image ? userData.image : "/user.png"}
@@ -207,13 +207,13 @@ export const UserData: React.FC = () => {
           </div>
 
           <div className="text-sm text-indigomain font-light font-ubuntu hover:underline">
-            {userData.website && (
+            {userData.instagramLink && (
               <a
-                href={userData.website}
+                href={userData.instagramLink}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {userData.website}
+                {userData.instagramLink}
                 <OpenInNewIcon sx={{ fontSize: 15 }} />
               </a>
             )}

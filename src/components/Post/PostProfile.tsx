@@ -208,7 +208,7 @@ export const PostProfile = () => {
       <NavBar />
 
       <div>
-        <div className="my-3 rounded-lg border border-semidark  bg-dark">
+        <div className="my-2 rounded-lg border border-semidark  bg-dark">
           {postData.image && (
             <img src={postData.image} className="rounded-t-lg w-[100%]" />
           )}
@@ -327,7 +327,7 @@ export const PostProfile = () => {
           postComments.map((comment, index) => (
             <div
               key={index}
-              className="my-3 rounded-lg border border-semidark  bg-dark"
+              className="my-2 rounded-lg border border-semidark  bg-dark"
             >
               {comment.content && (
                 <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
