@@ -219,22 +219,6 @@ export const UserData: React.FC = () => {
       </div>
       <div>
         <div className="px-2 flex gap-2  rounded-lg mt-2 overflow-x-auto no-scrollbar">
-          <button
-            onClick={() => {
-              navigate("/comments");
-            }}
-            className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
-          >
-            Comments
-          </button>{" "}
-          <button
-            onClick={() => {
-              setShowCommunities(true);
-            }}
-            className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-          >
-            Communities
-          </button>
           {currentUser === username && (
             <button
               onClick={() => {
@@ -245,6 +229,25 @@ export const UserData: React.FC = () => {
               Hidden&nbsp;posts
             </button>
           )}
+          {currentUser === username && (
+            <button
+              onClick={() => {
+                navigate("/comments");
+              }}
+              className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
+            >
+              Comments
+            </button>
+          )}
+          <button
+            onClick={() => {
+              setShowCommunities(true);
+            }}
+            className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+          >
+            Communities
+          </button>
+
           {currentUser === username && (
             <button
               onClick={() => {
