@@ -3,11 +3,12 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import NotesIcon from "@mui/icons-material/Notes";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
+import AddIcon from "@mui/icons-material/Add";
 import { CircularProgress } from "@mui/material";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 interface Post {
   id: string;
   creator: {
@@ -233,7 +234,7 @@ export const HomeComponent = () => {
                         </div>
                       </>
                     )}
-                  </div>{" "}
+                  </div>
                 </div>
                 {post.taggedUser && (
                   <div className="">
@@ -325,7 +326,9 @@ export const HomeComponent = () => {
             <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
           </div>
         )}
-
+        <div className="absolute bg-indigomain bottom-20 right-4 md:hidden flex justify-center items-center w-11 h-11 rounded-full">
+          <AddIcon className="text-light" sx={{ fontSize: 28 }} />
+        </div>
         <BottomBar />
       </div>
     </>

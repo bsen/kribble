@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import AddIcon from "@mui/icons-material/Add";
 import { BACKEND_URL } from "../../../config";
 import { UserContext } from "../Context/UserContext";
@@ -49,7 +48,7 @@ export const UserData: React.FC = () => {
         { token, username }
       );
       if (!response.data.userdata) {
-        setError(new Error("Profile not found"));
+        setError(new Error("Sorry, this page isn't available."));
       } else {
         setUserData(response.data.userdata);
         setIsFollowing(response.data.following);
@@ -130,7 +129,18 @@ export const UserData: React.FC = () => {
           />
 
           <div className="w-full">
-            <div className="flex items-center justify-end">
+            <div className="flex items-center gap-2 justify-end">
+              <div>
+                {userData.instagramLink && (
+                  <a
+                    href={userData.instagramLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src="/instagram.png" className="h-6 w-6 rounded-lg" />
+                  </a>
+                )}
+              </div>
               <div>
                 {token && (
                   <div>
@@ -205,33 +215,27 @@ export const UserData: React.FC = () => {
           <div className="text-sm text-semilight font-ubuntu font-light">
             {userData.bio ? userData.bio : ""}
           </div>
-
-          <div className="text-sm text-indigomain font-light font-ubuntu hover:underline">
-            {userData.instagramLink && (
-              <a
-                href={userData.instagramLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {userData.instagramLink}
-                <OpenInNewIcon sx={{ fontSize: 15 }} />
-              </a>
-            )}
-          </div>
         </div>
       </div>
       <div>
-        {currentUser === username && (
-          <div className="px-2 flex gap-2  rounded-lg mt-2 overflow-x-auto no-scrollbar">
-            <button
-              onClick={() => {
-                navigate("/create/post");
-              }}
-              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-            >
-              <AddIcon sx={{ fontSize: 18 }} />
-              <span>Post</span>
-            </button>
+        <div className="px-2 flex gap-2  rounded-lg mt-2 overflow-x-auto no-scrollbar">
+          <button
+            onClick={() => {
+              navigate("/comments");
+            }}
+            className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
+          >
+            Comments
+          </button>{" "}
+          <button
+            onClick={() => {
+              setShowCommunities(true);
+            }}
+            className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+          >
+            Communities
+          </button>
+          {currentUser === username && (
             <button
               onClick={() => {
                 navigate("/hidden/posts");
@@ -240,22 +244,8 @@ export const UserData: React.FC = () => {
             >
               Hidden&nbsp;posts
             </button>
-            <button
-              onClick={() => {
-                navigate("/comments");
-              }}
-              className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
-            >
-              Comments
-            </button>{" "}
-            <button
-              onClick={() => {
-                setShowCommunities(true);
-              }}
-              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-            >
-              Communities
-            </button>
+          )}
+          {currentUser === username && (
             <button
               onClick={() => {
                 navigate("/create/community");
@@ -265,8 +255,8 @@ export const UserData: React.FC = () => {
               <AddIcon sx={{ fontSize: 18 }} />
               <span>Community</span>
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );

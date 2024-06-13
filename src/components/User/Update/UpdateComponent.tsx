@@ -71,10 +71,16 @@ export const UpdateProfileComponent = () => {
     try {
       if (instagramLink) {
         if (!validUrl.isUri(instagramLink)) {
-          return setPopup("Please provide a valid meeting link");
+          return setPopup("Please provide a valid Instagram link");
+        } else {
+          const instagramRegex = /^https:\/\/www\.instagram\.com\/([^/?#]+)/;
+          if (!instagramRegex.test(instagramLink)) {
+            return setPopup(
+              "Instagram link must start with https://www.instagram.com/ followed by your username"
+            );
+          }
         }
       }
-
       let imageToUpload = null;
       if (previewImage) {
         if (typeof previewImage === "string") {
@@ -184,7 +190,7 @@ export const UpdateProfileComponent = () => {
                 </div>
                 <div>
                   <div className="text-semilight text-sm font-light">
-                    Website
+                    Instagram
                   </div>
                   <input
                     type="link"

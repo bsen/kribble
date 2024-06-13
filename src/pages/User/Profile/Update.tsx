@@ -4,13 +4,13 @@ import { UpdateProfileComponent } from "../../../components/User/Update/UpdateCo
 export const UpdateProfile = () => {
   return (
     <div className="flex justify-evenly">
-      <div className="w-[16%] max-md:hidden">
+      <div className="w-[16%] max-lg:hidden">
         <SideBar />
       </div>
-      <div className="w-full lg:w-[32%]">
+      <div className="w-full lg:w-[34%]">
         <UpdateProfileComponent />
       </div>
-      <div className="w-[16%] max-md:hidden"></div>
+      <div className="w-[16%] max-lg:hidden"></div>
     </div>
   );
 };

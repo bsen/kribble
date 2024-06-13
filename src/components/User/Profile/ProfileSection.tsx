@@ -72,7 +72,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
           { token, cursor, username }
         );
         if (!response.data.posts) {
-          setError(new Error("Profile not found"));
+          setError(new Error("Sorry, this page isn't available."));
         } else {
           setPostData((prevData) => ({
             posts: truncate

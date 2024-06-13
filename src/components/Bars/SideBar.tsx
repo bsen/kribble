@@ -2,11 +2,11 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
-import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { UserContext } from "../User/Context/UserContext";
 import { useContext } from "react";
 import PersonIcon from "@mui/icons-material/Person";
+import LiveTvIcon from "@mui/icons-material/LiveTv";
 
 export const SideBar = () => {
   const location = useLocation();
@@ -18,9 +18,22 @@ export const SideBar = () => {
       <div className="flex border border-semidark mt-2 bg-dark flex-col items-center p-4 justify-between h-fit rounded-lg">
         <button
           onClick={() => {
+            navigate("/camtv");
+          }}
+          className={`w-full h-10 px-3 rounded-lg flex items-center justify-start gap-2  font-normal  ${
+            location.pathname === "/camtv"
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
+          }`}
+        >
+          <LiveTvIcon sx={{ fontSize: 25 }} />
+          <div>CamTv</div>
+        </button>
+        <button
+          onClick={() => {
             navigate("/");
           }}
-          className={`w-full h-10 px-3 rounded-lg  flex items-center justify-start gap-2   font-normal ${
+          className={`w-full h-10 px-3 mt-4 rounded-lg  flex items-center justify-start gap-2   font-normal ${
             location.pathname === "/"
               ? "text-white text-base bg-semidark"
               : "text-semilight text-sm"
@@ -41,20 +54,6 @@ export const SideBar = () => {
         >
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
           <div>Communities</div>
-        </button>
-
-        <button
-          onClick={() => {
-            navigate("/matching");
-          }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-normal  ${
-            location.pathname === "/matching"
-              ? "text-white text-base bg-semidark"
-              : "text-semilight text-sm"
-          }`}
-        >
-          <AllInclusiveIcon sx={{ fontSize: 25 }} />
-          <div>Match</div>
         </button>
 
         <button

@@ -4,7 +4,6 @@ import { Login } from "./pages/User/Auth/Login";
 import { Home } from "./pages/Home/Home";
 import { Profile } from "./pages/User/Profile/Profile";
 import { CreatePost } from "./pages/User/Create/CreatePost";
-import { Matching } from "./pages/Matching/Matching";
 import { Post } from "./pages/Post/Post";
 import { Communities } from "./pages/Community/Communities/Communities";
 import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
@@ -17,6 +16,7 @@ import { UserProvider } from "./components/User/Context/UserContext";
 import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
 import { Community } from "./pages/Community/Profile/Community";
+import { CamTv } from "./pages/CamTv/CamTv";
 
 interface ProtectedRouteProps {
   element: React.ReactNode;
@@ -36,6 +36,7 @@ function App() {
       <UserProvider>
         <BrowserRouter>
           <Routes>
+            <Route path="/policies" element={<About />} />
             <Route path="/" element={<ProtectedRoute element={<Home />} />} />
             <Route
               path="/:username"
@@ -49,7 +50,11 @@ function App() {
               path="/login"
               element={<PublicRoute element={<Login />} />}
             />
-            <Route path="/policies" element={<About />} />
+
+            <Route
+              path="/camtv"
+              element={<ProtectedRoute element={<CamTv />} />}
+            />
 
             <Route
               path="/community/:name"
@@ -86,10 +91,6 @@ function App() {
             <Route
               path="/post/:postId"
               element={<ProtectedRoute element={<Post />} />}
-            />
-            <Route
-              path="/matching"
-              element={<ProtectedRoute element={<Matching />} />}
             />
 
             <Route

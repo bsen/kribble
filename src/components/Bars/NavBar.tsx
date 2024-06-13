@@ -30,10 +30,13 @@ export const NavBar = () => {
     <>
       {showNotifications && (
         <NotificationsComponent
-          closeComponent={() => setShowNotifications(false)}
+          closeComponent={() => {
+            setShowNotifications(false);
+            setNewNotification(false);
+          }}
         />
       )}
-      <div className="top-0 rounded-b-md h-12 border-b  border-semidark bg-dark fixed w-full lg:w-[32%]">
+      <div className="top-0 rounded-b-md h-12 border-b  border-semidark bg-dark fixed w-[34%] max-lg:w-full">
         <div className="w-full px-4 h-full text-xl font-ubuntu  flex justify-between items-center text-light">
           <div
             onClick={() => {

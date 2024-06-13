@@ -71,7 +71,7 @@ export const SearchComponent = () => {
   return (
     <div>
       <NavBar />
-      <div className="top-14 fixed w-full lg:w-[32%]">
+      <div className="top-14 fixed w-full lg:w-[34%]">
         {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
 
         <div className="w-full h-14 flex justify-between items-center">

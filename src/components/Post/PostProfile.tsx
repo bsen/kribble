@@ -6,18 +6,23 @@ import { CircularProgress, LinearProgress } from "@mui/material";
 import { NavBar } from "../Bars/NavBar";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ReportIcon from "@mui/icons-material/Report";
-
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BottomBar } from "../Bars/BottomBar";
+
 interface Comment {
   id: string;
   content: string;
   createdAt: string;
   anonymity: boolean;
+  likesCount: number;
+  isLiked: boolean;
   creator: {
     username: string;
     image: string | null;
   };
 }
+
 export const PostProfile = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
@@ -40,6 +45,7 @@ export const PostProfile = () => {
         `${BACKEND_URL}/api/post/comment/all/comments`,
         { token, postId, cursor }
       );
+      console.log(response.data.data);
       if (cursor) {
         setPostComments((prevComments) => [
           ...prevComments,
@@ -131,7 +137,6 @@ export const PostProfile = () => {
       console.log(error);
     }
   }
-
   async function createComment() {
     try {
       if (!comment) {
@@ -167,6 +172,41 @@ export const PostProfile = () => {
   useEffect(() => {
     getPost();
   }, []);
+
+  const handleLikeComment = async (commentId: string) => {
+    try {
+      setPostComments((prevComments) =>
+        prevComments.map((comment: Comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                isLiked: !comment.isLiked,
+                likesCount: comment.isLiked
+                  ? comment.likesCount - 1
+                  : comment.likesCount + 1,
+              }
+            : comment
+        )
+      );
+      const details = { commentId, token };
+      await axios.post(`${BACKEND_URL}/api/post/comment/like/unlike`, details);
+    } catch (error) {
+      console.log(error);
+      setPostComments((prevComments) =>
+        prevComments.map((comment: Comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                isLiked: !comment.isLiked,
+                likesCount: comment.isLiked
+                  ? comment.likesCount + 1
+                  : comment.likesCount - 1,
+              }
+            : comment
+        )
+      );
+    }
+  };
 
   if (loadingState) {
     return <LinearProgress sx={{ backgroundColor: "black" }} />;
@@ -299,13 +339,7 @@ export const PostProfile = () => {
                   }`}
                 />
               </div>
-              {anonymity ? (
-                <div className="text-rosemain">
-                  Your identity will be hidden
-                </div>
-              ) : (
-                <div className="text-semilight">Hide your identity</div>
-              )}
+              {anonymity ? <div className="text-rosemain">Anonymous </div> : ""}
             </div>
             <div>
               <button
@@ -329,69 +363,97 @@ export const PostProfile = () => {
               key={index}
               className="my-2 rounded-lg border border-semidark  bg-dark"
             >
+              <div className="p-3 flex items-center justify-between">
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex gap-2 items-center">
+                    <div>
+                      {comment.anonymity ? (
+                        <img
+                          src="/mask.png"
+                          alt="Profile"
+                          className="w-7 h-7 rounded-lg"
+                        />
+                      ) : (
+                        <img
+                          src={
+                            comment.creator.image
+                              ? comment.creator.image
+                              : "/user.png"
+                          }
+                          alt="Profile"
+                          className="w-7 h-7 rounded-lg"
+                        />
+                      )}
+                    </div>
+                    <div className="text-light text-sm lg:text-base font-normal">
+                      {comment.anonymity ? (
+                        <div className="text-light text-sm lg:text-base font-normal">
+                          {comment.creator.username}
+                        </div>
+                      ) : (
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/${comment.creator.username}`);
+                          }}
+                          className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                        >
+                          {comment.creator.username}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                      · {getTimeDifference(comment.createdAt)}
+                    </div>
+                  </div>
+                </div>
+              </div>
               {comment.content && (
-                <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
+                <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
                   {comment.content}
                 </div>
               )}
-              <div className="border-t border-semidark py-4 flex flex-col gap-4">
-                <div className="flex w-full justify-between rounded-lg items-center px-3">
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex gap-2 items-center">
-                      <div>
-                        {comment.anonymity ? (
-                          <img
-                            src="/mask.png"
-                            alt="Profile"
-                            className="w-7 h-7 rounded-lg"
-                          />
-                        ) : (
-                          <img
-                            src={
-                              comment.creator.image
-                                ? comment.creator.image
-                                : "/user.png"
-                            }
-                            alt="Profile"
-                            className="w-7 h-7 rounded-lg"
-                          />
-                        )}
-                      </div>
-                      <div className="text-light text-sm lg:text-base font-normal">
-                        {comment.anonymity ? (
-                          <div className="text-light text-sm lg:text-base font-normal">
-                            {comment.creator.username}
-                          </div>
-                        ) : (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/${comment.creator.username}`);
-                            }}
-                            className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
-                          >
-                            {comment.creator.username}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                        · {getTimeDifference(comment.createdAt)}
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setReportingContentId(comment.id);
-                        setReportingState(true);
+              <div className="p-3 flex items-center justify-between">
+                <button
+                  className="bg-semidark text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (token) {
+                      handleLikeComment(comment.id);
+                    } else {
+                      navigate("/signup");
+                    }
+                  }}
+                >
+                  {comment.isLiked ? (
+                    <FavoriteIcon
+                      sx={{
+                        fontSize: 22,
                       }}
-                    >
-                      <ReportIcon
-                        sx={{ fontSize: 22 }}
-                        className="text-semilight"
-                      />
-                    </button>
-                  </div>
-                </div>
+                      className="text-rosemain"
+                    />
+                  ) : (
+                    <FavoriteBorderOutlinedIcon
+                      sx={{
+                        fontSize: 22,
+                      }}
+                      className="text-light hover:text-rosemain"
+                    />
+                  )}
+                  {comment.likesCount}
+                </button>
+                <button
+                  onClick={() => {
+                    setReportingContentId(comment.id);
+                    setReportingState(true);
+                  }}
+                >
+                  <ReportIcon
+                    sx={{ fontSize: 22 }}
+                    className="text-semilight"
+                  />
+                </button>
               </div>
             </div>
           ))
