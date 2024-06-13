@@ -41,33 +41,29 @@ export const Post = () => {
     if (!file) {
       return;
     }
-
     const maxFileSize = 10 * 1024 * 1024;
     if (file.size > maxFileSize) {
       setPopup("File size is more than 10 MB");
       return;
     }
-
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
     if (!allowedTypes.includes(file.type)) {
       setPopup("Only PNG, JPG, and JPEG files are allowed");
       return;
     }
-
     try {
       const compressedFile = await imageCompression(file, {
         maxSizeMB: 2,
         maxWidthOrHeight: 1440,
         useWebWorker: true,
       });
-
       const reader = new FileReader();
       reader.onloadend = () => {
         const img = new Image();
         img.src = reader.result as string;
         img.onload = () => {
           const canvas = document.createElement("canvas");
-          const size = Math.min(img.width, img.height);
+          const size = Math.max(img.width, img.height);
           canvas.width = size;
           canvas.height = size;
           const ctx = canvas.getContext("2d");
@@ -76,20 +72,20 @@ export const Post = () => {
               ctx.fillStyle = "black";
               ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-            const xOffset = (img.width - size) / 2;
-            const yOffset = (img.height - size) / 2;
-            ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, size, size);
+            const x = (canvas.width - img.width) / 2;
+            const y = (canvas.height - img.height) / 2;
+            ctx.drawImage(img, x, y);
             const compressedImageData = canvas.toDataURL("image/jpeg");
             setPreviewImage(compressedImageData);
           }
         };
       };
-
       reader.readAsDataURL(compressedFile);
     } catch (error) {
       console.error("Error compressing image:", error);
     }
   };
+
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
