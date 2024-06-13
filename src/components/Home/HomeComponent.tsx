@@ -326,7 +326,7 @@ export const HomeComponent = () => {
             <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
           </div>
         )}
-        <div className="absolute bg-indigomain bottom-20 right-4 md:hidden flex justify-center items-center w-11 h-11 rounded-full">
+        <div className="absolute bg-indigomain bottom-20 right-4 lg:hidden flex justify-center items-center w-11 h-11 rounded-full">
           <AddIcon className="text-light" sx={{ fontSize: 28 }} />
         </div>
         <BottomBar />
