@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { useNavigate } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
@@ -13,14 +12,19 @@ interface Comment {
   content: string;
   createdAt: string;
   creatorId: string;
-  postId: string;
+  post: {
+    id: string;
+    content: string;
+    image: string;
+  };
 }
-
 export const CommentsComponent = () => {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [isLoading, setIsLoading] = useState(false);
   const [deleteState, setDeleteState] = useState(false);
-  const [deleteCommentId, setDeleteCommentId] = useState("");
-  const [deleteCommentPostId, setDeleteCommentPostId] = useState("");
+  const [commentId, setCommentId] = useState("");
+  const [postId, setPostId] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [commentsData, setCommentsData] = useState<{
     comments: Comment[];
@@ -72,35 +76,26 @@ export const CommentsComponent = () => {
   };
   const deleteComment = async () => {
     try {
-      setIsLoadingComments(true);
+      setIsLoading(true);
       await axios.post(`${BACKEND_URL}/api/user/comment/delete`, {
         token,
-        deleteCommentId,
-        deleteCommentPostId,
+        commentId,
+        postId,
       });
+      setIsLoading(false);
+      setDeleteState(false);
       window.location.reload();
-      setIsLoadingComments(false);
     } catch (error) {
       console.log(error);
     }
   };
-  const getTimeDifference = (createdAt: string) => {
-    const currentDate = new Date();
-    const postDate = new Date(createdAt);
-    const timeDifference = currentDate.getTime() - postDate.getTime();
-    const hoursDifference = Math.floor(timeDifference / (1000 * 3600));
-    const daysDifference = Math.floor(hoursDifference / 24);
-    if (daysDifference >= 30) {
-      return postDate.toDateString();
-    } else if (daysDifference >= 1) {
-      return `${daysDifference}d ago`;
-    } else if (hoursDifference >= 1) {
-      return `${hoursDifference}h ago`;
-    } else {
-      const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-      return `${minutesDifference}m ago`;
-    }
-  };
+  if (isLoading) {
+    return (
+      <div className="w-full my-5 flex justify-center items-center">
+        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+      </div>
+    );
+  }
   if (deleteState) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -117,8 +112,8 @@ export const CommentsComponent = () => {
             <button
               onClick={() => {
                 setDeleteState(false);
-                setDeleteCommentId("");
-                setDeleteCommentPostId("");
+                setCommentId("");
+                setPostId("");
               }}
               className="text-dark bg-semilight font-normal px-4 py-1 border border-neutral-300 rounded-lg"
             >
@@ -141,35 +136,35 @@ export const CommentsComponent = () => {
           commentsData.comments.map((comment, index) => (
             <div
               key={index}
-              className="border bg-dark my-2 rounded-lg border-semidark p-4 hover:bg-dark"
+              className="my-2 rounded-lg border border-semidark  bg-dark"
             >
-              <div className="flex flex-col gap-2 ">
-                <div className="text-light w-full flex items-center justify-between gap-2 text-sm font-light">
-                  <div className="flex gap-2 items-center">
-                    <Link to={`/post/${comment.postId}`}>
-                      <OpenInNewIcon
-                        sx={{ fontSize: 18 }}
-                        className="text-indigomain"
-                      />
-                    </Link>
-                    <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                      · {getTimeDifference(comment.createdAt)}
-                    </div>
+              <div
+                onClick={() => {
+                  navigate(`/post/${comment.post.id}`);
+                }}
+              >
+                {comment.post.image && (
+                  <img src={comment.post.image} className=" w-[100%]" />
+                )}
+
+                {comment.post.content && (
+                  <div className="text-light px-3 my-2 font-ubuntu font-light text-sm">
+                    {comment.post.content}
                   </div>
-                  <div className="text-semilight">
-                    <button
-                      onClick={() => {
-                        setDeleteCommentId(comment.id);
-                        setDeleteCommentPostId(comment.postId);
-                        setDeleteState(true);
-                      }}
-                    >
-                      <MoreVertIcon sx={{ fontSize: 18 }} />
-                    </button>
-                  </div>
-                </div>
-                <div className="text-light  text-sm lg:text-base font-light">
-                  {comment.content}
+                )}
+              </div>
+
+              <div className="flex justify-between items-start text-light rounded-b-lg bg-semidark p-3 font-ubuntu font-light text-sm">
+                <div> {comment.content}</div>
+
+                <div
+                  onClick={() => {
+                    setCommentId(comment.id);
+                    setPostId(comment.post.id);
+                    setDeleteState(true);
+                  }}
+                >
+                  <MoreVertIcon sx={{ fontSize: 20 }} />
                 </div>
               </div>
             </div>
