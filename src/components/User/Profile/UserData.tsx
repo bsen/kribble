@@ -239,14 +239,17 @@ export const UserData: React.FC = () => {
               Comments
             </button>
           )}
-          <button
-            onClick={() => {
-              setShowCommunities(true);
-            }}
-            className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-          >
-            Communities
-          </button>
+
+          {currentUser === username && (
+            <button
+              onClick={() => {
+                setShowCommunities(true);
+              }}
+              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+            >
+              Communities
+            </button>
+          )}
 
           {currentUser === username && (
             <button
