@@ -6,6 +6,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { NavBar } from "../../Bars/NavBar";
 import { CircularProgress } from "@mui/material";
 import { BottomBar } from "../../Bars/BottomBar";
+import { useNavigate } from "react-router-dom";
 interface DebouncedFunction<T extends (...args: any[]) => void> {
   (...args: Parameters<T>): void;
   cancel: () => void;
@@ -36,6 +37,7 @@ function debounce<T extends (...args: any[]) => void>(
 }
 
 export const Community = () => {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [popup, setPopup] = useState("");
@@ -98,8 +100,8 @@ export const Community = () => {
       );
       setIsLoading(false);
       setPopup(response.data.message);
-      if (response.data.status == 100) {
-        history.go(-1);
+      if (response.data.status == 200) {
+        navigate("/");
       }
     } catch (error) {
       console.log(error);

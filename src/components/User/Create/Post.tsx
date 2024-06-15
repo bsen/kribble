@@ -37,6 +37,7 @@ export const Post = () => {
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setPopup("");
     const file = event.target.files ? event.target.files[0] : null;
     if (!file) {
       return;
@@ -87,6 +88,7 @@ export const Post = () => {
   };
 
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPopup("");
     setContent(e.target.value);
   };
 
