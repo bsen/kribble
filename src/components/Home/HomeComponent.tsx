@@ -7,8 +7,8 @@ import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
 import AddIcon from "@mui/icons-material/Add";
 import { CircularProgress } from "@mui/material";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
+import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
 interface Post {
   id: string;
   creator: {
@@ -25,7 +25,8 @@ interface Post {
     image: string;
   };
   content: string;
-  image: string;
+  image: string | null;
+  video: string | null;
   createdAt: string;
   commentsCount: string;
   likesCount: string;
@@ -258,7 +259,14 @@ export const HomeComponent = () => {
                 )}
               </div>
 
-              {post.image && <img src={post.image} className=" w-[100%]" />}
+              {post.video ? (
+                <video controls className="w-[100%]">
+                  <source src={post.video} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : post.image ? (
+                <img src={post.image} className="w-[100%]" />
+              ) : null}
 
               {post.content && (
                 <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
@@ -281,20 +289,20 @@ export const HomeComponent = () => {
                   >
                     {post.isLiked ? (
                       <div>
-                        <FavoriteIcon
+                        <AddReactionIcon
                           sx={{
                             fontSize: 22,
                           }}
-                          className="text-rosemain"
+                          className="text-yellow-400"
                         />
                       </div>
                     ) : (
                       <div>
-                        <FavoriteBorderOutlinedIcon
+                        <AddReactionOutlinedIcon
                           sx={{
                             fontSize: 22,
                           }}
-                          className="text-light hover:text-rosemain"
+                          className="text-light hover:text-yellow-400"
                         />
                       </div>
                     )}

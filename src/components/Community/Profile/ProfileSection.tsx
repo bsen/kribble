@@ -2,14 +2,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import NotesIcon from "@mui/icons-material/Notes";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
 import AddIcon from "@mui/icons-material/Add";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
+import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
 
 interface CommunityData {
   id: string;
@@ -33,6 +33,7 @@ interface Post {
   };
   content: string;
   image: string;
+  video: string | null;
   createdAt: string;
   commentsCount: string;
   likesCount: string;
@@ -426,7 +427,7 @@ export const ProfileSection: React.FC = () => {
                           · {getTimeDifference(post.createdAt)}
                         </div>
                       </div>
-                    </div>{" "}
+                    </div>
                   </div>
                   {post.taggedUser && (
                     <div className="">
@@ -450,7 +451,14 @@ export const ProfileSection: React.FC = () => {
                   )}
                 </div>
 
-                {post.image && <img src={post.image} className=" w-[100%]" />}
+                {post.video ? (
+                  <video controls className="w-[100%]">
+                    <source src={post.video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : post.image ? (
+                  <img src={post.image} className="w-[100%]" />
+                ) : null}
 
                 {post.content && (
                   <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
@@ -473,20 +481,20 @@ export const ProfileSection: React.FC = () => {
                     >
                       {post.isLiked ? (
                         <div>
-                          <FavoriteIcon
+                          <AddReactionIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-rosemain"
+                            className="text-yellow-400"
                           />
                         </div>
                       ) : (
                         <div>
-                          <FavoriteBorderOutlinedIcon
+                          <AddReactionOutlinedIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-light hover:text-rosemain"
+                            className="text-light hover:text-yellow-400"
                           />
                         </div>
                       )}
