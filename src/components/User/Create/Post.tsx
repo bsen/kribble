@@ -117,8 +117,8 @@ export const Post = () => {
 
       video.onloadedmetadata = () => {
         window.URL.revokeObjectURL(video.src);
-        if (video.duration > 1) {
-          setPopup("Video length exceeds 1 minutes");
+        if (video.duration > 90) {
+          setPopup("Video length should be under 90 seconds");
           return;
         }
 
