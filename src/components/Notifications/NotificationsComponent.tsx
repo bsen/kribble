@@ -13,7 +13,6 @@ interface NotificationData {
   triggeringUser: {
     id: string;
     username: string;
-    image: string;
   };
   post: {
     id: string;
@@ -134,26 +133,19 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
                 onClick={() => handleNotificationClick(notification)}
               >
                 <div>
-                  <div
-                    className="flex gap-2 items-center cursor-pointer w-fit"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleUserClick(notification.triggeringUser.username);
-                    }}
-                  >
-                    <img
-                      className="h-7 w-7 rounded-lg bg-dark"
-                      src={
-                        notification.triggeringUser.image
-                          ? notification.triggeringUser.image
-                          : "/user.png"
-                      }
-                    />
-                    <div className="text-light text-sm font-medium">
-                      {notification.triggeringUser.username}
+                  {notification.triggeringUser && (
+                    <div
+                      className="flex gap-2 items-center cursor-pointer w-fit"
+                      onClick={() => {
+                        handleUserClick(notification.triggeringUser.username);
+                      }}
+                    >
+                      <div className="text-light text-sm font-medium">
+                        {notification.triggeringUser.username}
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-sm text-semilight mt-1">
+                  )}
+                  <div className="text-sm text-semilight ">
                     {notification.message}
                   </div>
                 </div>

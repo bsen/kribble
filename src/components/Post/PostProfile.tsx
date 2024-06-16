@@ -98,6 +98,7 @@ export const PostProfile = () => {
   };
   interface PostData {
     image: string;
+    video: string;
     content: string;
     creatorId: string;
     createdAt: string;
@@ -114,6 +115,7 @@ export const PostProfile = () => {
   const [loadingState, setLoadingState] = useState<boolean>(false);
   const [postData, setPostData] = useState<PostData>({
     image: "",
+    video: "",
     content: "",
     creatorId: "",
     createdAt: "",
@@ -249,10 +251,14 @@ export const PostProfile = () => {
 
       <div>
         <div className="my-2 rounded-lg border border-semidark  bg-dark">
-          {postData.image && (
-            <img src={postData.image} className="rounded-t-lg w-[100%]" />
-          )}
-
+          {postData.video ? (
+            <video controls className="w-[100%]">
+              <source src={postData.video} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          ) : postData.image ? (
+            <img src={postData.image} className="w-[100%]" />
+          ) : null}
           {postData.content && (
             <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
               {postData.content}
