@@ -43,9 +43,9 @@ export const Post = () => {
       return;
     }
 
-    const maxFileSize = 25 * 1024 * 1024;
+    const maxFileSize = 100 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      setPopup("Please ensure your video is under 25 MB before uploading.");
+      setPopup("Please ensure your video is under 100 MB before uploading.");
       return;
     }
     const allowedImageTypes = [
@@ -117,8 +117,8 @@ export const Post = () => {
 
       video.onloadedmetadata = () => {
         window.URL.revokeObjectURL(video.src);
-        if (video.duration > 180) {
-          setPopup("Video length exceeds 3 minutes");
+        if (video.duration > 1) {
+          setPopup("Video length exceeds 1 minutes");
           return;
         }
 

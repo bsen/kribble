@@ -17,7 +17,6 @@ import { UserData } from "./UserData";
 import { UserContext } from "../Context/UserContext";
 import AddReactionIcon from "@mui/icons-material/AddReaction";
 import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
-
 interface Post {
   id: string;
   creator: {
