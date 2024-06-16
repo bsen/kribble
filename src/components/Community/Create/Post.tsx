@@ -43,9 +43,9 @@ export const Post = () => {
       return;
     }
 
-    const maxFileSize = 100 * 1024 * 1024;
+    const maxFileSize = 15 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      setPopup("Please ensure your video is under 100 MB before uploading.");
+      setPopup("Please ensure your video is under 15 MB.");
       return;
     }
     const allowedImageTypes = [
