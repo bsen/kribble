@@ -17,18 +17,6 @@ export const BottomBar = () => {
       <div className="bottom-0 lg:hidden w-full  h-12 flex items-center justify-evenly border-t border-semidark  rounded-t-md  bg-dark fixed">
         <button
           onClick={() => {
-            navigate("/camtv");
-          }}
-          className={`py-1 px-2 rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
-            location.pathname === "/camtv"
-              ? "text-light bg-semidark"
-              : "text-semilight"
-          }`}
-        >
-          <LiveTvIcon sx={{ fontSize: 25 }} />
-        </button>
-        <button
-          onClick={() => {
             navigate("/");
           }}
           className={`py-1 px-2 rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
@@ -51,7 +39,18 @@ export const BottomBar = () => {
         >
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
         </button>
-
+        <button
+          onClick={() => {
+            navigate("/camtv");
+          }}
+          className={`py-1 px-2 rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
+            location.pathname === "/camtv"
+              ? "text-light bg-semidark"
+              : "text-semilight"
+          }`}
+        >
+          <LiveTvIcon sx={{ fontSize: 25 }} />
+        </button>
         <button
           onClick={() => {
             navigate("/search");

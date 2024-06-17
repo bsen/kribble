@@ -6,9 +6,9 @@ import { CircularProgress, LinearProgress } from "@mui/material";
 import { NavBar } from "../Bars/NavBar";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ReportIcon from "@mui/icons-material/Report";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BottomBar } from "../Bars/BottomBar";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
+import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
 
 interface Comment {
   id: string;
@@ -433,19 +433,23 @@ export const PostProfile = () => {
                   }}
                 >
                   {comment.isLiked ? (
-                    <FavoriteIcon
-                      sx={{
-                        fontSize: 22,
-                      }}
-                      className="text-rosemain"
-                    />
+                    <div>
+                      <AddReactionIcon
+                        sx={{
+                          fontSize: 22,
+                        }}
+                        className="text-yellow-400"
+                      />
+                    </div>
                   ) : (
-                    <FavoriteBorderOutlinedIcon
-                      sx={{
-                        fontSize: 22,
-                      }}
-                      className="text-light hover:text-rosemain"
-                    />
+                    <div>
+                      <AddReactionOutlinedIcon
+                        sx={{
+                          fontSize: 22,
+                        }}
+                        className="text-light hover:text-yellow-400"
+                      />
+                    </div>
                   )}
                   {comment.likesCount}
                 </button>

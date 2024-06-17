@@ -28,7 +28,6 @@ export const Post = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [anonymity, setAnonymity] = useState(false);
   const [popup, setPopup] = useState("");
-  const [previewVideo, setPreviewVideo] = useState<string | null>(null);
   const [search, setSearch] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
@@ -42,96 +41,49 @@ export const Post = () => {
     if (!file) {
       return;
     }
-
-    const maxFileSize = 15 * 1024 * 1024;
-    if (file.size > maxFileSize) {
-      setPopup("Please ensure your video is under 15 MB.");
-      return;
-    }
-    const allowedImageTypes = [
-      "image/png",
-      "image/jpeg",
-      "image/jpg",
-      "image/gif",
-    ];
-    const allowedVideoTypes = ["video/mp4"];
+    const allowedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
 
     if (allowedImageTypes.includes(file.type)) {
       await handleImageUpload(file);
-    } else if (allowedVideoTypes.includes(file.type)) {
-      await handleVideoUpload(file);
     } else {
-      setPopup("Only PNG, JPG, JPEG, GIF, and MP4 files are allowed");
+      setPopup("Only PNG, JPG, JPEG files are allowed");
     }
   };
 
   const handleImageUpload = async (file: File) => {
     try {
-      if (file.type === "image/gif") {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setPreviewImage(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        const compressedFile = await imageCompression(file, {
-          maxSizeMB: 2,
-          maxWidthOrHeight: 1440,
-          useWebWorker: true,
-        });
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const img = new Image();
-          img.src = reader.result as string;
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const size = Math.max(img.width, img.height);
-            canvas.width = size;
-            canvas.height = size;
-            const ctx = canvas.getContext("2d");
-            if (ctx) {
-              if (file.type === "image/png") {
-                ctx.fillStyle = "black";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-              }
-              const x = (canvas.width - img.width) / 2;
-              const y = (canvas.height - img.height) / 2;
-              ctx.drawImage(img, x, y);
-              const compressedImageData = canvas.toDataURL("image/jpeg");
-              setPreviewImage(compressedImageData);
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1440,
+        useWebWorker: true,
+      });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const img = new Image();
+        img.src = reader.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const size = Math.max(img.width, img.height);
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            if (file.type === "image/png") {
+              ctx.fillStyle = "black";
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-          };
+            const x = (canvas.width - img.width) / 2;
+            const y = (canvas.height - img.height) / 2;
+            ctx.drawImage(img, x, y);
+            const compressedImageData = canvas.toDataURL("image/jpeg");
+            setPreviewImage(compressedImageData);
+          }
         };
-        reader.readAsDataURL(compressedFile);
-      }
+      };
+      reader.readAsDataURL(compressedFile);
     } catch (error) {
       console.error("Error processing image:", error);
       setPopup("Error processing image");
-    }
-  };
-
-  const handleVideoUpload = async (file: File) => {
-    try {
-      const video = document.createElement("video");
-      video.preload = "metadata";
-
-      video.onloadedmetadata = () => {
-        window.URL.revokeObjectURL(video.src);
-        if (video.duration > 60) {
-          setPopup("Video length should be under 60 seconds");
-          return;
-        }
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setPreviewVideo(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      };
-
-      video.src = URL.createObjectURL(file);
-    } catch (error) {
-      console.error("Error handling video upload:", error);
-      setPopup("Error uploading video");
     }
   };
 
@@ -148,9 +100,11 @@ export const Post = () => {
 
   const createUserPost = async () => {
     setPopup("");
+    if (!previewImage) {
+      return setPopup("Upload an image");
+    }
     if (!content) {
-      setPopup("Write something");
-      return;
+      return setPopup("Write something");
     }
     try {
       setIsLoading(true);
@@ -172,10 +126,6 @@ export const Post = () => {
         const blob = new Blob([uint8Array], { type: fileType });
         const file = new File([blob], fileName, { type: fileType });
         formData.append("image", file);
-      } else if (previewVideo) {
-        const response = await fetch(previewVideo);
-        const blob = await response.blob();
-        formData.append("file", blob, "video.mp4");
       }
 
       const config = {
@@ -192,7 +142,9 @@ export const Post = () => {
 
       setPopup(response.data.message);
       setIsLoading(false);
-      navigate("/");
+      if (response.data.status === 200) {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Error creating post:", error);
       setPopup("Network error");
@@ -323,7 +275,7 @@ export const Post = () => {
             <button onClick={handleClose}>
               <ArrowBackIcon
                 className="p-1 bg-indigomain text-semilight rounded-lg"
-                sx={{ fontSize: 35 }}
+                sx={{ fontSize: 30 }}
               />
             </button>
             <div className="text-xl flex justify-center items-center gap-5 font-light text-semilight text-center">
@@ -332,55 +284,32 @@ export const Post = () => {
           </div>
           <div className="w-full h-full rounded-lg flex flex-col justify-center">
             {previewImage ? (
-              <div className="flex items-end justify-center p-4">
-                <div className="flex w-full flex-col items-center">
-                  <img
-                    src={previewImage}
-                    alt="Preview"
-                    className="w-full rounded-lg border border-semidark"
+              <div className="flex w-full flex-col items-center">
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="w-full rounded-lg border border-semidark mt-4"
+                />
+                <button
+                  onClick={() => {
+                    setPreviewImage("");
+                  }}
+                  className="text-black my-4 rounded-lg"
+                >
+                  <DeleteIcon
+                    sx={{ fontSize: 20 }}
+                    className="text-semilight"
                   />
-                  <button
-                    onClick={() => {
-                      setPreviewImage("");
-                    }}
-                    className="text-black mt-2 rounded-lg"
-                  >
-                    <DeleteIcon
-                      sx={{ fontSize: 20 }}
-                      className="text-semilight"
-                    />
-                  </button>
-                </div>
-              </div>
-            ) : previewVideo ? (
-              <div className="w-[100%] flex items-end justify-center p-4">
-                <div className="flex flex-col items-center">
-                  <video
-                    src={previewVideo}
-                    controls
-                    className="max-w:w-[80%] lg:max-w-[50%] rounded-lg border border-semidark"
-                  />
-                  <button
-                    onClick={() => {
-                      setPreviewVideo(null);
-                    }}
-                    className="text-black mt-2 rounded-lg"
-                  >
-                    <DeleteIcon
-                      sx={{ fontSize: 20 }}
-                      className="text-semilight"
-                    />
-                  </button>
-                </div>
+                </button>
               </div>
             ) : (
               <div>
                 <label
                   htmlFor="file-upload"
-                  className="cursor-pointer text-center my-2 h-20 rounded-lg bg-semidark flex items-center justify-center"
+                  className="cursor-pointer text-center mt-4 h-40 rounded-lg bg-semidark flex items-center justify-center"
                 >
                   <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
-                    Add Image or Video
+                    Add Image
                     <AddPhotoAlternateIcon
                       sx={{ fontSize: 30 }}
                       className="text-light"
@@ -397,72 +326,78 @@ export const Post = () => {
               </div>
             )}
           </div>
-
-          <textarea
-            value={content}
-            onChange={handlePostChange}
-            rows={3}
-            className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
-            placeholder="Write your thoughts..."
-            wrap="soft"
-            maxLength={500}
-          />
-
-          <div className="flex w-full my-2 justify-between items-center">
-            <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
-              <div
-                onClick={() => {
-                  setAnonymity((prevState) => !prevState);
-                }}
-              >
-                <VisibilityOffIcon
-                  className={`${
-                    anonymity ? "text-rosemain" : "text-semilight"
-                  }`}
-                />
-              </div>
-              {anonymity ? <div className="text-rosemain">Anonymous</div> : ""}
-            </div>
-
-            <div className="flex items-center gap-4 text-light">
-              {taggedUserName && (
-                <div className="text-sm bg-semidark px-2 py-0.5 rounded-lg flex items-center gap-1">
+          {previewImage && (
+            <div>
+              <textarea
+                value={content}
+                onChange={handlePostChange}
+                rows={3}
+                className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
+                placeholder="Write your thoughts..."
+                wrap="soft"
+                maxLength={500}
+              />
+              <div className="flex w-full my-2 justify-between items-center">
+                <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
                   <div
                     onClick={() => {
-                      setTaggedUserName("");
+                      setAnonymity((prevState) => !prevState);
                     }}
                   >
-                    <CloseIcon sx={{ fontSize: 20 }} />
-                  </div>{" "}
-                  {taggedUserName}
+                    <VisibilityOffIcon
+                      className={`${
+                        anonymity ? "text-rosemain" : "text-semilight"
+                      }`}
+                    />
+                  </div>
+                  {anonymity ? (
+                    <div className="text-rosemain">Anonymous</div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+
+                <div className="flex items-center gap-4 text-light">
+                  {taggedUserName && (
+                    <div className="text-sm bg-semidark px-2 py-0.5 rounded-lg flex items-center gap-1">
+                      <div
+                        onClick={() => {
+                          setTaggedUserName("");
+                        }}
+                      >
+                        <CloseIcon sx={{ fontSize: 20 }} />
+                      </div>{" "}
+                      {taggedUserName}
+                    </div>
+                  )}
+                  {!taggedUserName && (
+                    <button
+                      onClick={() => {
+                        setTaggedUserName("");
+                        setIsSearchState(true);
+                      }}
+                      className="text-sm bg-semidark px-2 py-0.5 rounded-lg flex items-center gap-1"
+                    >
+                      <AddIcon sx={{ fontSize: 20 }} /> Tag
+                    </button>
+                  )}
+                  <button
+                    onClick={createUserPost}
+                    className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>{" "}
+              {popup && (
+                <div className="text-rosemain font-light text-center text-xs mt-2">
+                  {popup}
                 </div>
               )}
-              {!taggedUserName && (
-                <button
-                  onClick={() => {
-                    setTaggedUserName("");
-                    setIsSearchState(true);
-                  }}
-                  className="text-sm bg-semidark px-2 py-0.5 rounded-lg flex items-center gap-1"
-                >
-                  <AddIcon sx={{ fontSize: 20 }} /> Tag
-                </button>
-              )}
-              <button
-                onClick={createUserPost}
-                className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
-              >
-                Post
-              </button>
             </div>
-          </div>
+          )}
         </div>
 
-        {popup && (
-          <div className="text-red-400 font-light text-center text-xs my-2">
-            {popup}
-          </div>
-        )}
         <BottomBar />
       </div>
     </>

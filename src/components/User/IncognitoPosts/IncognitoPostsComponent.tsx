@@ -3,12 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotesIcon from "@mui/icons-material/Notes";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
+import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
 interface Post {
   id: string;
   creator: {
@@ -370,20 +370,20 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                     >
                       {post.isLiked ? (
                         <div>
-                          <FavoriteIcon
+                          <AddReactionIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-rosemain"
+                            className="text-yellow-400"
                           />
                         </div>
                       ) : (
                         <div>
-                          <FavoriteBorderOutlinedIcon
+                          <AddReactionOutlinedIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-light hover:text-rosemain"
+                            className="text-light hover:text-yellow-400"
                           />
                         </div>
                       )}

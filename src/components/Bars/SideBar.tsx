@@ -18,22 +18,9 @@ export const SideBar = () => {
       <div className="flex border border-semidark mt-2 bg-dark flex-col items-center p-4 justify-between h-fit rounded-lg">
         <button
           onClick={() => {
-            navigate("/camtv");
-          }}
-          className={`w-full h-10 px-3 rounded-lg flex items-center justify-start gap-2  font-normal  ${
-            location.pathname === "/camtv"
-              ? "text-white text-base bg-semidark"
-              : "text-semilight text-sm"
-          }`}
-        >
-          <LiveTvIcon sx={{ fontSize: 25 }} />
-          <div>CamTv</div>
-        </button>
-        <button
-          onClick={() => {
             navigate("/");
           }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg  flex items-center justify-start gap-2   font-normal ${
+          className={`w-full h-10 px-3 rounded-lg  flex items-center justify-start gap-2   font-normal ${
             location.pathname === "/"
               ? "text-white text-base bg-semidark"
               : "text-semilight text-sm"
@@ -55,7 +42,32 @@ export const SideBar = () => {
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
           <div>Communities</div>
         </button>
-
+        <button
+          onClick={() => {
+            navigate("/camtv");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-normal  ${
+            location.pathname === "/camtv"
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
+          }`}
+        >
+          <LiveTvIcon sx={{ fontSize: 25 }} />
+          <div>CamTv</div>
+        </button>{" "}
+        <button
+          onClick={() => {
+            navigate("/search");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-normal  ${
+            location.pathname === "/search"
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
+          }`}
+        >
+          <SearchOutlinedIcon sx={{ fontSize: 25 }} />
+          <div>Search</div>
+        </button>
         <button
           disabled={isLoading}
           onClick={() => {
@@ -70,21 +82,6 @@ export const SideBar = () => {
           <PersonIcon sx={{ fontSize: 25 }} />
           <div>Profile</div>
         </button>
-
-        <button
-          onClick={() => {
-            navigate("/search");
-          }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-normal  ${
-            location.pathname === "/search"
-              ? "text-white text-base bg-semidark"
-              : "text-semilight text-sm"
-          }`}
-        >
-          <SearchOutlinedIcon sx={{ fontSize: 25 }} />
-          <div>Search</div>
-        </button>
-
         <button
           onClick={() => {
             navigate("/create/post");
