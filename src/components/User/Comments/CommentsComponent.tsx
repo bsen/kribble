@@ -16,6 +16,7 @@ interface Comment {
     id: string;
     content: string;
     image: string;
+    video: string;
   };
 }
 export const CommentsComponent = () => {
@@ -143,10 +144,14 @@ export const CommentsComponent = () => {
                   navigate(`/post/${comment.post.id}`);
                 }}
               >
-                {comment.post.image && (
-                  <img src={comment.post.image} className=" w-[100%]" />
-                )}
-
+                {comment.post.video ? (
+                  <video controls className="w-[100%]">
+                    <source src={comment.post.video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : comment.post.image ? (
+                  <img src={comment.post.image} className="w-[100%]" />
+                ) : null}
                 {comment.post.content && (
                   <div className="text-light px-3 my-2 font-ubuntu font-light text-sm">
                     {comment.post.content}

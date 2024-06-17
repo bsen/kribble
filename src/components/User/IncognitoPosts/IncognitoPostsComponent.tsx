@@ -26,6 +26,7 @@ interface Post {
   };
   content: string;
   image: string;
+  video: string;
   createdAt: string;
   commentsCount: string;
   likesCount: string;
@@ -340,8 +341,14 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                   )}
                 </div>
 
-                {post.image && <img src={post.image} className=" w-[100%]" />}
-
+                {post.video ? (
+                  <video controls className="w-[100%]">
+                    <source src={post.video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : post.image ? (
+                  <img src={post.image} className="w-[100%]" />
+                ) : null}
                 {post.content && (
                   <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
                     {post.content}

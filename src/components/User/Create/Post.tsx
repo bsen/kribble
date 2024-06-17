@@ -117,11 +117,10 @@ export const Post = () => {
 
       video.onloadedmetadata = () => {
         window.URL.revokeObjectURL(video.src);
-        if (video.duration > 90) {
-          setPopup("Video length should be under 90 seconds");
+        if (video.duration > 60) {
+          setPopup("Video length should be under 60 seconds");
           return;
         }
-
         const reader = new FileReader();
         reader.onloadend = () => {
           setPreviewVideo(reader.result as string);
