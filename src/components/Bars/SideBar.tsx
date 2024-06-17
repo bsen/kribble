@@ -15,7 +15,7 @@ export const SideBar = () => {
 
   return (
     <>
-      <div className="flex border border-semidark mt-2 bg-dark flex-col items-center p-4 justify-between h-fit rounded-lg">
+      <div className="flex border border-semidark mt-2 bg-dark flex-col items-center p-3 justify-between h-fit rounded-lg">
         <button
           onClick={() => {
             navigate("/");
@@ -44,16 +44,16 @@ export const SideBar = () => {
         </button>
         <button
           onClick={() => {
-            navigate("/camtv");
+            navigate("/tv");
           }}
           className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-normal  ${
-            location.pathname === "/camtv"
+            location.pathname === "/tv"
               ? "text-white text-base bg-semidark"
               : "text-semilight text-sm"
           }`}
         >
           <LiveTvIcon sx={{ fontSize: 25 }} />
-          <div>CamTv</div>
+          <div>Tv</div>
         </button>{" "}
         <button
           onClick={() => {

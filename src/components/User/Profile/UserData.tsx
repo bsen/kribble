@@ -222,6 +222,17 @@ export const UserData: React.FC = () => {
           {currentUser === username && (
             <button
               onClick={() => {
+                setShowCommunities(true);
+              }}
+              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
+            >
+              Communities
+            </button>
+          )}
+
+          {currentUser === username && (
+            <button
+              onClick={() => {
                 navigate("/hidden/posts");
               }}
               className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
@@ -237,17 +248,6 @@ export const UserData: React.FC = () => {
               className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
             >
               Comments
-            </button>
-          )}
-
-          {currentUser === username && (
-            <button
-              onClick={() => {
-                setShowCommunities(true);
-              }}
-              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-            >
-              Communities
             </button>
           )}
 

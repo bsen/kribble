@@ -6,39 +6,35 @@ import SearchIcon from "@mui/icons-material/Search";
 import { BottomBar } from "../Bars/BottomBar";
 import LinearProgress from "@mui/material/LinearProgress";
 import { NavBar } from "../Bars/NavBar";
+import { CircularProgress } from "@mui/material";
 
 interface User {
   username: string;
   image: string;
 }
 
-interface Community {
-  name: string;
-  image: string;
-}
-
 export const SearchComponent = () => {
-  const token = localStorage.getItem("token");
   const [search, setSearch] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
-  const [communities, setCommunities] = useState<Community[]>([]);
 
   const fetchSearchResults = useCallback(async () => {
     setIsSearching(true);
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/search/data`, {
-        token,
+      setIsLoading(true);
+      const response = await axios.post(`${BACKEND_URL}/api/search/users`, {
         search,
       });
       setUsers(response.data.users);
-      setCommunities(response.data.communities);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching search results:", error);
+      setIsLoading(false);
     } finally {
       setIsSearching(false);
     }
-  }, [token, search]);
+  }, [search]);
 
   function debounce<T extends (...args: any[]) => void>(
     func: T,
@@ -64,14 +60,13 @@ export const SearchComponent = () => {
       debouncedSearch();
     } else {
       setUsers([]);
-      setCommunities([]);
     }
   }, [search, debouncedSearch]);
 
   return (
-    <div>
-      <NavBar />
-      <div className="top-14 fixed w-full lg:w-[34%]">
+    <>
+      <div className="h-screen overflow-y-auto no-scrollbar py-12">
+        <NavBar />
         {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
 
         <div className="w-full h-14 flex justify-between items-center">
@@ -79,72 +74,53 @@ export const SearchComponent = () => {
             <input
               type="text"
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search"
+              placeholder="Search users"
               className="w-full h-full bg-dark hover:bg-semidark text-semilight focus:outline-none"
             />
             <SearchIcon className="text-semilight" />
           </div>
         </div>
 
-        <div>
-          {users.length !== 0 || communities.length !== 0 ? (
-            <div className="h-screen overflow-y-auto no-scrollbar pb-40">
-              <div>
-                {users.map((user) => (
-                  <Link to={`/${user.username}`} key={user.username}>
-                    <div className="flex border my-2 bg-dark rounded-lg border-semidark py-2 gap-2 items-center px-4 hover:bg-semidark">
-                      <div className="text-sm font-normal text-light">u/</div>
-                      <div>
-                        <img
-                          src={user.image ? user.image : "/user.png"}
-                          alt="Profile"
-                          className="h-7 w-7 rounded-lg"
-                        />
-                      </div>
-                      <div className="text-light text-lg">{user.username}</div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-              <div>
-                {communities.map((community) => (
-                  <Link
-                    to={`/community/${community.name}`}
-                    key={community.name}
-                  >
-                    <div className="flex border my-2 bg-dark rounded-lg border-semidark py-2 gap-2 items-center px-4 hover:bg-semidark">
-                      <div className="text-sm font-normal text-light">c/</div>
-                      <div>
-                        <img
-                          src={community.image ? community.image : "/group.png"}
-                          alt="Profile"
-                          className="h-7 w-7 rounded-lg"
-                        />
-                      </div>
-                      <div className="items-center">
-                        <div className="text-light text-lg">
-                          {community.name}
-                        </div>
+        {users.length > 0 ? (
+          users.map((user, index) => (
+            <div
+              key={index}
+              className="mb-2 p-2 rounded-lg border border-semidark bg-dark"
+            >
+              <Link to={`/user/${user.username}`}>
+                <div className="flex justify-between gap-2">
+                  <div className="flex gap-2">
+                    <img
+                      className="h-7 w-7 rounded-lg bg-dark"
+                      src={user.image ? user.image : "/user.png"}
+                      alt={user.username}
+                    />
+                    <div className="flex flex-col w-full">
+                      <div className="text-light text-base font-normal font-ubuntu">
+                        {user.username}
                       </div>
                     </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div>
-              {isSearching ? (
-                ""
-              ) : (
-                <div className="text-semilight my-5 font-light text-center text-sm">
-                  Search result not found
+                  </div>
                 </div>
-              )}
+              </Link>
             </div>
-          )}
-        </div>
+          ))
+        ) : (
+          <div>
+            {isLoading ? (
+              <div className="w-full my-5 flex justify-center items-center">
+                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+              </div>
+            ) : (
+              <div className="text-semilight my-5 font-light text-center text-sm">
+                Search result not found
+              </div>
+            )}
+          </div>
+        )}
+
         <BottomBar />
       </div>
-    </div>
+    </>
   );
 };

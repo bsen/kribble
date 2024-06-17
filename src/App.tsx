@@ -16,7 +16,7 @@ import { UserProvider } from "./components/User/Context/UserContext";
 import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
 import { Community } from "./pages/Community/Profile/Community";
-import { CamTv } from "./pages/CamTv/CamTv";
+import { Tv } from "./pages/Tv/CamTv";
 
 interface ProtectedRouteProps {
   element: React.ReactNode;
@@ -51,10 +51,7 @@ function App() {
               element={<PublicRoute element={<Login />} />}
             />
 
-            <Route
-              path="/camtv"
-              element={<ProtectedRoute element={<CamTv />} />}
-            />
+            <Route path="/tv" element={<ProtectedRoute element={<Tv />} />} />
 
             <Route
               path="/community/:name"

@@ -2,8 +2,8 @@ import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 
 export const About = () => {
   return (
-    <div className="h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-4">
-      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4 mb-8">
+    <div className="h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-3">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-3 mb-8">
         <div className="text-light mb-4 font-semibold text-[1.5rem]">
           Welcome to FriendCity
         </div>
@@ -14,7 +14,7 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4 mb-8">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-3 mb-8">
         <div className="text-light mb-4 font-semibold text-[1.5rem]">
           Privacy and Security
         </div>
@@ -56,7 +56,7 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4 mb-8">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-3 mb-8">
         <div className="text-light mb-4 font-semibold text-[1.5rem]">
           Terms of Use
         </div>
@@ -109,7 +109,7 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4 mb-8">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-3 mb-8">
         <div className="text-light mb-4 font-semibold text-[1.5rem]">
           Community Guidelines
         </div>
@@ -142,7 +142,7 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-4">
+      <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-3">
         <div className="text-light flex items-center gap-2 font-semibold mb-4 text-[1.5rem]">
           Contact Us <MailOutlinedIcon />
         </div>

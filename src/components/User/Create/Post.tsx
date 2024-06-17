@@ -270,7 +270,7 @@ export const Post = () => {
     <>
       <div className="py-12">
         <NavBar />
-        <div className="w-full mt-2 bg-dark p-4 rounded-lg">
+        <div className="w-full mt-2 bg-dark p-3 rounded-lg">
           <div className="flex gap-4 items-center">
             <button onClick={handleClose}>
               <ArrowBackIcon
