@@ -388,12 +388,12 @@ export const Post = () => {
                     Post
                   </button>
                 </div>
-              </div>{" "}
-              {popup && (
-                <div className="text-rosemain font-light text-center text-xs mt-2">
-                  {popup}
-                </div>
-              )}
+              </div>
+            </div>
+          )}
+          {popup && (
+            <div className="text-rosemain font-light text-center text-xs mt-2">
+              {popup}
             </div>
           )}
         </div>
