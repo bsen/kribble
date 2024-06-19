@@ -87,7 +87,7 @@ export const SearchComponent = () => {
               key={index}
               className="mb-2 p-2 rounded-lg border border-semidark bg-dark"
             >
-              <Link to={`/user/${user.username}`}>
+              <Link to={`/${user.username}`}>
                 <div className="flex justify-between gap-2">
                   <div className="flex gap-2">
                     <img
