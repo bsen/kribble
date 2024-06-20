@@ -51,19 +51,21 @@ export const Post = () => {
       "image/png",
       "image/jpeg",
       "image/jpg",
-      "image/gif",
+      // "image/gif",
     ];
-    const allowedVideoTypes = ["video/mp4"];
+
+    //const allowedVideoTypes = ["video/mp4"];
 
     if (allowedImageTypes.includes(file.type)) {
       await handleImageUpload(file);
-    } else if (allowedVideoTypes.includes(file.type)) {
-      await handleVideoUpload(file);
-    } else {
+    }
+    // else if (allowedVideoTypes.includes(file.type)) {
+    //   await handleVideoUpload(file);
+    // }
+    else {
       setPopup("Only PNG, JPG, JPEG, GIF, and MP4 files are allowed");
     }
   };
-
   const handleImageUpload = async (file: File) => {
     try {
       if (file.type === "image/gif") {
@@ -109,31 +111,31 @@ export const Post = () => {
     }
   };
 
-  const handleVideoUpload = async (file: File) => {
-    try {
-      const video = document.createElement("video");
-      video.preload = "metadata";
+  // const handleVideoUpload = async (file: File) => {
+  //   try {
+  //     const video = document.createElement("video");
+  //     video.preload = "metadata";
 
-      video.onloadedmetadata = () => {
-        window.URL.revokeObjectURL(video.src);
-        if (video.duration > 90) {
-          setPopup("Video length should be under 90 seconds");
-          return;
-        }
+  //     video.onloadedmetadata = () => {
+  //       window.URL.revokeObjectURL(video.src);
+  //       if (video.duration > 90) {
+  //         setPopup("Video length should be under 90 seconds");
+  //         return;
+  //       }
 
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setPreviewVideo(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      };
+  //       const reader = new FileReader();
+  //       reader.onloadend = () => {
+  //         setPreviewVideo(reader.result as string);
+  //       };
+  //       reader.readAsDataURL(file);
+  //     };
 
-      video.src = URL.createObjectURL(file);
-    } catch (error) {
-      console.error("Error handling video upload:", error);
-      setPopup("Error uploading video");
-    }
-  };
+  //     video.src = URL.createObjectURL(file);
+  //   } catch (error) {
+  //     console.error("Error handling video upload:", error);
+  //     setPopup("Error uploading video");
+  //   }
+  // };
 
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPopup("");

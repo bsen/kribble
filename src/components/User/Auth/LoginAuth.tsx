@@ -82,7 +82,7 @@ export const LoginAuth = () => {
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
               type="email"
-              className="w-full text-dark rounded-lg p-2 focus:outline-none bg-light"
+              className="w-full text-dark rounded-lg p-2 focus:outline-none bg-semidark"
               placeholder="Enter your email address"
             />
           </div>
@@ -96,7 +96,7 @@ export const LoginAuth = () => {
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               onKeyDown={handleKeyDown}
-              className=" w-full text-dark rounded-lg p-2 focus:outline-none bg-light"
+              className=" w-full text-dark rounded-lg p-2 focus:outline-none bg-semidark"
               placeholder="Enter password"
             />
           </div>
