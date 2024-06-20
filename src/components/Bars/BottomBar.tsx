@@ -41,10 +41,10 @@ export const BottomBar = () => {
         </button>
         <button
           onClick={() => {
-            navigate("/camtv");
+            navigate("/tv");
           }}
           className={`py-1 px-2 rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
-            location.pathname === "/camtv"
+            location.pathname === "/tv"
               ? "text-light bg-semidark"
               : "text-semilight"
           }`}

@@ -59,7 +59,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
       try {
         setIsLoading(true);
         const response = await axios.post(
-          `${BACKEND_URL}/api/user/post/all/hidden/posts`,
+          `${BACKEND_URL}/api/post/all/hidden/posts`,
           { token, cursor }
         );
         setPostData((prevData) => ({
@@ -96,7 +96,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
   const deletePost = useCallback(async () => {
     try {
       setLoadingState(true);
-      await axios.post(`${BACKEND_URL}/api/user/post/delete`, {
+      await axios.post(`${BACKEND_URL}/api/post/delete`, {
         token,
         postDeleteId,
       });

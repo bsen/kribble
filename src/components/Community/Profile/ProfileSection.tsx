@@ -132,12 +132,13 @@ export const ProfileSection: React.FC = () => {
   async function getAllPosts(cursor?: string) {
     try {
       setIsLoading(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/community/post/all/posts`,
-        { token, cursor, name }
-      );
+      const response = await axios.post(`${BACKEND_URL}/api/post/all/posts`, {
+        token,
+        cursor,
+        communityName: name,
+      });
       setPostData({
-        posts: [...postData.posts, ...response.data.data],
+        posts: [...postData.posts, ...response.data.posts],
         nextCursor: response.data.nextCursor,
       });
       setIsLoading(false);
@@ -212,7 +213,7 @@ export const ProfileSection: React.FC = () => {
     setIsLoading(true);
     setDeleteState(false);
     const communityId = communityData.id;
-    await axios.post(`${BACKEND_URL}/api/community/post/delete`, {
+    await axios.post(`${BACKEND_URL}/api/post/delete`, {
       token,
       communityId,
       postDeleteId,

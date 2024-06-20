@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
@@ -22,16 +21,18 @@ interface User {
 export const Post = () => {
   const { name } = useParams();
   const token = localStorage.getItem("token");
+  const [taggedUserName, setTaggedUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [anonymity, setAnonymity] = useState(false);
   const [popup, setPopup] = useState("");
-  const [taggedUserName, setTaggedUserName] = useState("");
+  const [previewVideo, setPreviewVideo] = useState<string | null>(null);
   const [search, setSearch] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
   const [isSearchState, setIsSearchState] = useState(false);
+
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -40,61 +41,103 @@ export const Post = () => {
     if (!file) {
       return;
     }
-    const allowedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+    const maxFileSize = 2 * 1024 * 1024;
+    if (file.size > maxFileSize) {
+      setPopup("Please ensure your video is under 2 MB.");
+      return;
+    }
+    const allowedImageTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "image/gif",
+    ];
+    const allowedVideoTypes = ["video/mp4"];
 
     if (allowedImageTypes.includes(file.type)) {
       await handleImageUpload(file);
+    } else if (allowedVideoTypes.includes(file.type)) {
+      await handleVideoUpload(file);
     } else {
-      setPopup("Only PNG, JPG, JPEG files are allowed");
+      setPopup("Only PNG, JPG, JPEG, GIF, and MP4 files are allowed");
     }
   };
 
   const handleImageUpload = async (file: File) => {
     try {
-      const compressedFile = await imageCompression(file, {
-        maxSizeMB: 2,
-        maxWidthOrHeight: 1440,
-        useWebWorker: true,
-      });
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const img = new Image();
-        img.src = reader.result as string;
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const size = Math.max(img.width, img.height);
-          canvas.width = size;
-          canvas.height = size;
-          const ctx = canvas.getContext("2d");
-          if (ctx) {
-            if (file.type === "image/png") {
-              ctx.fillStyle = "black";
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-            const x = (canvas.width - img.width) / 2;
-            const y = (canvas.height - img.height) / 2;
-            ctx.drawImage(img, x, y);
-            const compressedImageData = canvas.toDataURL("image/jpeg");
-            setPreviewImage(compressedImageData);
-          }
+      if (file.type === "image/gif") {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewImage(reader.result as string);
         };
-      };
-      reader.readAsDataURL(compressedFile);
+        reader.readAsDataURL(file);
+      } else {
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 2,
+          maxWidthOrHeight: 1440,
+          useWebWorker: true,
+        });
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const img = new Image();
+          img.src = reader.result as string;
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const size = Math.max(img.width, img.height);
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext("2d");
+            if (ctx) {
+              if (file.type === "image/png") {
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+              }
+              const x = (canvas.width - img.width) / 2;
+              const y = (canvas.height - img.height) / 2;
+              ctx.drawImage(img, x, y);
+              const compressedImageData = canvas.toDataURL("image/jpeg");
+              setPreviewImage(compressedImageData);
+            }
+          };
+        };
+        reader.readAsDataURL(compressedFile);
+      }
     } catch (error) {
       console.error("Error processing image:", error);
       setPopup("Error processing image");
     }
   };
 
+  const handleVideoUpload = async (file: File) => {
+    try {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        if (video.duration > 90) {
+          setPopup("Video length should be under 90 seconds");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewVideo(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      };
+
+      video.src = URL.createObjectURL(file);
+    } catch (error) {
+      console.error("Error handling video upload:", error);
+      setPopup("Error uploading video");
+    }
+  };
+
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPopup("");
     setContent(e.target.value);
-  };
-
-  const handleClose = () => {
-    setContent("");
-    setPreviewImage("");
-    history.go(-1);
   };
 
   const createCommunityPost = async () => {
@@ -125,14 +168,20 @@ export const Post = () => {
         const blob = new Blob([uint8Array], { type: fileType });
         const file = new File([blob], fileName, { type: fileType });
         formData.append("image", file);
+      } else if (previewVideo) {
+        const response = await fetch(previewVideo);
+        const blob = await response.blob();
+        formData.append("file", blob, "video.mp4");
       }
+
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       };
+
       const response = await axios.post(
-        `${BACKEND_URL}/api/community/post/create`,
+        `${BACKEND_URL}/api/post/create`,
         formData,
         config
       );
@@ -149,7 +198,7 @@ export const Post = () => {
   const fetchSearchResults = useCallback(async () => {
     setIsSearching(true);
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/search/data`, {
+      const response = await axios.post(`${BACKEND_URL}/api/search/users`, {
         token,
         search,
       });
@@ -266,14 +315,8 @@ export const Post = () => {
         <NavBar />
         <div className="w-full bg-dark mt-2 p-3 rounded-lg">
           <div className="flex gap-4 items-center">
-            <button onClick={handleClose}>
-              <ArrowBackIcon
-                className="p-1 bg-indigomain text-semilight rounded-lg"
-                sx={{ fontSize: 30 }}
-              />
-            </button>
-            <div className="text-xl flex justify-center items-center gap-5 font-light text-light text-center">
-              <div>Create Post in c/{name}</div>
+            <div className="text-base font-ubuntu w-full text-center items-center gap-5 font-light text-light">
+              {name} community
             </div>
           </div>
           <div className="w-full h-full rounded-lg flex flex-col justify-center">
@@ -282,11 +325,30 @@ export const Post = () => {
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="w-full rounded-lg border border-semidark mt-4"
+                  className="w-full rounded-lg border border-semidark"
                 />
                 <button
                   onClick={() => {
-                    setPreviewImage("");
+                    setPreviewImage(null);
+                  }}
+                  className="text-black my-4 rounded-lg"
+                >
+                  <DeleteIcon
+                    sx={{ fontSize: 20 }}
+                    className="text-semilight"
+                  />
+                </button>
+              </div>
+            ) : previewVideo ? (
+              <div className="flex w-full flex-col items-center">
+                <video
+                  src={previewVideo}
+                  controls
+                  className="w-full rounded-lg border border-semidark"
+                />
+                <button
+                  onClick={() => {
+                    setPreviewVideo(null);
                   }}
                   className="text-black my-4 rounded-lg"
                 >

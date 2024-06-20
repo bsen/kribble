@@ -67,10 +67,11 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     async (cursor: string | null | undefined, truncate: boolean) => {
       try {
         setIsLoading(true);
-        const response = await axios.post(
-          `${BACKEND_URL}/api/user/post/all/posts`,
-          { token, cursor, username }
-        );
+        const response = await axios.post(`${BACKEND_URL}/api/post/all/posts`, {
+          token,
+          cursor,
+          username,
+        });
         if (!response.data.posts) {
           setError(new Error("Sorry, this page isn't available."));
         } else {
@@ -109,7 +110,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
   const deletePost = useCallback(async () => {
     try {
       setLoadingState(true);
-      await axios.post(`${BACKEND_URL}/api/user/post/delete`, {
+      await axios.post(`${BACKEND_URL}/api/post/delete`, {
         token,
         postDeleteId,
       });

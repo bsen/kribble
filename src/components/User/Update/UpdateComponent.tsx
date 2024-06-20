@@ -198,14 +198,14 @@ export const UpdateProfileComponent = () => {
                     onChange={(e) => {
                       setInstagramLink(e.target.value);
                     }}
-                    className=" h-10 bg-semidark text-semilight w-full text-base font-light rounded-lg px-2 focus:outline-none border border-semidark"
+                    className="mt-1 h-10 bg-semidark text-semilight w-full text-base font-light rounded-lg px-2 focus:outline-none border border-semidark"
                   />
                 </div>
                 <div>
                   <div className="text-semilight text-sm font-light">Bio</div>
                   <textarea
-                    rows={2}
-                    className="w-full bg-semidark text-semilight text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-semidark"
+                    rows={3}
+                    className="mt-1 w-full bg-semidark text-semilight text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-semidark"
                     defaultValue={userData.bio}
                     wrap="soft"
                     maxLength={150}

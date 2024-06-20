@@ -244,8 +244,8 @@ export const UpdateCommunityComponent = () => {
         <div>
           <div className="text-semilight  text-sm font-light">Description</div>
           <textarea
-            rows={2}
-            className="w-full text-semilight bg-semidark px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-semidark"
+            rows={3}
+            className="mt-1 w-full text-semilight bg-semidark px-2 py-1 text-base font-light resize-none no-scrollbar rounded-lg border border-semidark"
             defaultValue={communityData.description}
             wrap="soft"
             maxLength={150}
