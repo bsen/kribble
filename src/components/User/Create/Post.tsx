@@ -42,27 +42,25 @@ export const Post = () => {
       return;
     }
 
-    const maxFileSize = 2 * 1024 * 1024;
+    const maxFileSize = 10 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      setPopup("Please ensure your video is under 2 MB.");
+      setPopup("Please ensure your video is under 10 MB.");
       return;
     }
     const allowedImageTypes = [
       "image/png",
       "image/jpeg",
       "image/jpg",
-      // "image/gif",
+      "image/gif",
     ];
 
-    //const allowedVideoTypes = ["video/mp4"];
+    const allowedVideoTypes = ["video/mp4"];
 
     if (allowedImageTypes.includes(file.type)) {
       await handleImageUpload(file);
-    }
-    // else if (allowedVideoTypes.includes(file.type)) {
-    //   await handleVideoUpload(file);
-    // }
-    else {
+    } else if (allowedVideoTypes.includes(file.type)) {
+      await handleVideoUpload(file);
+    } else {
       setPopup("Only PNG, JPG, JPEG, GIF, and MP4 files are allowed");
     }
   };
@@ -112,31 +110,30 @@ export const Post = () => {
     }
   };
 
-  // const handleVideoUpload = async (file: File) => {
-  //   try {
-  //     const video = document.createElement("video");
-  //     video.preload = "metadata";
+  const handleVideoUpload = async (file: File) => {
+    try {
+      const video = document.createElement("video");
+      video.preload = "metadata";
 
-  //     video.onloadedmetadata = () => {
-  //       window.URL.revokeObjectURL(video.src);
-  //       if (video.duration > 90) {
-  //         setPopup("Video length should be under 90 seconds");
-  //         return;
-  //       }
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        if (video.duration > 60) {
+          setPopup("Video length should be under 1 minute");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewVideo(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      };
 
-  //       const reader = new FileReader();
-  //       reader.onloadend = () => {
-  //         setPreviewVideo(reader.result as string);
-  //       };
-  //       reader.readAsDataURL(file);
-  //     };
-
-  //     video.src = URL.createObjectURL(file);
-  //   } catch (error) {
-  //     console.error("Error handling video upload:", error);
-  //     setPopup("Error uploading video");
-  //   }
-  // };
+      video.src = URL.createObjectURL(file);
+    } catch (error) {
+      console.error("Error handling video upload:", error);
+      setPopup("Error uploading video");
+    }
+  };
 
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPopup("");
@@ -362,7 +359,7 @@ export const Post = () => {
                   className="cursor-pointer text-center h-40 rounded-lg bg-semidark flex items-center justify-center"
                 >
                   <div className=" w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
-                    Add Image
+                    Add Image or video
                     <AddPhotoAlternateIcon
                       sx={{ fontSize: 30 }}
                       className="text-light"
