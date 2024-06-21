@@ -280,7 +280,7 @@ export const SignupAuth = () => {
                 maxLength={24}
                 onChange={(e) => handleUsernameChange(e.target.value)}
                 placeholder="Username"
-                className={`w-full text-dark p-2 bg-semidark focus:outline-none  rounded-lg ${
+                className={`w-full text-light p-2 bg-semidark focus:outline-none  rounded-lg ${
                   available ? "" : "border border-rosemain"
                 }`}
                 required
@@ -295,7 +295,7 @@ export const SignupAuth = () => {
                 value={password}
                 onChange={(e) => handlePasswordChange(e.target.value)}
                 placeholder="Password"
-                className="bg-semidark w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                className="bg-semidark w-full outline-none rounded-md text-light placeholder:text-sm p-2"
                 required
               />
             </div>
@@ -310,7 +310,7 @@ export const SignupAuth = () => {
                   onChange={(e) => handleDateChange(e.target.value)}
                   placeholder="DD"
                   maxLength={2}
-                  className="bg-semidark w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                  className="bg-semidark w-full outline-none rounded-md text-light placeholder:text-sm p-2"
                   required
                 />
               </div>
@@ -324,7 +324,7 @@ export const SignupAuth = () => {
                   onChange={(e) => handleMonthChange(e.target.value)}
                   placeholder="MM"
                   maxLength={2}
-                  className="bg-semidark w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                  className="bg-semidark w-full outline-none rounded-md text-light placeholder:text-sm p-2"
                   required
                 />
               </div>
@@ -338,7 +338,7 @@ export const SignupAuth = () => {
                   onChange={(e) => handleYearChange(e.target.value)}
                   placeholder="YYYY"
                   maxLength={4}
-                  className="bg-semidark w-full outline-none rounded-md text-dark placeholder:text-sm p-2"
+                  className="bg-semidark w-full outline-none rounded-md text-light placeholder:text-sm p-2"
                   required
                 />
               </div>

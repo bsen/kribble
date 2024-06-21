@@ -29,6 +29,11 @@ export const CommunitiesComponent = () => {
     []
   );
 
+  const handleSearchingCommunityNameChange = (text: string) => {
+    const searchingName = text.toLowerCase();
+    setSearch(searchingName);
+  };
+
   const fetchSearchResults = useCallback(async () => {
     setIsSearching(true);
     try {
@@ -122,7 +127,10 @@ export const CommunitiesComponent = () => {
           <div className="h-10 bg-dark mx-auto w-full hover:bg-semidark flex px-4 justify-between items-center border border-semidark rounded-lg">
             <input
               type="text"
-              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+              onChange={(e) =>
+                handleSearchingCommunityNameChange(e.target.value)
+              }
               placeholder="Search communities"
               className="w-full h-full bg-dark hover:bg-semidark text-semilight focus:outline-none"
             />

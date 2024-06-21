@@ -19,6 +19,11 @@ export const SearchComponent = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
 
+  const handleSearchingUsernameChange = (text: string) => {
+    const searchingUsername = text.toLowerCase();
+    setSearch(searchingUsername);
+  };
+
   const fetchSearchResults = useCallback(async () => {
     setIsSearching(true);
     try {
@@ -73,7 +78,8 @@ export const SearchComponent = () => {
           <div className="h-10 bg-dark mx-auto w-full hover:bg-semidark flex px-4 justify-between items-center border border-semidark rounded-lg">
             <input
               type="text"
-              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+              onChange={(e) => handleSearchingUsernameChange(e.target.value)}
               placeholder="Search users"
               className="w-full h-full bg-dark hover:bg-semidark text-semilight focus:outline-none"
             />
