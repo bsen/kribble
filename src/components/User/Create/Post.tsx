@@ -33,6 +33,11 @@ export const Post = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isSearchState, setIsSearchState] = useState(false);
 
+  const handleSearchingUsernameChange = (text: string) => {
+    const searchingUsername = text.toLowerCase();
+    setSearch(searchingUsername);
+  };
+
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -260,7 +265,8 @@ export const Post = () => {
             <div className="h-10 bg-semidark mx-auto w-full flex px-4 justify-between items-center rounded-lg">
               <input
                 type="text"
-                onChange={(e) => setSearch(e.target.value)}
+                value={search}
+                onChange={(e) => handleSearchingUsernameChange(e.target.value)}
                 placeholder="Search user"
                 className="w-full h-full bg-semidark  text-semilight focus:outline-none"
               />

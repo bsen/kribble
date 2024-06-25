@@ -114,8 +114,8 @@ export const LoginAuth = () => {
           {popup && (
             <div className="text-rosemain text-sm text-center">{popup}</div>
           )}
-          <footer className="w-full font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
-            © 2024 FriendCity Ltd.
+          <footer className="w-full text-center font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
+            © 2024 FriendCity. A product by Algabay Private Limited
             <Link to="/policies" className="underline">
               Policies
             </Link>
