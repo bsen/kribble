@@ -428,7 +428,7 @@ export const PostProfile = () => {
                     if (token) {
                       handleLikeComment(comment.id);
                     } else {
-                      navigate("/signup");
+                      navigate("/auth");
                     }
                   }}
                 >

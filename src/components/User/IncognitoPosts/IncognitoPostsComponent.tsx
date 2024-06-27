@@ -95,15 +95,17 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
 
   const deletePost = useCallback(async () => {
     try {
+      setDeleteState(false);
       setLoadingState(true);
-      await axios.post(`${BACKEND_URL}/api/post/delete`, {
+      const res = await axios.post(`${BACKEND_URL}/api/post/delete`, {
         token,
         postDeleteId,
       });
-      setDeleteState(false);
-      setPostDeleteId("");
-      window.location.reload();
-      setLoadingState(false);
+      if (res.data.status === 200) {
+        setPostDeleteId("");
+        window.location.reload();
+        setLoadingState(false);
+      }
     } catch (error) {
       setError(error as Error);
       setLoadingState(false);
@@ -202,7 +204,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
 
   if (loadingState) {
     return (
-      <div className="w-full my-5 flex justify-center items-center">
+      <div className="w-full h-screen flex justify-center items-center">
         <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
       </div>
     );
@@ -364,7 +366,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                           e.stopPropagation();
                           handleLike(post.id);
                         } else {
-                          navigate("/signup");
+                          navigate("/auth");
                         }
                       }}
                     >

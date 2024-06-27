@@ -26,7 +26,6 @@ interface Post {
   };
   content: string;
   image: string | null;
-  video: string | null;
   createdAt: string;
   commentsCount: string;
   likesCount: string;
@@ -50,10 +49,13 @@ export const HomeComponent = () => {
   async function getFeedPosts(cursor?: string) {
     try {
       setIsLoading(true);
-      const response = await axios.post(`${BACKEND_URL}/api/user/feed/posts`, {
-        token,
-        cursor,
-      });
+      const response = await axios.post(
+        `${BACKEND_URL}/api/user/feed/posts/home`,
+        {
+          token,
+          cursor,
+        }
+      );
       setPostData({
         posts: [...postData.posts, ...response.data.data],
         nextCursor: response.data.nextCursor,
@@ -259,12 +261,7 @@ export const HomeComponent = () => {
                 )}
               </div>
 
-              {post.video ? (
-                <video controls className="w-[100%]">
-                  <source src={post.video} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              ) : post.image ? (
+              {post.image ? (
                 <img src={post.image} className="w-[100%]" />
               ) : null}
 
@@ -283,7 +280,7 @@ export const HomeComponent = () => {
                         e.stopPropagation();
                         handleLike(post.id);
                       } else {
-                        navigate("/signup");
+                        navigate("/auth");
                       }
                     }}
                   >

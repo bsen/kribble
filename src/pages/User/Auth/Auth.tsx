@@ -1,13 +1,14 @@
-import { LoginAuth } from "../../../components/User/Auth/LoginAuth";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-export const Login = () => {
+import { AuthPage } from "../../../components/User/Auth/AuthPage";
+import { useNavigate } from "react-router-dom";
+export const Auth = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token != null) {
       navigate("/");
     }
-  });
-  return <LoginAuth />;
+  }, []);
+  return <AuthPage />;
 };

@@ -152,19 +152,6 @@ export const ProfileSection: React.FC = () => {
     getAllPosts();
   }, []);
 
-  const handleScroll = () => {
-    if (
-      scrollContainerRef.current &&
-      scrollContainerRef.current.scrollTop +
-        scrollContainerRef.current.clientHeight >=
-        scrollContainerRef.current.scrollHeight &&
-      postData.nextCursor &&
-      !isLoading
-    ) {
-      getAllPosts(postData.nextCursor);
-    }
-  };
-
   const handleLike = useCallback(
     async (postId: string) => {
       try {
@@ -239,6 +226,67 @@ export const ProfileSection: React.FC = () => {
     } else {
       const minutesDifference = Math.floor(timeDifference / (1000 * 60));
       return `${minutesDifference}m ago`;
+    }
+  };
+
+  const handleVideoVisibility = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      const video = entry.target as HTMLVideoElement;
+      if (entry.isIntersecting) {
+        video
+          .play()
+          .catch((error) => console.log("Auto-play was prevented:", error));
+      } else {
+        video.pause();
+      }
+    });
+  };
+
+  useEffect(() => {
+    const options = {
+      root: scrollContainerRef.current,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver(handleVideoVisibility, options);
+
+    postData.posts.forEach((post) => {
+      if (post.video) {
+        const videoElement = document.getElementById(`video-${post.id}`);
+        if (videoElement) observer.observe(videoElement);
+      }
+    });
+
+    return () => {
+      postData.posts.forEach((post) => {
+        if (post.video) {
+          const videoElement = document.getElementById(`video-${post.id}`);
+          if (videoElement) observer.unobserve(videoElement);
+        }
+      });
+    };
+  }, [postData.posts]);
+
+  const handleScroll = () => {
+    postData.posts.forEach((post) => {
+      if (post.video) {
+        const videoElement = document.getElementById(
+          `video-${post.id}`
+        ) as HTMLVideoElement | null;
+        if (videoElement) videoElement.pause();
+      }
+    });
+
+    if (
+      scrollContainerRef.current &&
+      scrollContainerRef.current.scrollTop +
+        scrollContainerRef.current.clientHeight >=
+        scrollContainerRef.current.scrollHeight - 100 &&
+      postData.nextCursor &&
+      !isLoading
+    ) {
+      getAllPosts(postData.nextCursor);
     }
   };
 
@@ -451,12 +499,20 @@ export const ProfileSection: React.FC = () => {
                     </div>
                   )}
                 </div>
-
                 {post.video ? (
-                  <video controls className="w-[100%]">
-                    <source src={post.video} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  <div className="w-full bg-black flex justify-center">
+                    <video
+                      id={`video-${post.id}`}
+                      controls
+                      className="h-[80vh]"
+                      loop
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src={post.video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />
                 ) : null}
@@ -476,7 +532,7 @@ export const ProfileSection: React.FC = () => {
                           e.stopPropagation();
                           handleLike(post.id);
                         } else {
-                          navigate("/signup");
+                          navigate("/auth");
                         }
                       }}
                     >

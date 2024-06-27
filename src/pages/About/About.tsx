@@ -5,11 +5,11 @@ export const About = () => {
     <div className="h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-3">
       <div className="w-full lg:w-[50%] border bg-dark border-semidark rounded-lg p-3 mb-8">
         <div className="text-light mb-4 font-semibold text-[1.5rem]">
-          Welcome to FriendCity
+          Welcome to friendcity
         </div>
         <div className="text-sm text-semilight font-light">
-          Welcome to FriendCity, your dynamic social hub tailored specifically
-          for students and teens. FriendCity is your go-to platform for
+          Welcome to friendcity, your dynamic social hub tailored specifically
+          for students and teens. friendcity is your go-to platform for
           connecting, sharing, and fostering friendships that last a lifetime.
         </div>
       </div>
@@ -19,7 +19,7 @@ export const About = () => {
           Privacy and Security
         </div>
         <div className="text-sm text-semilight font-light">
-          Your privacy and security are paramount to us at FriendCity. We've
+          Your privacy and security are paramount to us at friendcity. We've
           implemented robust measures to ensure a safe and secure environment
           for all our users:
           <ul className="list-disc pl-6">
@@ -30,7 +30,7 @@ export const About = () => {
               while protecting your privacy.
             </li>
             {/* <li>
-              <strong>Personalized Privacy:</strong> FriendCity offers extensive
+              <strong>Personalized Privacy:</strong> friendcity offers extensive
               privacy controls, empowering users to customize their profile
               visibility and manage who can interact with them.
             </li> */}
@@ -61,16 +61,16 @@ export const About = () => {
           Terms of Use
         </div>
         <div className="text-sm text-semilight font-light">
-          Before using FriendCity, please take a moment to familiarize yourself
+          Before using friendcity, please take a moment to familiarize yourself
           with our terms and conditions:
           <ul className="list-disc pl-6">
             <li>
-              <strong>Agreement to Terms:</strong> Your use of FriendCity
+              <strong>Agreement to Terms:</strong> Your use of friendcity
               signifies your agreement to abide by our terms and conditions. If
               you disagree, kindly refrain from using our platform.
             </li>
             <li>
-              <strong>User Requirements:</strong> FriendCity is designed for
+              <strong>User Requirements:</strong> friendcity is designed for
               users aged 13 and above, and adherence to local laws is mandatory
               for use.
             </li>
@@ -81,16 +81,16 @@ export const About = () => {
             </li>
             <li>
               <strong>Content Ownership:</strong> While users maintain ownership
-              of their content, by using FriendCity, they grant us permission to
+              of their content, by using friendcity, they grant us permission to
               utilize their content within the platform.
             </li>
             <li>
               <strong>Privacy Assurance:</strong> Our privacy policy governs the
               collection, usage, and disclosure of personal information within
-              FriendCity.
+              friendcity.
             </li>
             <li>
-              <strong>Moderation and Compliance:</strong> FriendCity reserves
+              <strong>Moderation and Compliance:</strong> friendcity reserves
               the right to moderate content and enforce guidelines to uphold a
               secure and welcoming environment.
             </li>
@@ -102,7 +102,7 @@ export const About = () => {
             </li>
             <li>
               <strong>Terms Updates:</strong> Users are responsible for staying
-              updated on any changes to our terms. Continued use of FriendCity
+              updated on any changes to our terms. Continued use of friendcity
               implies acceptance of any revised terms.
             </li>
           </ul>
@@ -115,7 +115,7 @@ export const About = () => {
         </div>
         <div className="text-sm text-semilight font-light">
           We are committed to fostering a positive and safe community
-          environment at FriendCity. Please adhere to the following guidelines
+          environment at friendcity. Please adhere to the following guidelines
           to ensure a pleasant experience for all users:
           <ul className="list-disc pl-6">
             <li>

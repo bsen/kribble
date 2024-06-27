@@ -31,6 +31,19 @@ export const SideBar = () => {
         </button>
         <button
           onClick={() => {
+            navigate("/tv");
+          }}
+          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-normal  ${
+            location.pathname === "/tv"
+              ? "text-white text-base bg-semidark"
+              : "text-semilight text-sm"
+          }`}
+        >
+          <LiveTvIcon sx={{ fontSize: 25 }} />
+          <div>Tv</div>
+        </button>
+        <button
+          onClick={() => {
             navigate("/communities");
           }}
           className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-normal  ${
@@ -42,19 +55,6 @@ export const SideBar = () => {
           <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
           <div>Communities</div>
         </button>
-        <button
-          onClick={() => {
-            navigate("/tv");
-          }}
-          className={`w-full h-10 px-3 mt-4 rounded-lg flex items-center justify-start gap-2  font-normal  ${
-            location.pathname === "/tv"
-              ? "text-white text-base bg-semidark"
-              : "text-semilight text-sm"
-          }`}
-        >
-          <LiveTvIcon sx={{ fontSize: 25 }} />
-          <div>Tv</div>
-        </button>{" "}
         <button
           onClick={() => {
             navigate("/search");
@@ -95,7 +95,7 @@ export const SideBar = () => {
         </button>
       </div>
       <footer className="w-full text-center font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
-        © 2024 FriendCity. A product by Algabay Private Limited
+        © 2024 friendcity. A product by Algabay Private Limited
         <Link to="/policies" className="underline">
           Policies
         </Link>

@@ -380,7 +380,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                           e.stopPropagation();
                           handleLike(post.id);
                         } else {
-                          navigate("/signup");
+                          navigate("/auth");
                         }
                       }}
                     >

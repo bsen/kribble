@@ -182,7 +182,7 @@ export const UserData: React.FC = () => {
                 {!token && (
                   <button
                     onClick={() => {
-                      navigate("/signup");
+                      navigate("/auth");
                     }}
                     className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
                   >

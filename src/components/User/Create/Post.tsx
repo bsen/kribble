@@ -362,10 +362,10 @@ export const Post = () => {
               <div>
                 <label
                   htmlFor="file-upload"
-                  className="cursor-pointer text-center h-40 rounded-lg bg-semidark flex items-center justify-center"
+                  className="cursor-pointer text-center my-2 h-20 rounded-lg bg-semidark flex items-center justify-center"
                 >
-                  <div className=" w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
-                    Add Image or video
+                  <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
+                    Add Image or Video
                     <AddPhotoAlternateIcon
                       sx={{ fontSize: 30 }}
                       className="text-light"
@@ -382,72 +382,70 @@ export const Post = () => {
               </div>
             )}
           </div>
-          {(previewImage || previewVideo) && (
-            <div>
-              <textarea
-                value={content}
-                onChange={handlePostChange}
-                rows={3}
-                className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
-                placeholder="Write your thoughts..."
-                wrap="soft"
-                maxLength={500}
-              />
+          <div>
+            <textarea
+              value={content}
+              onChange={handlePostChange}
+              rows={3}
+              className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
+              placeholder="Write your thoughts..."
+              wrap="soft"
+              maxLength={500}
+            />
 
-              <div className="flex w-full my-2 justify-between items-center">
-                <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
-                  <div
-                    onClick={() => {
-                      setAnonymity((prevState) => !prevState);
-                    }}
-                  >
-                    <VisibilityOffIcon
-                      className={`${
-                        anonymity ? "text-rosemain" : "text-semilight"
-                      }`}
-                    />
-                  </div>
-                  {anonymity ? (
-                    <div className="text-rosemain">Anonymous</div>
-                  ) : (
-                    ""
-                  )}
+            <div className="flex w-full my-2 justify-between items-center">
+              <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
+                <div
+                  onClick={() => {
+                    setAnonymity((prevState) => !prevState);
+                  }}
+                >
+                  <VisibilityOffIcon
+                    className={`${
+                      anonymity ? "text-rosemain" : "text-semilight"
+                    }`}
+                  />
                 </div>
+                {anonymity ? (
+                  <div className="text-rosemain">Anonymous</div>
+                ) : (
+                  ""
+                )}
+              </div>
 
-                <div className="flex items-center gap-4 text-light">
-                  {taggedUserName && (
-                    <div className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1">
-                      <div
-                        onClick={() => {
-                          setTaggedUserName("");
-                        }}
-                      >
-                        <CloseIcon sx={{ fontSize: 20 }} />
-                      </div>{" "}
-                      {taggedUserName}
-                    </div>
-                  )}
-                  {!taggedUserName && (
-                    <button
+              <div className="flex items-center gap-4 text-light">
+                {taggedUserName && (
+                  <div className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1">
+                    <div
                       onClick={() => {
                         setTaggedUserName("");
-                        setIsSearchState(true);
                       }}
-                      className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1"
                     >
-                      <AddIcon sx={{ fontSize: 20 }} /> Tag
-                    </button>
-                  )}
+                      <CloseIcon sx={{ fontSize: 20 }} />
+                    </div>{" "}
+                    {taggedUserName}
+                  </div>
+                )}
+                {!taggedUserName && (
                   <button
-                    onClick={createUserPost}
-                    className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
+                    onClick={() => {
+                      setTaggedUserName("");
+                      setIsSearchState(true);
+                    }}
+                    className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1"
                   >
-                    Post
+                    <AddIcon sx={{ fontSize: 20 }} /> Tag
                   </button>
-                </div>
+                )}
+                <button
+                  onClick={createUserPost}
+                  className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
+                >
+                  Post
+                </button>
               </div>
             </div>
-          )}
+          </div>
         </div>
 
         {popup && (

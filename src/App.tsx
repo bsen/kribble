@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { Signup } from "./pages/User/Auth/Signup";
-import { Login } from "./pages/User/Auth/Login";
+import { Auth } from "./pages/User/Auth/Auth";
 import { Home } from "./pages/Home/Home";
 import { Profile } from "./pages/User/Profile/Profile";
 import { CreatePost } from "./pages/User/Create/CreatePost";
@@ -16,7 +15,7 @@ import { UserProvider } from "./components/User/Context/UserContext";
 import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
 import { Community } from "./pages/Community/Profile/Community";
-import { Tv } from "./pages/Tv/CamTv";
+import { Tv } from "./pages/Tv/Tv";
 
 interface ProtectedRouteProps {
   element: React.ReactNode;
@@ -24,7 +23,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const token = localStorage.getItem("token");
-  return token ? element : <Navigate to="/signup" replace />;
+  return token ? element : <Navigate to="/auth" replace />;
 };
 const PublicRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -42,14 +41,7 @@ function App() {
               path="/:username"
               element={<ProtectedRoute element={<Profile />} />}
             />
-            <Route
-              path="/signup"
-              element={<PublicRoute element={<Signup />} />}
-            />
-            <Route
-              path="/login"
-              element={<PublicRoute element={<Login />} />}
-            />
+            <Route path="/auth" element={<PublicRoute element={<Auth />} />} />
 
             <Route path="/tv" element={<ProtectedRoute element={<Tv />} />} />
 
