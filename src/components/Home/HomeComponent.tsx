@@ -7,8 +7,9 @@ import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
 import AddIcon from "@mui/icons-material/Add";
 import { CircularProgress } from "@mui/material";
-import AddReactionIcon from "@mui/icons-material/AddReaction";
-import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
 interface Post {
   id: string;
   creator: {
@@ -286,20 +287,20 @@ export const HomeComponent = () => {
                   >
                     {post.isLiked ? (
                       <div>
-                        <AddReactionIcon
+                        <FavoriteIcon
                           sx={{
                             fontSize: 22,
                           }}
-                          className="text-yellow-400"
+                          className="text-rosemain"
                         />
                       </div>
                     ) : (
                       <div>
-                        <AddReactionOutlinedIcon
+                        <FavoriteBorderIcon
                           sx={{
                             fontSize: 22,
                           }}
-                          className="text-light hover:text-yellow-400"
+                          className="text-light hover:text-rosemain"
                         />
                       </div>
                     )}

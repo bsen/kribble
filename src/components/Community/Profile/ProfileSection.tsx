@@ -8,9 +8,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
 import AddIcon from "@mui/icons-material/Add";
-import AddReactionIcon from "@mui/icons-material/AddReaction";
-import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
-
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 interface CommunityData {
   id: string;
   name: string;
@@ -538,20 +537,20 @@ export const ProfileSection: React.FC = () => {
                     >
                       {post.isLiked ? (
                         <div>
-                          <AddReactionIcon
+                          <FavoriteIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-yellow-400"
+                            className="text-rosemain"
                           />
                         </div>
                       ) : (
                         <div>
-                          <AddReactionOutlinedIcon
+                          <FavoriteBorderIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-light hover:text-yellow-400"
+                            className="text-light hover:text-rosemain"
                           />
                         </div>
                       )}

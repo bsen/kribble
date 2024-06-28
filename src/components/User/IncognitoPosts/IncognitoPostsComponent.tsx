@@ -7,8 +7,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotesIcon from "@mui/icons-material/Notes";
 import { NavBar } from "../../Bars/NavBar";
 import { BottomBar } from "../../Bars/BottomBar";
-import AddReactionIcon from "@mui/icons-material/AddReaction";
-import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 interface Post {
   id: string;
   creator: {
@@ -319,7 +319,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                           </div>
                         </>
                       )}
-                    </div>{" "}
+                    </div>
                   </div>
                   {post.taggedUser && (
                     <div className="">
@@ -344,13 +344,23 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                 </div>
 
                 {post.video ? (
-                  <video controls className="w-[100%]">
-                    <source src={post.video} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  <div className="w-full bg-black flex justify-center">
+                    <video
+                      id={`video-${post.id}`}
+                      controls
+                      className="h-[80vh]"
+                      loop
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src={post.video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />
                 ) : null}
+
                 {post.content && (
                   <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
                     {post.content}
@@ -372,20 +382,20 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                     >
                       {post.isLiked ? (
                         <div>
-                          <AddReactionIcon
+                          <FavoriteIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-yellow-400"
+                            className="text-rosemain"
                           />
                         </div>
                       ) : (
                         <div>
-                          <AddReactionOutlinedIcon
+                          <FavoriteBorderIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-light hover:text-yellow-400"
+                            className="text-light hover:text-rosemain"
                           />
                         </div>
                       )}

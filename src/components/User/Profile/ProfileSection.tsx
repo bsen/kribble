@@ -15,8 +15,8 @@ import { BottomBar } from "../../Bars/BottomBar";
 import { NavBar } from "../../Bars/NavBar";
 import { UserData } from "./UserData";
 import { UserContext } from "../Context/UserContext";
-import AddReactionIcon from "@mui/icons-material/AddReaction";
-import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 interface Post {
   id: string;
   creator: {
@@ -357,10 +357,19 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                 </div>
 
                 {post.video ? (
-                  <video controls className="w-[100%]">
-                    <source src={post.video} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  <div className="w-full bg-black flex justify-center">
+                    <video
+                      id={`video-${post.id}`}
+                      controls
+                      className="h-[80vh]"
+                      loop
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src={post.video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />
                 ) : null}
@@ -386,20 +395,20 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                     >
                       {post.isLiked ? (
                         <div>
-                          <AddReactionIcon
+                          <FavoriteIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-yellow-400"
+                            className="text-rosemain"
                           />
                         </div>
                       ) : (
                         <div>
-                          <AddReactionOutlinedIcon
+                          <FavoriteBorderIcon
                             sx={{
                               fontSize: 22,
                             }}
-                            className="text-light hover:text-yellow-400"
+                            className="text-light hover:text-rosemain"
                           />
                         </div>
                       )}
