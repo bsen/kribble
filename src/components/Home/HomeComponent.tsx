@@ -77,7 +77,7 @@ export const HomeComponent = () => {
       scrollContainerRef.current &&
       scrollContainerRef.current.scrollTop +
         scrollContainerRef.current.clientHeight >=
-        scrollContainerRef.current.scrollHeight &&
+        scrollContainerRef.current.scrollHeight - 100 &&
       postData.nextCursor &&
       !isLoading
     ) {

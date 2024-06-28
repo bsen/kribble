@@ -342,7 +342,6 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                     </div>
                   )}
                 </div>
-
                 {post.video ? (
                   <div className="w-full bg-black flex justify-center">
                     <video
@@ -360,7 +359,6 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />
                 ) : null}
-
                 {post.content && (
                   <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
                     {post.content}

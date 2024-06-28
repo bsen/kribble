@@ -325,7 +325,7 @@ export const TvComponent = () => {
       )}
       {isLoading && (
         <div className="absolute bottom-20 left-0 right-0 flex justify-center">
-          <CircularProgress sx={{ color: "white" }} />
+          <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
         </div>
       )}
       <div

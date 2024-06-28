@@ -515,13 +515,11 @@ export const ProfileSection: React.FC = () => {
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />
                 ) : null}
-
                 {post.content && (
                   <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
                     {post.content}
                   </div>
                 )}
-
                 <div className="p-3 flex items-center justify-between">
                   <div className="flex gap-2 items-center">
                     <button
