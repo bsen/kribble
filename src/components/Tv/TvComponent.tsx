@@ -81,19 +81,15 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
 
   return (
     <div className="items-center flex h-full w-full">
-      <div className="w-full">
+      <div className="relative w-full aspect-square overflow-hidden">
         <video
           ref={videoRef}
-          id={`video-${post.id}`}
+          src={post.video ? post.video : ""}
           loop
           playsInline
-          preload="metadata"
-          autoPlay
+          className="absolute top-0 left-0 w-full h-full object-cover border border-semidark"
           onClick={togglePause}
-          className="w-full h-full object-cover"
-        >
-          <source src={post.video ? post.video : ""} type="video/mp4" />
-        </video>
+        />
         {!isPlaying && (
           <div
             className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
@@ -104,20 +100,20 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
         )}
       </div>
 
-      <div className="bg-gradient-to-b from-transparent to-black/60">
+      <div className="to-black/60">
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <div className="flex items-center mb-2 gap-2">
             {post.anonymity ? (
               <img
                 src="/mask.png"
                 alt="Profile"
-                className="w-9 h-9 rounded-lg"
+                className="w-8 h-8 rounded-lg"
               />
             ) : (
               <img
                 src={post.creator.image ? post.creator.image : "/user.png"}
                 alt="Profile"
-                className="w-9 h-9 rounded-lg"
+                className="w-8 h-8 rounded-lg"
               />
             )}
 
