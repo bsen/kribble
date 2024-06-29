@@ -24,7 +24,7 @@ interface Post {
     username: string;
     image: string;
   };
-  content: string;
+  caption: string;
   image: string;
   video: string;
   createdAt: string;
@@ -359,9 +359,9 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />
                 ) : null}
-                {post.content && (
+                {post.caption && (
                   <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                    {post.content}
+                    {post.caption}
                   </div>
                 )}
 

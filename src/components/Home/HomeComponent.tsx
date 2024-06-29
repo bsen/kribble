@@ -25,7 +25,7 @@ interface Post {
     username: string;
     image: string;
   };
-  content: string;
+  caption: string;
   image: string | null;
   createdAt: string;
   commentsCount: string;
@@ -266,9 +266,9 @@ export const HomeComponent = () => {
                 <img src={post.image} className="w-[100%]" />
               ) : null}
 
-              {post.content && (
+              {post.caption && (
                 <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                  {post.content}
+                  {post.caption}
                 </div>
               )}
 
@@ -334,7 +334,7 @@ export const HomeComponent = () => {
         )}
         <div
           onClick={() => {
-            navigate("/create/post");
+            navigate("/create");
           }}
           className="absolute bg-indigomain bottom-20 right-4 lg:hidden flex justify-center items-center w-11 h-11 rounded-full"
         >

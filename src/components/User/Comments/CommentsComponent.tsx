@@ -9,12 +9,12 @@ import { BottomBar } from "../../Bars/BottomBar";
 
 interface Comment {
   id: string;
-  content: string;
+  caption: string;
   createdAt: string;
   creatorId: string;
   post: {
     id: string;
-    content: string;
+    caption: string;
     image: string;
     video: string;
   };
@@ -152,15 +152,15 @@ export const CommentsComponent = () => {
                 ) : comment.post.image ? (
                   <img src={comment.post.image} className="w-[100%]" />
                 ) : null}
-                {comment.post.content && (
+                {comment.post.caption && (
                   <div className="text-light px-3 my-2 font-ubuntu font-light text-sm">
-                    {comment.post.content}
+                    {comment.post.caption}
                   </div>
                 )}
               </div>
 
               <div className="flex justify-between items-start text-light rounded-b-lg bg-semidark p-3 font-ubuntu font-light text-sm">
-                <div> {comment.content}</div>
+                <div> {comment.caption}</div>
 
                 <div
                   onClick={() => {

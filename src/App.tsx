@@ -7,7 +7,6 @@ import { Post } from "./pages/Post/Post";
 import { Communities } from "./pages/Community/Communities/Communities";
 import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
 import { Comments } from "./pages/User/Comments/Comments";
-import { CommunityPost } from "./pages/Community/Create/CommunityPost";
 import { Search } from "./pages/Search/Search";
 import { UpdateProfile } from "./pages/User/Profile/Update";
 import { UpdateCommunity } from "./pages/Community/Profile/Update";
@@ -70,13 +69,22 @@ function App() {
               element={<ProtectedRoute element={<CreateCommunity />} />}
             />
             <Route
-              path="/create/post"
-              element={<ProtectedRoute element={<CreatePost />} />}
+              path="/create"
+              element={
+                <ProtectedRoute
+                  element={<CreatePost isCommunityPost={false} />}
+                />
+              }
             />
             <Route
-              path="/:name/create/post/"
-              element={<ProtectedRoute element={<CommunityPost />} />}
+              path="/create/:name"
+              element={
+                <ProtectedRoute
+                  element={<CreatePost isCommunityPost={true} />}
+                />
+              }
             />
+
             <Route
               path="/post/:postId"
               element={<ProtectedRoute element={<Post />} />}

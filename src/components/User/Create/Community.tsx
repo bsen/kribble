@@ -101,7 +101,7 @@ export const Community = () => {
       setIsLoading(false);
       setPopup(response.data.message);
       if (response.data.status == 200) {
-        navigate("/");
+        navigate("/communities");
       }
     } catch (error) {
       console.log(error);
@@ -121,10 +121,10 @@ export const Community = () => {
 
   return (
     <>
-      <div className="h-screen flex justify-center items-center px-5 lg:px-0">
+      <div className="h-screen flex justify-center items-center">
         <NavBar />
-        <div className="w-full max-w-md my-5 p-3 rounded-lg bg-dark">
-          <div className="text-lg my-5 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
+        <div className="w-full max-w-md p-3 rounded-lg bg-dark">
+          <div className="text-lg my-3 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
             <div>
               <button onClick={handleClose}>
                 <ArrowBackIcon
@@ -137,16 +137,16 @@ export const Community = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div>
-              <div className="font-normal m-1 text-light">Community Name</div>
+              <div className="font-normal m-1 text-light">Name</div>
               <input
                 value={name}
                 onChange={(e) => {
                   handleNameChange(e.target.value);
                 }}
-                className={`w-full overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 rounded-lg ${
+                className={`w-full h-9 overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 rounded-lg ${
                   available ? "" : "border border-rosemain"
                 } bg-semidark text-semilight`}
-                placeholder="Choose a name for your community"
+                placeholder="Write a name"
                 maxLength={20}
               />
             </div>
@@ -159,7 +159,7 @@ export const Community = () => {
                   setDescription(e.target.value);
                 }}
                 className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
-                placeholder="Write description for your community"
+                placeholder="Write a description"
                 maxLength={150}
               />
             </div>

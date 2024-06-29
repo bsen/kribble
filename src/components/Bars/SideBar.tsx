@@ -84,7 +84,7 @@ export const SideBar = () => {
         </button>
         <button
           onClick={() => {
-            navigate("/create/post");
+            navigate("/create");
           }}
           className={
             "w-full py-2 px-3 mt-4 rounded-lg  bg-indigomain text-white flex items-center justify-start gap-2 text-base font-normal"

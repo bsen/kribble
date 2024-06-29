@@ -5,11 +5,9 @@ import { BACKEND_URL } from "../../config";
 import NotesIcon from "@mui/icons-material/Notes";
 import { BottomBar } from "../Bars/BottomBar";
 import { NavBar } from "../Bars/NavBar";
-import AddIcon from "@mui/icons-material/Add";
 import { CircularProgress } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Virtual, Mousewheel } from "swiper/modules";
@@ -31,7 +29,7 @@ interface Post {
     username: string;
     image: string;
   };
-  content: string;
+  caption: string;
   video: string | null;
   createdAt: string;
   commentsCount: string;
@@ -79,20 +77,29 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
   };
 
   return (
-    <div className="relative h-full w-full">
-      <video
-        ref={videoRef}
-        id={`video-${post.id}`}
-        className="h-full w-full object-cover"
-        loop
-        playsInline
-        preload="metadata"
-        autoPlay
-      >
-        <source src={post.video ? post.video : ""} type="video/mp4" />
-      </video>
+    <div className="items-center flex  h-full w-full">
+      <div className="w-full">
+        <video
+          ref={videoRef}
+          id={`video-${post.id}`}
+          loop
+          playsInline
+          preload="metadata"
+          autoPlay
+        >
+          <source src={post.video ? post.video : ""} type="video/mp4" />
+          {!isPlaying && (
+            <div
+              className="flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
+              onClick={togglePause}
+            >
+              <PlayArrowIcon className="text-white" style={{ fontSize: 60 }} />
+            </div>
+          )}
+        </video>
+      </div>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60">
+      <div className="bg-gradient-to-b from-transparent to-black/60">
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <div className="flex items-center mb-2 gap-2">
             {post.anonymity ? (
@@ -119,7 +126,7 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
             </div>
           </div>
           <div className="text-light my-2  font-ubuntu font-light text-base">
-            {post.content}
+            {post.caption}
           </div>
           <div className="flex space-x-4">
             <button
@@ -156,12 +163,6 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
             </button>
           </div>
         </div>
-        <button
-          onClick={togglePause}
-          className="absolute top-4 right-4 text-white bg-black/50 p-2 rounded-full"
-        >
-          {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
-        </button>
       </div>
     </div>
   );
@@ -317,7 +318,7 @@ export const TvComponent = () => {
         ))}
       </Swiper>
       {postData.posts.length === 0 && !isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="items-center justify-center">
           <div className="text-semilight font-light text-center text-lg">
             No posts found
           </div>
@@ -328,12 +329,7 @@ export const TvComponent = () => {
           <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
         </div>
       )}
-      <div
-        onClick={() => navigate("/create/post")}
-        className="absolute bg-indigomain bottom-20 right-4 flex justify-center items-center w-11 h-11 rounded-full"
-      >
-        <AddIcon className="text-light" sx={{ fontSize: 28 }} />
-      </div>
+
       <BottomBar />
     </div>
   );

@@ -1,29 +1,46 @@
-import { useCallback, useEffect, useState } from "react";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import DeleteIcon from "@mui/icons-material/Delete";
-import axios from "axios";
-import CloseIcon from "@mui/icons-material/Close";
-import { BACKEND_URL } from "../../../config";
-import { CircularProgress, LinearProgress } from "@mui/material";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import ImageIcon from "@mui/icons-material/Image";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CloseIcon from "@mui/icons-material/Close";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import AddIcon from "@mui/icons-material/Add";
-import imageCompression from "browser-image-compression";
 import SearchIcon from "@mui/icons-material/Search";
+import { CircularProgress, LinearProgress } from "@mui/material";
+import imageCompression from "browser-image-compression";
+import { BACKEND_URL } from "../../../config";
 import { BottomBar } from "../../Bars/BottomBar";
 import { NavBar } from "../../Bars/NavBar";
+import { UserContext } from "../Context/UserContext";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 interface User {
   username: string;
   image: string;
 }
 
-export const Post = () => {
+interface PostCreatorProps {
+  isCommunityPost: boolean;
+  communityName?: string;
+}
+
+export const CreatePostComponent: React.FC<PostCreatorProps> = ({
+  isCommunityPost,
+  communityName,
+}) => {
   const navigate = useNavigate();
+  const { currentUser } = useContext(UserContext);
   const token = localStorage.getItem("token");
   const [taggedUserName, setTaggedUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [content, setContent] = useState("");
+  const [caption, setCaption] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [anonymity, setAnonymity] = useState(false);
   const [popup, setPopup] = useState("");
@@ -47,9 +64,9 @@ export const Post = () => {
       return;
     }
 
-    const maxFileSize = 10 * 1024 * 1024;
+    const maxFileSize = 15 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      setPopup("Please ensure your video is under 10 MB.");
+      setPopup("Please ensure your video is under 15 MB.");
       return;
     }
     const allowedImageTypes = [
@@ -122,8 +139,8 @@ export const Post = () => {
 
       video.onloadedmetadata = () => {
         window.URL.revokeObjectURL(video.src);
-        if (video.duration > 60) {
-          setPopup("Video length should be under 1 minute");
+        if (video.duration > 90) {
+          setPopup("Video length should be under 90 seconds");
           return;
         }
         const reader = new FileReader();
@@ -142,22 +159,22 @@ export const Post = () => {
 
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPopup("");
-    setContent(e.target.value);
+    setCaption(e.target.value);
   };
 
-  const createUserPost = async () => {
+  const createPost = async () => {
     setPopup("");
-    if (!content) {
-      setPopup("Write something");
-      return;
-    }
     try {
       setIsLoading(true);
       const formData = new FormData();
       formData.append("taggedUserName", taggedUserName);
-      formData.append("content", content);
+      formData.append("caption", caption);
       formData.append("token", token || "");
       formData.append("anonymity", String(anonymity));
+
+      if (isCommunityPost && communityName) {
+        formData.append("communityName", communityName);
+      }
 
       if (previewImage) {
         const fileName = "post.jpeg";
@@ -191,7 +208,11 @@ export const Post = () => {
 
       setPopup(response.data.message);
       setIsLoading(false);
-      navigate("/");
+      if (isCommunityPost) {
+        navigate(`/community/${communityName}`);
+      } else {
+        navigate(`/${currentUser}`);
+      }
     } catch (error) {
       console.error("Error creating post:", error);
       setPopup("Network error");
@@ -240,6 +261,20 @@ export const Post = () => {
       setUsers([]);
     }
   }, [search, debouncedSearch]);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -319,57 +354,135 @@ export const Post = () => {
       <div className="py-12">
         <NavBar />
         <div className="w-full mt-2 bg-dark p-4 rounded-lg">
-          <div className="w-full h-full rounded-lg flex flex-col justify-center">
+          {isCommunityPost && (
+            <div className="flex gap-4 items-center">
+              <div className="text-base font-ubuntu w-full text-center items-center mb-4 font-light text-light">
+                c/ {communityName}
+              </div>
+            </div>
+          )}
+
+          {(previewImage || previewVideo) && (
+            <div>
+              <div className="flex w-full justify-between items-center">
+                <div className="flex items-center gap-4 text-light">
+                  <button
+                    onClick={() => {
+                      setPreviewVideo(null);
+                      setPreviewImage(null);
+                    }}
+                    className="text-black my-2 rounded-lg"
+                  >
+                    <ArrowBackIcon
+                      sx={{ fontSize: 24 }}
+                      className="text-semilight"
+                    />
+                  </button>
+                  <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
+                    <div
+                      onClick={() => {
+                        setAnonymity((prevState) => !prevState);
+                      }}
+                    >
+                      <VisibilityOffIcon
+                        className={`${
+                          anonymity ? "text-rosemain" : "text-semilight"
+                        }`}
+                      />
+                    </div>
+                    {anonymity ? (
+                      <div className="text-rosemain">Anonymous</div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 text-light">
+                  {taggedUserName && (
+                    <div className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1">
+                      <div
+                        onClick={() => {
+                          setTaggedUserName("");
+                        }}
+                      >
+                        <CloseIcon sx={{ fontSize: 20 }} />
+                      </div>
+                      {taggedUserName}
+                    </div>
+                  )}
+                  {!taggedUserName && (
+                    <button
+                      onClick={() => {
+                        setTaggedUserName("");
+                        setIsSearchState(true);
+                      }}
+                      className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1"
+                    >
+                      <AddIcon sx={{ fontSize: 20 }} /> Tag
+                    </button>
+                  )}
+                  <button
+                    onClick={createPost}
+                    className="text-semilight text-base py-0.5 px-4 rounded-lg bg-indigomain"
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>
+              <textarea
+                value={caption}
+                onChange={handlePostChange}
+                rows={2}
+                className="mt-2 w-full bg-dark overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-semilight"
+                placeholder="Write your thoughts..."
+                wrap="soft"
+                maxLength={200}
+              />
+            </div>
+          )}
+          <div className="w-full h-full  flex flex-col justify-center">
             {previewImage ? (
               <div className="flex w-full flex-col items-center">
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="w-full rounded-lg border border-semidark"
+                  className="w-full border border-semidark"
                 />
-                <button
-                  onClick={() => {
-                    setPreviewImage(null);
-                  }}
-                  className="text-black my-4 rounded-lg"
-                >
-                  <DeleteIcon
-                    sx={{ fontSize: 20 }}
-                    className="text-semilight"
-                  />
-                </button>
               </div>
             ) : previewVideo ? (
               <div className="flex w-full flex-col items-center">
-                <video
-                  src={previewVideo}
-                  controls
-                  className="w-full rounded-lg border border-semidark"
-                />
-                <button
-                  onClick={() => {
-                    setPreviewVideo(null);
-                  }}
-                  className="text-black my-4 rounded-lg"
-                >
-                  <DeleteIcon
-                    sx={{ fontSize: 20 }}
-                    className="text-semilight"
+                <div className="relative w-full aspect-square overflow-hidden">
+                  <video
+                    ref={videoRef}
+                    src={previewVideo}
+                    loop
+                    playsInline
+                    className="absolute top-0 left-0 w-full h-full object-cover border border-semidark"
+                    onClick={togglePlay}
                   />
-                </button>
+                  {!isPlaying && (
+                    <div
+                      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
+                      onClick={togglePlay}
+                    >
+                      <PlayArrowIcon
+                        className="text-white"
+                        style={{ fontSize: 60 }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <div>
                 <label
                   htmlFor="file-upload"
-                  className="cursor-pointer text-center my-2 h-20 rounded-lg bg-semidark flex items-center justify-center"
+                  className="cursor-pointer text-center h-40 rounded-lg bg-semidark flex items-center justify-center"
                 >
-                  <div className="h-[5vh] w-fit rounded-lg text-semilight text-sm gap-2 flex justify-center items-center">
-                    Add Image or Video
-                    <AddPhotoAlternateIcon
-                      sx={{ fontSize: 30 }}
-                      className="text-light"
-                    />
+                  <div className="w-fit rounded-lg text-semilight text-base gap-2 flex justify-center items-center">
+                    Select photo or video
+                    <ImageIcon sx={{ fontSize: 30 }} className="text-light" />
                   </div>
                 </label>
                 <input
@@ -381,70 +494,6 @@ export const Post = () => {
                 />
               </div>
             )}
-          </div>
-          <div>
-            <textarea
-              value={content}
-              onChange={handlePostChange}
-              rows={3}
-              className="w-full bg-semidark overflow-auto no-scrollbar resize-none hover:bg-semidark focus:outline-none px-2 py-1 text-semilight rounded-lg"
-              placeholder="Write your thoughts..."
-              wrap="soft"
-              maxLength={500}
-            />
-
-            <div className="flex w-full my-2 justify-between items-center">
-              <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
-                <div
-                  onClick={() => {
-                    setAnonymity((prevState) => !prevState);
-                  }}
-                >
-                  <VisibilityOffIcon
-                    className={`${
-                      anonymity ? "text-rosemain" : "text-semilight"
-                    }`}
-                  />
-                </div>
-                {anonymity ? (
-                  <div className="text-rosemain">Anonymous</div>
-                ) : (
-                  ""
-                )}
-              </div>
-
-              <div className="flex items-center gap-4 text-light">
-                {taggedUserName && (
-                  <div className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1">
-                    <div
-                      onClick={() => {
-                        setTaggedUserName("");
-                      }}
-                    >
-                      <CloseIcon sx={{ fontSize: 20 }} />
-                    </div>{" "}
-                    {taggedUserName}
-                  </div>
-                )}
-                {!taggedUserName && (
-                  <button
-                    onClick={() => {
-                      setTaggedUserName("");
-                      setIsSearchState(true);
-                    }}
-                    className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1"
-                  >
-                    <AddIcon sx={{ fontSize: 20 }} /> Tag
-                  </button>
-                )}
-                <button
-                  onClick={createUserPost}
-                  className="text-semilight text-base py-1 px-6 rounded-lg bg-indigomain"
-                >
-                  Post
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 

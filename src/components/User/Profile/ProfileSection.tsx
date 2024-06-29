@@ -17,6 +17,7 @@ import { UserData } from "./UserData";
 import { UserContext } from "../Context/UserContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 interface Post {
   id: string;
   creator: {
@@ -32,7 +33,7 @@ interface Post {
     username: string;
     image: string;
   };
-  content: string;
+  caption: string;
   image: string;
   video: string | null;
   createdAt: string;
@@ -185,6 +186,20 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
       return `${minutesDifference}m ago`;
     }
   }, []);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   if (error) {
     return (
@@ -357,26 +372,34 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                 </div>
 
                 {post.video ? (
-                  <div className="w-full bg-black flex justify-center">
+                  <div className="relative w-full aspect-square overflow-hidden">
                     <video
-                      id={`video-${post.id}`}
-                      controls
-                      className="h-[80vh]"
+                      ref={videoRef}
+                      src={post.video}
                       loop
                       playsInline
-                      preload="metadata"
-                    >
-                      <source src={post.video} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                      className="absolute top-0 left-0 w-full h-full object-cover border border-semidark"
+                      onClick={togglePlay}
+                    />
+                    {!isPlaying && (
+                      <div
+                        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
+                        onClick={togglePlay}
+                      >
+                        <PlayArrowIcon
+                          className="text-white"
+                          style={{ fontSize: 60 }}
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />
                 ) : null}
 
-                {post.content && (
+                {post.caption && (
                   <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                    {post.content}
+                    {post.caption}
                   </div>
                 )}
 

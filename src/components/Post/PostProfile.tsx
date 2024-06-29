@@ -11,7 +11,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 interface Comment {
   id: string;
-  content: string;
+  caption: string;
   createdAt: string;
   anonymity: boolean;
   likesCount: number;
@@ -98,7 +98,7 @@ export const PostProfile = () => {
   interface PostData {
     image: string;
     video: string;
-    content: string;
+    caption: string;
     creatorId: string;
     createdAt: string;
     anonymity: boolean;
@@ -115,7 +115,7 @@ export const PostProfile = () => {
   const [postData, setPostData] = useState<PostData>({
     image: "",
     video: "",
-    content: "",
+    caption: "",
     creatorId: "",
     createdAt: "",
     anonymity: false,
@@ -258,9 +258,9 @@ export const PostProfile = () => {
           ) : postData.image ? (
             <img src={postData.image} className="w-[100%]" />
           ) : null}
-          {postData.content && (
+          {postData.caption && (
             <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
-              {postData.content}
+              {postData.caption}
             </div>
           )}
           <div className="border-t border-semidark py-4 flex flex-col gap-4">
@@ -414,9 +414,9 @@ export const PostProfile = () => {
                   </div>
                 </div>
               </div>
-              {comment.content && (
+              {comment.caption && (
                 <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                  {comment.content}
+                  {comment.caption}
                 </div>
               )}
               <div className="p-3 flex items-center justify-between">
