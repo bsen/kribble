@@ -35,7 +35,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             `${BACKEND_URL}/api/user/auth/verify`,
             { token }
           );
-          setCurrentUser(response.data.data);
+          if (response.data.status === 200) {
+            setCurrentUser(response.data.data);
+          } else if (response.data.status === 901) {
+            localStorage.clear();
+          }
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
