@@ -57,10 +57,15 @@ export const HomeComponent = () => {
           cursor,
         }
       );
-      setPostData({
-        posts: [...postData.posts, ...response.data.data],
-        nextCursor: response.data.nextCursor,
-      });
+      if (response.data.status === 200) {
+        setPostData({
+          posts: [...postData.posts, ...response.data.data],
+          nextCursor: response.data.nextCursor,
+        });
+      } else if (response.data.status === 901) {
+        localStorage.clear();
+      }
+
       setIsLoading(false);
     } catch (error) {
       console.log(error);
