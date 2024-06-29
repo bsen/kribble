@@ -9,6 +9,8 @@ import ReportIcon from "@mui/icons-material/Report";
 import { BottomBar } from "../Bars/BottomBar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+
 interface Comment {
   id: string;
   caption: string;
@@ -34,7 +36,6 @@ export const PostProfile = () => {
   const [reportingContentId, setReportingContentId] = useState<
     string | undefined
   >(undefined);
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   async function getComments(cursor?: string) {
@@ -208,6 +209,19 @@ export const PostProfile = () => {
       );
     }
   };
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   if (loadingState) {
     return <LinearProgress sx={{ backgroundColor: "black" }} />;
@@ -251,10 +265,27 @@ export const PostProfile = () => {
       <div>
         <div className="my-2 rounded-lg border border-semidark  bg-dark">
           {postData.video ? (
-            <video controls className="w-[100%]">
-              <source src={postData.video} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <div className="relative w-full aspect-square overflow-hidden">
+              <video
+                ref={videoRef}
+                src={postData.video}
+                loop
+                playsInline
+                className="absolute top-0 left-0 w-full h-full object-cover border border-semidark"
+                onClick={togglePlay}
+              />
+              {!isPlaying && (
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
+                  onClick={togglePlay}
+                >
+                  <PlayArrowIcon
+                    className="text-white"
+                    style={{ fontSize: 60 }}
+                  />
+                </div>
+              )}
+            </div>
           ) : postData.image ? (
             <img src={postData.image} className="w-[100%]" />
           ) : null}

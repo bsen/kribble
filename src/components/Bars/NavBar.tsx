@@ -43,9 +43,10 @@ export const NavBar = () => {
               navigate("/");
             }}
           >
-            <div className="bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 text-transparent font-normal bg-clip-text text-xl font-ubuntu">
+            {/* <div className="bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 text-transparent font-normal bg-clip-text text-xl font-ubuntu">
               friendcity
-            </div>
+            </div> */}
+            <img src="/friendcity.png" className="h-6 mt-1" />
           </div>
           {token && (
             <div className="flex items-center gap-4">

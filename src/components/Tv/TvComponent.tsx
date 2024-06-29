@@ -59,11 +59,14 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
     if (videoRef.current) {
       if (isActive) {
         videoRef.current.play();
+        setIsPlaying(true);
       } else {
         videoRef.current.pause();
+        setIsPlaying(false);
       }
     }
   }, [isActive]);
+
   const togglePause = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
@@ -77,7 +80,7 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
   };
 
   return (
-    <div className="items-center flex  h-full w-full">
+    <div className="items-center flex h-full w-full">
       <div className="w-full">
         <video
           ref={videoRef}
@@ -86,17 +89,19 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
           playsInline
           preload="metadata"
           autoPlay
+          onClick={togglePause}
+          className="w-full h-full object-cover"
         >
           <source src={post.video ? post.video : ""} type="video/mp4" />
-          {!isPlaying && (
-            <div
-              className="flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
-              onClick={togglePause}
-            >
-              <PlayArrowIcon className="text-white" style={{ fontSize: 60 }} />
-            </div>
-          )}
         </video>
+        {!isPlaying && (
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
+            onClick={togglePause}
+          >
+            <PlayArrowIcon className="text-white" style={{ fontSize: 60 }} />
+          </div>
+        )}
       </div>
 
       <div className="bg-gradient-to-b from-transparent to-black/60">
@@ -106,13 +111,13 @@ const VideoPost: React.FC<VideoPostProps & { isActive: boolean }> = ({
               <img
                 src="/mask.png"
                 alt="Profile"
-                className="w-7 h-7 rounded-lg"
+                className="w-9 h-9 rounded-lg"
               />
             ) : (
               <img
                 src={post.creator.image ? post.creator.image : "/user.png"}
                 alt="Profile"
-                className="w-7 h-7 rounded-lg"
+                className="w-9 h-9 rounded-lg"
               />
             )}
 
@@ -279,8 +284,9 @@ export const TvComponent = () => {
   };
 
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-screen py-12">
       <NavBar />
+
       <Swiper
         modules={[Virtual, Mousewheel]}
         direction="vertical"
@@ -316,14 +322,15 @@ export const TvComponent = () => {
             />
           </SwiperSlide>
         ))}
-      </Swiper>
-      {postData.posts.length === 0 && !isLoading && (
-        <div className="items-center justify-center">
-          <div className="text-semilight font-light text-center text-lg">
-            No posts found
+        {postData.posts.length === 0 && !isLoading && (
+          <div className="items-center justify-center">
+            <div className="text-semilight font-light text-center text-lg">
+              No posts found
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </Swiper>
+
       {isLoading && (
         <div className="absolute bottom-20 left-0 right-0 flex justify-center">
           <CircularProgress sx={{ color: "rgb(50 50 50);" }} />

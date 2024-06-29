@@ -72,10 +72,9 @@ export const AuthPage = () => {
   return (
     <div className="h-screen flex flex-col justify-center bg-black items-center">
       <div className="w-72 bg-dark p-5 rounded-lg flex flex-col items-center gap-4">
-        <div className="text-semilight text-center font-ubuntu font-medium text-[2.5rem]">
-          <div className="bg-gradient-to-r from-indigo-500 to-orange-500 via-purple-500 text-transparent font-normal bg-clip-text text-4xl mb-4 font-ubuntu">
-            friendcity
-          </div>
+        <div className="text-semilight  flex flex-col justify-center items-center gap-3 text-center font-ubuntu font-medium text-[2.5rem]">
+          <img src="/friendcity.png" className="h-10 mt-1" />
+
           <div className="text-center text-sm font-thin  text-light">
             Share your thoughts 🚀, pics, and dive into vibrant communities.
             With anonymous posting, let your thoughts soar freely.

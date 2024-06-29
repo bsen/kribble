@@ -101,7 +101,7 @@ export const Community = () => {
       setIsLoading(false);
       setPopup(response.data.message);
       if (response.data.status == 200) {
-        navigate("/communities");
+        navigate(`/${name}`);
       }
     } catch (error) {
       console.log(error);

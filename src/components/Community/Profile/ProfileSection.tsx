@@ -10,6 +10,8 @@ import { BottomBar } from "../../Bars/BottomBar";
 import AddIcon from "@mui/icons-material/Add";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+
 interface CommunityData {
   id: string;
   name: string;
@@ -288,6 +290,19 @@ export const ProfileSection: React.FC = () => {
       getAllPosts(postData.nextCursor);
     }
   };
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   if (error) {
     return (
@@ -499,18 +514,26 @@ export const ProfileSection: React.FC = () => {
                   )}
                 </div>
                 {post.video ? (
-                  <div className="w-full bg-black flex justify-center">
+                  <div className="relative w-full aspect-square overflow-hidden">
                     <video
-                      id={`video-${post.id}`}
-                      controls
-                      className="h-[80vh]"
+                      ref={videoRef}
+                      src={post.video}
                       loop
                       playsInline
-                      preload="metadata"
-                    >
-                      <source src={post.video} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                      className="absolute top-0 left-0 w-full h-full object-cover border border-semidark"
+                      onClick={togglePlay}
+                    />
+                    {!isPlaying && (
+                      <div
+                        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
+                        onClick={togglePlay}
+                      >
+                        <PlayArrowIcon
+                          className="text-white"
+                          style={{ fontSize: 60 }}
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />

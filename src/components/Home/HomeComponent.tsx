@@ -327,7 +327,7 @@ export const HomeComponent = () => {
           <div>
             {!isLoading && (
               <div className="text-semilight my-5 font-light text-center text-lg">
-                No posts found
+                Please refresh
               </div>
             )}
           </div>
