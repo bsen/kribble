@@ -86,11 +86,11 @@ export const Community = () => {
       return setPopup("This community name is already taken");
     }
     if (!name) {
-      return setPopup("Enter a valid name");
+      return setPopup("Write a name");
     }
 
     if (!description) {
-      return setPopup("Enter a valid description");
+      return setPopup("Write some description");
     }
     try {
       setIsLoading(true);
@@ -101,7 +101,7 @@ export const Community = () => {
       setIsLoading(false);
       setPopup(response.data.message);
       if (response.data.status == 200) {
-        navigate(`/${name}`);
+        navigate(`/community/${name}`);
       }
     } catch (error) {
       console.log(error);
