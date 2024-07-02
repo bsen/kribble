@@ -174,6 +174,44 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const videoElement = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            videoElement.play().catch((error) => {
+              console.log("Autoplay was prevented:", error);
+            });
+          } else {
+            videoElement.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const videos = document.querySelectorAll("video");
+    videos.forEach((video) => observer.observe(video));
+
+    return () => {
+      videos.forEach((video) => observer.unobserve(video));
+    };
+  }, [postData.posts]);
+
+  const togglePlay = (postId: string) => {
+    const videoElement = document.querySelector(
+      `video[data-post-id="${postId}"]`
+    ) as HTMLVideoElement;
+    if (videoElement) {
+      if (videoElement.paused) {
+        videoElement.play();
+      } else {
+        videoElement.pause();
+      }
+    }
+  };
+
   if (deleteState) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -343,18 +381,15 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                   )}
                 </div>
                 {post.video ? (
-                  <div className="w-full bg-black flex justify-center">
+                  <div className="relative w-full aspect-square overflow-hidden">
                     <video
-                      id={`video-${post.id}`}
-                      controls
-                      className="h-[80vh]"
+                      data-post-id={post.id}
+                      src={post.video}
                       loop
                       playsInline
-                      preload="metadata"
-                    >
-                      <source src={post.video} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                      className="absolute top-0 left-0 w-full h-full object-cover border border-semidark cursor-pointer"
+                      onClick={() => togglePlay(post.id)}
+                    />
                   </div>
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />

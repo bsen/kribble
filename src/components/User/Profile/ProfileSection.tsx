@@ -17,7 +17,7 @@ import { UserData } from "./UserData";
 import { UserContext } from "../Context/UserContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+
 interface Post {
   id: string;
   creator: {
@@ -187,17 +187,41 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     }
   }, []);
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const videoElement = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            videoElement.play().catch((error) => {
+              console.log("Autoplay was prevented:", error);
+            });
+          } else {
+            videoElement.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
 
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
+    const videos = document.querySelectorAll("video");
+    videos.forEach((video) => observer.observe(video));
+
+    return () => {
+      videos.forEach((video) => observer.unobserve(video));
+    };
+  }, [postData.posts]);
+
+  const togglePlay = (postId: string) => {
+    const videoElement = document.querySelector(
+      `video[data-post-id="${postId}"]`
+    ) as HTMLVideoElement;
+    if (videoElement) {
+      if (videoElement.paused) {
+        videoElement.play();
       } else {
-        videoRef.current.play();
+        videoElement.pause();
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -374,24 +398,13 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                 {post.video ? (
                   <div className="relative w-full aspect-square overflow-hidden">
                     <video
-                      ref={videoRef}
+                      data-post-id={post.id}
                       src={post.video}
                       loop
                       playsInline
-                      className="absolute top-0 left-0 w-full h-full object-cover border border-semidark"
-                      onClick={togglePlay}
+                      className="absolute top-0 left-0 w-full h-full object-cover border border-semidark cursor-pointer"
+                      onClick={() => togglePlay(post.id)}
                     />
-                    {!isPlaying && (
-                      <div
-                        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
-                        onClick={togglePlay}
-                      >
-                        <PlayArrowIcon
-                          className="text-white"
-                          style={{ fontSize: 60 }}
-                        />
-                      </div>
-                    )}
                   </div>
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />

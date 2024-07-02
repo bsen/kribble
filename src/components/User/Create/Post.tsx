@@ -363,85 +363,74 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
           )}
 
           {(previewImage || previewVideo) && (
-            <div>
-              <div className="flex w-full justify-between items-center">
-                <div className="flex items-center gap-4 text-light">
-                  <button
+            <div className="flex w-full justify-between items-center mb-2">
+              <div className="flex items-center gap-4 text-light">
+                <button
+                  onClick={() => {
+                    setPreviewVideo(null);
+                    setPreviewImage(null);
+                  }}
+                  className="text-black my-2 rounded-lg"
+                >
+                  <ArrowBackIcon
+                    sx={{ fontSize: 24 }}
+                    className="text-semilight"
+                  />
+                </button>
+                <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
+                  <div
                     onClick={() => {
-                      setPreviewVideo(null);
-                      setPreviewImage(null);
+                      setAnonymity((prevState) => !prevState);
                     }}
-                    className="text-black my-2 rounded-lg"
                   >
-                    <ArrowBackIcon
-                      sx={{ fontSize: 24 }}
-                      className="text-semilight"
+                    <VisibilityOffIcon
+                      className={`${
+                        anonymity ? "text-rosemain" : "text-semilight"
+                      }`}
                     />
-                  </button>
-                  <div className="flex gap-2 text-xs text-semilight w-fit justify-center items-center">
-                    <div
-                      onClick={() => {
-                        setAnonymity((prevState) => !prevState);
-                      }}
-                    >
-                      <VisibilityOffIcon
-                        className={`${
-                          anonymity ? "text-rosemain" : "text-semilight"
-                        }`}
-                      />
-                    </div>
-                    {anonymity ? (
-                      <div className="text-rosemain">Anonymous</div>
-                    ) : (
-                      ""
-                    )}
                   </div>
-                </div>
-
-                <div className="flex items-center gap-4 text-light">
-                  {taggedUserName && (
-                    <div className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1">
-                      <div
-                        onClick={() => {
-                          setTaggedUserName("");
-                        }}
-                      >
-                        <CloseIcon sx={{ fontSize: 20 }} />
-                      </div>
-                      {taggedUserName}
-                    </div>
+                  {anonymity ? (
+                    <div className="text-rosemain">Anonymous</div>
+                  ) : (
+                    ""
                   )}
-                  {!taggedUserName && (
-                    <button
-                      onClick={() => {
-                        setTaggedUserName("");
-                        setIsSearchState(true);
-                      }}
-                      className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1"
-                    >
-                      <AddIcon sx={{ fontSize: 20 }} /> Tag
-                    </button>
-                  )}
-                  <button
-                    onClick={createPost}
-                    className="text-semilight text-base py-0.5 px-4 rounded-lg bg-indigomain"
-                  >
-                    Post
-                  </button>
                 </div>
               </div>
-              <textarea
-                value={caption}
-                onChange={handlePostChange}
-                rows={2}
-                className="mt-2 w-full bg-dark overflow-auto no-scrollbar resize-none focus:outline-none px-2 py-1 text-semilight"
-                placeholder="Write your thoughts..."
-                wrap="soft"
-                maxLength={200}
-              />
+
+              <div className="flex items-center gap-4 text-light">
+                {taggedUserName && (
+                  <div className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1">
+                    <div
+                      onClick={() => {
+                        setTaggedUserName("");
+                      }}
+                    >
+                      <CloseIcon sx={{ fontSize: 20 }} />
+                    </div>
+                    {taggedUserName}
+                  </div>
+                )}
+                {!taggedUserName && (
+                  <button
+                    onClick={() => {
+                      setTaggedUserName("");
+                      setIsSearchState(true);
+                    }}
+                    className="text-sm bg-semidark px-2 py-1 rounded-lg flex items-center gap-1"
+                  >
+                    <AddIcon sx={{ fontSize: 20 }} /> Tag
+                  </button>
+                )}
+                <button
+                  onClick={createPost}
+                  className="text-semilight text-base py-0.5 px-4 rounded-lg bg-indigomain"
+                >
+                  Post
+                </button>
+              </div>
             </div>
           )}
-          <div className="w-full h-full  flex flex-col justify-center">
+          <div className="w-full h-full  flex flex-col justify-center rounded-lg">
             {previewImage ? (
               <div className="flex w-full flex-col items-center">
                 <img
@@ -495,6 +484,17 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
               </div>
             )}
           </div>
+          {(previewImage || previewVideo) && (
+            <textarea
+              value={caption}
+              onChange={handlePostChange}
+              rows={4}
+              className="mt-2 w-full bg-dark overflow-auto no-scrollbar resize-none focus:outline-none px-2 text-semilight"
+              placeholder="Write your thoughts..."
+              wrap="soft"
+              maxLength={250}
+            />
+          )}
         </div>
 
         {popup && (

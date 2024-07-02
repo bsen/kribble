@@ -9,6 +9,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { CircularProgress } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 interface Post {
   id: string;
@@ -27,6 +28,7 @@ interface Post {
   };
   caption: string;
   image: string | null;
+  video: string | null;
   createdAt: string;
   commentsCount: string;
   likesCount: string;
@@ -146,6 +148,45 @@ export const HomeComponent = () => {
       return `${minutesDifference}m ago`;
     }
   };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const videoElement = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            videoElement.play().catch((error) => {
+              console.log("Autoplay was prevented:", error);
+            });
+          } else {
+            videoElement.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const videos = document.querySelectorAll("video");
+    videos.forEach((video) => observer.observe(video));
+
+    return () => {
+      videos.forEach((video) => observer.unobserve(video));
+    };
+  }, [postData.posts]);
+
+  const togglePlay = (postId: string) => {
+    const videoElement = document.querySelector(
+      `video[data-post-id="${postId}"]`
+    ) as HTMLVideoElement;
+    if (videoElement) {
+      if (videoElement.paused) {
+        videoElement.play();
+      } else {
+        videoElement.pause();
+      }
+    }
+  };
+
   return (
     <>
       <div
@@ -266,11 +307,20 @@ export const HomeComponent = () => {
                   </div>
                 )}
               </div>
-
-              {post.image ? (
+              {post.video ? (
+                <div className="relative w-full aspect-square overflow-hidden">
+                  <video
+                    data-post-id={post.id}
+                    src={post.video}
+                    loop
+                    playsInline
+                    className="absolute top-0 left-0 w-full h-full object-cover border border-semidark cursor-pointer"
+                    onClick={() => togglePlay(post.id)}
+                  />
+                </div>
+              ) : post.image ? (
                 <img src={post.image} className="w-[100%]" />
               ) : null}
-
               {post.caption && (
                 <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
                   {post.caption}
