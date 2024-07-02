@@ -17,6 +17,8 @@ import { UserData } from "./UserData";
 import { UserContext } from "../Context/UserContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 interface Post {
   id: string;
@@ -187,6 +189,10 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     }
   }, []);
 
+  const [mutedVideos, setMutedVideos] = useState<{ [key: string]: boolean }>(
+    {}
+  );
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -196,6 +202,10 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
             videoElement.play().catch((error) => {
               console.log("Autoplay was prevented:", error);
             });
+            setMutedVideos((prev) => ({
+              ...prev,
+              [videoElement.dataset.postId as string]: true,
+            }));
           } else {
             videoElement.pause();
           }
@@ -402,9 +412,32 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
                       src={post.video}
                       loop
                       playsInline
+                      muted
                       className="absolute top-0 left-0 w-full h-full object-cover border border-semidark cursor-pointer"
                       onClick={() => togglePlay(post.id)}
                     />
+                    <button
+                      className="absolute bottom-2 right-2 bg-black/40 text-light h-7 w-7 flex justify-center items-center rounded-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const video = document.querySelector(
+                          `video[data-post-id="${post.id}"]`
+                        ) as HTMLVideoElement;
+                        if (video) {
+                          video.muted = !video.muted;
+                          setMutedVideos((prev) => ({
+                            ...prev,
+                            [post.id]: video.muted,
+                          }));
+                        }
+                      }}
+                    >
+                      {mutedVideos[post.id] ? (
+                        <VolumeOffIcon sx={{ fontSize: 20 }} />
+                      ) : (
+                        <VolumeUpIcon sx={{ fontSize: 20 }} />
+                      )}
+                    </button>
                   </div>
                 ) : post.image ? (
                   <img src={post.image} className="w-[100%]" />
