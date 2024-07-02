@@ -9,7 +9,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { CircularProgress } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 interface Post {
   id: string;
