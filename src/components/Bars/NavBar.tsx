@@ -36,7 +36,10 @@ export const NavBar = () => {
           }}
         />
       )}
-      <div className="top-0 rounded-b-md h-12 border-b  border-semidark bg-dark fixed w-[34%] max-lg:w-full">
+      <div
+        style={{ zIndex: 100 }}
+        className="top-0 rounded-b-md h-12 border-b  border-semidark bg-dark fixed w-[34%] max-lg:w-full"
+      >
         <div className="w-full px-4 h-full text-xl font-ubuntu  flex justify-between items-center text-light">
           <div
             onClick={() => {
