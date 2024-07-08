@@ -123,116 +123,120 @@ export const UpdateProfileComponent = () => {
   }
   return (
     <>
-      <div className="h-screen text-semilight">
-        <div className="w-full">{logoutState && <Logout />}</div>
-        <div className="w-full">
-          {!logoutState && (
-            <div className="py-12">
-              <NavBar />
-              <div className="bg-dark h-fit mt-2 p-3 flex flex-col gap-4 rounded-lg">
-                <div className="flex justify-between items-center border-b border-semidark pb-2">
-                  <button
-                    onClick={() => {
-                      navigate(`/${userData.username}`);
-                    }}
-                  >
-                    <ArrowBackIcon
-                      sx={{ fontSize: 30 }}
-                      className="text-light"
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setLogoutState(true);
-                    }}
-                  >
-                    <div className="text-rosemain text-sm font-normal px-2 py-1 bg-semidark rounded-lg">
-                      Log out
-                    </div>
-                  </button>
-                </div>
-                <div className="w-full flex justify-between items-end">
-                  <div className="flex justify-center items-center">
-                    <div className="absolute text-light z-50">
-                      <button>
-                        <label
-                          htmlFor="image-upload"
-                          className="cursor-pointer "
-                        >
-                          <CameraAltRoundedIcon className="bg-dark/50 p-1 rounded-lg" />
-                        </label>
-                        <input
-                          id="image-upload"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                          className="hidden"
-                        />
-                      </button>
-                    </div>
-                    <img
-                      src={
-                        previewImage
-                          ? previewImage
-                          : userData.image
-                          ? userData.image
-                          : "/user.png"
-                      }
-                      className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10"
-                    />
+      {" "}
+      <NavBar />
+      <div className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14">
+        <div className="w-full md:w-[35%] px-2">
+          <div className="w-full">{logoutState && <Logout />}</div>
+          <div className="w-full">
+            {!logoutState && (
+              <div className="py-12">
+                <NavBar />
+                <div className="bg-dark h-fit mt-2 p-3 flex flex-col gap-4 rounded-lg">
+                  <div className="flex justify-between items-center border-b border-semidark pb-2">
+                    <button
+                      onClick={() => {
+                        navigate(`/${userData.username}`);
+                      }}
+                    >
+                      <ArrowBackIcon
+                        sx={{ fontSize: 30 }}
+                        className="text-light"
+                      />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setLogoutState(true);
+                      }}
+                    >
+                      <div className="text-rosemain text-sm font-normal px-2 py-1 bg-semidark rounded-lg">
+                        Log out
+                      </div>
+                    </button>
                   </div>
+                  <div className="w-full flex justify-between items-end">
+                    <div className="flex justify-center items-center">
+                      <div className="absolute text-light z-50">
+                        <button>
+                          <label
+                            htmlFor="image-upload"
+                            className="cursor-pointer "
+                          >
+                            <CameraAltRoundedIcon className="bg-dark/50 p-1 rounded-lg" />
+                          </label>
+                          <input
+                            id="image-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                          />
+                        </button>
+                      </div>
+                      <img
+                        src={
+                          previewImage
+                            ? previewImage
+                            : userData.image
+                            ? userData.image
+                            : "/user.png"
+                        }
+                        className="rounded-lg w-20 h-20 lg:w-24 lg:h-24  z-10"
+                      />
+                    </div>
 
-                  <button onClick={updateProfile}>
-                    <div className="text-semilight bg-indigomain text-base font-light rounded-lg py-1 px-4">
-                      save
-                    </div>
-                  </button>
-                </div>
-                <div>
-                  <div className="text-semilight text-sm font-light">
-                    Instagram
+                    <button onClick={updateProfile}>
+                      <div className="text-semilight bg-indigomain text-base font-light rounded-lg py-1 px-4">
+                        save
+                      </div>
+                    </button>
                   </div>
-                  <input
-                    type="link"
-                    defaultValue={userData.instagramLink}
-                    onChange={(e) => {
-                      setInstagramLink(e.target.value);
-                    }}
-                    className="mt-1 h-10 bg-semidark text-semilight w-full text-base font-light rounded-lg px-2 focus:outline-none border border-semidark"
-                  />
-                </div>
-                <div>
-                  <div className="text-semilight text-sm font-light">Bio</div>
-                  <textarea
-                    rows={3}
-                    className="mt-1 w-full bg-semidark text-semilight text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-semidark"
-                    defaultValue={userData.bio}
-                    wrap="soft"
-                    maxLength={150}
-                    onChange={(e) => {
-                      setBio(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="text-rosemain font-ubuntu font-light text-center text-sm">
-                  {popup ? popup : <div>‎</div>}
-                </div>
-                <div className="text-xs text-semilight font-light text-center mb-2">
-                  Need assistance? Have a suggestion or feature request for us?
-                  Want to share your feedback or ideas for improvement? Reach
-                  out to us at&nbsp;
-                  <a
-                    href="mailto:info@algabay.com"
-                    className="text-blue-500 hover:underline"
-                  >
-                    info@algabay.com
-                  </a>
-                  . We're all ears!
+                  <div>
+                    <div className="text-semilight text-sm font-light">
+                      Instagram
+                    </div>
+                    <input
+                      type="link"
+                      defaultValue={userData.instagramLink}
+                      onChange={(e) => {
+                        setInstagramLink(e.target.value);
+                      }}
+                      className="mt-1 h-10 bg-semidark text-semilight w-full text-base font-light rounded-lg px-2 focus:outline-none border border-semidark"
+                    />
+                  </div>
+                  <div>
+                    <div className="text-semilight text-sm font-light">Bio</div>
+                    <textarea
+                      rows={3}
+                      className="mt-1 w-full bg-semidark text-semilight text-base font-light px-2 py-1 resize-none no-scrollbar rounded-lg border border-semidark"
+                      defaultValue={userData.bio}
+                      wrap="soft"
+                      maxLength={150}
+                      onChange={(e) => {
+                        setBio(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="text-rosemain font-ubuntu font-light text-center text-sm">
+                    {popup ? popup : <div>‎</div>}
+                  </div>
+                  <div className="text-xs text-semilight font-light text-center mb-2">
+                    Need assistance? Have a suggestion or feature request for
+                    us? Want to share your feedback or ideas for improvement?
+                    Reach out to us at&nbsp;
+                    <a
+                      href="mailto:info@algabay.com"
+                      className="text-blue-500 hover:underline"
+                    >
+                      info@algabay.com
+                    </a>
+                    . We're all ears!
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </div>{" "}
       </div>
     </>
   );

@@ -3,10 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { BACKEND_URL } from "../../config";
 import { CircularProgress, LinearProgress } from "@mui/material";
-import { NavBar } from "../Bars/NavBar";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ReportIcon from "@mui/icons-material/Report";
-import { BottomBar } from "../Bars/BottomBar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -229,7 +227,7 @@ export const PostProfile = () => {
 
   if (ReportingState) {
     return (
-      <div className="w-full bg-black h-screen flex justify-center items-center">
+      <div className="w-full bg-dark h-screen flex justify-center items-center">
         <div className="flex text-light flex-col gap-4 text-base items-center font-ubuntu font-normal">
           Do you really want to report the content ?
           <div className="flex gap-5">
@@ -256,13 +254,11 @@ export const PostProfile = () => {
 
   return (
     <div
-      className="h-screen  overflow-y-auto no-scrollbar py-12 "
+      className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14"
       onScroll={handleScroll}
       ref={scrollContainerRef}
     >
-      <NavBar />
-
-      <div>
+      <div className="w-full md:w-[35%] px-2">
         <div className="my-2 rounded-lg border border-semidark  bg-dark">
           {postData.video ? (
             <div className="relative w-full aspect-square overflow-hidden">
@@ -276,7 +272,7 @@ export const PostProfile = () => {
               />
               {!isPlaying && (
                 <div
-                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
+                  className="absolute inset-0 flex items-center justify-center bg-dark bg-opacity-30 cursor-pointer"
                   onClick={togglePlay}
                 >
                   <PlayArrowIcon
@@ -387,132 +383,130 @@ export const PostProfile = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      <div
-        className="overflow-y-auto no-scrollbar touch-action-none"
-        ref={ScrollContainerRef}
-      >
-        {postComments.length > 0 ? (
-          postComments.map((comment, index) => (
-            <div
-              key={index}
-              className="my-2 rounded-lg border border-semidark  bg-dark"
-            >
-              <div className="p-3 flex items-center justify-between">
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex gap-2 items-center">
-                    <div>
-                      {comment.anonymity ? (
-                        <img
-                          src="/mask.png"
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
-                      ) : (
-                        <img
-                          src={
-                            comment.creator.image
-                              ? comment.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
-                      )}
-                    </div>
-                    <div className="text-light text-sm lg:text-base font-normal">
-                      {comment.anonymity ? (
-                        <div className="text-light text-sm lg:text-base font-normal">
-                          {comment.creator.username}
-                        </div>
-                      ) : (
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/${comment.creator.username}`);
-                          }}
-                          className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
-                        >
-                          {comment.creator.username}
-                        </div>
-                      )}
-                    </div>
+        <div
+          className="overflow-y-auto no-scrollbar touch-action-none"
+          ref={ScrollContainerRef}
+        >
+          {postComments.length > 0 ? (
+            postComments.map((comment, index) => (
+              <div
+                key={index}
+                className="my-2 rounded-lg border border-semidark  bg-dark"
+              >
+                <div className="p-3 flex items-center justify-between">
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex gap-2 items-center">
+                      <div>
+                        {comment.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              comment.creator.image
+                                ? comment.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        )}
+                      </div>
+                      <div className="text-light text-sm lg:text-base font-normal">
+                        {comment.anonymity ? (
+                          <div className="text-light text-sm lg:text-base font-normal">
+                            {comment.creator.username}
+                          </div>
+                        ) : (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/${comment.creator.username}`);
+                            }}
+                            className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                          >
+                            {comment.creator.username}
+                          </div>
+                        )}
+                      </div>
 
-                    <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                      · {getTimeDifference(comment.createdAt)}
+                      <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                        · {getTimeDifference(comment.createdAt)}
+                      </div>
                     </div>
                   </div>
                 </div>
+                {comment.caption && (
+                  <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
+                    {comment.caption}
+                  </div>
+                )}
+                <div className="p-3 flex items-center justify-between">
+                  <button
+                    className="bg-semidark text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (token) {
+                        handleLikeComment(comment.id);
+                      } else {
+                        navigate("/auth");
+                      }
+                    }}
+                  >
+                    {comment.isLiked ? (
+                      <div>
+                        <FavoriteIcon
+                          sx={{
+                            fontSize: 22,
+                          }}
+                          className="text-rosemain"
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <FavoriteBorderIcon
+                          sx={{
+                            fontSize: 22,
+                          }}
+                          className="text-light hover:text-rosemain"
+                        />
+                      </div>
+                    )}
+                    {comment.likesCount}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setReportingContentId(comment.id);
+                      setReportingState(true);
+                    }}
+                  >
+                    <ReportIcon
+                      sx={{ fontSize: 22 }}
+                      className="text-semilight"
+                    />
+                  </button>
+                </div>
               </div>
-              {comment.caption && (
-                <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                  {comment.caption}
+            ))
+          ) : (
+            <div>
+              {isLoadingComments ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                </div>
+              ) : (
+                <div className="text-semilight my-5 font-light text-center text-lg">
+                  No posts found
                 </div>
               )}
-              <div className="p-3 flex items-center justify-between">
-                <button
-                  className="bg-semidark text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (token) {
-                      handleLikeComment(comment.id);
-                    } else {
-                      navigate("/auth");
-                    }
-                  }}
-                >
-                  {comment.isLiked ? (
-                    <div>
-                      <FavoriteIcon
-                        sx={{
-                          fontSize: 22,
-                        }}
-                        className="text-rosemain"
-                      />
-                    </div>
-                  ) : (
-                    <div>
-                      <FavoriteBorderIcon
-                        sx={{
-                          fontSize: 22,
-                        }}
-                        className="text-light hover:text-rosemain"
-                      />
-                    </div>
-                  )}
-                  {comment.likesCount}
-                </button>
-                <button
-                  onClick={() => {
-                    setReportingContentId(comment.id);
-                    setReportingState(true);
-                  }}
-                >
-                  <ReportIcon
-                    sx={{ fontSize: 22 }}
-                    className="text-semilight"
-                  />
-                </button>
-              </div>
             </div>
-          ))
-        ) : (
-          <div>
-            {isLoadingComments ? (
-              <div className="w-full my-5 flex justify-center items-center">
-                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-              </div>
-            ) : (
-              <div className="text-semilight my-5 font-light text-center text-lg">
-                No posts found
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      <BottomBar />
+          )}
+        </div>
+      </div>{" "}
     </div>
   );
 };

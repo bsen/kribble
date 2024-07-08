@@ -5,13 +5,12 @@ import { BACKEND_URL } from "../../../config";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import NotesIcon from "@mui/icons-material/Notes";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { NavBar } from "../../Bars/NavBar";
-import { BottomBar } from "../../Bars/BottomBar";
 import AddIcon from "@mui/icons-material/Add";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { NavBar } from "../../Bars/NavBar";
 
 interface CommunityData {
   id: string;
@@ -347,7 +346,7 @@ export const ProfileSection: React.FC = () => {
   }
   if (deleteState) {
     return (
-      <div className="w-full bg-black h-screen flex justify-center items-center">
+      <div className="w-full bg-dark h-screen flex justify-center items-center">
         <div className="flex text-light text-center flex-col gap-6 text-base items-center font-ubuntu font-normal">
           Do you really want to delete the post ?
           <br />
@@ -375,300 +374,306 @@ export const ProfileSection: React.FC = () => {
   }
   return (
     <>
+      <NavBar />
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-12 "
+        className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
-        {profileLoading && <LinearProgress sx={{ backgroundColor: "black" }} />}
-        {!profileLoading && (
-          <div className="p-3 mt-2 rounded-lg border border-semidark bg-dark">
-            <div className="flex justify-between w-full items-center gap-2">
-              <img
-                src={communityData.image ? communityData.image : "/group.png"}
-                className="lg:w-20 lg:h-20 w-16 h-16 rounded-lg border border-semidark"
-              />
-              <div className="w-full">
-                <div className="flex justify-end items-center">
-                  {token && (
-                    <div>
-                      {isCreator && (
-                        <button
-                          onClick={navigateToEditCommunity}
-                          className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
-                        >
-                          Edit
-                        </button>
-                      )}
-
-                      {!isCreator && (
-                        <button
-                          onClick={handleJoinCommunity}
-                          disabled={isJoiningLoading}
-                          className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
-                        >
-                          <div className="flex items-center justify-center">
-                            {isJoiningLoading ? (
-                              <CircularProgress
-                                size="15px"
-                                className="my-0.5"
-                                sx={{ color: "rgb(200 200 200);" }}
-                              />
-                            ) : (
-                              <div>
-                                {isJoined ? <div>Joined</div> : <div>Join</div>}
-                              </div>
-                            )}
-                          </div>
-                        </button>
-                      )}
-                    </div>
-                  )}
-                  {!token && (
-                    <button
-                      onClick={() => {
-                        navigate("/login");
-                      }}
-                      className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
-                    >
-                      Join
-                    </button>
-                  )}
-                </div>
-                <div className="text-lg lg:text-xl font-normal text-light">
-                  {communityData.name}
-                </div>
-                <div className="flex text-light items-center gap-2 font-light text-sm">
-                  <div className="flex gap-1 items-center">
-                    {communityData.membersCount} Members
-                  </div>
-                  <div className="flex gap-1 items-center">
-                    {communityData.postsCount} Posts
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-sm my-2 text-light font-light">
-              {communityData.description
-                ? communityData.description
-                : "description"}
-            </div>
-
-            <div
-              className="w-fit flex justify-start items-center"
-              onClick={() => {
-                navigate(`/create/${communityData.name}`);
-              }}
-            >
-              <div
-                className={
-                  "flex w-fit justify-between text-sm items-center text-semilight font-light bg-indigomain px-4 py-1 rounded-lg"
-                }
-              >
-                <AddIcon sx={{ fontSize: 20 }} />
-                <p>Post</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div>
-          {postData.posts.length > 0 ? (
-            postData.posts.map((post, index) => (
-              <div
-                key={index}
-                className="my-2 rounded-lg border border-semidark  bg-dark"
-              >
-                <div className="p-3 flex items-center justify-between">
-                  <div className="flex gap-2 items-center">
-                    <div>
-                      {post.anonymity ? (
-                        <img
-                          src="/mask.png"
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
-                      ) : (
-                        <img
-                          src={
-                            post.creator.image
-                              ? post.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
-                      )}
-                    </div>
-                    <div className="w-fit flex gap-2 items-center">
-                      <div className="flex gap-2 items-center">
-                        {post.anonymity ? (
-                          <div className="text-light text-sm lg:text-base font-normal">
-                            {post.creator.username}
-                          </div>
-                        ) : (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/${post.creator.username}`);
-                            }}
-                            className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+        <div className="w-full md:w-[35%] px-2">
+          {profileLoading && (
+            <LinearProgress sx={{ backgroundColor: "black" }} />
+          )}
+          {!profileLoading && (
+            <div className="p-3 mt-2 rounded-lg border border-semidark bg-dark">
+              <div className="flex justify-between w-full items-center gap-2">
+                <img
+                  src={communityData.image ? communityData.image : "/group.png"}
+                  className="lg:w-20 lg:h-20 w-16 h-16 rounded-lg border border-semidark"
+                />
+                <div className="w-full">
+                  <div className="flex justify-end items-center">
+                    {token && (
+                      <div>
+                        {isCreator && (
+                          <button
+                            onClick={navigateToEditCommunity}
+                            className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
                           >
-                            {post.creator.username}
-                          </div>
+                            Edit
+                          </button>
                         )}
 
-                        <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                          · {getTimeDifference(post.createdAt)}
-                        </div>
+                        {!isCreator && (
+                          <button
+                            onClick={handleJoinCommunity}
+                            disabled={isJoiningLoading}
+                            className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
+                          >
+                            <div className="flex items-center justify-center">
+                              {isJoiningLoading ? (
+                                <CircularProgress
+                                  size="15px"
+                                  className="my-0.5"
+                                  sx={{ color: "rgb(200 200 200);" }}
+                                />
+                              ) : (
+                                <div>
+                                  {isJoined ? (
+                                    <div>Joined</div>
+                                  ) : (
+                                    <div>Join</div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </button>
+                        )}
                       </div>
-                    </div>
-                  </div>
-                  {post.taggedUser && (
-                    <div className="">
-                      <div
-                        onClick={() => {
-                          navigate(`/${post.taggedUser.username}`);
-                        }}
-                        className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
-                      >
-                        <img
-                          className="h-4 w-4 rounded-lg"
-                          src={
-                            post.taggedUser.image
-                              ? post.taggedUser.image
-                              : "/user.png"
-                          }
-                        />
-                        {post.taggedUser.username}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {post.video ? (
-                  <div className="relative w-full aspect-square overflow-hidden">
-                    <video
-                      data-post-id={post.id}
-                      src={post.video}
-                      loop
-                      playsInline
-                      muted
-                      className="absolute top-0 left-0 w-full h-full object-cover border border-semidark cursor-pointer"
-                      onClick={() => togglePlay(post.id)}
-                    />
-                    <button
-                      className="absolute bottom-2 right-2 bg-black/40 text-light h-7 w-7 flex justify-center items-center rounded-full"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const video = document.querySelector(
-                          `video[data-post-id="${post.id}"]`
-                        ) as HTMLVideoElement;
-                        if (video) {
-                          video.muted = !video.muted;
-                          setMutedVideos((prev) => ({
-                            ...prev,
-                            [post.id]: video.muted,
-                          }));
-                        }
-                      }}
-                    >
-                      {mutedVideos[post.id] ? (
-                        <VolumeOffIcon sx={{ fontSize: 20 }} />
-                      ) : (
-                        <VolumeUpIcon sx={{ fontSize: 20 }} />
-                      )}
-                    </button>
-                  </div>
-                ) : post.image ? (
-                  <img src={post.image} className="w-[100%]" />
-                ) : null}
-
-                {post.caption && (
-                  <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                    {post.caption}
-                  </div>
-                )}
-                <div className="p-3 flex items-center justify-between">
-                  <div className="flex gap-2 items-center">
-                    <button
-                      className="bg-semidark  text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                      onClick={(e) => {
-                        if (token) {
-                          e.stopPropagation();
-                          handleLike(post.id);
-                        } else {
-                          navigate("/auth");
-                        }
-                      }}
-                    >
-                      {post.isLiked ? (
-                        <div>
-                          <FavoriteIcon
-                            sx={{
-                              fontSize: 22,
-                            }}
-                            className="text-rosemain"
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          <FavoriteBorderIcon
-                            sx={{
-                              fontSize: 22,
-                            }}
-                            className="text-light hover:text-rosemain"
-                          />
-                        </div>
-                      )}
-                      {post.likesCount}
-                    </button>
-
-                    <button
-                      onClick={() => navigate(`/post/${post.id}`)}
-                      className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                    >
-                      <NotesIcon sx={{ fontSize: 24 }} />
-                      {post.commentsCount}
-                    </button>
-                  </div>
-                  <div>
-                    {isCreator && (
+                    )}
+                    {!token && (
                       <button
                         onClick={() => {
-                          setPostDeleteId(post.id);
-                          setDeleteState(true);
+                          navigate("/login");
                         }}
+                        className="text-left flex justify-center items-center text-semilight bg-indigomain font-light rounded-lg px-4 py-0.5 text-sm"
                       >
-                        <MoreVertIcon
-                          className="text-semilight"
-                          sx={{ fontSize: 20 }}
-                        />
+                        Join
                       </button>
                     )}
                   </div>
+                  <div className="text-lg lg:text-xl font-normal text-light">
+                    {communityData.name}
+                  </div>
+                  <div className="flex text-light items-center gap-2 font-light text-sm">
+                    <div className="flex gap-1 items-center">
+                      {communityData.membersCount} Members
+                    </div>
+                    <div className="flex gap-1 items-center">
+                      {communityData.postsCount} Posts
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div>
-              {!isLoading && (
-                <div className="text-semilight my-5 font-light text-center text-lg">
-                  No posts found
-                </div>
-              )}
-            </div>
-          )}
-          {isLoading && (
-            <div className="w-full my-5 flex justify-center items-center">
-              <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-            </div>
-          )}
-        </div>
 
-        <BottomBar />
+              <div className="text-sm my-2 text-light font-light">
+                {communityData.description
+                  ? communityData.description
+                  : "description"}
+              </div>
+
+              <div
+                className="w-fit flex justify-start items-center"
+                onClick={() => {
+                  navigate(`/create/${communityData.name}`);
+                }}
+              >
+                <div
+                  className={
+                    "flex w-fit justify-between text-sm items-center text-semilight font-light bg-indigomain px-4 py-1 rounded-lg"
+                  }
+                >
+                  <AddIcon sx={{ fontSize: 20 }} />
+                  <p>Post</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div>
+            {postData.posts.length > 0 ? (
+              postData.posts.map((post, index) => (
+                <div
+                  key={index}
+                  className="my-2 rounded-lg border border-semidark  bg-dark"
+                >
+                  <div className="p-3 flex items-center justify-between">
+                    <div className="flex gap-2 items-center">
+                      <div>
+                        {post.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-7 h-7 rounded-lg"
+                          />
+                        )}
+                      </div>
+                      <div className="w-fit flex gap-2 items-center">
+                        <div className="flex gap-2 items-center">
+                          {post.anonymity ? (
+                            <div className="text-light text-sm lg:text-base font-normal">
+                              {post.creator.username}
+                            </div>
+                          ) : (
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/${post.creator.username}`);
+                              }}
+                              className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                            >
+                              {post.creator.username}
+                            </div>
+                          )}
+
+                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                            · {getTimeDifference(post.createdAt)}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {post.taggedUser && (
+                      <div className="">
+                        <div
+                          onClick={() => {
+                            navigate(`/${post.taggedUser.username}`);
+                          }}
+                          className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
+                        >
+                          <img
+                            className="h-4 w-4 rounded-lg"
+                            src={
+                              post.taggedUser.image
+                                ? post.taggedUser.image
+                                : "/user.png"
+                            }
+                          />
+                          {post.taggedUser.username}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {post.video ? (
+                    <div className="relative w-full aspect-square overflow-hidden">
+                      <video
+                        data-post-id={post.id}
+                        src={post.video}
+                        loop
+                        playsInline
+                        muted
+                        className="absolute top-0 left-0 w-full h-full object-cover border border-semidark cursor-pointer"
+                        onClick={() => togglePlay(post.id)}
+                      />
+                      <button
+                        className="absolute bottom-2 right-2 bg-dark/40 text-light h-7 w-7 flex justify-center items-center rounded-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const video = document.querySelector(
+                            `video[data-post-id="${post.id}"]`
+                          ) as HTMLVideoElement;
+                          if (video) {
+                            video.muted = !video.muted;
+                            setMutedVideos((prev) => ({
+                              ...prev,
+                              [post.id]: video.muted,
+                            }));
+                          }
+                        }}
+                      >
+                        {mutedVideos[post.id] ? (
+                          <VolumeOffIcon sx={{ fontSize: 20 }} />
+                        ) : (
+                          <VolumeUpIcon sx={{ fontSize: 20 }} />
+                        )}
+                      </button>
+                    </div>
+                  ) : post.image ? (
+                    <img src={post.image} className="w-[100%]" />
+                  ) : null}
+
+                  {post.caption && (
+                    <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
+                      {post.caption}
+                    </div>
+                  )}
+                  <div className="p-3 flex items-center justify-between">
+                    <div className="flex gap-2 items-center">
+                      <button
+                        className="bg-semidark  text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                        onClick={(e) => {
+                          if (token) {
+                            e.stopPropagation();
+                            handleLike(post.id);
+                          } else {
+                            navigate("/auth");
+                          }
+                        }}
+                      >
+                        {post.isLiked ? (
+                          <div>
+                            <FavoriteIcon
+                              sx={{
+                                fontSize: 22,
+                              }}
+                              className="text-rosemain"
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <FavoriteBorderIcon
+                              sx={{
+                                fontSize: 22,
+                              }}
+                              className="text-light hover:text-rosemain"
+                            />
+                          </div>
+                        )}
+                        {post.likesCount}
+                      </button>
+
+                      <button
+                        onClick={() => navigate(`/post/${post.id}`)}
+                        className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                      >
+                        <NotesIcon sx={{ fontSize: 24 }} />
+                        {post.commentsCount}
+                      </button>
+                    </div>
+                    <div>
+                      {isCreator && (
+                        <button
+                          onClick={() => {
+                            setPostDeleteId(post.id);
+                            setDeleteState(true);
+                          }}
+                        >
+                          <MoreVertIcon
+                            className="text-semilight"
+                            sx={{ fontSize: 20 }}
+                          />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div>
+                {!isLoading && (
+                  <div className="text-semilight my-5 font-light text-center text-lg">
+                    No posts found
+                  </div>
+                )}
+              </div>
+            )}
+            {isLoading && (
+              <div className="w-full my-5 flex justify-center items-center">
+                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );

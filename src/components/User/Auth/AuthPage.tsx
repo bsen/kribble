@@ -70,7 +70,7 @@ export const AuthPage = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-center bg-black items-center">
+    <div className="h-screen flex flex-col justify-center bg-dark items-center">
       <div className="w-72 bg-dark p-5 rounded-lg flex flex-col items-center gap-4">
         <div className="text-semilight  flex flex-col justify-center items-center gap-3 text-center font-ubuntu font-medium text-[2.5rem]">
           <img src="/friendcity.png" className="h-10 mt-1" />

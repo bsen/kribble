@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
-import { BottomBar } from "../../Bars/BottomBar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { CircularProgress } from "@mui/material";
 
@@ -64,7 +63,7 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
 
   return (
     <>
-      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[34%] bg-black/80 flex justify-center items-center">
+      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[34%] bg-dark/80 flex justify-center items-center">
         <div
           className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
           onScroll={handleScroll}
@@ -116,8 +115,6 @@ export const CommunitiesComponent: React.FC<CommunitiesComponentProps> = ({
           )}
         </div>
       </div>
-
-      <BottomBar />
     </>
   );
 };

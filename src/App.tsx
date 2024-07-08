@@ -14,8 +14,7 @@ import { UserProvider } from "./components/User/Context/UserContext";
 import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
 import { Community } from "./pages/Community/Profile/Community";
-import { Tv } from "./pages/Tv/Tv";
-
+import { NotificationsComponent } from "./components/Notifications/NotificationsComponent";
 interface ProtectedRouteProps {
   element: React.ReactNode;
 }
@@ -42,8 +41,6 @@ function App() {
             />
             <Route path="/auth" element={<PublicRoute element={<Auth />} />} />
 
-            <Route path="/tv" element={<ProtectedRoute element={<Tv />} />} />
-
             <Route
               path="/community/:name"
               element={<ProtectedRoute element={<Community />} />}
@@ -51,6 +48,10 @@ function App() {
             <Route
               path="/communities"
               element={<ProtectedRoute element={<Communities />} />}
+            />
+            <Route
+              path="/notifs"
+              element={<ProtectedRoute element={<NotificationsComponent />} />}
             />
             <Route
               path="/comments"

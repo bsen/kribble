@@ -5,7 +5,6 @@ import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { NavBar } from "../../Bars/NavBar";
 import { CircularProgress } from "@mui/material";
-import { BottomBar } from "../../Bars/BottomBar";
 import { useNavigate } from "react-router-dom";
 interface DebouncedFunction<T extends (...args: any[]) => void> {
   (...args: Parameters<T>): void;
@@ -121,9 +120,9 @@ export const Community = () => {
 
   return (
     <>
-      <div className="h-screen flex justify-center items-center">
-        <NavBar />
-        <div className="w-full max-w-md p-3 rounded-lg bg-dark">
+      <NavBar />
+      <div className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14">
+        <div className="w-full md:w-[35%] px-2">
           <div className="text-lg my-3 flex justify-center items-center gap-5 font-ubuntu font-medium text-center">
             <div>
               <button onClick={handleClose}>
@@ -176,7 +175,6 @@ export const Community = () => {
             </div>
           </div>
         </div>
-        <BottomBar />
       </div>
     </>
   );

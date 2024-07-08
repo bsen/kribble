@@ -5,7 +5,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CircularProgress } from "@mui/material";
 import { BACKEND_URL } from "../../../config";
 import { NavBar } from "../../Bars/NavBar";
-import { BottomBar } from "../../Bars/BottomBar";
 
 interface Comment {
   id: string;
@@ -127,68 +126,68 @@ export const CommentsComponent = () => {
   }
   return (
     <>
+      <NavBar />
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-12 "
+        className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
-        {commentsData.comments.length > 0 ? (
-          commentsData.comments.map((comment, index) => (
-            <div
-              key={index}
-              className="my-2 rounded-lg border border-semidark  bg-dark"
-            >
+        <div className="w-full md:w-[35%] px-2">
+          {commentsData.comments.length > 0 ? (
+            commentsData.comments.map((comment, index) => (
               <div
-                onClick={() => {
-                  navigate(`/post/${comment.post.id}`);
-                }}
+                key={index}
+                className="my-2 rounded-lg border border-semidark  bg-dark"
               >
-                {comment.post.video ? (
-                  <video controls className="w-[100%]">
-                    <source src={comment.post.video} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                ) : comment.post.image ? (
-                  <img src={comment.post.image} className="w-[100%]" />
-                ) : null}
-                {comment.post.caption && (
-                  <div className="text-light px-3 my-2 font-ubuntu font-light text-sm">
-                    {comment.post.caption}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex justify-between items-start text-light rounded-b-lg bg-semidark p-3 font-ubuntu font-light text-sm">
-                <div> {comment.caption}</div>
-
                 <div
                   onClick={() => {
-                    setCommentId(comment.id);
-                    setPostId(comment.post.id);
-                    setDeleteState(true);
+                    navigate(`/post/${comment.post.id}`);
                   }}
                 >
-                  <MoreVertIcon sx={{ fontSize: 20 }} />
+                  {comment.post.video ? (
+                    <video controls className="w-[100%]">
+                      <source src={comment.post.video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : comment.post.image ? (
+                    <img src={comment.post.image} className="w-[100%]" />
+                  ) : null}
+                  {comment.post.caption && (
+                    <div className="text-light px-3 my-2 font-ubuntu font-light text-sm">
+                      {comment.post.caption}
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex justify-between items-start text-light rounded-b-lg bg-semidark p-3 font-ubuntu font-light text-sm">
+                  <div> {comment.caption}</div>
+
+                  <div
+                    onClick={() => {
+                      setCommentId(comment.id);
+                      setPostId(comment.post.id);
+                      setDeleteState(true);
+                    }}
+                  >
+                    <MoreVertIcon sx={{ fontSize: 20 }} />
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div>
+              {isLoadingComments ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+                </div>
+              ) : (
+                <div className="text-semilight my-5 font-light text-center text-sm">
+                  No Comments found
+                </div>
+              )}
             </div>
-          ))
-        ) : (
-          <div>
-            {isLoadingComments ? (
-              <div className="w-full my-5 flex justify-center items-center">
-                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-              </div>
-            ) : (
-              <div className="text-semilight my-5 font-light text-center text-sm">
-                No Comments found
-              </div>
-            )}
-          </div>
-        )}
-
-        <BottomBar />
+          )}
+        </div>
       </div>
     </>
   );

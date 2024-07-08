@@ -4,6 +4,7 @@ import { BACKEND_URL } from "../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { NavBar } from "../Bars/NavBar";
 
 interface NotificationData {
   id: string;
@@ -26,13 +27,7 @@ interface NotificationData {
   } | null;
 }
 
-interface NotificationComponentProps {
-  closeComponent: () => void;
-}
-
-export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
-  closeComponent,
-}) => {
+export const NotificationsComponent = () => {
   const token = localStorage.getItem("token");
   const [notificationsData, setNotificationsData] = useState<{
     notifications: NotificationData[];
@@ -110,24 +105,13 @@ export const NotificationsComponent: React.FC<NotificationComponentProps> = ({
 
   return (
     <>
+      <NavBar />
       <div
-        style={{ zIndex: 100 }}
-        className="h-[calc(100vh-48px)] absolute w-full lg:w-[34%] bg-black/60 flex justify-center items-center"
+        className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14"
+        onScroll={handleScroll}
+        ref={scrollContainerRef}
       >
-        <div
-          className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
-          onScroll={handleScroll}
-          ref={scrollContainerRef}
-        >
-          <div className="flex text-semilight justify-center gap-5 items-center">
-            <button
-              onClick={closeComponent}
-              className="border border-semidark p-1 rounded-lg"
-            >
-              <ArrowBackIcon />
-            </button>
-            <div className="text-sm font-ubuntu text-center">Notifications</div>
-          </div>
+        <div className="w-full md:w-[35%] px-2">
           {notificationsData.notifications.length > 0 ? (
             notificationsData.notifications.map((notification) => (
               <div

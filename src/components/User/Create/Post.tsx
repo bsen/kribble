@@ -16,7 +16,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import imageCompression from "browser-image-compression";
 import { BACKEND_URL } from "../../../config";
-import { BottomBar } from "../../Bars/BottomBar";
 import { NavBar } from "../../Bars/NavBar";
 import { UserContext } from "../Context/UserContext";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -351,9 +350,9 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
 
   return (
     <>
-      <div className="py-12">
-        <NavBar />
-        <div className="w-full mt-2 bg-dark p-4 rounded-lg">
+      <NavBar />
+      <div className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14">
+        <div className="w-full md:w-[35%] px-2">
           {isCommunityPost && (
             <div className="flex gap-4 items-center">
               <div className="text-base font-ubuntu w-full text-center items-center mb-4 font-light text-light">
@@ -452,7 +451,7 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
                   />
                   {!isPlaying && (
                     <div
-                      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 cursor-pointer"
+                      className="absolute inset-0 flex items-center justify-center bg-dark bg-opacity-30 cursor-pointer"
                       onClick={togglePlay}
                     >
                       <PlayArrowIcon
@@ -502,7 +501,6 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
             {popup}
           </div>
         )}
-        <BottomBar />
       </div>
     </>
   );

@@ -3,14 +3,12 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../config";
 import NotesIcon from "@mui/icons-material/Notes";
-import { BottomBar } from "../Bars/BottomBar";
-import { NavBar } from "../Bars/NavBar";
-import AddIcon from "@mui/icons-material/Add";
 import { CircularProgress } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { NavBar } from "../Bars/NavBar";
 
 interface Post {
   id: string;
@@ -198,237 +196,227 @@ export const HomeComponent = () => {
 
   return (
     <>
+      <NavBar />
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-12"
+        className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
-        {postData.posts.length > 0 ? (
-          postData.posts.map((post, index) => (
-            <div
-              key={index}
-              className="my-2 rounded-lg border border-semidark  bg-dark"
-            >
-              <div className="p-3 flex items-center justify-between">
-                <div className="flex gap-2 items-center">
-                  {post.community ? (
-                    <div>
-                      {post.community && (
-                        <div>
-                          {post.community && (
-                            <img
-                              src={post.community.image || "/group.png"}
-                              className="w-7 h-7 rounded-lg"
-                              alt="Community"
-                            />
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div>
-                      {post.anonymity ? (
-                        <img
-                          src="/mask.png"
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
-                      ) : (
-                        <img
-                          src={
-                            post.creator.image
-                              ? post.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
-                      )}
-                    </div>
-                  )}
-                  <div className="w-fit flex gap-2 items-center">
+        <div className="w-full md:w-[35%] px-2">
+          {postData.posts.length > 0 ? (
+            postData.posts.map((post, index) => (
+              <div key={index} className="my-2 border-b border-semidark">
+                <div className="py-4 flex items-center justify-between">
+                  <div className="flex gap-2 items-center">
                     {post.community ? (
                       <div>
-                        <div className="flex gap-2 items-center">
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/community/${post.community.name}`);
-                            }}
-                          >
+                        {post.community && (
+                          <div>
                             {post.community && (
-                              <div className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal">
-                                c/ {post.community.name}
-                              </div>
+                              <img
+                                src={post.community.image || "/group.png"}
+                                className="w-8 h-8 rounded-lg"
+                                alt="Community"
+                              />
                             )}
                           </div>
-                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                            · {getTimeDifference(post.createdAt)}
-                          </div>
-                        </div>
+                        )}
                       </div>
                     ) : (
-                      <>
-                        <div className="flex gap-2 items-center">
-                          {post.anonymity ? (
-                            <div className="text-light text-sm lg:text-base font-normal">
-                              {post.creator.username}
-                            </div>
-                          ) : (
+                      <div>
+                        {post.anonymity ? (
+                          <img
+                            src="/mask.png"
+                            alt="Profile"
+                            className="w-8 h-8 rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={
+                              post.creator.image
+                                ? post.creator.image
+                                : "/user.png"
+                            }
+                            alt="Profile"
+                            className="w-8 h-8 rounded-lg"
+                          />
+                        )}
+                      </div>
+                    )}
+                    <div className="w-fit flex gap-2 items-center">
+                      {post.community ? (
+                        <div>
+                          <div className="flex gap-2 items-center">
                             <div
                               onClick={(e) => {
                                 e.stopPropagation();
-                                navigate(`/${post.creator.username}`);
+                                navigate(`/community/${post.community.name}`);
                               }}
-                              className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
                             >
-                              {post.creator.username}
+                              {post.community && (
+                                <div className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal">
+                                  c/ {post.community.name}
+                                </div>
+                              )}
                             </div>
-                          )}
-
-                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                            · {getTimeDifference(post.createdAt)}
+                            <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
                           </div>
                         </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-                {post.taggedUser && (
-                  <div className="">
-                    <div
-                      onClick={() => {
-                        navigate(`/${post.taggedUser.username}`);
-                      }}
-                      className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
-                    >
-                      <img
-                        className="h-4 w-4 rounded-lg"
-                        src={
-                          post.taggedUser.image
-                            ? post.taggedUser.image
-                            : "/user.png"
-                        }
-                      />
-                      {post.taggedUser.username}
+                      ) : (
+                        <>
+                          <div className="flex gap-2 items-center">
+                            {post.anonymity ? (
+                              <div className="text-light text-sm lg:text-base font-normal">
+                                {post.creator.username}
+                              </div>
+                            ) : (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/${post.creator.username}`);
+                                }}
+                                className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
+                              >
+                                {post.creator.username}
+                              </div>
+                            )}
+
+                            <div className="text-semilight text-xs lg:text-sm font-ubuntu">
+                              · {getTimeDifference(post.createdAt)}
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
-                )}
-              </div>
-              {post.video ? (
-                <div className="relative w-full aspect-square overflow-hidden">
-                  <video
-                    data-post-id={post.id}
-                    src={post.video}
-                    loop
-                    playsInline
-                    muted
-                    className="absolute top-0 left-0 w-full h-full object-cover border border-semidark cursor-pointer"
-                    onClick={() => togglePlay(post.id)}
-                  />
-                  <button
-                    className="absolute bottom-2 right-2 bg-black/40 text-light h-7 w-7 flex justify-center items-center rounded-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const video = document.querySelector(
-                        `video[data-post-id="${post.id}"]`
-                      ) as HTMLVideoElement;
-                      if (video) {
-                        video.muted = !video.muted;
-                        setMutedVideos((prev) => ({
-                          ...prev,
-                          [post.id]: video.muted,
-                        }));
-                      }
-                    }}
-                  >
-                    {mutedVideos[post.id] ? (
-                      <VolumeOffIcon sx={{ fontSize: 20 }} />
-                    ) : (
-                      <VolumeUpIcon sx={{ fontSize: 20 }} />
-                    )}
-                  </button>
+                  {post.taggedUser && (
+                    <div className="">
+                      <div
+                        onClick={() => {
+                          navigate(`/${post.taggedUser.username}`);
+                        }}
+                        className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
+                      >
+                        <img
+                          className="h-4 w-4 rounded-lg"
+                          src={
+                            post.taggedUser.image
+                              ? post.taggedUser.image
+                              : "/user.png"
+                          }
+                        />
+                        {post.taggedUser.username}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ) : post.image ? (
-                <img src={post.image} className="w-[100%]" />
-              ) : null}
+                {post.video ? (
+                  <div className="relative w-full aspect-square overflow-hidden">
+                    <video
+                      data-post-id={post.id}
+                      src={post.video}
+                      loop
+                      playsInline
+                      muted
+                      className="absolute top-0 left-0 w-full h-full object-cover cursor-pointer"
+                      onClick={() => togglePlay(post.id)}
+                    />
+                    <button
+                      className="absolute bottom-2 right-2 bg-dark/40 text-light h-7 w-7 flex justify-center items-center rounded-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const video = document.querySelector(
+                          `video[data-post-id="${post.id}"]`
+                        ) as HTMLVideoElement;
+                        if (video) {
+                          video.muted = !video.muted;
+                          setMutedVideos((prev) => ({
+                            ...prev,
+                            [post.id]: video.muted,
+                          }));
+                        }
+                      }}
+                    >
+                      {mutedVideos[post.id] ? (
+                        <VolumeOffIcon sx={{ fontSize: 20 }} />
+                      ) : (
+                        <VolumeUpIcon sx={{ fontSize: 20 }} />
+                      )}
+                    </button>
+                  </div>
+                ) : post.image ? (
+                  <img src={post.image} />
+                ) : null}
 
-              {post.caption && (
-                <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                  {post.caption}
+                {post.caption && (
+                  <div className="text-light my-2 font-ubuntu font-light text-base">
+                    {post.caption}
+                  </div>
+                )}
+
+                <div className="py-4 flex items-center justify-between">
+                  <div className="flex gap-6 items-center">
+                    <button
+                      className="text-light flex justify-center items-center gap-2 cursor-pointer"
+                      onClick={(e) => {
+                        if (token) {
+                          e.stopPropagation();
+                          handleLike(post.id);
+                        } else {
+                          navigate("/auth");
+                        }
+                      }}
+                    >
+                      {post.isLiked ? (
+                        <div>
+                          <FavoriteIcon
+                            sx={{
+                              fontSize: 22,
+                            }}
+                            className="text-rosemain"
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <FavoriteBorderIcon
+                            sx={{
+                              fontSize: 22,
+                            }}
+                            className="text-light hover:text-rosemain"
+                          />
+                        </div>
+                      )}
+                      {post.likesCount}
+                    </button>
+
+                    <button
+                      onClick={() => navigate(`/post/${post.id}`)}
+                      className="text-light flex justify-center items-center gap-2 cursor-pointer"
+                    >
+                      <NotesIcon sx={{ fontSize: 24 }} />
+                      {post.commentsCount}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>
+              {!isLoading && (
+                <div className="text-light my-5 font-light text-center text-xl">
+                  Please refresh the page.
                 </div>
               )}
-
-              <div className="p-3 flex items-center justify-between">
-                <div className="flex gap-2 items-center">
-                  <button
-                    className="bg-semidark  text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                    onClick={(e) => {
-                      if (token) {
-                        e.stopPropagation();
-                        handleLike(post.id);
-                      } else {
-                        navigate("/auth");
-                      }
-                    }}
-                  >
-                    {post.isLiked ? (
-                      <div>
-                        <FavoriteIcon
-                          sx={{
-                            fontSize: 22,
-                          }}
-                          className="text-rosemain"
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <FavoriteBorderIcon
-                          sx={{
-                            fontSize: 22,
-                          }}
-                          className="text-light hover:text-rosemain"
-                        />
-                      </div>
-                    )}
-                    {post.likesCount}
-                  </button>
-
-                  <button
-                    onClick={() => navigate(`/post/${post.id}`)}
-                    className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                  >
-                    <NotesIcon sx={{ fontSize: 24 }} />
-                    {post.commentsCount}
-                  </button>
-                </div>
-              </div>
             </div>
-          ))
-        ) : (
-          <div>
-            {!isLoading && (
-              <div className="text-light my-5 font-light text-center text-xl">
-                Please refresh the page.
-              </div>
-            )}
-          </div>
-        )}
+          )}
+        </div>
         {isLoading && (
           <div className="w-full my-5 flex justify-center items-center">
             <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
           </div>
         )}
-        <div
-          onClick={() => {
-            navigate("/create");
-          }}
-          className="absolute bg-indigomain bottom-20 right-4 lg:hidden flex justify-center items-center w-11 h-11 rounded-full"
-        >
-          <AddIcon className="text-light" sx={{ fontSize: 28 }} />
-        </div>
-        <BottomBar />
       </div>
     </>
   );

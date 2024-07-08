@@ -6,7 +6,6 @@ import { BACKEND_URL } from "../../../config";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotesIcon from "@mui/icons-material/Notes";
 import { NavBar } from "../../Bars/NavBar";
-import { BottomBar } from "../../Bars/BottomBar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
@@ -269,16 +268,13 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
 
   return (
     <>
+      <NavBar />
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-12 "
+        className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
-        <div
-          className="overflow-y-auto no-scrollbar touch-action-none"
-          ref={postsScrollContainerRef}
-        >
+        <div className="w-full md:w-[35%] px-2">
           {postData.posts.length > 0 ? (
             postData.posts.map((post, index) => (
               <div
@@ -404,7 +400,7 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
                       onClick={() => togglePlay(post.id)}
                     />
                     <button
-                      className="absolute bottom-2 right-2 bg-black/40 text-light h-7 w-7 flex justify-center items-center rounded-full"
+                      className="absolute bottom-2 right-2 bg-dark/40 text-light h-7 w-7 flex justify-center items-center rounded-full"
                       onClick={(e) => {
                         e.stopPropagation();
                         const video = document.querySelector(
@@ -510,7 +506,6 @@ export const IncognitoPostsComponent: React.FC<ProfileSectionProps> = () => {
           )}
         </div>
       </div>
-      <BottomBar />
     </>
   );
 };

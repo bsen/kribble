@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { BACKEND_URL } from "../../../config";
 import { NavBar } from "../../Bars/NavBar";
-import { BottomBar } from "../../Bars/BottomBar";
 
 interface Communities {
   id: string;
@@ -115,31 +114,61 @@ export const CommunitiesComponent = () => {
 
   return (
     <>
+      <NavBar />
       <div
-        className="h-screen overflow-y-auto no-scrollbar py-12"
+        className="flex justify-center h-screen overflow-y-auto no-scrollbar py-14"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
-        <NavBar />
-        {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
+        <div className="w-full md:w-[35%] px-2">
+          {isSearching && <LinearProgress sx={{ backgroundColor: "black" }} />}
 
-        <div className="w-full h-14 flex justify-between items-center">
-          <div className="h-10 bg-dark mx-auto w-full hover:bg-semidark flex px-4 justify-between items-center border border-semidark rounded-lg">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) =>
-                handleSearchingCommunityNameChange(e.target.value)
-              }
-              placeholder="Search communities"
-              className="w-full h-full bg-dark hover:bg-semidark text-semilight focus:outline-none"
-            />
-            <SearchIcon className="text-semilight" />
+          <div className="w-full h-14 flex justify-between items-center">
+            <div className="h-10 bg-dark mx-auto w-full hover:bg-semidark flex px-4 justify-between items-center border border-semidark rounded-lg">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) =>
+                  handleSearchingCommunityNameChange(e.target.value)
+                }
+                placeholder="Search communities"
+                className="w-full h-full bg-dark hover:bg-semidark text-semilight focus:outline-none"
+              />
+              <SearchIcon className="text-semilight" />
+            </div>
           </div>
-        </div>
-        {search.length > 0 ? (
-          filteredCommunities.length > 0 ? (
-            filteredCommunities.map((community, index) => (
+          {search.length > 0 ? (
+            filteredCommunities.length > 0 ? (
+              filteredCommunities.map((community, index) => (
+                <div
+                  key={index}
+                  className="mb-2 p-2 rounded-lg border border-semidark bg-dark"
+                >
+                  <Link to={`/community/${community.name}`}>
+                    <div className="flex justify-between gap-2">
+                      <div className="flex gap-2">
+                        <img
+                          className="h-7 w-7 rounded-lg bg-dark"
+                          src={community.image ? community.image : "/group.png"}
+                          alt={community.name}
+                        />
+                        <div className="flex flex-col w-full">
+                          <div className="text-light text-base font-normal font-ubuntu">
+                            {community.name}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <div className="text-semilight my-5 font-light text-center text-sm">
+                No communities found
+              </div>
+            )
+          ) : communityData.communities.length > 0 ? (
+            communityData.communities.map((community, index) => (
               <div
                 key={index}
                 className="mb-2 p-2 rounded-lg border border-semidark bg-dark"
@@ -163,49 +192,19 @@ export const CommunitiesComponent = () => {
               </div>
             ))
           ) : (
-            <div className="text-semilight my-5 font-light text-center text-sm">
-              No communities found
-            </div>
-          )
-        ) : communityData.communities.length > 0 ? (
-          communityData.communities.map((community, index) => (
-            <div
-              key={index}
-              className="mb-2 p-2 rounded-lg border border-semidark bg-dark"
-            >
-              <Link to={`/community/${community.name}`}>
-                <div className="flex justify-between gap-2">
-                  <div className="flex gap-2">
-                    <img
-                      className="h-7 w-7 rounded-lg bg-dark"
-                      src={community.image ? community.image : "/group.png"}
-                      alt={community.name}
-                    />
-                    <div className="flex flex-col w-full">
-                      <div className="text-light text-base font-normal font-ubuntu">
-                        {community.name}
-                      </div>
-                    </div>
-                  </div>
+            <div>
+              {isLoading ? (
+                <div className="w-full my-5 flex justify-center items-center">
+                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
                 </div>
-              </Link>
+              ) : (
+                <div className="text-semilight my-5 font-light text-center text-sm">
+                  No communities found
+                </div>
+              )}
             </div>
-          ))
-        ) : (
-          <div>
-            {isLoading ? (
-              <div className="w-full my-5 flex justify-center items-center">
-                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-              </div>
-            ) : (
-              <div className="text-semilight my-5 font-light text-center text-sm">
-                No communities found
-              </div>
-            )}
-          </div>
-        )}
-
-        <BottomBar />
+          )}
+        </div>
       </div>
     </>
   );
