@@ -16,7 +16,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ to, icon }) => {
   return (
     <button
       onClick={() => navigate(to)}
-      className={`py-2 px-4 rounded-lg ${
+      className={`py-2 px-4 rounded-lg opacity-80 ${
         location.pathname === to
           ? "text-white bg-semidark"
           : "text-semilight hover:bg-semidark hover:text-white"
@@ -49,22 +49,24 @@ export const MenuBar: React.FC = () => {
 
   return (
     <>
-      <div
-        className="fixed top-0 right-0 bg-black/80 py-0.5 px-6 rounded-bl-lg"
-        style={{ zIndex: "100" }}
-      >
+      {location.pathname === "/" && (
         <div
-          onClick={() => navigate("/")}
-          className="text-white text-xl font-ubuntu font-semibold cursor-pointer"
+          className="fixed top-0 right-0 bg-black/80 py-0.5 px-6 rounded-bl-lg"
+          style={{ zIndex: "100" }}
         >
-          Kribble
+          <div
+            onClick={() => navigate("/")}
+            className="text-white text-xl font-ubuntu font-medium cursor-pointer"
+          >
+            Kribble
+          </div>
         </div>
-      </div>
+      )}
       <div
         style={{ zIndex: 100 }}
         className="h-14 w-full fixed bottom-0 bg-black/80 backdrop-filter backdrop-blur-md"
       >
-        <div className="max-w-6xl mx-auto px-4 h-full flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-4 h-full flex justify-evenly items-center">
           <MenuButton
             to="/"
             icon={<img src="/home.png" className="h-6 w-6" />}
@@ -98,7 +100,7 @@ export const MenuBar: React.FC = () => {
               !isLoading && currentUser && navigate(`/${currentUser}`)
             }
             disabled={isLoading || !currentUser}
-            className={`p-2 rounded-lg ${
+            className={`py-2 px-4 rounded-lg opacity-80 ${
               isLoading || !currentUser
                 ? "text-semilight cursor-not-allowed opacity-50"
                 : "text-semilight hover:bg-semidark hover:text-white"

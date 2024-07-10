@@ -518,88 +518,148 @@ export const Profile: React.FC<ProfileProps> = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Box
                 sx={{
+                  position: "relative",
                   aspectRatio: "1 / 1",
-                  backgroundColor: "rgba(0, 0, 0, 0.05)",
-                  borderRadius: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 2,
-                  height: "100%",
+                  overflow: "hidden",
                 }}
               >
-                <img
-                  src={userData.image ? userData.image : "/profile.png"}
-                  alt={userData.username}
-                  className="h-28 rounded-lg"
+                <Box
+                  onClick={() =>
+                    setModalContent({
+                      type: "image",
+                      src: userData.image || "/profile.png",
+                    })
+                  }
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundImage: `url(${userData.image || "/profile.png"})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    cursor: "pointer",
+                    "&:focus": {
+                      outline: "none",
+                    },
+                  }}
                 />
-                <div className="text-base mt-2 text-white">
-                  {userData.username}
-                </div>
                 <Box
                   sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
                     display: "flex",
+                    flexDirection: "column",
                     justifyContent: "center",
-                    gap: 2,
+                    alignItems: "center",
+                    padding: 2,
                   }}
                 >
-                  <button
-                    onClick={() => setShowFollowers(true)}
-                    className="flex gap-2 text-white text-xs"
+                  <div className="flex items-center gap-2">
+                    <div className="text-white text-base">
+                      {userData.username}
+                    </div>
+                    {userData.link && (
+                      <a
+                        href={userData.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <img
+                          src="/link.png"
+                          className="h-3.5 w-3.5"
+                          alt="Link"
+                        />
+                      </a>
+                    )}
+                  </div>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: 2,
+                    }}
                   >
-                    <span>{userData.followersCount}</span>
-                    <div>Followers</div>
-                  </button>
-                  {currentUser === username && (
                     <button
-                      onClick={() => setShowFollowing(true)}
-                      className="flex gap-2 text-white text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowFollowers(true);
+                      }}
+                      className="flex gap-1 text-light text-sm"
                     >
-                      <span>{userData.followingCount}</span>
-                      <div>Following</div>
+                      <span>{userData.followersCount}</span>
+                      <div>Followers</div>
+                    </button>
+                    {currentUser === username && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowFollowing(true);
+                        }}
+                        className="flex gap-1 text-light text-sm"
+                      >
+                        <span>{userData.followingCount}</span>
+                        <div>Following</div>
+                      </button>
+                    )}
+                  </Box>
+                  {userData.bio && (
+                    <Typography
+                      variant="body2"
+                      color="white"
+                      sx={{
+                        maxHeight: "40px",
+                        overflowY: "auto",
+                        "&::-webkit-scrollbar": {
+                          width: "4px",
+                        },
+                        "&::-webkit-scrollbar-track": {
+                          background: "transparent",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                          borderRadius: "2px",
+                          backgroundColor: "rgba(0, 0, 0)",
+                        },
+                        "&::-webkit-scrollbar-thumb:hover": {
+                          backgroundColor: "rgba(0, 0, 0)",
+                        },
+                        msOverflowStyle: "auto",
+                        scrollbarWidth: "thin",
+                        scrollbarColor: "rgba(255, 255, 255,0.4) transparent",
+                        textAlign: "center",
+                      }}
+                    >
+                      <div className="text-light">{userData.bio}</div>
+                    </Typography>
+                  )}
+                  {currentUser === username ? (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate("/profile/settings", { state: { userData } });
+                      }}
+                      className="mt-2 text-xs px-4 py-1.5 bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                    >
+                      Settings
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleFollow();
+                      }}
+                      className={`mt-2 text-xs px-4 py-1.5 font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
+                        isFollowing
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      }`}
+                    >
+                      {isFollowing ? "Unfollow" : "Follow"}
                     </button>
                   )}
                 </Box>
-                <div className="text-white my-2 text-center font-ubuntu font-light text-xs max-h-[60px] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-600 scrollbar-track-black">
-                  {userData.bio}
-                </div>
-                <Typography>
-                  {userData.link && (
-                    <a
-                      href={userData.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img
-                        src="/link.png"
-                        className="h-4 w-4 my-2"
-                        alt="Link"
-                      />
-                    </a>
-                  )}
-                </Typography>
-                {currentUser === username ? (
-                  <button
-                    onClick={() =>
-                      navigate("/profile/settings", { state: { userData } })
-                    }
-                    className="text-xs px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                  >
-                    Settings
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleFollow}
-                    className={`text-xs px-4 py-1.5 font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
-                      isFollowing
-                        ? "bg-gray-600 hover:bg-gray-700 text-white focus:ring-gray-500"
-                        : "bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500"
-                    }`}
-                  >
-                    {isFollowing ? "Unfollow" : "Follow"}
-                  </button>
-                )}
               </Box>
             </Grid>
           )}
@@ -650,7 +710,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                         <div
                           style={{
                             fontWeight: "light",
-                            color: "#8e8e8e",
+                            color: "#C8C8C8",
                             fontSize: "small",
                           }}
                         >
@@ -770,7 +830,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                         <div
                           style={{
                             fontWeight: "light",
-                            color: "#8e8e8e",
+                            color: "#C8C8C8",
                             fontSize: "small",
                           }}
                         >

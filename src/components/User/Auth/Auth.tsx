@@ -4,9 +4,14 @@ import axios from "axios";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./Firebase/config";
 import { Link, useNavigate } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import {
+  CircularProgress,
+  Box,
+  Typography,
+  Button,
+  Modal,
+} from "@mui/material";
 import { UserContext } from "../Context/UserContext";
-import { EMAIL_AUTH_KEY } from "../../../config";
 
 export const Auth = () => {
   const navigate = useNavigate();
@@ -18,12 +23,13 @@ export const Auth = () => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      console.log(result);
-      console.log(result);
       const email = result.user.email;
       const photoURL = result.user.photoURL;
+      const idToken = await result.user.getIdToken();
+      console.log(result.user.email);
+
       if (email) {
-        await authenticate(email, photoURL || "");
+        await authenticate(email, photoURL || "", idToken);
       } else {
         setPopup("Failed to retrieve email from Google");
       }
@@ -33,11 +39,15 @@ export const Auth = () => {
     }
   };
 
-  const authenticate = async (email: string, photoURL: string) => {
+  const authenticate = async (
+    email: string,
+    photoURL: string,
+    idToken: string
+  ) => {
     const userData = {
       email,
       photoURL,
-      EMAIL_AUTH_KEY,
+      idToken,
     };
 
     try {
@@ -47,6 +57,7 @@ export const Auth = () => {
         userData
       );
       setIsLoading(false);
+
       if (response.data.status === 200) {
         setPopup("Authentication successful");
         localStorage.setItem("token", response.data.token);
@@ -56,51 +67,90 @@ export const Auth = () => {
         setPopup(response.data.message);
       }
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
       setPopup("Network error, try again later");
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="h-screen flex justify-center items-center w-full">
-        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-      </div>
-    );
-  }
-
   return (
-    <div className="h-screen flex flex-col justify-center bg-dark items-center">
-      <div className="w-72 bg-dark p-5 rounded-lg flex flex-col items-center gap-4">
-        <div className="text-semilight  flex flex-col justify-center items-center gap-3 text-center font-ubuntu font-medium text-[2.5rem]">
-          <img src="/friendcity.png" className="h-10 mt-1" />
-
-          <div className="text-center text-sm font-thin  text-light">
-            Share your thoughts 🚀, pics, and dive into vibrant communities.
-            With anonymous posting, let your thoughts soar freely.
-          </div>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "white",
+      }}
+    >
+      <Box
+        sx={{
+          width: { xs: "90%", sm: 400 },
+          p: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <div className="font-medium text-2xl">Kribble (friendcity)</div>
+        <div className="text-semilight text-center text-xs">
+          Express yourself in snapshots and quick clips.
+          <br />
+          Your creativity, your Kribble.
         </div>
-        <div className="w-full">
-          <button
-            type="button"
-            className="rounded-md text-base p-2 text-light bg-indigomain flex items-center gap-4 w-full"
-            onClick={handleGoogle}
-          >
-            <img src="/google.png" className="h-6 w-6" alt="Google logo" />
-            Authenticate with Google
-          </button>
-        </div>
 
+        <button
+          className="flex items-center gap-2 bg-light py-1 px-4 rounded-full text-semidark"
+          onClick={handleGoogle}
+        >
+          <img
+            src="/google.png"
+            alt="Google logo"
+            style={{ width: 20, height: 20 }}
+          />
+          Sign in with Google
+        </button>
         {popup && (
-          <div className="text-rosemain text-sm text-center">{popup}</div>
+          <Typography
+            variant="body2"
+            sx={{ color: "error.main", textAlign: "center" }}
+          >
+            {popup}
+          </Typography>
         )}
-        <footer className="w-full text-center font-ubuntu py-2 text-xs flex flex-col gap-2 items-center justify-center text-neutral-600">
-          © 2024 friendcity. A product by Algabay Private Limited
-          <Link to="/policies" className="underline">
+
+        <div className="flex flex-col items-center gap-2">
+          <div className="text-semilight text-center text-xs">
+            © 2024 Kribble. A product by Algabay Private Limited
+          </div>
+          <Link
+            to="/policies"
+            className="text-xs text-semilight bg-semidark py-1 px-4 w-fit rounded-full"
+          >
             Policies
           </Link>
-        </footer>
-      </div>
-    </div>
+        </div>
+      </Box>
+      <Modal
+        open={isLoading}
+        aria-labelledby="loading-modal"
+        aria-describedby="loading-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "black",
+            outline: "none",
+          }}
+        >
+          <CircularProgress size={24} color="inherit" />
+        </Box>
+      </Modal>
+    </Box>
   );
 };

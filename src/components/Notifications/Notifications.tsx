@@ -97,10 +97,8 @@ export const Notifications: React.FC = () => {
       <div className="flex justify-center min-h-screen text-white">
         <div className="w-full max-w-md p-6">
           <div className="flex flex-col items-center mb-2">
-            <NotificationsIcon className="mb-2" fontSize="medium" />
-            <h1 className="text-xl font-light">Notifications</h1>
+            <NotificationsIcon fontSize="medium" />
           </div>
-
           <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
@@ -128,11 +126,11 @@ export const Notifications: React.FC = () => {
               ))
             ) : (
               <div className="flex items-center justify-center h-full">
-                <div className="text-center p-2 bg-semidark rounded-lg">
+                <div>
                   {isLoading ? (
-                    <CircularProgress size={24} />
+                    <CircularProgress size={24} color="inherit" />
                   ) : (
-                    <p className="text-white">No notifications found</p>
+                    <p className="text-white">No Notifications</p>
                   )}
                 </div>
               </div>
@@ -140,7 +138,7 @@ export const Notifications: React.FC = () => {
           </div>
           {isLoading && notificationsData.notifications.length > 0 && (
             <div className="text-center mt-4">
-              <CircularProgress size={24} />
+              <CircularProgress size={24} color="inherit" />
             </div>
           )}
         </div>

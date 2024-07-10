@@ -426,7 +426,7 @@ export const Home = () => {
                         <div
                           style={{
                             fontWeight: "light",
-                            color: "#8e8e8e",
+                            color: "#C8C8C8",
                             fontSize: "small",
                           }}
                         >
@@ -533,7 +533,7 @@ export const Home = () => {
                         <div
                           style={{
                             fontWeight: "light",
-                            color: "#8e8e8e",
+                            color: "#C8C8C8",
                             fontSize: "small",
                           }}
                         >

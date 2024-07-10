@@ -129,7 +129,7 @@ export const Post: React.FC<PostProps> = ({
       <Box
         sx={{
           flexGrow: 1,
-          padding: "16px",
+
           minHeight: "calc(100vh - 56px)",
           display: "flex",
           justifyContent: "center",
@@ -140,8 +140,8 @@ export const Post: React.FC<PostProps> = ({
           elevation={3}
           sx={{
             width: "100%",
-            maxWidth: 600,
-            backgroundColor: "#1e1e1e",
+            maxWidth: 400,
+            backgroundColor: "#161616",
             overflow: "hidden",
           }}
         >
@@ -242,25 +242,18 @@ export const Post: React.FC<PostProps> = ({
             style={{ display: "none" }}
           />
           {(previewImage || previewVideo) && (
-            <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
-              <Button
+            <Box sx={{ p: 1.5, display: "flex", justifyContent: "flex-end" }}>
+              <button
                 onClick={createPost}
                 disabled={isLoading}
-                variant="contained"
-                sx={{
-                  bgcolor: "#1976d2",
-                  "&:hover": { bgcolor: "#1565c0" },
-                  textDecoration: "none",
-                  borderRadius: 28,
-                  px: 3,
-                }}
+                className="text-base h-8 w-16 flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
               >
                 {isLoading ? (
-                  <CircularProgress size={24} color="inherit" />
+                  <CircularProgress size={20} color="inherit" />
                 ) : (
                   "Post"
                 )}
-              </Button>
+              </button>
             </Box>
           )}
         </Paper>

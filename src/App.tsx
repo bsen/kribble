@@ -7,7 +7,7 @@ import { Post } from "./components/User/Post/Post";
 import { Search } from "./components/Search/Search";
 import { Settings } from "./components/User/Settings/Settings";
 import { UserProvider } from "./components/User/Context/UserContext";
-import { About } from "./components/About/About";
+import { Policies } from "./components/Policies/Policies";
 import { Notifications } from "./components/Notifications/Notifications";
 
 interface ProtectedRouteProps {
@@ -24,7 +24,7 @@ function App() {
     <UserProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/policies" element={<About />} />
+          <Route path="/policies" element={<Policies />} />
           <Route path="/auth" element={<Auth />} />
           <Route
             path="/"
