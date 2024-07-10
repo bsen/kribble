@@ -138,7 +138,6 @@ export const Auth = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            bgcolor: "black",
             outline: "none",
           }}
         >
