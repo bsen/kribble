@@ -4,7 +4,7 @@ import axios from "axios";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./Firebase/config";
 import { Link, useNavigate } from "react-router-dom";
-import { CircularProgress, Box, Typography, Modal } from "@mui/material";
+import { Box, Typography, Modal } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
 
 export const Auth = () => {
@@ -140,9 +140,7 @@ export const Auth = () => {
             transform: "translate(-50%, -50%)",
             outline: "none",
           }}
-        >
-          <CircularProgress size={24} color="inherit" />
-        </Box>
+        />
       </Modal>
     </Box>
   );
