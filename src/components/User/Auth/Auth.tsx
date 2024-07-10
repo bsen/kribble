@@ -4,13 +4,7 @@ import axios from "axios";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./Firebase/config";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  CircularProgress,
-  Box,
-  Typography,
-  Button,
-  Modal,
-} from "@mui/material";
+import { CircularProgress, Box, Typography, Modal } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
 
 export const Auth = () => {
