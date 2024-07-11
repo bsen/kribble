@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../../config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Box, Button, Modal } from "@mui/material";
 
 interface FollowersData {
   id: string;
@@ -34,6 +34,7 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
   });
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(true);
 
   async function getFollowers(cursor?: string) {
     try {
@@ -42,7 +43,6 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
         `${BACKEND_URL}/api/user/follow/followers/list`,
         { token, cursor, username }
       );
-      console.log(response.data.data);
       setFollowersData({
         followers: [...followersData.followers, ...response.data.data],
         nextCursor: response.data.nextCursor,
@@ -71,63 +71,118 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
     }
   };
 
+  const handleClose = () => {
+    setIsFollowersModalOpen(false);
+    closeComponent();
+  };
+
   return (
-    <>
-      <div className="h-[calc(100vh-48px)] absolute w-full lg:w-[34%] bg-dark/80 flex justify-center items-center">
-        <div
-          className="bg-dark border border-semidark shadow-md h-[50vh] rounded-lg w-72 p-2 overflow-y-auto no-scrollbar"
-          onScroll={handleScroll}
-          ref={scrollContainerRef}
+    <Modal
+      open={isFollowersModalOpen}
+      onClose={handleClose}
+      aria-labelledby="followers-modal"
+      aria-describedby="followers-list"
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 300,
+          bgcolor: "#262626",
+          borderRadius: 2,
+          boxShadow: 24,
+          p: 0,
+          color: "white",
+          maxHeight: "80vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderBottom: "1px solid #363636",
+            p: 2,
+          }}
         >
-          <div className="flex text-semilight  justify-center gap-5 items-center">
-            <button
-              onClick={closeComponent}
-              className="border border-semidark p-1 rounded-lg"
-            >
-              <ArrowBackIcon />
-            </button>
-            <div className="text-sm font-ubuntu text-center">Followers</div>
-          </div>
+          <Button
+            onClick={handleClose}
+            sx={{ color: "white", minWidth: "auto" }}
+          >
+            <ArrowBackIcon />
+          </Button>
+          <Box sx={{ fontWeight: "bold" }}>Followers</Box>
+          <Box sx={{ width: 24 }} /> {/* Spacer for centering */}
+        </Box>
+        <Box
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          sx={{
+            overflowY: "auto",
+            flex: 1,
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
+        >
           {followersData.followers.length > 0 ? (
             followersData.followers.map((followersObj) => (
-              <div
+              <Box
                 key={followersObj.id}
-                className=" mt-2 rounded-lg p-1 bg-semidark"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  p: 2,
+                  borderBottom: "1px solid #363636",
+                }}
               >
-                <div className="flex justify-start items-center gap-2">
-                  <img
-                    className="h-7 w-7 rounded-lg bg-dark"
-                    src={
-                      followersObj.follower.image
-                        ? followersObj.follower.image
-                        : "/user.png"
-                    }
-                  />
-                  <div>
-                    <Link to={`/${followersObj.follower.username}`}>
-                      <div className="text-light text-base font-ubuntu">
-                        {followersObj.follower.username}
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+                <img
+                  src={
+                    followersObj.follower.image
+                      ? followersObj.follower.image
+                      : "/user.png"
+                  }
+                  alt={followersObj.follower.username}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    marginRight: 12,
+                  }}
+                />
+                <Box sx={{ flex: 1 }}>
+                  <Link
+                    to={`/${followersObj.follower.username}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <Box>{followersObj.follower.username}</Box>
+                  </Link>
+                </Box>
+              </Box>
             ))
           ) : (
-            <div>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: 200,
+              }}
+            >
               {isLoading ? (
-                <div className="w-full my-5 flex justify-center items-center">
-                  <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-                </div>
+                <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
               ) : (
-                <div className="text-semilight my-5 font-light text-center text-sm">
+                <Box sx={{ color: "#a8a8a8", fontSize: 14 }}>
                   No followers found
-                </div>
+                </Box>
               )}
-            </div>
+            </Box>
           )}
-        </div>
-      </div>
-    </>
+        </Box>
+      </Box>
+    </Modal>
   );
 };

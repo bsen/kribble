@@ -28,7 +28,6 @@ interface Post {
   createdAt: string;
   commentsCount: string;
   likesCount: string;
-  anonymity: string;
   isLiked: boolean;
 }
 
@@ -50,10 +49,6 @@ export const Home = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [modalContent, setModalContent] = useState<{
-    type: "image" | "video";
-    src: string;
-  } | null>(null);
   const [postData, setPostData] = useState<{
     posts: Post[];
     nextCursor: string | null;
@@ -206,11 +201,7 @@ export const Home = () => {
   };
 
   const toggleFullscreen = (post: Post) => {
-    if (post.video) {
-      setModalContent({ type: "video", src: post.video });
-    } else if (post.image) {
-      setModalContent({ type: "image", src: post.image });
-    }
+    navigate(`/post/${post.id}`);
   };
 
   const createComment = async (postId: string) => {
@@ -628,72 +619,7 @@ export const Home = () => {
           </Box>
         )}
       </Box>
-      <Modal
-        open={modalContent !== null}
-        onClose={() => setModalContent(null)}
-        aria-labelledby="fullscreen-modal"
-        aria-describedby="fullscreen-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            bgcolor: "black",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <IconButton
-            aria-label="close"
-            onClick={() => setModalContent(null)}
-            sx={{
-              position: "absolute",
-              right: 16,
-              top: 16,
-              color: "white",
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-          {modalContent?.type === "video" && (
-            <video
-              src={modalContent.src}
-              autoPlay
-              loop
-              playsInline
-              onClick={(e) => {
-                const video = e.target as HTMLVideoElement;
-                if (video.paused) {
-                  video.play();
-                } else {
-                  video.pause();
-                }
-              }}
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-              }}
-            />
-          )}
-          {modalContent?.type === "image" && (
-            <img
-              src={modalContent.src}
-              alt="Fullscreen content"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-              }}
-            />
-          )}
-        </Box>
-      </Modal>
+
       <Modal
         open={isCommentsOpen}
         onClose={() => setIsCommentsOpen(false)}
@@ -772,7 +698,6 @@ export const Home = () => {
                   style={{
                     width: 28,
                     height: 28,
-                    borderRadius: "50%",
                     flexShrink: 0,
                   }}
                 />
@@ -863,6 +788,10 @@ export const Home = () => {
                     sx={{
                       minWidth: 60,
                       textTransform: "none",
+                      color: "rgb(220 220 220);",
+                      "&:hover": {
+                        backgroundColor: "black",
+                      },
                     }}
                   >
                     {isPostingComment ? (
@@ -872,12 +801,33 @@ export const Home = () => {
                     )}
                   </Button>
                 ),
-                sx: {
-                  color: "white",
-                  "& .MuiOutlinedInput-notchedOutline": {
+                style: { color: "rgb(220 220 220);" },
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
                     borderColor: "#262626",
                   },
+                  "&:hover fieldset": {
+                    borderColor: "#262626",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#262626",
+                  },
+                  "& input": {
+                    color: "white",
+                  },
                 },
+                "& .MuiInputLabel-root": {
+                  color: "rgba(255, 255, 255, 0.7)",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "white",
+                },
+                "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    borderColor: "#262626",
+                  },
               }}
             />
           </Box>

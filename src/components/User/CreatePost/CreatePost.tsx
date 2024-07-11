@@ -16,15 +16,7 @@ import { BACKEND_URL } from "../../../config";
 import { MenuBar } from "../../Menu/MenuBar";
 import { UserContext } from "../Context/UserContext";
 
-interface PostProps {
-  isCommunityPost: boolean;
-  communityName?: string;
-}
-
-export const Post: React.FC<PostProps> = ({
-  isCommunityPost,
-  communityName,
-}) => {
+export const CreatePost = ({}) => {
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
   const token = localStorage.getItem("token");
@@ -90,10 +82,6 @@ export const Post: React.FC<PostProps> = ({
       const formData = new FormData();
       formData.append("token", token || "");
 
-      if (isCommunityPost && communityName) {
-        formData.append("communityName", communityName);
-      }
-
       if (previewImage) {
         const response = await fetch(previewImage);
         const blob = await response.blob();
@@ -105,9 +93,7 @@ export const Post: React.FC<PostProps> = ({
       }
 
       await axios.post(`${BACKEND_URL}/api/post/create`, formData);
-      navigate(
-        isCommunityPost ? `/community/${communityName}` : `/${currentUser}`
-      );
+      navigate(`/${currentUser}`);
     } catch (error) {
       console.error("Error creating post:", error);
       alert("Error creating post. Please try again.");
@@ -144,16 +130,6 @@ export const Post: React.FC<PostProps> = ({
             overflow: "hidden",
           }}
         >
-          {isCommunityPost && (
-            <Typography
-              variant="h6"
-              align="center"
-              sx={{ color: "white", py: 2 }}
-            >
-              c/{communityName}
-            </Typography>
-          )}
-
           {previewImage || previewVideo ? (
             <Box sx={{ position: "relative" }}>
               {previewImage ? (

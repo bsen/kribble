@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Auth } from "./components/User/Auth/Auth";
 import { Home } from "./components/Home/Home";
 import { Profile } from "./components/User/Profile/Profile";
-import { Post } from "./components/User/Post/Post";
+import { CreatePost } from "./components/User/CreatePost/CreatePost";
+import { PostView } from "./components/PostView/PostView";
 import { Search } from "./components/Search/Search";
 import { Settings } from "./components/User/Settings/Settings";
 import { UserProvider } from "./components/User/Context/UserContext";
@@ -26,6 +27,7 @@ function App() {
         <Routes>
           <Route path="/policies" element={<Policies />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/post/:postId" element={<PostView />} />
           <Route
             path="/"
             element={
@@ -54,7 +56,7 @@ function App() {
             path="/post"
             element={
               <ProtectedRoute>
-                <Post isCommunityPost={false} />
+                <CreatePost />
               </ProtectedRoute>
             }
           />
