@@ -148,8 +148,9 @@ export const FollowingComponent: React.FC<FollowingComponentProps> = ({
                   }
                   alt={followingObj.following.username}
                   style={{
-                    width: 32,
-                    height: 32,
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
                     marginRight: 12,
                   }}
                 />

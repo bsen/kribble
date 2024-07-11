@@ -1015,6 +1015,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                   style={{
                     width: 28,
                     height: 28,
+                    borderRadius: "50%",
                     flexShrink: 0,
                   }}
                 />

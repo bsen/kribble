@@ -698,6 +698,7 @@ export const Home = () => {
                   style={{
                     width: 28,
                     height: 28,
+                    borderRadius: "50%",
                     flexShrink: 0,
                   }}
                 />

@@ -116,7 +116,7 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
             <ArrowBackIcon />
           </Button>
           <Box sx={{ fontWeight: "bold" }}>Followers</Box>
-          <Box sx={{ width: 24 }} /> {/* Spacer for centering */}
+          <Box sx={{ width: 24 }} />
         </Box>
         <Box
           ref={scrollContainerRef}
@@ -148,8 +148,9 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
                   }
                   alt={followersObj.follower.username}
                   style={{
-                    width: 32,
-                    height: 32,
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
                     marginRight: 12,
                   }}
                 />

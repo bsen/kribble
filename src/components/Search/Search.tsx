@@ -25,7 +25,7 @@ interface User {
 
 export const Search = () => {
   const [search, setSearch] = useState<string>("");
-  const [isSearching, setIsSearching] = useState<boolean>(false);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
 
@@ -35,7 +35,6 @@ export const Search = () => {
   };
 
   const fetchSearchResults = useCallback(async () => {
-    setIsSearching(true);
     try {
       setIsLoading(true);
       const response = await axios.post(`${BACKEND_URL}/api/search/users`, {
@@ -47,7 +46,6 @@ export const Search = () => {
       console.error("Error fetching search results:", error);
       setIsLoading(false);
     } finally {
-      setIsSearching(false);
     }
   }, [search]);
 
@@ -123,12 +121,6 @@ export const Search = () => {
             }}
             sx={{ mb: 2 }}
           />
-
-          {isSearching && (
-            <Box sx={{ width: "100%", mb: 2 }}>
-              <CircularProgress sx={{ color: "rgb(50 50 50)" }} size={24} />
-            </Box>
-          )}
 
           {users.length > 0 ? (
             <List sx={{ bgcolor: "#121212" }}>
