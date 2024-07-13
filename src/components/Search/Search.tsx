@@ -123,18 +123,10 @@ export const Search = () => {
           />
 
           {users.length > 0 ? (
-            <List sx={{ bgcolor: "#121212" }}>
+            <List sx={{ bgcolor: "#101010" }}>
               {users.map((user, index) => (
                 <Box key={user.username}>
-                  <ListItem
-                    component={Link}
-                    to={`/${user.username}`}
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 0.08)",
-                      },
-                    }}
-                  >
+                  <ListItem component={Link} to={`/${user.username}`}>
                     <ListItemAvatar>
                       <Avatar
                         src={user.image || "/user.png"}

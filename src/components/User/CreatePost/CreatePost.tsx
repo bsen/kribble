@@ -6,7 +6,7 @@ import {
   Typography,
   IconButton,
   CircularProgress,
-  Paper,
+  TextField,
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
@@ -25,6 +25,7 @@ export const CreatePost = ({}) => {
   const [previewVideo, setPreviewVideo] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [caption, setCaption] = useState("");
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -81,6 +82,7 @@ export const CreatePost = ({}) => {
     try {
       const formData = new FormData();
       formData.append("token", token || "");
+      formData.append("caption", caption);
 
       if (previewImage) {
         const response = await fetch(previewImage);
@@ -108,30 +110,30 @@ export const CreatePost = ({}) => {
     }
   };
 
+  const handleRemoveMedia = () => {
+    setPreviewVideo(null);
+    setPreviewImage(null);
+    setCaption("");
+  };
+
   return (
     <>
       <MenuBar />
-      <Box
-        sx={{
-          flexGrow: 1,
-
-          minHeight: "calc(100vh - 56px)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Paper
-          elevation={3}
+      <Box sx={{ backgroundColor: "black", minHeight: "100vh" }}>
+        <MenuBar />
+        <Box
           sx={{
-            width: "100%",
-            maxWidth: 400,
-            backgroundColor: "#161616",
-            overflow: "hidden",
+            flexGrow: 1,
+            minHeight: "calc(100vh - 56px)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 1.5,
           }}
         >
           {previewImage || previewVideo ? (
-            <Box sx={{ position: "relative" }}>
+            <Box sx={{ width: "100%", maxWidth: 400, position: "relative" }}>
               {previewImage ? (
                 <img
                   src={previewImage}
@@ -146,8 +148,6 @@ export const CreatePost = ({}) => {
                     loop
                     playsInline
                     style={{
-                      position: "absolute",
-                      inset: 0,
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
@@ -173,10 +173,7 @@ export const CreatePost = ({}) => {
                 </Box>
               )}
               <IconButton
-                onClick={() => {
-                  setPreviewVideo(null);
-                  setPreviewImage(null);
-                }}
+                onClick={handleRemoveMedia}
                 sx={{
                   position: "absolute",
                   top: 8,
@@ -189,17 +186,20 @@ export const CreatePost = ({}) => {
               </IconButton>
             </Box>
           ) : (
-            <label htmlFor="file-upload">
+            <label
+              htmlFor="file-upload"
+              style={{ width: "100%", height: "100%" }}
+            >
               <Box
                 sx={{
                   width: "100%",
-                  aspectRatio: "1 / 1",
+                  height: "calc(100vh - 56px)",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
-                  backgroundColor: "#181818",
+                  backgroundColor: "black",
                 }}
               >
                 <ImageIcon sx={{ fontSize: 48, color: "#8e8e8e", mb: 1 }} />
@@ -217,21 +217,73 @@ export const CreatePost = ({}) => {
             style={{ display: "none" }}
           />
           {(previewImage || previewVideo) && (
-            <Box sx={{ p: 1.5, display: "flex", justifyContent: "flex-end" }}>
-              <button
-                onClick={createPost}
-                disabled={isLoading}
-                className="text-base h-8 w-16 flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
-              >
-                {isLoading ? (
-                  <CircularProgress size={20} color="inherit" />
-                ) : (
-                  "Post"
-                )}
-              </button>
+            <Box sx={{ paddingTop: 1.5, width: "100%", maxWidth: 400 }}>
+              <TextField
+                fullWidth
+                multiline
+                rows={4}
+                variant="outlined"
+                placeholder="Write a caption..."
+                value={caption}
+                onChange={(e) => setCaption(e.target.value)}
+                inputProps={{
+                  maxLength: 500,
+                }}
+                InputProps={{
+                  style: {
+                    paddingLeft: "8px",
+                    paddingRight: "8px",
+                    paddingTop: "4px",
+                    paddingBottom: "4px",
+                  },
+                }}
+                sx={{
+                  mb: 1.5,
+                  "& .MuiOutlinedInput-root": {
+                    color: "white",
+                    "& fieldset": {
+                      borderColor: "#262626",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#262626",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#262626",
+                    },
+                    "& textarea": {
+                      scrollbarWidth: "none",
+                      "&::-webkit-scrollbar": {
+                        display: "none",
+                      },
+                      "&-ms-overflow-style": {
+                        display: "none",
+                      },
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "rgba(255, 255, 255, 0.7)",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                }}
+              />
+              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  onClick={createPost}
+                  disabled={isLoading}
+                  className="text-base h-8 w-16 flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                >
+                  {isLoading ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : (
+                    "Post"
+                  )}
+                </button>
+              </Box>
             </Box>
           )}
-        </Paper>
+        </Box>
       </Box>
     </>
   );

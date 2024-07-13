@@ -964,20 +964,34 @@ export const Profile: React.FC<ProfileProps> = () => {
               borderBottom: "1px solid #262626",
               p: 2,
               display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              flexDirection: "column",
             }}
           >
-            <Typography variant="subtitle1" component="h2">
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+                alignItems: "center",
+              }}
+            >
+              <IconButton
+                aria-label="close"
+                onClick={() => setIsCommentsOpen(false)}
+                sx={{ color: "white" }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
+            {selectedPost && selectedPost.caption && (
+              <Box sx={{ mb: 1 }}>
+                <Typography variant="body2" sx={{ color: "#fafafa" }}>
+                  {selectedPost.caption}
+                </Typography>
+              </Box>
+            )}
+            <Typography variant="subtitle2" sx={{ color: "#8e8e8e" }}>
               Comments
             </Typography>
-            <IconButton
-              aria-label="close"
-              onClick={() => setIsCommentsOpen(false)}
-              sx={{ color: "white" }}
-            >
-              <CloseIcon />
-            </IconButton>
           </Box>
           <Box
             ref={commentScrollRef}

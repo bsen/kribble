@@ -16,7 +16,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ to, icon }) => {
   return (
     <button
       onClick={() => navigate(to)}
-      className={`py-2 px-4 rounded-lg opacity-80 ${
+      className={`py-2 px-4 rounded-lg opacity-90 ${
         location.pathname === to
           ? "text-white bg-semidark"
           : "text-semilight hover:bg-semidark hover:text-white"
@@ -34,12 +34,19 @@ export const MenuBar: React.FC = () => {
   const [newNotification, setNewNotification] = useState<boolean>(false);
 
   const checkUnreadNotification = async () => {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/user/notifications/unread`,
-      { token }
-    );
-    if (response.data.status === 200) {
-      setNewNotification(response.data.data === true);
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/user/notifications/unread`,
+        { token }
+      );
+      if (response.data.status === 901) {
+        localStorage.clear();
+      }
+      if (response.data.status === 200) {
+        setNewNotification(response.data.data === true);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -102,7 +109,7 @@ export const MenuBar: React.FC = () => {
             disabled={isLoading || !currentUser}
             className={`py-2 px-4 rounded-lg opacity-80 ${
               isLoading || !currentUser
-                ? "text-semilight cursor-not-allowed opacity-50"
+                ? "text-white cursor-not-allowed opacity-50 bg-semidark"
                 : "text-semilight hover:bg-semidark hover:text-white"
             }`}
           >
