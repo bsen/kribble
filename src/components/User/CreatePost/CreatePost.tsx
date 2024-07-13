@@ -215,8 +215,8 @@ export const CreatePost = ({}) => {
                   backgroundColor: "black",
                 }}
               >
-                <ImageIcon sx={{ fontSize: 48, color: "#8e8e8e", mb: 1 }} />
-                <Typography sx={{ color: "#8e8e8e" }}>
+                <ImageIcon sx={{ fontSize: 48, color: "white", mb: 1 }} />
+                <Typography sx={{ color: "white" }}>
                   Select photo or video
                 </Typography>
               </Box>

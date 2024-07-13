@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BACKEND_URL } from "../../../config";
 import axios from "axios";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -9,9 +9,16 @@ import { UserContext } from "../Context/UserContext";
 
 export const Auth = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const { setCurrentUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [popup, setPopup] = useState<string>("");
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, []);
 
   const handleGoogle = async () => {
     try {

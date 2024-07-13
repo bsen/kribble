@@ -107,11 +107,7 @@ export const MenuBar: React.FC = () => {
               !isLoading && currentUser && navigate(`/${currentUser}`)
             }
             disabled={isLoading || !currentUser}
-            className={`py-2 px-4 rounded-lg opacity-80 ${
-              isLoading || !currentUser
-                ? "text-white cursor-not-allowed opacity-50 bg-semidark"
-                : "text-semilight hover:bg-semidark hover:text-white"
-            }`}
+            className={`py-2 px-4 rounded-lg opacity-90 text-semilight hover:bg-semidark hover:text-white`}
           >
             <img src="/user.png" className="h-6 w-6" />
           </button>
