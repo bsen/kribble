@@ -117,23 +117,36 @@ export const CreatePost = ({}) => {
   };
 
   return (
-    <>
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <MenuBar />
-      <Box sx={{ backgroundColor: "black", minHeight: "100vh" }}>
-        <MenuBar />
+      <Box
+        sx={{
+          flexGrow: 1,
+          overflow: "auto",
+          backgroundColor: "black",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: 1.5,
+          paddingBottom: "80px",
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          msOverflowStyle: "none",
+        }}
+      >
         <Box
           sx={{
-            flexGrow: 1,
-            minHeight: "calc(100vh - 56px)",
+            width: "100%",
+            maxWidth: 400,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
             alignItems: "center",
-            padding: 1.5,
           }}
         >
           {previewImage || previewVideo ? (
-            <Box sx={{ width: "100%", maxWidth: 400, position: "relative" }}>
+            <Box sx={{ width: "100%", position: "relative" }}>
               {previewImage ? (
                 <img
                   src={previewImage}
@@ -193,7 +206,7 @@ export const CreatePost = ({}) => {
               <Box
                 sx={{
                   width: "100%",
-                  height: "calc(100vh - 56px)",
+                  height: "calc(100vh - 56px - 24px - 56px)",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -217,7 +230,7 @@ export const CreatePost = ({}) => {
             style={{ display: "none" }}
           />
           {(previewImage || previewVideo) && (
-            <Box sx={{ paddingTop: 1.5, width: "100%", maxWidth: 400 }}>
+            <Box sx={{ paddingTop: 1.5, width: "100%" }}>
               <TextField
                 fullWidth
                 multiline
@@ -268,7 +281,13 @@ export const CreatePost = ({}) => {
                   },
                 }}
               />
-              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: 2,
+                }}
+              >
                 <button
                   onClick={createPost}
                   disabled={isLoading}
@@ -285,6 +304,6 @@ export const CreatePost = ({}) => {
           )}
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
