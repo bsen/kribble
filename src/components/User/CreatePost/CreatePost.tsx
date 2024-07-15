@@ -7,7 +7,6 @@ import {
   IconButton,
   CircularProgress,
   TextField,
-  Button,
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
