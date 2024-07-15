@@ -39,11 +39,8 @@ export const MenuBar: React.FC = () => {
         `${BACKEND_URL}/api/user/notifications/unread`,
         { token }
       );
-      if (response.data.status === 901) {
-        localStorage.clear();
-      }
       if (response.data.status === 200) {
-        setNewNotification(response.data.data === true);
+        setNewNotification(true);
       }
     } catch (error) {
       console.log(error);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../../../config";
@@ -6,14 +6,44 @@ import { MenuBar } from "../../Menu/MenuBar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import CircularProgress from "@mui/material/CircularProgress";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import validUrl from "valid-url";
 import { Box, Modal, Button } from "@mui/material";
+import { UserContext } from "../Context/UserContext";
 
 interface UserData {
   username: string;
   bio: string;
   image: string;
   link: string;
+}
+interface DebouncedFunction<T extends (...args: any[]) => void> {
+  (...args: Parameters<T>): void;
+  cancel: () => void;
+}
+
+function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  delay: number
+): DebouncedFunction<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | null;
+
+  const cancel = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
+  const debouncedFunc: DebouncedFunction<T> = (...args: Parameters<T>) => {
+    cancel();
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+
+  debouncedFunc.cancel = cancel;
+  return debouncedFunc;
 }
 
 export const Settings: React.FC = () => {
@@ -26,13 +56,19 @@ export const Settings: React.FC = () => {
     image: "",
     link: "",
   };
-
+  const { setCurrentUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [bio, setBio] = useState<string>(userData.bio);
   const [link, setLink] = useState<string>(userData.link);
   const [previewImage, setPreviewImage] = useState<string>(userData.image);
   const [popup, setPopup] = useState<string>("");
   const [logoutState, setLogoutState] = useState(false);
+  const [username, setUsername] = useState<string>(userData.username);
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState<
+    boolean | null
+  >(null);
+  const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false);
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (!file) return;
@@ -109,7 +145,71 @@ export const Settings: React.FC = () => {
       setIsLoading(false);
     }
   }
+  const validateUsername = (char: string) => {
+    return char.match(/^[a-z0-9_]$/i);
+  };
+  const handleUserNameChange = (text: string) => {
+    const newName = text
+      .split("")
+      .filter(validateUsername)
+      .join("")
+      .toLowerCase();
+    setUsername(newName);
+  };
 
+  const checkUserName = async (username: string) => {
+    try {
+      setIsCheckingUsername(true);
+      setIsUsernameAvailable(false);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/user/profile/check-username`,
+        { username }
+      );
+      if (response.data.status === 409) {
+        setIsUsernameAvailable(false);
+        setPopup(response.data.message);
+      } else if (response.data.status === 200) {
+        setIsUsernameAvailable(true);
+        setPopup("");
+      }
+      setIsCheckingUsername(false);
+    } catch (error) {
+      console.error(error);
+      setPopup("Network error, please try again later");
+    }
+  };
+
+  const debouncedCheckUserName = debounce(checkUserName, 1000);
+  useEffect(() => {
+    debouncedCheckUserName(username);
+    return () => debouncedCheckUserName.cancel();
+  }, [username]);
+
+  const updateUsername = async () => {
+    if (!isUsernameAvailable || username === userData.username) return;
+
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/user/profile/update-username`,
+        {
+          token,
+          username,
+        }
+      );
+      if (response.data.status === 200) {
+        setPopup("Username updated successfully");
+        setCurrentUser(response.data.username);
+        userData.username = username;
+      } else {
+        setPopup(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error updating username:", error);
+      setPopup("Failed to update username. Please try again.");
+    }
+    setIsLoading(false);
+  };
   return (
     <>
       <MenuBar />
@@ -153,6 +253,49 @@ export const Settings: React.FC = () => {
           </div>
 
           <div className="mb-4">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium mb-2"
+            >
+              Username
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => {
+                  handleUserNameChange(e.target.value);
+                }}
+                className="w-full bg-semidark text-semilight p-2 pr-10 rounded focus:outline-none focus:ring-2 focus:ring-neutral-800"
+                placeholder="Your username"
+              />
+              {isCheckingUsername && (
+                <CircularProgress
+                  size={18}
+                  className="absolute right-2 top-2.5 transform -translate-y-1/2"
+                />
+              )}
+              {isUsernameAvailable && !isCheckingUsername && (
+                <CheckCircleIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500" />
+              )}
+            </div>
+          </div>
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={updateUsername}
+              disabled={
+                !isUsernameAvailable ||
+                username === userData.username ||
+                isLoading
+              }
+              className="text-xs px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Update Username
+            </button>
+          </div>
+
+          <div className="mb-4">
             <label htmlFor="website" className="block text-sm font-medium mb-2">
               Website
             </label>
@@ -192,7 +335,9 @@ export const Settings: React.FC = () => {
             </div>
           </div>
           {popup && (
-            <div className="text-rosemain text-center mb-4">{popup}</div>
+            <div className="text-rosemain text-center mt-4 mb-2 text-xs">
+              {popup}
+            </div>
           )}
           {isLoading && (
             <div className="flex justify-center">

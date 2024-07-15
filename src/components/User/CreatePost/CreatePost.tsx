@@ -7,6 +7,7 @@ import {
   IconButton,
   CircularProgress,
   TextField,
+  Button,
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
@@ -146,58 +147,130 @@ export const CreatePost = ({}) => {
           }}
         >
           {previewImage || previewVideo ? (
-            <Box sx={{ width: "100%", position: "relative" }}>
-              {previewImage ? (
-                <img
-                  src={previewImage}
-                  alt="Preview"
-                  style={{ width: "100%" }}
+            <>
+              <Box sx={{ width: "100%", mb: 2 }}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                  placeholder="Write a caption..."
+                  value={caption}
+                  onChange={(e) => setCaption(e.target.value)}
+                  inputProps={{
+                    maxLength: 500,
+                  }}
+                  InputProps={{
+                    style: {
+                      paddingLeft: "8px",
+                      paddingRight: "8px",
+                      paddingTop: "4px",
+                      paddingBottom: "4px",
+                    },
+                  }}
+                  sx={{
+                    mb: 1.5,
+                    "& .MuiOutlinedInput-root": {
+                      color: "white",
+                      "& fieldset": {
+                        borderColor: "#262626",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#262626",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#262626",
+                      },
+                      "& textarea": {
+                        scrollbarWidth: "none",
+                        "&::-webkit-scrollbar": {
+                          display: "none",
+                        },
+                        "&-ms-overflow-style": {
+                          display: "none",
+                        },
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "rgba(255, 255, 255, 0.7)",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                  }}
                 />
-              ) : (
-                <Box sx={{ position: "relative", aspectRatio: "1 / 1" }}>
-                  <video
-                    ref={videoRef}
-                    src={previewVideo || ""}
-                    loop
-                    playsInline
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                    onClick={togglePlay}
-                  />
-                  {!isPlaying && (
-                    <Box
-                      onClick={togglePlay}
-                      sx={{
-                        position: "absolute",
-                        inset: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <PlayArrowIcon sx={{ fontSize: 48, color: "white" }} />
-                    </Box>
-                  )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <button
+                    onClick={createPost}
+                    disabled={isLoading}
+                    className="text-base h-8 w-full flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                  >
+                    {isLoading ? (
+                      <CircularProgress size={20} color="inherit" />
+                    ) : (
+                      "Post"
+                    )}
+                  </button>
                 </Box>
-              )}
-              <IconButton
-                onClick={handleRemoveMedia}
-                sx={{
-                  position: "absolute",
-                  top: 8,
-                  right: 8,
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.7)" },
-                }}
-              >
-                <CloseIcon sx={{ color: "white" }} />
-              </IconButton>
-            </Box>
+              </Box>
+              <Box sx={{ width: "100%", position: "relative" }}>
+                {previewImage ? (
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    style={{ width: "100%" }}
+                  />
+                ) : (
+                  <Box sx={{ position: "relative", aspectRatio: "1 / 1" }}>
+                    <video
+                      ref={videoRef}
+                      src={previewVideo || ""}
+                      loop
+                      playsInline
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                      onClick={togglePlay}
+                    />
+                    {!isPlaying && (
+                      <Box
+                        onClick={togglePlay}
+                        sx={{
+                          position: "absolute",
+                          inset: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          backgroundColor: "rgba(0, 0, 0, 0.5)",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <PlayArrowIcon sx={{ fontSize: 48, color: "white" }} />
+                      </Box>
+                    )}
+                  </Box>
+                )}
+                <IconButton
+                  onClick={handleRemoveMedia}
+                  sx={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.7)" },
+                  }}
+                >
+                  <CloseIcon sx={{ color: "white" }} />
+                </IconButton>
+              </Box>
+            </>
           ) : (
             <label
               htmlFor="file-upload"
@@ -229,79 +302,6 @@ export const CreatePost = ({}) => {
             accept="image/*, video/*"
             style={{ display: "none" }}
           />
-          {(previewImage || previewVideo) && (
-            <Box sx={{ paddingTop: 1.5, width: "100%" }}>
-              <TextField
-                fullWidth
-                multiline
-                rows={4}
-                variant="outlined"
-                placeholder="Write a caption..."
-                value={caption}
-                onChange={(e) => setCaption(e.target.value)}
-                inputProps={{
-                  maxLength: 500,
-                }}
-                InputProps={{
-                  style: {
-                    paddingLeft: "8px",
-                    paddingRight: "8px",
-                    paddingTop: "4px",
-                    paddingBottom: "4px",
-                  },
-                }}
-                sx={{
-                  mb: 1.5,
-                  "& .MuiOutlinedInput-root": {
-                    color: "white",
-                    "& fieldset": {
-                      borderColor: "#262626",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "#262626",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#262626",
-                    },
-                    "& textarea": {
-                      scrollbarWidth: "none",
-                      "&::-webkit-scrollbar": {
-                        display: "none",
-                      },
-                      "&-ms-overflow-style": {
-                        display: "none",
-                      },
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "rgba(255, 255, 255, 0.7)",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                }}
-              />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  marginTop: 2,
-                }}
-              >
-                <button
-                  onClick={createPost}
-                  disabled={isLoading}
-                  className="text-base h-8 w-16 flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
-                >
-                  {isLoading ? (
-                    <CircularProgress size={20} color="inherit" />
-                  ) : (
-                    "Post"
-                  )}
-                </button>
-              </Box>
-            </Box>
-          )}
         </Box>
       </Box>
     </Box>
