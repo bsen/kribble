@@ -7,17 +7,7 @@ import React, {
 } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import {
-  CircularProgress,
-  Grid,
-  Box,
-  Typography,
-  IconButton,
-  Modal,
-  Button,
-  LinearProgress,
-  TextField,
-} from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { UserContext } from "../Context/UserContext";
 import { MenuBar } from "../../Menu/MenuBar";
@@ -481,7 +471,7 @@ export const Profile: React.FC<ProfileProps> = () => {
         sx={{
           backgroundColor: "black",
           "& .MuiLinearProgress-bar": {
-            backgroundColor: "gray",
+            backgroundColor: "neutral",
           },
         }}
       />
@@ -498,59 +488,22 @@ export const Profile: React.FC<ProfileProps> = () => {
       )}
 
       <MenuBar />
-      <Box
-        ref={scrollContainerRef}
-        onScroll={handleScroll}
-        sx={{
-          flexGrow: 1,
-          padding: "4px",
-          paddingBottom: 16,
-          height: "calc(100vh - 56px)",
-          overflowY: "auto",
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
-          msOverflowStyle: "none",
-          scrollbarWidth: "none",
-        }}
-      >
-        <Grid container spacing={2}>
-          {userData && (
-            <Grid item xs={12} sm={6} md={3}>
-              <Box
-                sx={{
-                  position: "relative",
-                  aspectRatio: "1 / 1",
-                  overflow: "hidden",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
+      <div className="bg-black min-h-screen text-white">
+        <div
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          className="p-2 pb-16 h-[calc(100vh-56px)] overflow-y-auto scrollbar-hide"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {userData && (
+              <div className="relative aspect-square overflow-hidden rounded-lg">
+                <div
+                  className="w-full h-full bg-cover bg-center cursor-pointer"
+                  style={{
                     backgroundImage: `url(${userData.image || "/profile.png"})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    cursor: "pointer",
-                    "&:focus": {
-                      outline: "none",
-                    },
                   }}
                 />
-                <Box
-                  sx={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: "rgba(0, 0, 0, 0.6)",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    padding: 2,
-                  }}
-                >
+                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 p-4 flex flex-col items-center">
                   <div className="flex items-center gap-2">
                     <div className="text-white text-base">
                       {userData.username}
@@ -570,13 +523,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                       </a>
                     )}
                   </div>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      gap: 2,
-                    }}
-                  >
+                  <div className="flex justify-center gap-4">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -599,35 +546,11 @@ export const Profile: React.FC<ProfileProps> = () => {
                         <div>Following</div>
                       </button>
                     )}
-                  </Box>
+                  </div>
                   {userData.bio && (
-                    <Typography
-                      variant="body2"
-                      color="white"
-                      sx={{
-                        maxHeight: "40px",
-                        overflowY: "auto",
-                        "&::-webkit-scrollbar": {
-                          width: "4px",
-                        },
-                        "&::-webkit-scrollbar-track": {
-                          background: "transparent",
-                        },
-                        "&::-webkit-scrollbar-thumb": {
-                          borderRadius: "2px",
-                          backgroundColor: "rgba(0, 0, 0)",
-                        },
-                        "&::-webkit-scrollbar-thumb:hover": {
-                          backgroundColor: "rgba(0, 0, 0)",
-                        },
-                        msOverflowStyle: "auto",
-                        scrollbarWidth: "thin",
-                        scrollbarColor: "rgba(255, 255, 255,0.4) transparent",
-                        textAlign: "center",
-                      }}
-                    >
-                      <div className="text-light">{userData.bio}</div>
-                    </Typography>
+                    <div className="text-light text-sm text-center max-h-10 overflow-y-auto scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent">
+                      {userData.bio}
+                    </div>
                   )}
                   {currentUser === username ? (
                     <button
@@ -654,20 +577,13 @@ export const Profile: React.FC<ProfileProps> = () => {
                       {isFollowing ? "Unfollow" : "Follow"}
                     </button>
                   )}
-                </Box>
-              </Box>
-            </Grid>
-          )}
-          {postData.posts.map((post, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Box
-                sx={{
-                  position: "relative",
-                  cursor: "pointer",
-                }}
-              >
-                {post.video ? (
-                  <div className="relative w-full aspect-square overflow-hidden">
+                </div>
+              </div>
+            )}
+            {postData.posts.map((post, index) => (
+              <div key={index} className="relative">
+                <div className="relative w-full aspect-square overflow-hidden rounded-lg">
+                  {post.video ? (
                     <video
                       data-post-id={post.id}
                       src={post.video}
@@ -677,602 +593,273 @@ export const Profile: React.FC<ProfileProps> = () => {
                       className="absolute top-0 left-0 w-full h-full object-cover"
                       controlsList="nodownload"
                     />
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        padding: 1,
-                      }}
-                    >
-                      <div className="flex gap-2 items-center">
-                        <Link
-                          to={`/${post.creator.username}`}
-                          style={{ textDecoration: "none" }}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div
-                            style={{
-                              fontWeight: "light",
-                              color: "white",
-                              fontSize: "small",
-                            }}
-                          >
-                            {post.creator.username}
-                          </div>
-                        </Link>
-                        <div
-                          style={{
-                            fontWeight: "light",
-                            color: "#C8C8C8",
-                            fontSize: "small",
-                          }}
-                        >
-                          {getTimeDifference(post.createdAt)}
-                        </div>
-                      </div>
-                    </Box>
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        padding: 1,
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <IconButton
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (token) {
-                              handleLike(post.id);
-                            } else {
-                              navigate("/auth");
-                            }
-                          }}
-                        >
-                          {post.isLiked ? (
-                            <img src="/liked.png" className="h-5" />
-                          ) : (
-                            <img src="/like.png" className="h-5" />
-                          )}
-                        </IconButton>
-                        <Typography
-                          variant="body2"
-                          color="white"
-                          sx={{ marginRight: 1 }}
-                        >
-                          {post.likesCount}
-                        </Typography>
-                        <IconButton
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleComments(post);
-                          }}
-                        >
-                          <img src="/comment.png" className="h-5" />
-                        </IconButton>
-                        <Typography variant="body2" color="white">
-                          {post.commentsCount}
-                        </Typography>
-                      </Box>
-                      <div className="flex">
-                        {currentUser === username && (
-                          <IconButton
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsPostDeleteModalOpen(true);
-                              setPostToDelete(post.id);
-                            }}
-                            size="small"
-                            sx={{ color: "white" }}
-                          >
-                            <MoreHorizIcon />
-                          </IconButton>
-                        )}
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFullscreen(post);
-                          }}
-                          size="small"
-                        >
-                          <img src="/fullscreen.png" className="h-5" />
-                        </IconButton>
-                      </div>
-                    </Box>
-                  </div>
-                ) : post.image ? (
-                  <Box sx={{ position: "relative" }}>
+                  ) : post.image ? (
                     <img
                       src={post.image}
-                      style={{
-                        width: "100%",
-                        aspectRatio: "1 / 1",
-                        objectFit: "cover",
-                      }}
+                      alt="Post"
+                      className="w-full h-full object-cover"
                     />
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        padding: 1,
-                      }}
+                  ) : (
+                    <div className="w-full h-full bg-neutral-800 flex items-center justify-center">
+                      <span className="text-neutral-400">No media</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 px-2.5 py-2 bg-black/80">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <Link
+                      to={`/${post.creator.username}`}
+                      className="text-sm font-semibold hover:underline text-white"
                     >
-                      <div className="flex gap-2 items-center">
-                        <Link
-                          to={`/${post.creator.username}`}
-                          style={{ textDecoration: "none" }}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div
-                            style={{
-                              fontWeight: "light",
-                              color: "white",
-                              fontSize: "small",
-                            }}
-                          >
-                            {post.creator.username}
-                          </div>
-                        </Link>
-                        <div
-                          style={{
-                            fontWeight: "light",
-                            color: "#C8C8C8",
-                            fontSize: "small",
-                          }}
-                        >
-                          {getTimeDifference(post.createdAt)}
-                        </div>
-                      </div>
-                    </Box>
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        padding: 1,
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <IconButton
-                          size="small"
+                      {post.creator.username}
+                    </Link>
+                    <span className="text-xs text-neutral-300">
+                      {getTimeDifference(post.createdAt)}
+                    </span>
+                  </div>
+
+                  {post.caption && (
+                    <p className="text-sm text-white mb-1.5 line-clamp-2">
+                      {post.caption}
+                    </p>
+                  )}
+
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-4">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (token) handleLike(post.id);
+                          else navigate("/auth");
+                        }}
+                        className="flex items-center space-x-1 text-white"
+                      >
+                        <img
+                          src={post.isLiked ? "/liked.png" : "/like.png"}
+                          alt="Like"
+                          className="h-4 w-4"
+                        />
+                        <span>{post.likesCount}</span>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleComments(post);
+                        }}
+                        className="flex items-center space-x-1 text-white"
+                      >
+                        <img
+                          src="/comment.png"
+                          alt="Comment"
+                          className="h-4 w-4"
+                        />
+                        <span>{post.commentsCount}</span>
+                      </button>
+                    </div>
+
+                    <div className="flex gap-1.5">
+                      {currentUser === username && (
+                        <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (token) {
-                              handleLike(post.id);
-                            } else {
-                              navigate("/auth");
-                            }
+                            setIsPostDeleteModalOpen(true);
+                            setPostToDelete(post.id);
                           }}
+                          className="mr-2"
                         >
-                          {post.isLiked ? (
-                            <img src="/liked.png" className="h-5" />
-                          ) : (
-                            <img src="/like.png" className="h-5" />
-                          )}
-                        </IconButton>
-                        <Typography
-                          variant="body2"
-                          color="white"
-                          sx={{ marginRight: 1 }}
-                        >
-                          {post.likesCount}
-                        </Typography>
-                        <IconButton
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleComments(post);
-                          }}
-                        >
-                          <img src="/comment.png" className="h-5" />
-                        </IconButton>
-                        <Typography variant="body2" color="white">
-                          {post.commentsCount}
-                        </Typography>
-                      </Box>
-                      <div className="flex">
-                        {currentUser === username && (
-                          <IconButton
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsPostDeleteModalOpen(true);
-                              setPostToDelete(post.id);
-                            }}
-                            size="small"
-                            sx={{ color: "white" }}
-                          >
-                            <MoreHorizIcon />
-                          </IconButton>
-                        )}
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFullscreen(post);
-                          }}
-                          size="small"
-                        >
-                          <img src="/fullscreen.png" className="h-5" />
-                        </IconButton>
-                      </div>
-                    </Box>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      width: "100%",
-                      aspectRatio: "1 / 1",
-                      backgroundColor: "rgba(0, 0, 0, 0.1)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Typography variant="body2" color="text.secondary">
-                      No media
-                    </Typography>
-                  </Box>
-                )}
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-        {isLoading && (
-          <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
-            <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-          </Box>
-        )}
-      </Box>
-      <Modal
-        open={isCommentsOpen}
-        onClose={() => setIsCommentsOpen(false)}
-        aria-labelledby="comments-modal"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: { xs: "100%", sm: 400 },
-            height: { xs: "100%", sm: "80vh" },
-            bgcolor: "#121212",
-            color: "white",
-            borderRadius: { xs: 0, sm: 2 },
-            boxShadow: 24,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box
-            sx={{
-              borderBottom: "1px solid #262626",
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "end",
-                alignItems: "center",
-              }}
+                          <MoreHorizIcon className="text-white" />
+                        </button>
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFullscreen(post);
+                        }}
+                      >
+                        <img
+                          src="/fullscreen.png"
+                          alt="Fullscreen"
+                          className="h-5 w-5"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {isLoading && (
+            <div className="flex justify-center mt-4">
+              <CircularProgress size={24} sx={{ color: "rgb(50 50 50)" }} />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {isCommentsOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
+          <div className="bg-neutral-900 w-full max-w-md h-[80vh] rounded-lg overflow-hidden flex flex-col">
+            <div className="p-4 border-b border-neutral-700">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-medium text-white">Comments</h2>
+                <button
+                  onClick={() => setIsCommentsOpen(false)}
+                  className="text-neutral-400 hover:text-white"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
+            </div>
+            <div
+              ref={commentScrollRef}
+              onScroll={handleCommentScroll}
+              className="flex-grow overflow-y-auto"
             >
-              <IconButton
-                aria-label="close"
-                onClick={() => setIsCommentsOpen(false)}
-                sx={{ color: "white" }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Box>
-            {selectedPost && selectedPost.caption && (
-              <Box sx={{ mb: 1 }}>
-                <Typography variant="body2" sx={{ color: "#fafafa" }}>
-                  {selectedPost.caption}
-                </Typography>
-              </Box>
-            )}
-            <Typography variant="subtitle2" sx={{ color: "#8e8e8e" }}>
-              Comments
-            </Typography>
-          </Box>
-          <Box
-            ref={commentScrollRef}
-            onScroll={handleCommentScroll}
-            sx={{
-              flexGrow: 1,
-              overflowY: "auto",
-              px: 2,
-              "&::-webkit-scrollbar": {
-                width: "4px",
-              },
-              "&::-webkit-scrollbar-track": {
-                background: "#121212",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                background: "#888",
-                borderRadius: "2px",
-              },
-            }}
-          >
-            {comments.map((comment, index) => (
-              <Box
-                key={index}
-                sx={{
-                  py: 1.5,
-                  borderBottom: "1px solid #262626",
-                  display: "flex",
-                  gap: "6px",
+              {comments.map((comment, index) => (
+                <div
+                  key={index}
+                  className="p-2 border-b border-neutral-700 last:border-b-0"
+                >
+                  <div className="flex items-start space-x-3">
+                    <img
+                      src={comment.creator.image || "/user.png"}
+                      alt={comment.creator.username}
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <div className="flex-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <div>
+                          <span className="font-semibold mr-2 text-white">
+                            {comment.creator.username}
+                          </span>
+                          <span className="text-xs text-neutral-400">
+                            {getTimeDifference(comment.createdAt)}
+                          </span>
+                        </div>
+                        {currentUser === comment.creator.username && (
+                          <button
+                            onClick={() => {
+                              setDeleteState(true);
+                              setCommentDeleteId(comment.id);
+                            }}
+                            className="text-neutral-400 hover:text-white"
+                          >
+                            <MoreHorizIcon fontSize="small" />
+                          </button>
+                        )}
+                      </div>
+                      <p className="text-sm text-neutral-200">
+                        {comment.comment}
+                      </p>
+                      <div className="flex items-center mt-2">
+                        <button
+                          onClick={() => handleLikeComment(comment.id)}
+                          className="flex items-center space-x-1 text-sm text-neutral-400 hover:text-white"
+                        >
+                          <img
+                            src={comment.isLiked ? "/liked.png" : "/like.png"}
+                            alt="Like"
+                            className="h-3 w-3"
+                          />
+                          <span>{comment.likesCount} likes</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {isLoadingComments && (
+                <div className="flex justify-center items-center mt-5">
+                  <CircularProgress size={24} sx={{ color: "white" }} />
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 border-t border-neutral-700">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  createComment(selectedPost?.id || "");
                 }}
               >
-                <img
-                  src={
-                    comment.creator.image ? comment.creator.image : "/user.png"
-                  }
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: "50%",
-                    flexShrink: 0,
-                  }}
-                />
-                <Box sx={{ flexGrow: 1 }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      mb: 0.5,
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Typography
-                        variant="subtitle2"
-                        sx={{ fontWeight: "bold", mr: 1 }}
-                      >
-                        {comment.creator.username}
-                      </Typography>
-                      <Typography variant="caption" sx={{ color: "#8e8e8e" }}>
-                        {getTimeDifference(comment.createdAt)}
-                      </Typography>
-                    </Box>
-                    {currentUser === comment.creator.username && (
-                      <IconButton
-                        size="small"
-                        onClick={() => {
-                          setDeleteState(true);
-                          setCommentDeleteId(comment.id);
-                        }}
-                        sx={{ color: "white" }}
-                      >
-                        <MoreHorizIcon fontSize="small" />
-                      </IconButton>
-                    )}
-                  </Box>
-                  <Typography
-                    variant="body2"
-                    sx={{ fontWeight: "light", color: "#fafafa" }}
-                  >
-                    {comment.comment}
-                  </Typography>
-                  <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                    <IconButton
-                      onClick={() => handleLikeComment(comment.id)}
-                      size="small"
-                      sx={{
-                        color: comment.isLiked ? "error.main" : "inherit",
-                        p: 0,
-                        mr: 1,
-                      }}
-                    >
-                      {comment.isLiked ? (
-                        <img src="/liked.png" className="h-2.5" />
-                      ) : (
-                        <img src="/like.png" className="h-2.5" />
-                      )}
-                    </IconButton>
-                    <Typography variant="caption" sx={{ color: "#8e8e8e" }}>
-                      {comment.likesCount} likes
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            ))}
-            {isLoadingComments && (
-              <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-                <CircularProgress size={24} sx={{ color: "white" }} />
-              </Box>
-            )}
-          </Box>
-          <Box sx={{ p: 2, borderTop: "1px solid #262626" }}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Add a comment..."
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              inputProps={{
-                maxLength: 500,
-              }}
-              disabled={isPostingComment}
-              InputProps={{
-                endAdornment: (
-                  <Button
-                    onClick={() => createComment(selectedPost?.id || "")}
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    placeholder="Add a comment..."
+                    maxLength={500}
+                    className="flex-1 outline-none  bg-neutral-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-neutral-700"
+                    disabled={isPostingComment}
+                  />
+                  <button
+                    type="submit"
                     disabled={!commentText.trim() || isPostingComment}
-                    sx={{
-                      minWidth: 60,
-                      textTransform: "none",
-                      color: "rgb(220 220 220);",
-                      "&:hover": {
-                        backgroundColor: "black",
-                      },
-                    }}
+                    className="bg-white text-black w-14 h-9 flex justify-center items-center rounded disabled:opacity-80"
                   >
                     {isPostingComment ? (
-                      <CircularProgress size={24} color="inherit" />
+                      <CircularProgress size={18} sx={{ color: "black" }} />
                     ) : (
                       "Post"
                     )}
-                  </Button>
-                ),
-                style: { color: "rgb(220 220 220);" },
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deleteState && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
+          <div className="bg-neutral-800 rounded-lg overflow-hidden w-64">
+            <button
+              onClick={() => {
+                if (commentDeleteId) {
+                  deleteComment(commentDeleteId);
+                }
+                setDeleteState(false);
+                setCommentDeleteId(null);
               }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#262626",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#262626",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#262626",
-                  },
-                  "& input": {
-                    color: "white",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "rgba(255, 255, 255, 0.7)",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "white",
-                },
-                "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                  {
-                    borderColor: "#262626",
-                  },
+              className="w-full py-3 text-red-500 hover:bg-neutral-700 border-b border-neutral-700"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => {
+                setDeleteState(false);
+                setCommentDeleteId(null);
               }}
-            />
-          </Box>
-        </Box>
-      </Modal>
-      <Modal
-        open={deleteState}
-        onClose={() => {
-          setDeleteState(false);
-          setCommentDeleteId(null);
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 300,
-            bgcolor: "#262626",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 0,
-            color: "white",
-          }}
-        >
-          <Button
-            fullWidth
-            onClick={() => {
-              if (commentDeleteId) {
-                deleteComment(commentDeleteId);
-              }
-              setDeleteState(false);
-              setCommentDeleteId(null);
-            }}
-            sx={{
-              color: "error.main",
-              py: 2,
-              borderBottom: "1px solid #363636",
-              borderRadius: "8px 8px 0 0",
-              textTransform: "none",
-            }}
-          >
-            Delete
-          </Button>
-          <Button
-            fullWidth
-            onClick={() => {
-              setDeleteState(false);
-              setCommentDeleteId(null);
-            }}
-            sx={{
-              color: "white",
-              py: 2,
-              borderRadius: "0 0 8px 8px",
-              textTransform: "none",
-            }}
-          >
-            Cancel
-          </Button>
-        </Box>
-      </Modal>
-      <Modal
-        open={isPostDeleteModalOpen}
-        onClose={() => {
-          setIsPostDeleteModalOpen(false);
-          setPostToDelete(null);
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 300,
-            bgcolor: "#262626",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 0,
-            color: "white",
-          }}
-        >
-          <Button
-            fullWidth
-            onClick={handlePostDelete}
-            sx={{
-              color: "error.main",
-              py: 2,
-              borderBottom: "1px solid #363636",
-              borderRadius: "8px 8px 0 0",
-              textTransform: "none",
-            }}
-          >
-            Delete Post
-          </Button>
-          <Button
-            fullWidth
-            onClick={() => {
-              setIsPostDeleteModalOpen(false);
-              setPostToDelete(null);
-            }}
-            sx={{
-              color: "white",
-              py: 2,
-              borderRadius: "0 0 8px 8px",
-              textTransform: "none",
-            }}
-          >
-            Cancel
-          </Button>
-        </Box>
-      </Modal>
+              className="w-full py-3 text-white hover:bg-neutral-700"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {isPostDeleteModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
+          <div className="bg-neutral-800 rounded-lg overflow-hidden w-64">
+            <button
+              onClick={handlePostDelete}
+              className="w-full py-3 text-red-500 hover:bg-neutral-700 border-b border-neutral-700"
+            >
+              Delete Post
+            </button>
+            <button
+              onClick={() => {
+                setIsPostDeleteModalOpen(false);
+                setPostToDelete(null);
+              }}
+              className="w-full py-3 text-white hover:bg-neutral-700"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

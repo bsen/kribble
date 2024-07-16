@@ -218,7 +218,7 @@ export const Settings: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <Link
               to={`/${userData.username}`}
-              className="text-gray-400 hover:text-white"
+              className="text-neutral-400 hover:text-white"
             >
               <ArrowBackIcon />
             </Link>

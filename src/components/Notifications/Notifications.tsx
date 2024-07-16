@@ -116,10 +116,10 @@ export const Notifications: React.FC = () => {
                       {notification.sender.username}
                     </div>
                   )}
-                  <div className="text-sm text-gray-300 mt-1">
+                  <div className="text-sm text-neutral-300 mt-1">
                     {notification.message}
                   </div>
-                  <div className="text-xs text-gray-500 mt-2">
+                  <div className="text-xs text-neutral-500 mt-2">
                     {new Date(notification.createdAt).toLocaleString()}
                   </div>
                 </div>

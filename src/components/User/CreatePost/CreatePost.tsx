@@ -1,16 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-  Box,
-  Typography,
-  IconButton,
-  CircularProgress,
-  TextField,
-} from "@mui/material";
-import ImageIcon from "@mui/icons-material/Image";
-import CloseIcon from "@mui/icons-material/Close";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import imageCompression from "browser-image-compression";
 import { BACKEND_URL } from "../../../config";
 import { MenuBar } from "../../Menu/MenuBar";
@@ -117,181 +107,107 @@ export const CreatePost = ({}) => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <div className="flex flex-col h-screen">
       <MenuBar />
-      <Box
-        sx={{
-          flexGrow: 1,
-          overflow: "auto",
-          backgroundColor: "black",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: 1.5,
-          paddingBottom: "80px",
-          scrollbarWidth: "none",
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
-          msOverflowStyle: "none",
-        }}
-      >
-        <Box
-          sx={{
-            width: "100%",
-            maxWidth: 400,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+      <div className="flex-grow overflow-auto bg-black flex flex-col items-center p-6 pb-20 scrollbar-hide">
+        <div className="w-full max-w-md flex flex-col items-center">
           {previewImage || previewVideo ? (
             <>
-              <Box sx={{ width: "100%", mb: 2 }}>
-                <TextField
-                  fullWidth
-                  multiline
+              <div className="w-full mb-4">
+                <textarea
+                  className="w-full mb-3 p-2 bg-neutral-900 text-white border border-neutral-800 rounded focus:outline-none focus:border-neutral-700 resize-none scrollbar-hide"
                   rows={2}
-                  variant="outlined"
                   placeholder="Write a caption..."
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
-                  inputProps={{
-                    maxLength: 500,
-                  }}
-                  InputProps={{
-                    style: {
-                      paddingLeft: "8px",
-                      paddingRight: "8px",
-                      paddingTop: "4px",
-                      paddingBottom: "4px",
-                    },
-                  }}
-                  sx={{
-                    mb: 1.5,
-                    "& .MuiOutlinedInput-root": {
-                      color: "white",
-                      "& fieldset": {
-                        borderColor: "#262626",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "#262626",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#262626",
-                      },
-                      "& textarea": {
-                        scrollbarWidth: "none",
-                        "&::-webkit-scrollbar": {
-                          display: "none",
-                        },
-                        "&-ms-overflow-style": {
-                          display: "none",
-                        },
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "rgba(255, 255, 255, 0.7)",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                  }}
+                  maxLength={80}
                 />
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}
-                >
+                <div className="flex justify-end">
                   <button
                     onClick={createPost}
                     disabled={isLoading}
-                    className="text-base h-8 w-full flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                    className="w-full h-8 flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
                   >
                     {isLoading ? (
-                      <CircularProgress size={20} color="inherit" />
+                      <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
                     ) : (
                       "Post"
                     )}
                   </button>
-                </Box>
-              </Box>
-              <Box sx={{ width: "100%", position: "relative" }}>
+                </div>
+              </div>
+              <div className="w-full relative">
                 {previewImage ? (
-                  <img
-                    src={previewImage}
-                    alt="Preview"
-                    style={{ width: "100%" }}
-                  />
+                  <img src={previewImage} alt="Preview" className="w-full" />
                 ) : (
-                  <Box sx={{ position: "relative", aspectRatio: "1 / 1" }}>
+                  <div className="relative aspect-square">
                     <video
                       ref={videoRef}
                       src={previewVideo || ""}
                       loop
                       playsInline
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
+                      className="w-full h-full object-cover"
                       onClick={togglePlay}
                     />
                     {!isPlaying && (
-                      <Box
+                      <div
                         onClick={togglePlay}
-                        sx={{
-                          position: "absolute",
-                          inset: 0,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          backgroundColor: "rgba(0, 0, 0, 0.5)",
-                          cursor: "pointer",
-                        }}
+                        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"
                       >
-                        <PlayArrowIcon sx={{ fontSize: 48, color: "white" }} />
-                      </Box>
+                        <svg
+                          className="w-12 h-12 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                            clipRule="evenodd"
+                            fillRule="evenodd"
+                          ></path>
+                        </svg>
+                      </div>
                     )}
-                  </Box>
+                  </div>
                 )}
-                <IconButton
+                <button
                   onClick={handleRemoveMedia}
-                  sx={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    backgroundColor: "rgba(0, 0, 0, 0.5)",
-                    "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.7)" },
-                  }}
+                  className="absolute top-2 right-2 p-1 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full"
                 >
-                  <CloseIcon sx={{ color: "white" }} />
-                </IconButton>
-              </Box>
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
             </>
           ) : (
             <label
               htmlFor="file-upload"
-              style={{ width: "100%", height: "100%" }}
+              className="w-full h-[calc(100vh-56px-24px-56px)] flex flex-col items-center justify-center cursor-pointer bg-black"
             >
-              <Box
-                sx={{
-                  width: "100%",
-                  height: "calc(100vh - 56px - 24px - 56px)",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  backgroundColor: "black",
-                }}
+              <svg
+                className="w-12 h-12 text-white mb-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <ImageIcon sx={{ fontSize: 48, color: "white", mb: 1 }} />
-                <Typography sx={{ color: "white" }}>
-                  Select photo or video
-                </Typography>
-              </Box>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              <p className="text-white">Select photo or video</p>
             </label>
           )}
           <input
@@ -299,10 +215,10 @@ export const CreatePost = ({}) => {
             id="file-upload"
             type="file"
             accept="image/*, video/*"
-            style={{ display: "none" }}
+            className="hidden"
           />
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 };

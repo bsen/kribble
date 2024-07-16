@@ -16,3 +16,26 @@
     display: none;
   }
 }
+/* Webkit browsers (Chrome, Safari, newer versions of Opera) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #1a1a1a;
+}

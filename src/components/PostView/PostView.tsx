@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Box, IconButton, Typography, CircularProgress } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { BACKEND_URL } from "../../config";
+import { CircularProgress } from "@mui/material";
 
 interface Post {
   id: string;
@@ -68,118 +67,71 @@ export const PostView = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
-      </Box>
-    );
-  }
-
-  if (!post) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <Typography>Post not found</Typography>
-      </Box>
-    );
-  }
-
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        bgcolor: "black",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Box sx={{ position: "absolute", top: 16, left: 16, zIndex: 1 }}>
-        <div className="flex gap-2 items-center">
-          <Link
-            to={`/${post.creator.username}`}
-            style={{ textDecoration: "none" }}
-          >
-            <Typography variant="body2" color="#C8C8C8">
-              {post.creator.username}
-            </Typography>
-          </Link>
-          <Typography variant="body2" color="#C8C8C8">
-            {getTimeDifference(post.createdAt)}
-          </Typography>
+    <>
+      {loading ? (
+        <div className="flex justify-center items-center mt-5">
+          <CircularProgress size={24} sx={{ color: "white" }} />
         </div>
-      </Box>
-      <IconButton
-        aria-label="close"
-        onClick={() => navigate(-1)}
-        sx={{
-          position: "absolute",
-          top: 16,
-          right: 16,
-          color: "white",
-          zIndex: 1,
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <Box
-        sx={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-        }}
-      >
-        {post.video ? (
-          <video
-            src={post.video}
-            autoPlay
-            loop
-            playsInline
-            muted={false}
-            onClick={togglePlayPause}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              cursor: "pointer",
-            }}
-          />
-        ) : post.image ? (
-          <img
-            src={post.image}
-            alt="Post content"
-            style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              objectFit: "contain",
-            }}
-          />
-        ) : (
-          <Typography variant="body1" color="white">
-            No media available
-          </Typography>
-        )}
-      </Box>
-    </Box>
+      ) : !post ? (
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-white">Post not found</p>
+        </div>
+      ) : (
+        <div className="fixed inset-0 bg-black flex flex-col">
+          <div className="absolute top-4 left-4 z-10">
+            <div className="flex gap-2 items-center">
+              <Link to={`/${post.creator.username}`} className="no-underline">
+                <p className="text-sm text-neutral-400">
+                  {post.creator.username}
+                </p>
+              </Link>
+              <p className="text-sm text-neutral-400">
+                {getTimeDifference(post.createdAt)}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate(-1)}
+            className="absolute top-4 right-4 text-white z-10"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <div className="w-full h-full flex items-center justify-center relative">
+            {post.video ? (
+              <video
+                src={post.video}
+                autoPlay
+                loop
+                playsInline
+                muted={false}
+                onClick={togglePlayPause}
+                className="w-full h-full object-contain cursor-pointer"
+              />
+            ) : post.image ? (
+              <img
+                src={post.image}
+                alt="Post content"
+                className="max-w-full max-h-full object-contain"
+              />
+            ) : (
+              <p className="text-white">No media available</p>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
