@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useContext,
 } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -67,14 +67,15 @@ interface ProfileProps {}
 
 export const Profile: React.FC<ProfileProps> = () => {
   const { username } = useParams();
+  const location = useLocation();
   const { currentUser } = useContext(UserContext);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [loadingState, setLoadingState] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const postsScrollContainerRef = useRef<HTMLDivElement>(null);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -133,7 +134,8 @@ export const Profile: React.FC<ProfileProps> = () => {
   }, [username]);
 
   const getAllPosts = useCallback(
-    async (cursor: string | null | undefined, truncate: boolean) => {
+    async (cursor: string | null | undefined, truncate: boolean = false) => {
+      if (postData.posts.length > 0 && !cursor && !truncate) return;
       try {
         setIsLoading(true);
         const response = await axios.post(`${BACKEND_URL}/api/post/all/posts`, {
@@ -233,11 +235,20 @@ export const Profile: React.FC<ProfileProps> = () => {
   };
 
   const handleScroll = useCallback(() => {
-    const postsScrollContainer = postsScrollContainerRef.current;
+    if (scrollContainerRef.current) {
+      const newScrollPosition = scrollContainerRef.current.scrollTop;
+      setScrollPosition(newScrollPosition);
+      localStorage.setItem(
+        "profileScrollPosition",
+        newScrollPosition.toString()
+      );
+    }
+
     if (
-      postsScrollContainer &&
-      postsScrollContainer.scrollTop + postsScrollContainer.clientHeight >=
-        postsScrollContainer.scrollHeight &&
+      scrollContainerRef.current &&
+      scrollContainerRef.current.scrollTop +
+        scrollContainerRef.current.clientHeight >=
+        scrollContainerRef.current.scrollHeight - 100 &&
       postData.nextCursor &&
       !isLoading
     ) {
@@ -307,9 +318,67 @@ export const Profile: React.FC<ProfileProps> = () => {
     },
     [token]
   );
-  const toggleFullscreen = (post: Post) => {
-    navigate(`/post/${post.id}`);
-  };
+  const toggleFullscreen = useCallback(
+    (post: Post) => {
+      navigate(`/post/${post.id}`, {
+        state: {
+          scrollPosition,
+          posts: postData.posts,
+          nextCursor: postData.nextCursor,
+          username: userData.username,
+        },
+      });
+    },
+    [navigate, scrollPosition, postData, userData.username]
+  );
+
+  useEffect(() => {
+    const state = location.state as {
+      scrollPosition?: number;
+      posts?: Post[];
+      nextCursor?: string | null;
+      username?: string;
+    };
+
+    if (state?.posts && state.username === username) {
+      setPostData({
+        posts: state.posts,
+        nextCursor: state.nextCursor || null,
+      });
+    } else {
+      getAllPosts(null, true);
+    }
+
+    const restoreScroll = () => {
+      const savedScrollPosition = localStorage.getItem("profileScrollPosition");
+      if (savedScrollPosition && scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = parseInt(
+          savedScrollPosition,
+          10
+        );
+      }
+    };
+
+    // Attempt to restore scroll immediately
+    restoreScroll();
+
+    // If that doesn't work, try again after a short delay
+    const timer = setTimeout(restoreScroll, 100);
+
+    return () => clearTimeout(timer);
+  }, [location.state, username, getAllPosts]);
+
+  useEffect(() => {
+    if (postData.posts.length > 0) {
+      const savedScrollPosition = localStorage.getItem("profileScrollPosition");
+      if (savedScrollPosition && scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = parseInt(
+          savedScrollPosition,
+          10
+        );
+      }
+    }
+  }, [postData.posts]);
 
   const createComment = async (postId: string) => {
     if (!commentText.trim()) return;
