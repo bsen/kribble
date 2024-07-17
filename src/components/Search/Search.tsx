@@ -91,11 +91,11 @@ export const Search = () => {
           </div>
 
           {users.length > 0 ? (
-            <div className="bg-[#101010]">
+            <div>
               {users.map((user, index) => (
                 <div key={user.username}>
                   <Link to={`/${user.username}`} className="block">
-                    <div className="flex items-center p-4">
+                    <div className="flex items-center p-2">
                       <img
                         src={user.image || "/user.png"}
                         alt={user.username}

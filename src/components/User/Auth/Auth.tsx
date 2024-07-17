@@ -91,7 +91,7 @@ export const Auth = () => {
         <div className="mt-8 space-y-6">
           <button
             onClick={handleGoogle}
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none  shadow-sm transition-all duration-300 ease-in-out transform hover:scale-110"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none  shadow-sm transition-all duration-500 ease-in-out transform hover:scale-105"
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               <img src="/google.png" alt="Google logo" className="h-5 w-5" />

@@ -109,7 +109,7 @@ export const Notifications: React.FC = () => {
                 <div
                   key={notification.id}
                   onClick={() => handleNotificationClick(notification)}
-                  className="mb-4 p-2 bg-dark rounded-lg cursor-pointer hover:bg-semidark transition-colors text-center"
+                  className="mb-2 p-0.5 bg-dark rounded-lg cursor-pointer hover:bg-semidark transition-colors text-center"
                 >
                   {notification.sender && (
                     <div className="font-medium text-blue-500">
