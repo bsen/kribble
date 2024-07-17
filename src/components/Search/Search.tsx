@@ -62,11 +62,11 @@ export const Search = () => {
   }, [search, debouncedSearch]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-[calc(100vh-56px)] bg-black">
       <MenuBar />
-      <div className="flex-grow overflow-auto bg-black p-4 pb-16 scrollbar-hide">
+      <div className="flex-grow overflow-auto py-4 scrollbar-hide">
         <div className="max-w-xl mx-auto">
-          <div className="relative mb-4">
+          <div className="relative">
             <input
               type="text"
               value={search}
@@ -113,7 +113,7 @@ export const Search = () => {
           ) : (
             <div className="text-center mt-4">
               {isLoading ? (
-                <CircularProgress sx={{ color: "inherit" }} />
+                <CircularProgress sx={{ color: "white" }} />
               ) : (
                 <p className="text-[#8e8e8e]">Search result not found</p>
               )}

@@ -102,7 +102,7 @@ export const Notifications: React.FC = () => {
           <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className="overflow-y-auto  max-h-[88vh] no-scrollbar"
+            className="overflow-y-auto  max-h-[calc(100vh-56px)] pb-14 no-scrollbar"
           >
             {notificationsData.notifications.length > 0 ? (
               notificationsData.notifications.map((notification) => (
@@ -138,7 +138,7 @@ export const Notifications: React.FC = () => {
           </div>
           {isLoading && notificationsData.notifications.length > 0 && (
             <div className="text-center mt-4">
-              <CircularProgress size={24} color="inherit" />
+              <CircularProgress size={24} sx={{ color: "white" }} />
             </div>
           )}
         </div>
