@@ -558,7 +558,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                         e.stopPropagation();
                         navigate("/profile/settings", { state: { userData } });
                       }}
-                      className="mt-2 text-xs px-4 py-1.5 bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                      className="mt-2 text-xs px-4 py-1.5 bg-white text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                     >
                       Settings
                     </button>
@@ -570,8 +570,8 @@ export const Profile: React.FC<ProfileProps> = () => {
                       }}
                       className={`mt-2 text-xs px-4 py-1.5 font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
                         isFollowing
-                          ? "bg-black text-white"
-                          : "bg-white text-black"
+                          ? "bg-black text-white focus:ring-black"
+                          : "bg-white text-black focus:ring-white"
                       }`}
                     >
                       {isFollowing ? "Unfollow" : "Follow"}
@@ -607,7 +607,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 px-2.5 py-2 bg-black/80">
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-1">
                     <Link
                       to={`/${post.creator.username}`}
                       className="text-sm font-semibold hover:underline text-white"
@@ -620,7 +620,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                   </div>
 
                   {post.caption && (
-                    <p className="text-sm text-white mb-1.5 line-clamp-2">
+                    <p className="text-sm text-white mb-1 line-clamp-2">
                       {post.caption}
                     </p>
                   )}
@@ -691,7 +691,7 @@ export const Profile: React.FC<ProfileProps> = () => {
           </div>
           {isLoading && (
             <div className="flex justify-center mt-4">
-              <CircularProgress size={24} sx={{ color: "rgb(50 50 50)" }} />
+              <CircularProgress size={24} sx={{ color: "inherit" }} />
             </div>
           )}
         </div>
@@ -771,7 +771,7 @@ export const Profile: React.FC<ProfileProps> = () => {
               ))}
               {isLoadingComments && (
                 <div className="flex justify-center items-center mt-5">
-                  <CircularProgress size={24} sx={{ color: "white" }} />
+                  <CircularProgress size={24} sx={{ color: "inherit" }} />
                 </div>
               )}
             </div>
@@ -799,7 +799,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                     className="bg-white text-black w-14 h-9 flex justify-center items-center rounded disabled:opacity-80"
                   >
                     {isPostingComment ? (
-                      <CircularProgress size={18} sx={{ color: "black" }} />
+                      <CircularProgress size={18} sx={{ color: "inherit" }} />
                     ) : (
                       "Post"
                     )}

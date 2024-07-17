@@ -2,21 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
 import { Link } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
 import { MenuBar } from "../Menu/MenuBar";
-import {
-  Box,
-  TextField,
-  InputAdornment,
-  CircularProgress,
-  Typography,
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Divider,
-} from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 interface User {
   username: string;
@@ -25,7 +12,6 @@ interface User {
 
 export const Search = () => {
   const [search, setSearch] = useState<string>("");
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
 
@@ -45,7 +31,6 @@ export const Search = () => {
     } catch (error) {
       console.error("Error fetching search results:", error);
       setIsLoading(false);
-    } finally {
     }
   }, [search]);
 
@@ -77,89 +62,65 @@ export const Search = () => {
   }, [search, debouncedSearch]);
 
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <MenuBar />
-      <Box
-        sx={{
-          flexGrow: 1,
-          padding: "16px",
-          paddingBottom: 16,
-          height: "calc(100vh - 56px)",
-          overflowY: "auto",
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
-          msOverflowStyle: "none",
-          scrollbarWidth: "none",
-        }}
-      >
-        <Box sx={{ maxWidth: 600, margin: "0 auto" }}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            value={search}
-            onChange={(e) => handleSearchingUsernameChange(e.target.value)}
-            placeholder="Search users"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "white" }} />
-                </InputAdornment>
-              ),
-              sx: {
-                color: "white",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#262626",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#363636",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#474747",
-                },
-              },
-            }}
-            sx={{ mb: 2 }}
-          />
+      <div className="flex-grow overflow-auto bg-black p-4 pb-16 scrollbar-hide">
+        <div className="max-w-xl mx-auto">
+          <div className="relative mb-4">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => handleSearchingUsernameChange(e.target.value)}
+              placeholder="Search users"
+              className="w-full px-4 py-2 bg-[#101010] text-white border border-[#262626] rounded-md focus:outline-none focus:border-[#474747] pl-10"
+            />
+            <svg
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
 
           {users.length > 0 ? (
-            <List sx={{ bgcolor: "#101010" }}>
+            <div className="bg-[#101010]">
               {users.map((user, index) => (
-                <Box key={user.username}>
-                  <ListItem component={Link} to={`/${user.username}`}>
-                    <ListItemAvatar>
-                      <Avatar
+                <div key={user.username}>
+                  <Link to={`/${user.username}`} className="block">
+                    <div className="flex items-center p-4">
+                      <img
                         src={user.image || "/user.png"}
                         alt={user.username}
+                        className="w-10 h-10 rounded-full mr-4"
                       />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Typography variant="subtitle1" color="white">
-                          {user.username}
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
+                      <span className="text-white">{user.username}</span>
+                    </div>
+                  </Link>
                   {index < users.length - 1 && (
-                    <Divider sx={{ bgcolor: "#262626" }} />
+                    <div className="border-b border-[#262626]"></div>
                   )}
-                </Box>
+                </div>
               ))}
-            </List>
+            </div>
           ) : (
-            <Box sx={{ textAlign: "center", mt: 2 }}>
+            <div className="text-center mt-4">
               {isLoading ? (
-                <CircularProgress sx={{ color: "rgb(50 50 50)" }} />
+                <CircularProgress sx={{ color: "inherit" }} />
               ) : (
-                <Typography variant="body2" color="#8e8e8e">
-                  Search result not found
-                </Typography>
+                <p className="text-[#8e8e8e]">Search result not found</p>
               )}
-            </Box>
+            </div>
           )}
-        </Box>
-      </Box>
-    </>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -4,8 +4,8 @@ import axios from "axios";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./Firebase/config";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Typography, Modal } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
+import { CircularProgress } from "@mui/material";
 
 export const Auth = () => {
   const navigate = useNavigate();
@@ -75,80 +75,52 @@ export const Auth = () => {
   };
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "white",
-      }}
-    >
-      <Box
-        sx={{
-          width: { xs: "90%", sm: 400 },
-          p: 4,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 2,
-        }}
-      >
-        <div className="font-medium text-2xl">Kribble (friendcity)</div>
-        <div className="text-semilight text-center text-xs">
-          Express yourself in snapshots and quick clips.
-          <br />
-          Your creativity, your Kribble.
+    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-orange-600  flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl">
+        <div className="flex items-center flex-col">
+          <img src="/favicon.png" className="h-16" />
+          <h2 className="mt-2 text-center text-3xl font-extrabold text-neutral-900">
+            Kribble
+          </h2>
+          <p className="mt-2 text-center text-sm text-neutral-600">
+            Express yourself in snapshots and quick clips.
+            <br />
+            Your creativity, your Kribble.
+          </p>
         </div>
+        <div className="mt-8 space-y-6">
+          <button
+            onClick={handleGoogle}
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-neutral-800 hover:bg-neutral-900 focus:outline-none  shadow-sm transition-all duration-300 ease-in-out transform hover:scale-110"
+          >
+            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+              <img src="/google.png" alt="Google logo" className="h-5 w-5" />
+            </span>
+            Sign in with Google
+          </button>
+          {popup && (
+            <p className="mt-2 text-center text-sm text-red-600">{popup}</p>
+          )}
+        </div>
+      </div>
 
-        <button
-          className="flex items-center gap-2 bg-light py-1 px-4 rounded-full text-semidark"
-          onClick={handleGoogle}
+      <div className="mt-8 text-center">
+        <p className="text-xs text-neutral-200">
+          © 2024 Kribble. A product by Algabay Private Limited
+        </p>
+        <Link
+          to="/policies"
+          className="mt-2 inline-block text-xs text-neutral-200 hover:text-white bg-black bg-opacity-20 hover:bg-opacity-30 py-1 px-4 rounded-full transition duration-150 ease-in-out"
         >
-          <img
-            src="/google.png"
-            alt="Google logo"
-            style={{ width: 20, height: 20 }}
-          />
-          Sign in with Google
-        </button>
-        {popup && (
-          <Typography
-            variant="body2"
-            sx={{ color: "error.main", textAlign: "center" }}
-          >
-            {popup}
-          </Typography>
-        )}
+          Policies
+        </Link>
+      </div>
 
-        <div className="flex flex-col items-center gap-2">
-          <div className="text-semilight text-center text-xs">
-            © 2024 Kribble. A product by Algabay Private Limited
-          </div>
-          <Link
-            to="/policies"
-            className="text-xs text-semilight bg-semidark py-1 px-4 w-fit rounded-full"
-          >
-            Policies
-          </Link>
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 overflow-y-auto h-screen w-full flex items-center justify-center">
+          <CircularProgress size={24} sx={{ color: "inherit" }} />
         </div>
-      </Box>
-      <Modal
-        open={isLoading}
-        aria-labelledby="loading-modal"
-        aria-describedby="loading-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            outline: "none",
-          }}
-        />
-      </Modal>
-    </Box>
+      )}
+    </div>
   );
 };

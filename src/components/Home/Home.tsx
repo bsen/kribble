@@ -383,7 +383,7 @@ export const Home = () => {
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 px-2.5 py-2 bg-black/80">
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-1">
                     <Link
                       to={`/${post.creator.username}`}
                       className="text-sm font-semibold hover:underline text-white"
@@ -396,7 +396,7 @@ export const Home = () => {
                   </div>
 
                   {post.caption && (
-                    <p className="text-sm text-white mb-1.5 line-clamp-2">
+                    <p className="text-sm text-white mb-1 line-clamp-2">
                       {post.caption}
                     </p>
                   )}
@@ -459,7 +459,7 @@ export const Home = () => {
 
           {isLoading && (
             <div className="flex justify-center items-center mt-5">
-              <CircularProgress size={24} sx={{ color: "white" }} />
+              <CircularProgress size={24} sx={{ color: "inherit" }} />
             </div>
           )}
         </div>
@@ -538,7 +538,7 @@ export const Home = () => {
                 ))}
                 {isLoadingComments && (
                   <div className="flex justify-center items-center mt-5">
-                    <CircularProgress size={24} sx={{ color: "white" }} />
+                    <CircularProgress size={24} sx={{ color: "inherit" }} />
                   </div>
                 )}
               </div>
@@ -566,7 +566,7 @@ export const Home = () => {
                       className="bg-white text-black w-14 h-9 flex justify-center items-center rounded disabled:opacity-80"
                     >
                       {isPostingComment ? (
-                        <CircularProgress size={18} sx={{ color: "black" }} />
+                        <CircularProgress size={18} sx={{ color: "inherit" }} />
                       ) : (
                         "Post"
                       )}

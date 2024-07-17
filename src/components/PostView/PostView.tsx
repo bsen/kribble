@@ -71,7 +71,7 @@ export const PostView = () => {
     <>
       {loading ? (
         <div className="flex justify-center items-center mt-5">
-          <CircularProgress size={24} sx={{ color: "white" }} />
+          <CircularProgress size={24} sx={{ color: "inherit" }} />
         </div>
       ) : !post ? (
         <div className="flex justify-center items-center h-screen">

@@ -94,15 +94,15 @@ export const Notifications: React.FC = () => {
   return (
     <>
       <MenuBar />
-      <div className="flex justify-center min-h-screen text-white">
-        <div className="w-full max-w-md p-6">
-          <div className="flex flex-col items-center mb-2">
-            <NotificationsIcon fontSize="medium" />
+      <div className="flex justify-center min-h-screen">
+        <div className="w-full max-w-md">
+          <div className="flex sticky flex-col items-center my-2">
+            <NotificationsIcon fontSize="medium" className="text-white" />
           </div>
           <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className="overflow-y-auto max-h-[calc(100vh-200px)] no-scrollbar"
+            className="overflow-y-auto  max-h-[88vh] no-scrollbar"
           >
             {notificationsData.notifications.length > 0 ? (
               notificationsData.notifications.map((notification) => (

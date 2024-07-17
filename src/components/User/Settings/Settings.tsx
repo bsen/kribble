@@ -8,7 +8,6 @@ import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import CircularProgress from "@mui/material/CircularProgress";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import validUrl from "valid-url";
-import { Box, Modal, Button } from "@mui/material";
 import { UserContext } from "../Context/UserContext";
 
 interface UserData {
@@ -180,10 +179,13 @@ export const Settings: React.FC = () => {
   };
 
   const debouncedCheckUserName = debounce(checkUserName, 1000);
+
   useEffect(() => {
-    debouncedCheckUserName(username);
+    if (username !== userData.username) {
+      debouncedCheckUserName(username);
+    }
     return () => debouncedCheckUserName.cancel();
-  }, [username]);
+  }, [username, userData.username]);
 
   const updateUsername = async () => {
     if (!isUsernameAvailable || username === userData.username) return;
@@ -225,7 +227,7 @@ export const Settings: React.FC = () => {
             <h1 className="text-xl font-light">Edit Profile</h1>
             <button
               onClick={updateProfile}
-              className="text-xs px-4 py-1.5 bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105"
+              className="text-xs px-4 py-1.5 bg-white text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
             >
               Save
             </button>
@@ -273,6 +275,7 @@ export const Settings: React.FC = () => {
               {isCheckingUsername && (
                 <CircularProgress
                   size={18}
+                  sx={{ color: "inherit" }}
                   className="absolute right-2 top-2.5 transform -translate-y-1/2"
                 />
               )}
@@ -329,7 +332,7 @@ export const Settings: React.FC = () => {
               onClick={() => {
                 setLogoutState(true);
               }}
-              className="text-xs text-rosemain bg-semidark py-1 px-4 w-fit rounded-full"
+              className="text-xs cursor-pointer text-rosemain bg-semidark py-1 px-4 w-fit rounded-full"
             >
               Logout
             </div>
@@ -341,63 +344,34 @@ export const Settings: React.FC = () => {
           )}
           {isLoading && (
             <div className="flex justify-center">
-              <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+              <CircularProgress sx={{ color: "inherit" }} />
             </div>
           )}
         </div>
       </div>
-      <Modal
-        open={logoutState}
-        onClose={() => {
-          setLogoutState(false);
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 300,
-            bgcolor: "#262626",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 0,
-            color: "white",
-          }}
-        >
-          <Button
-            fullWidth
-            onClick={() => {
-              localStorage.clear();
-              navigate("/login");
-            }}
-            sx={{
-              color: "error.main",
-              py: 2,
-              borderBottom: "1px solid #363636",
-              borderRadius: "8px 8px 0 0",
-              textTransform: "none",
-            }}
-          >
-            Logout
-          </Button>
-          <Button
-            fullWidth
-            onClick={() => {
-              setLogoutState(false);
-            }}
-            sx={{
-              color: "white",
-              py: 2,
-              borderRadius: "0 0 8px 8px",
-              textTransform: "none",
-            }}
-          >
-            Cancel
-          </Button>
-        </Box>
-      </Modal>
+      {logoutState && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-[#262626] w-[300px] rounded-lg shadow-xl overflow-hidden">
+            <button
+              className="w-full py-2 text-red-500 border-b border-[#363636] rounded-t-lg focus:outline-none"
+              onClick={() => {
+                localStorage.clear();
+                navigate("/login");
+              }}
+            >
+              Logout
+            </button>
+            <button
+              className="w-full py-2 text-white rounded-b-lg focus:outline-none"
+              onClick={() => {
+                setLogoutState(false);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
