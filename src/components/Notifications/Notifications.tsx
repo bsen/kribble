@@ -112,7 +112,7 @@ export const Notifications: React.FC = () => {
                   className="mb-2 p-0.5 bg-dark rounded-lg cursor-pointer hover:bg-semidark transition-colors text-center"
                 >
                   {notification.sender && (
-                    <div className="font-medium text-blue-500">
+                    <div className="font-medium text-white">
                       {notification.sender.username}
                     </div>
                   )}
