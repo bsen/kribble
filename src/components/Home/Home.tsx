@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { MenuBar } from "../Menu/MenuBar";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 interface Post {
   id: string;
@@ -38,8 +39,10 @@ interface Comment {
 }
 
 export const Home = () => {
+  const location = useLocation();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [postData, setPostData] = useState<{
@@ -64,6 +67,8 @@ export const Home = () => {
   const [isPostingComment, setIsPostingComment] = useState(false);
 
   async function getFeedPosts(cursor?: string) {
+    if (postData.posts.length > 0 && !cursor) return;
+
     try {
       setIsLoading(true);
       const response = await axios.post(
@@ -93,6 +98,12 @@ export const Home = () => {
   }, []);
 
   const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const newScrollPosition = scrollContainerRef.current.scrollTop;
+      setScrollPosition(newScrollPosition);
+      localStorage.setItem("homeScrollPosition", newScrollPosition.toString());
+    }
+
     if (
       scrollContainerRef.current &&
       scrollContainerRef.current.scrollTop +
@@ -104,6 +115,12 @@ export const Home = () => {
       getFeedPosts(postData.nextCursor);
     }
   };
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollPosition;
+    }
+  }, []);
 
   const handleLike = async (postId: string) => {
     try {
@@ -194,8 +211,60 @@ export const Home = () => {
   };
 
   const toggleFullscreen = (post: Post) => {
-    navigate(`/post/${post.id}`);
+    navigate(`/post/${post.id}`, {
+      state: {
+        scrollPosition,
+        posts: postData.posts,
+        nextCursor: postData.nextCursor,
+      },
+    });
   };
+  useEffect(() => {
+    const state = location.state as {
+      scrollPosition?: number;
+      posts?: Post[];
+      nextCursor?: string | null;
+    };
+
+    if (state?.posts) {
+      setPostData({
+        posts: state.posts,
+        nextCursor: state.nextCursor || null,
+      });
+    } else {
+      getFeedPosts();
+    }
+
+    const restoreScroll = () => {
+      const savedScrollPosition = localStorage.getItem("homeScrollPosition");
+      if (savedScrollPosition && scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = parseInt(
+          savedScrollPosition,
+          10
+        );
+      }
+    };
+
+    // Attempt to restore scroll immediately
+    restoreScroll();
+
+    // If that doesn't work, try again after a short delay
+    const timer = setTimeout(restoreScroll, 100);
+
+    return () => clearTimeout(timer);
+  }, [location.state]);
+
+  useEffect(() => {
+    if (postData.posts.length > 0) {
+      const savedScrollPosition = localStorage.getItem("homeScrollPosition");
+      if (savedScrollPosition && scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = parseInt(
+          savedScrollPosition,
+          10
+        );
+      }
+    }
+  }, [postData.posts]);
 
   const createComment = async (postId: string) => {
     if (!commentText.trim()) return;

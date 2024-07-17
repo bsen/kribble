@@ -159,6 +159,7 @@ export const Profile: React.FC<ProfileProps> = () => {
     },
     [token, username]
   );
+
   useEffect(() => {
     getAllPosts(null, true);
   }, [username]);
