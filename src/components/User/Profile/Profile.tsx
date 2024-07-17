@@ -496,16 +496,20 @@ export const Profile: React.FC<ProfileProps> = () => {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {userData && (
-              <div className="relative aspect-square overflow-hidden rounded-lg">
-                <div
-                  className="w-full h-full bg-cover bg-center cursor-pointer"
-                  style={{
-                    backgroundImage: `url(${userData.image || "/profile.png"})`,
-                  }}
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 p-4 flex flex-col items-center">
+              <div className="flex py-2 flex-col items-center justify-center gap-2">
+                <div className="relative w-40 h-40">
+                  <div
+                    className="w-full h-full rounded-full bg-cover bg-center cursor-pointer"
+                    style={{
+                      backgroundImage: `url(${
+                        userData.image || "/profile.png"
+                      })`,
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col items-center">
                   <div className="flex items-center gap-2">
-                    <div className="text-white text-base">
+                    <div className="text-white text-lg">
                       {userData.username}
                     </div>
                     {userData.link && (
