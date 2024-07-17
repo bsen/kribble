@@ -55,7 +55,7 @@ export const MenuBar: React.FC = () => {
     <>
       {location.pathname === "/" && (
         <div
-          className="fixed top-0 right-0 bg-black/80 py-0.5 px-6 rounded-bl-lg"
+          className="fixed top-0 left-0 bg-black/80 py-0.5 px-6 rounded-br-lg"
           style={{ zIndex: "100" }}
         >
           <div

@@ -95,7 +95,7 @@ export const Notifications: React.FC = () => {
     <>
       <MenuBar />
       <div className="flex justify-center min-h-screen">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md px-4">
           <div className="flex sticky flex-col items-center my-2">
             <NotificationsIcon fontSize="medium" className="text-white" />
           </div>

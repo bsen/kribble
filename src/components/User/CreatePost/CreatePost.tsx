@@ -109,13 +109,13 @@ export const CreatePost = ({}) => {
   return (
     <div className="flex flex-col h-screen">
       <MenuBar />
-      <div className="flex-grow overflow-auto bg-black flex flex-col items-center p-6 pb-20 scrollbar-hide">
+      <div className="flex-grow overflow-auto bg-black flex flex-col items-center p-4 pb-20 scrollbar-hide">
         <div className="w-full max-w-md flex flex-col items-center">
           {previewImage || previewVideo ? (
             <>
               <div className="w-full mb-4">
                 <textarea
-                  className="w-full mb-3 p-2 bg-neutral-900 text-white border border-neutral-800 rounded focus:outline-none focus:border-neutral-700 resize-none scrollbar-hide"
+                  className="w-full mb-2 p-2 bg-neutral-900 text-white border border-neutral-800 rounded focus:outline-none focus:border-neutral-700 resize-none scrollbar-hide"
                   rows={2}
                   placeholder="Write a caption..."
                   value={caption}

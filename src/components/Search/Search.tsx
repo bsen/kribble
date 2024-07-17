@@ -64,7 +64,7 @@ export const Search = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-56px)] bg-black">
       <MenuBar />
-      <div className="flex-grow overflow-auto py-4 scrollbar-hide">
+      <div className="flex-grow overflow-auto p-4 scrollbar-hide">
         <div className="max-w-xl mx-auto">
           <div className="relative">
             <input
