@@ -237,7 +237,7 @@ export const Settings: React.FC = () => {
             <img
               src={previewImage || "/profile.png"}
               alt={userData.username}
-              className="w-24 h-24 mx-auto"
+              className="w-24 h-24 mx-auto rounded-full"
             />
             <label
               htmlFor="image-upload"
