@@ -245,10 +245,8 @@ export const Home = () => {
       }
     };
 
-    // Attempt to restore scroll immediately
     restoreScroll();
 
-    // If that doesn't work, try again after a short delay
     const timer = setTimeout(restoreScroll, 100);
 
     return () => clearTimeout(timer);
@@ -411,7 +409,7 @@ export const Home = () => {
       day: "numeric",
     });
   };
-  console.log(postData);
+
   return (
     <>
       <MenuBar />
