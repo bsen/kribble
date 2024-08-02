@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        dark: "rgb(15 15 15);",
-        semidark: "rgb(30 30 30);",
+        dark: "rgb(20 20 20);",
+        semidark: "rgb(26 26 26);",
         light: "rgb(220 220 220);",
         semilight: "rgb(200 200 200);",
         rosemain: "rgb(210, 60, 60);",

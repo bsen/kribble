@@ -20,7 +20,6 @@ interface DebouncedFunction<T extends (...args: any[]) => void> {
   (...args: Parameters<T>): void;
   cancel: () => void;
 }
-
 function debounce<T extends (...args: any[]) => void>(
   func: T,
   delay: number
