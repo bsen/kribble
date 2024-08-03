@@ -6,7 +6,6 @@ import { UserContext } from "../User/Context/UserContext";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import { MenuBar } from "../Menu/MenuBar";
-import { FaHeart, FaRegHeart, FaComment } from "react-icons/fa";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { useLocation } from "react-router-dom";
@@ -109,7 +108,7 @@ export const Home = () => {
       scrollContainerRef.current &&
       scrollContainerRef.current.scrollTop +
         scrollContainerRef.current.clientHeight >=
-        scrollContainerRef.current.scrollHeight - 100 &&
+        scrollContainerRef.current.scrollHeight &&
       postData.nextCursor &&
       !isLoading
     ) {
@@ -418,270 +417,262 @@ export const Home = () => {
         <div
           ref={scrollContainerRef}
           onScroll={handleScroll}
-          className="max-w-xl mx-auto pt-2 pb-16 px-2 h-screen overflow-y-auto no-scrollbar"
+          style={{
+            scrollbarGutter: "stable",
+          }}
+          className="p-2 pb-16 h-[calc(100vh-56px)] overflow-y-auto scrollbar-hide"
         >
-          {postData.posts.map((post, index) => (
-            <div
-              key={index}
-              className="bg-dark mb-6 rounded-lg overflow-hidden shadow-lg"
-            >
-              <div className="p-4 flex items-center justify-between">
-                <div className="flex items-center">
-                  <img
-                    src={post.creator.image || "/user.png"}
-                    alt={post.creator.username}
-                    className="w-7 h-7 rounded-full mr-3 object-cover"
-                  />
-                  <Link
-                    to={`/${post.creator.username}`}
-                    className="font-semibold text-sm text-white hover:underline"
-                  >
-                    {post.creator.username}
-                  </Link>
-                </div>
-                <p className="text-xs text-gray-400">
-                  {getTimeDifference(post.createdAt)}
-                </p>
-              </div>
-
-              <div className="w-full flex justify-center bg-dark">
-                {post.video ? (
-                  <video
-                    src={post.video}
-                    loop
-                    playsInline
-                    muted={false}
-                    className="w-full max-h-[70vh] object-contain"
-                    controlsList="nodownload"
-                  />
-                ) : post.image ? (
-                  <img
-                    src={post.image}
-                    alt="Post content"
-                    className="w-full max-h-[70vh] object-contain"
-                  />
-                ) : (
-                  <div className="w-full h-64 flex items-center justify-center">
-                    <span className="text-gray-400">No media</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="p-4">
-                <div className="flex justify-between items-center mb-3">
-                  <div className="flex items-center space-x-4">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (token) handleLike(post.id);
-                        else navigate("/auth");
-                      }}
-                      className="flex items-center space-x-2 transition"
-                    >
-                      {post.isLiked ? (
-                        <FaHeart className="w-6 h-6 text-rosemain" />
-                      ) : (
-                        <FaRegHeart className="w-6 h-6 text-white hover:text-rose-500" />
-                      )}
-                      <span className="font-semibold text-sm">
-                        {post.likesCount}
-                      </span>
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleComments(post);
-                      }}
-                      className="flex items-center space-x-2 text-white transition"
-                    >
-                      <FaComment className="w-6 h-6" />
-                      <span className="font-semibold text-sm">
-                        {post.commentsCount}
-                      </span>
-                    </button>
-                  </div>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleFullscreen(post);
-                    }}
-                  >
-                    <img
-                      src="/fullscreen.png"
-                      alt="Fullscreen"
-                      className="h-5 w-5"
+          <div className="grid grid-cols-1   max-w-lg mx-auto gap-4">
+            {postData.posts.map((post, index) => (
+              <div key={index} className="relative">
+                <div className="relative w-full aspect-square overflow-hidden rounded-lg">
+                  {post.video ? (
+                    <video
+                      data-post-id={post.id}
+                      src={post.video}
+                      loop
+                      playsInline
+                      muted={true}
+                      className="absolute top-0 left-0 w-full h-full object-cover"
+                      controlsList="nodownload"
                     />
-                  </button>
+                  ) : post.image ? (
+                    <img
+                      src={post.image}
+                      alt="Post"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-neutral-800 flex items-center justify-center">
+                      <span className="text-neutral-400">No media</span>
+                    </div>
+                  )}
                 </div>
 
-                {post.caption && (
-                  <p className="text-sm mb-2 text-white break-words">
-                    <span className="font-semibold mr-2">
+                <div className="absolute bottom-0 left-0 right-0 px-2.5 py-2 bg-black/80">
+                  <div className="flex items-center justify-between mb-1">
+                    <Link
+                      to={`/${post.creator.username}`}
+                      className="text-sm font-semibold hover:underline text-white"
+                    >
                       {post.creator.username}
+                    </Link>
+                    <span className="text-xs text-neutral-300">
+                      {getTimeDifference(post.createdAt)}
                     </span>
-                    {post.caption}
-                  </p>
-                )}
+                  </div>
 
-                <button
-                  onClick={() => handleComments(post)}
-                  className="text-sm text-gray-400 hover:text-white transition"
-                >
-                  View all {post.commentsCount} comments
-                </button>
+                  {post.caption && (
+                    <p className="text-sm text-white mb-1 line-clamp-2">
+                      {post.caption}
+                    </p>
+                  )}
+
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-4">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (token) handleLike(post.id);
+                          else navigate("/auth");
+                        }}
+                        className="flex items-center space-x-1 text-white"
+                      >
+                        <img
+                          src={post.isLiked ? "/liked.png" : "/like.png"}
+                          alt="Like"
+                          className="h-4 w-4"
+                        />
+                        <span>{post.likesCount}</span>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleComments(post);
+                        }}
+                        className="flex items-center space-x-1 text-white"
+                      >
+                        <img
+                          src="/comment.png"
+                          alt="Comment"
+                          className="h-4 w-4"
+                        />
+                        <span>{post.commentsCount}</span>
+                      </button>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFullscreen(post);
+                      }}
+                    >
+                      <img
+                        src="/fullscreen.png"
+                        alt="Fullscreen"
+                        className="h-4 w-4"
+                      />
+                    </button>
+                  </div>
+                </div>
               </div>
+            ))}
+          </div>
+
+          {postData.posts.length === 0 && !isLoading && (
+            <div className="flex justify-center mt-10 text-white">
+              Please Refresh The Page
             </div>
-          ))}
+          )}
+
           {isLoading && (
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center items-center mt-5">
               <CircularProgress size={24} sx={{ color: "inherit" }} />
             </div>
           )}
         </div>
-      </div>
 
-      {isCommentsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
-          <div className="bg-neutral-900 w-full max-w-md h-[80vh] rounded-lg overflow-hidden flex flex-col">
-            <div className="p-4 border-b border-neutral-700">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-medium text-white">Comments</h2>
-                <button
-                  onClick={() => setIsCommentsOpen(false)}
-                  className="text-neutral-400 hover:text-white"
-                >
-                  <CloseIcon />
-                </button>
+        {isCommentsOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
+            <div className="bg-neutral-900 w-full max-w-md h-[80vh] rounded-lg overflow-hidden flex flex-col">
+              <div className="p-4 border-b border-neutral-700">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-medium text-white">Comments</h2>
+                  <button
+                    onClick={() => setIsCommentsOpen(false)}
+                    className="text-neutral-400 hover:text-white"
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
               </div>
-            </div>
-            <div
-              ref={commentScrollRef}
-              onScroll={handleCommentScroll}
-              className="flex-grow overflow-y-auto"
-            >
-              {comments.map((comment, index) => (
-                <div
-                  key={index}
-                  className="p-2 border-b border-neutral-700 last:border-b-0"
-                >
-                  <div className="flex items-start space-x-3">
-                    <img
-                      src={comment.creator.image || "/user.png"}
-                      alt={comment.creator.username}
-                      className="w-6 h-6 rounded-full"
-                    />
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <div>
-                          <span className="font-semibold mr-2 text-white">
-                            {comment.creator.username}
-                          </span>
-                          <span className="text-xs text-neutral-400">
-                            {getTimeDifference(comment.createdAt)}
-                          </span>
+              <div
+                ref={commentScrollRef}
+                onScroll={handleCommentScroll}
+                className="flex-grow overflow-y-auto"
+              >
+                {comments.map((comment, index) => (
+                  <div
+                    key={index}
+                    className="p-2 border-b border-neutral-700 last:border-b-0"
+                  >
+                    <div className="flex items-start space-x-3">
+                      <img
+                        src={comment.creator.image || "/user.png"}
+                        alt={comment.creator.username}
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                          <div>
+                            <span className="font-semibold mr-2 text-white">
+                              {comment.creator.username}
+                            </span>
+                            <span className="text-xs text-neutral-400">
+                              {getTimeDifference(comment.createdAt)}
+                            </span>
+                          </div>
+                          {currentUser === comment.creator.username && (
+                            <button
+                              onClick={() => {
+                                setDeleteState(true);
+                                setCommentDeleteId(comment.id);
+                              }}
+                              className="text-neutral-400 hover:text-white"
+                            >
+                              <MoreHorizIcon fontSize="small" />
+                            </button>
+                          )}
                         </div>
-                        {currentUser === comment.creator.username && (
+                        <p className="text-sm text-neutral-200">
+                          {comment.comment}
+                        </p>
+                        <div className="flex items-center mt-2">
                           <button
-                            onClick={() => {
-                              setDeleteState(true);
-                              setCommentDeleteId(comment.id);
-                            }}
-                            className="text-neutral-400 hover:text-white"
+                            onClick={() => handleLikeComment(comment.id)}
+                            className="flex items-center space-x-1 text-sm text-neutral-400 hover:text-white"
                           >
-                            <MoreHorizIcon fontSize="small" />
+                            <img
+                              src={comment.isLiked ? "/liked.png" : "/like.png"}
+                              alt="Like"
+                              className="h-3 w-3"
+                            />
+                            <span>{comment.likesCount} likes</span>
                           </button>
-                        )}
-                      </div>
-                      <p className="text-sm text-neutral-200">
-                        {comment.comment}
-                      </p>
-                      <div className="flex items-center mt-2">
-                        <button
-                          onClick={() => handleLikeComment(comment.id)}
-                          className="flex items-center space-x-1 text-sm text-neutral-400 hover:text-white"
-                        >
-                          <img
-                            src={comment.isLiked ? "/liked.png" : "/like.png"}
-                            alt="Like"
-                            className="h-3 w-3"
-                          />
-                          <span>{comment.likesCount} likes</span>
-                        </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              {isLoadingComments && (
-                <div className="flex justify-center items-center mt-5">
-                  <CircularProgress size={24} sx={{ color: "inherit" }} />
-                </div>
-              )}
-            </div>
+                ))}
+                {isLoadingComments && (
+                  <div className="flex justify-center items-center mt-5">
+                    <CircularProgress size={24} sx={{ color: "inherit" }} />
+                  </div>
+                )}
+              </div>
 
-            <div className="p-4 border-t border-neutral-700">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  createComment(selectedPost?.id || "");
+              <div className="p-4 border-t border-neutral-700">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    createComment(selectedPost?.id || "");
+                  }}
+                >
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      placeholder="Add a comment..."
+                      maxLength={500}
+                      className="flex-1 outline-none  bg-neutral-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-neutral-700"
+                      disabled={isPostingComment}
+                    />
+                    <button
+                      type="submit"
+                      disabled={!commentText.trim() || isPostingComment}
+                      className="bg-white text-black w-14 h-9 flex justify-center items-center rounded disabled:opacity-80"
+                    >
+                      {isPostingComment ? (
+                        <CircularProgress size={18} sx={{ color: "inherit" }} />
+                      ) : (
+                        "Post"
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {deleteState && (
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
+            <div className="bg-neutral-800 rounded-lg overflow-hidden w-64">
+              <button
+                onClick={() => {
+                  if (commentDeleteId) {
+                    deleteComment(commentDeleteId);
+                  }
+                  setDeleteState(false);
+                  setCommentDeleteId(null);
                 }}
+                className="w-full py-3 text-red-500 hover:bg-neutral-700 border-b border-neutral-700"
               >
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="text"
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    placeholder="Add a comment..."
-                    maxLength={500}
-                    className="flex-1 outline-none  bg-neutral-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-neutral-700"
-                    disabled={isPostingComment}
-                  />
-                  <button
-                    type="submit"
-                    disabled={!commentText.trim() || isPostingComment}
-                    className="bg-indigo-500 text-white w-14 h-9 flex justify-center items-center rounded disabled:opacity-80"
-                  >
-                    {isPostingComment ? (
-                      <CircularProgress size={18} sx={{ color: "inherit" }} />
-                    ) : (
-                      "Post"
-                    )}
-                  </button>
-                </div>
-              </form>
+                Delete
+              </button>
+              <button
+                onClick={() => {
+                  setDeleteState(false);
+                  setCommentDeleteId(null);
+                }}
+                className="w-full py-3 text-white hover:bg-neutral-700"
+              >
+                Cancel
+              </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {deleteState && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
-          <div className="bg-neutral-800 rounded-lg overflow-hidden w-64">
-            <button
-              onClick={() => {
-                if (commentDeleteId) {
-                  deleteComment(commentDeleteId);
-                }
-                setDeleteState(false);
-                setCommentDeleteId(null);
-              }}
-              className="w-full py-3 text-red-500 hover:bg-neutral-700 border-b border-neutral-700"
-            >
-              Delete
-            </button>
-            <button
-              onClick={() => {
-                setDeleteState(false);
-                setCommentDeleteId(null);
-              }}
-              className="w-full py-3 text-white hover:bg-neutral-700"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

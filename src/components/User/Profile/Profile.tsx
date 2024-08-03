@@ -564,7 +564,7 @@ export const Profile: React.FC<ProfileProps> = () => {
           onScroll={handleScroll}
           className="p-2 pb-16 h-[calc(100vh-56px)] overflow-y-auto scrollbar-hide"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 mx-auto max-w-lg gap-4">
             {userData && (
               <div className="flex py-2 flex-col items-center justify-center gap-2">
                 <div className="relative w-40 h-40">

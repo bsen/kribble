@@ -115,7 +115,7 @@ export const CreatePost = ({}) => {
             <>
               <div className="w-full mb-4">
                 <textarea
-                  className="w-full mb-2 p-2 bg-neutral-900 text-white border border-neutral-800 rounded focus:outline-none focus:border-neutral-700 resize-none scrollbar-hide"
+                  className="w-full mb-2 p-2 bg-dark text-white border border-semidark rounded focus:outline-none focus:border-neutral-700 resize-none scrollbar-hide"
                   rows={2}
                   placeholder="Write a caption..."
                   value={caption}
@@ -126,7 +126,7 @@ export const CreatePost = ({}) => {
                   <button
                     onClick={createPost}
                     disabled={isLoading}
-                    className="w-full h-8 flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                    className="w-full h-8 flex justify-center items-center bg-white hover:bg-neutral-100 text-black font-normal rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
                   >
                     {isLoading ? (
                       <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
@@ -136,17 +136,21 @@ export const CreatePost = ({}) => {
                   </button>
                 </div>
               </div>
-              <div className="w-full relative">
+              <div className="w-full flex justify-center">
                 {previewImage ? (
-                  <img src={previewImage} alt="Preview" className="w-full" />
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className="w-auto max-h-[70vh]"
+                  />
                 ) : (
-                  <div className="relative aspect-square">
+                  <div>
                     <video
                       ref={videoRef}
                       src={previewVideo || ""}
                       loop
                       playsInline
-                      className="w-full h-full object-cover"
+                      className="w-auto max-h-[70vh]"
                       onClick={togglePlay}
                     />
                     {!isPlaying && (
