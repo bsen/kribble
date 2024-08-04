@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String         @id @default(uuid())
+  username           String         @unique
+  email              String         @unique
+  image              String?
+  bio                String?
+  status             Boolean        @default(true)
+  link               String?
+  followingCount     Int            @default(0)
+  followersCount     Int            @default(0)
+  lastLoginAt        DateTime?
+  accountType        String         @default("standard")
+  createdAt          DateTime       @default(now())
+  comments           Comment[]      @relation("UserComments")
+  likedComments      CommentLike[]  @relation("UserCommentLikes")
+  following          Following[]    @relation("FollowerRelation")
+  followers          Following[]    @relation("FollowingRelation")
+  receiver           Notification[] @relation("ReceiverRelation")
+  sender             Notification[] @relation("SenderRelation")
+  posts              Post[]         @relation("UserPosts")
+  likedPosts         PostLike[]     @relation("UserPostLikes")
+  unreadNotification Boolean        @default(false)
+  reportedPosts      ReportedPost[] @relation("ReportingUser")
+}
+
+model Following {
+  id          String   @id @default(uuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  status      Boolean  @default(true)
+  follower    User     @relation("FollowerRelation", fields: [followerId], references: [id])
+  following   User     @relation("FollowingRelation", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+}
+
+model Post {
+  id            String         @id @default(uuid())
+  caption       String?
+  image         String?
+  creatorId     String
+  likesCount    Int            @default(0)
+  commentsCount Int            @default(0)
+  createdAt     DateTime       @default(now())
+  status        Boolean        @default(true)
+  video         String?
+  comments      Comment[]      @relation("PostComments")
+  notifications Notification[] @relation("PostNotifications")
+  creator       User           @relation("UserPosts", fields: [creatorId], references: [id])
+  likes         PostLike[]     @relation("PostLikes")
+  reports       ReportedPost[] @relation("ReportedPost")
+}
+
+model Comment {
+  id            String         @id @default(uuid())
+  creatorId     String
+  postId        String
+  createdAt     DateTime       @default(now())
+  status        Boolean        @default(true)
+  likesCount    Int            @default(0)
+  comment       String
+  creator       User           @relation("UserComments", fields: [creatorId], references: [id])
+  post          Post           @relation("PostComments", fields: [postId], references: [id])
+  likes         CommentLike[]  @relation("CommentLikes")
+  notifications Notification[] @relation("CommentNotifications")
+}
+
+model PostLike {
+  id        String   @id @default(uuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  status    Boolean  @default(true)
+  post      Post     @relation("PostLikes", fields: [postId], references: [id])
+  user      User     @relation("UserPostLikes", fields: [userId], references: [id])
+
+  @@unique([userId, postId])
+}
+
+model ReportedPost {
+  id        String   @id @default(uuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  status    Boolean  @default(true)
+  post      Post     @relation("ReportedPost", fields: [postId], references: [id])
+  user      User     @relation("ReportingUser", fields: [userId], references: [id])
+
+  @@unique([userId, postId])
+}
+
+model CommentLike {
+  id        String   @id @default(uuid())
+  userId    String
+  commentId String
+  createdAt DateTime @default(now())
+  status    Boolean  @default(true)
+  comment   Comment  @relation("CommentLikes", fields: [commentId], references: [id])
+  user      User     @relation("UserCommentLikes", fields: [userId], references: [id])
+
+  @@unique([userId, commentId])
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  message    String
+  createdAt  DateTime @default(now())
+  status     Boolean  @default(true)
+  postId     String?
+  commentId  String?
+  receiverId String
+  senderId   String?
+  comment    Comment? @relation("CommentNotifications", fields: [commentId], references: [id])
+  post       Post?    @relation("PostNotifications", fields: [postId], references: [id])
+  receiver   User     @relation("ReceiverRelation", fields: [receiverId], references: [id])
+  sender     User?    @relation("SenderRelation", fields: [senderId], references: [id])
+
+  @@unique([senderId, receiverId, postId, commentId])
+}
