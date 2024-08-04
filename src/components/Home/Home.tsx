@@ -108,7 +108,7 @@ export const Home = () => {
       scrollContainerRef.current &&
       scrollContainerRef.current.scrollTop +
         scrollContainerRef.current.clientHeight >=
-        scrollContainerRef.current.scrollHeight &&
+        scrollContainerRef.current.scrollHeight - 100 &&
       postData.nextCursor &&
       !isLoading
     ) {
@@ -422,7 +422,7 @@ export const Home = () => {
           }}
           className="p-2 pb-16 h-[calc(100vh-56px)] overflow-y-auto scrollbar-hide"
         >
-          <div className="grid grid-cols-1   max-w-lg mx-auto gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {postData.posts.map((post, index) => (
               <div key={index} className="relative">
                 <div className="relative w-full aspect-square overflow-hidden rounded-lg">
