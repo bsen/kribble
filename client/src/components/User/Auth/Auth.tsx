@@ -93,7 +93,9 @@ export const Auth = () => {
             Kribble
           </h2>
           <p className="mt-2 text-center text-sm text-gray-300 max-w-sm">
-            Connect, collaborate, and code with developers worldwide.
+            Express yourself in snapshots and quick clips.
+            <br />
+            Your creativity, your Kribble.
           </p>
         </div>
 
