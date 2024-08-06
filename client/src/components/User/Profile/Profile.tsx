@@ -13,10 +13,8 @@ import {
   LinearProgress,
   Tooltip,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { UserContext } from "../Context/UserContext";
 import { MenuBar } from "../../Menu/MenuBar";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { BACKEND_URL } from "../../../config";
 import { FollowersComponent } from "../FollowList/FollowersComponent";
 import { FollowingComponent } from "../FollowList/FollowingComponent";
