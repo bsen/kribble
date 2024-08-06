@@ -5,6 +5,7 @@ import { BACKEND_URL } from "../../config";
 import { MenuBar } from "../Menu/MenuBar";
 import CircularProgress from "@mui/material/CircularProgress";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { motion } from "framer-motion";
 
 interface NotificationData {
   id: string;
@@ -40,7 +41,7 @@ export const Notifications: React.FC = () => {
       setIsLoading(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/user/notifications/all/notifications`,
-        { token, cursor }
+        { token, cursor },
       );
       setNotificationsData((prevData) => ({
         notifications: [...prevData.notifications, ...response.data.data],
@@ -92,57 +93,75 @@ export const Notifications: React.FC = () => {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="bg-black min-h-screen text-white"
+    >
       <MenuBar />
-      <div className="flex justify-center min-h-screen">
-        <div className="w-full max-w-md px-4">
-          <div className="flex sticky flex-col items-center my-2">
-            <NotificationsIcon fontSize="medium" className="text-white" />
-          </div>
-          <div
-            ref={scrollContainerRef}
-            onScroll={handleScroll}
-            className="overflow-y-auto  max-h-[calc(100vh-56px)] pb-14 no-scrollbar"
-          >
-            {notificationsData.notifications.length > 0 ? (
-              notificationsData.notifications.map((notification) => (
-                <div
-                  key={notification.id}
-                  onClick={() => handleNotificationClick(notification)}
-                  className="mb-2 p-0.5 bg-dark rounded-lg cursor-pointer hover:bg-semidark transition-colors text-center"
-                >
-                  {notification.sender && (
-                    <div className="font-medium text-white">
-                      {notification.sender.username}
-                    </div>
-                  )}
-                  <div className="text-sm text-neutral-300 mt-1">
-                    {notification.message}
+      <div className="max-w-3xl mx-auto px-4 py-6">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center justify-center mb-6"
+        >
+          <NotificationsIcon fontSize="large" className="text-white mr-2" />
+          <h1 className="text-2xl font-bold">Notifications</h1>
+        </motion.div>
+        <div
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          className="overflow-y-auto max-h-[calc(100vh-200px)] scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-neutral-900"
+        >
+          {notificationsData.notifications.length > 0 ? (
+            notificationsData.notifications.map((notification, index) => (
+              <motion.div
+                key={notification.id}
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                onClick={() => handleNotificationClick(notification)}
+                className="mb-4 p-2.5 bg-neutral-700 rounded-lg cursor-pointer hover:bg-neutral-700 transition-colors"
+              >
+                {notification.sender && (
+                  <div className="font-medium text-white mb-1">
+                    {notification.sender.username}
                   </div>
-                  <div className="text-xs text-neutral-500 mt-2">
-                    {new Date(notification.createdAt).toLocaleString()}
-                  </div>
+                )}
+                <div className="text-sm text-neutral-300">
+                  {notification.message}
                 </div>
-              ))
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <div>
-                  {isLoading ? (
-                    <CircularProgress size={24} color="inherit" />
-                  ) : (
-                    <p className="text-white">No Notifications</p>
-                  )}
+                <div className="text-xs text-neutral-500 mt-2">
+                  {new Date(notification.createdAt).toLocaleString()}
                 </div>
-              </div>
-            )}
-          </div>
-          {isLoading && notificationsData.notifications.length > 0 && (
-            <div className="text-center mt-4">
-              <CircularProgress size={24} sx={{ color: "white" }} />
-            </div>
+              </motion.div>
+            ))
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex items-center justify-center h-64"
+            >
+              {isLoading ? (
+                <CircularProgress size={30} sx={{ color: "white" }} />
+              ) : (
+                <p className="text-neutral-400 text-lg">No Notifications</p>
+              )}
+            </motion.div>
           )}
         </div>
+        {isLoading && notificationsData.notifications.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center mt-4"
+          >
+            <CircularProgress size={30} sx={{ color: "white" }} />
+          </motion.div>
+        )}
       </div>
-    </>
+    </motion.div>
   );
 };

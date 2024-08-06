@@ -1,14 +1,21 @@
-import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { BACKEND_URL } from "../../config";
-import { useContext } from "react";
-import { UserContext } from "../User/Context/UserContext";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import CloseIcon from "@mui/icons-material/Close";
-import { MenuBar } from "../Menu/MenuBar";
+import { useEffect, useState, useRef, useContext } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { CircularProgress } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { BACKEND_URL } from "../../config";
+import { UserContext } from "../User/Context/UserContext";
+import { MenuBar } from "../Menu/MenuBar";
+import { CircularProgress, IconButton, Tooltip } from "@mui/material";
+import {
+  FavoriteOutlined,
+  FavoriteBorderOutlined,
+  ChatBubbleOutlineOutlined,
+  FullscreenOutlined,
+  CloseOutlined,
+  SendOutlined,
+  MoreHorizOutlined,
+  DeleteOutlined,
+} from "@mui/icons-material";
 
 interface Post {
   id: string;
@@ -57,7 +64,7 @@ export const Home = () => {
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [commentNextCursor, setCommentNextCursor] = useState<string | null>(
-    null
+    null,
   );
   const commentScrollRef = useRef<HTMLDivElement>(null);
   const { currentUser } = useContext(UserContext);
@@ -76,7 +83,7 @@ export const Home = () => {
         {
           token,
           cursor,
-        }
+        },
       );
       if (response.data.status === 200) {
         setPostData({
@@ -135,7 +142,7 @@ export const Home = () => {
                   ? parseInt(post.likesCount) - 1
                   : parseInt(post.likesCount) + 1,
               }
-            : post
+            : post,
         ) as Post[],
         nextCursor: prevData.nextCursor,
       }));
@@ -154,7 +161,7 @@ export const Home = () => {
                   ? parseInt(post.likesCount) + 1
                   : parseInt(post.likesCount) - 1,
               }
-            : post
+            : post,
         ) as Post[],
         nextCursor: prevData.nextCursor,
       }));
@@ -166,7 +173,7 @@ export const Home = () => {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/post/comment/all/comments`,
-        { token, postId, cursor }
+        { token, postId, cursor },
       );
       if (response.data.status === 200) {
         if (cursor) {
@@ -240,7 +247,7 @@ export const Home = () => {
       if (savedScrollPosition && scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = parseInt(
           savedScrollPosition,
-          10
+          10,
         );
       }
     };
@@ -258,7 +265,7 @@ export const Home = () => {
       if (savedScrollPosition && scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = parseInt(
           savedScrollPosition,
-          10
+          10,
         );
       }
     }
@@ -275,7 +282,7 @@ export const Home = () => {
           token,
           postId,
           comment: commentText,
-        }
+        },
       );
       console.log(response.data);
       if (response.data.status === 200) {
@@ -303,8 +310,8 @@ export const Home = () => {
                   ? comment.likesCount - 1
                   : comment.likesCount + 1,
               }
-            : comment
-        )
+            : comment,
+        ),
       );
 
       const response = await axios.post(
@@ -312,7 +319,7 @@ export const Home = () => {
         {
           token,
           commentId,
-        }
+        },
       );
 
       if (response.data.status !== 200) {
@@ -326,8 +333,8 @@ export const Home = () => {
                     ? comment.likesCount + 1
                     : comment.likesCount - 1,
                 }
-              : comment
-          )
+              : comment,
+          ),
         );
       }
     } catch (error) {
@@ -343,8 +350,8 @@ export const Home = () => {
                   ? comment.likesCount + 1
                   : comment.likesCount - 1,
               }
-            : comment
-        )
+            : comment,
+        ),
       );
     }
   };
@@ -355,7 +362,7 @@ export const Home = () => {
         {
           token,
           commentId,
-        }
+        },
       );
       if (response.data.status === 200) {
         setComments(comments.filter((comment) => comment.id !== commentId));
@@ -379,7 +386,7 @@ export const Home = () => {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     const videos = document.querySelectorAll("video");
@@ -397,7 +404,7 @@ export const Home = () => {
     const now = new Date();
     const commentDate = new Date(createdAt);
     const diffInSeconds = Math.floor(
-      (now.getTime() - commentDate.getTime()) / 1000
+      (now.getTime() - commentDate.getTime()) / 1000,
     );
 
     if (diffInSeconds < 60) return `${diffInSeconds}s`;
@@ -411,155 +418,200 @@ export const Home = () => {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="bg-gradient-to-br from-neutral-900 to-black min-h-screen text-white"
+    >
       <MenuBar />
-      <div className="bg-black min-h-screen text-white">
-        <div
-          ref={scrollContainerRef}
-          onScroll={handleScroll}
-          style={{
-            scrollbarGutter: "stable",
-          }}
-          className="p-2 pb-16 h-[calc(100vh-56px)] overflow-y-auto scrollbar-hide"
+      <div
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
+        className="p-4 pb-20 h-[calc(100vh-56px)] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-neutral-900"
+      >
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {postData.posts.map((post, index) => (
-              <div key={index} className="relative">
-                <div className="relative w-full aspect-square overflow-hidden rounded-lg">
-                  {post.video ? (
-                    <video
-                      data-post-id={post.id}
-                      src={post.video}
-                      loop
-                      playsInline
-                      muted={true}
-                      className="absolute top-0 left-0 w-full h-full object-cover"
-                      controlsList="nodownload"
-                    />
-                  ) : post.image ? (
-                    <img
-                      src={post.image}
-                      alt="Post"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-neutral-800 flex items-center justify-center">
-                      <span className="text-neutral-400">No media</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="absolute bottom-0 left-0 right-0 px-2.5 py-2 bg-black/80">
-                  <div className="flex items-center justify-between mb-1">
-                    <Link
-                      to={`/${post.creator.username}`}
-                      className="text-sm font-semibold hover:underline text-white"
-                    >
-                      {post.creator.username}
-                    </Link>
-                    <span className="text-xs text-neutral-300">
-                      {getTimeDifference(post.createdAt)}
-                    </span>
+          {postData.posts.map((post, index) => (
+            <motion.div
+              key={index}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.2, delay: index * 0.1 }}
+              className="relative group"
+            >
+              <div className="relative w-full aspect-square overflow-hidden rounded-xl shadow-lg">
+                {post.video ? (
+                  <video
+                    data-post-id={post.id}
+                    src={post.video}
+                    loop
+                    playsInline
+                    muted={true}
+                    className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    controlsList="nodownload"
+                  />
+                ) : post.image ? (
+                  <img
+                    src={post.image}
+                    alt="Post"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-neutral-800 flex items-center justify-center">
+                    <span className="text-neutral-400">No media</span>
                   </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
 
-                  {post.caption && (
-                    <p className="text-sm text-white mb-1 line-clamp-2">
-                      {post.caption}
-                    </p>
-                  )}
-
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-4">
-                      <button
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+                className="absolute bottom-0 left-0 right-0 p-2 bg-black bg-opacity-80 backdrop-blur-sm"
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <Link
+                    to={`/${post.creator.username}`}
+                    className="text-sm font-semibold hover:underline text-white truncate max-w-[70%]"
+                    title={post.creator.username}
+                  >
+                    {post.creator.username}
+                  </Link>
+                  <span className="text-xs text-neutral-300 truncate ml-1">
+                    {getTimeDifference(post.createdAt)}
+                  </span>
+                </div>
+                {post.caption && (
+                  <p className="text-sm text-neutral-200 mb-1.5 line-clamp-2 break-words">
+                    {post.caption}
+                  </p>
+                )}
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-2">
+                    <Tooltip title={post.isLiked ? "Unlike" : "Like"}>
+                      <IconButton
                         onClick={(e) => {
                           e.stopPropagation();
                           if (token) handleLike(post.id);
                           else navigate("/auth");
                         }}
-                        className="flex items-center space-x-1 text-white"
+                        size="small"
                       >
-                        <img
-                          src={post.isLiked ? "/liked.png" : "/like.png"}
-                          alt="Like"
-                          className="h-4 w-4"
-                        />
-                        <span>{post.likesCount}</span>
-                      </button>
-                      <button
+                        {post.isLiked ? (
+                          <FavoriteOutlined
+                            fontSize="small"
+                            className="text-red-500"
+                          />
+                        ) : (
+                          <FavoriteBorderOutlined
+                            fontSize="small"
+                            className="text-white"
+                          />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                    <span className="text-sm">{post.likesCount}</span>
+                    <Tooltip title="Comments">
+                      <IconButton
                         onClick={(e) => {
                           e.stopPropagation();
                           handleComments(post);
                         }}
-                        className="flex items-center space-x-1 text-white"
+                        size="small"
                       >
-                        <img
-                          src="/comment.png"
-                          alt="Comment"
-                          className="h-4 w-4"
+                        <ChatBubbleOutlineOutlined
+                          fontSize="small"
+                          className="text-white"
                         />
-                        <span>{post.commentsCount}</span>
-                      </button>
-                    </div>
-                    <button
+                      </IconButton>
+                    </Tooltip>
+                    <span className="text-sm">{post.commentsCount}</span>
+                  </div>
+                  <Tooltip title="Fullscreen">
+                    <IconButton
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleFullscreen(post);
                       }}
+                      size="small"
                     >
-                      <img
-                        src="/fullscreen.png"
-                        alt="Fullscreen"
-                        className="h-4 w-4"
+                      <FullscreenOutlined
+                        fontSize="small"
+                        className="text-white"
                       />
-                    </button>
-                  </div>
+                    </IconButton>
+                  </Tooltip>
                 </div>
-              </div>
-            ))}
-          </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-          {postData.posts.length === 0 && !isLoading && (
-            <div className="flex justify-center mt-10 text-white">
-              Please Refresh The Page
-            </div>
-          )}
+        {postData.posts.length === 0 && !isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex justify-center mt-10 text-neutral-400"
+          >
+            No posts available. Please refresh the page.
+          </motion.div>
+        )}
 
-          {isLoading && (
-            <div className="flex justify-center items-center mt-5">
-              <CircularProgress size={24} sx={{ color: "inherit" }} />
-            </div>
-          )}
-        </div>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex justify-center items-center mt-5"
+          >
+            <CircularProgress size={30} sx={{ color: "white" }} />
+          </motion.div>
+        )}
+      </div>
 
+      <AnimatePresence>
         {isCommentsOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
-            <div className="bg-neutral-900 w-full max-w-md h-[80vh] rounded-lg overflow-hidden flex flex-col">
-              <div className="p-4 border-b border-neutral-700">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-medium text-white">Comments</h2>
-                  <button
-                    onClick={() => setIsCommentsOpen(false)}
-                    className="text-neutral-400 hover:text-white"
-                  >
-                    <CloseIcon />
-                  </button>
-                </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-neutral-900 w-full max-w-md h-[80vh] rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+            >
+              <div className="p-4 border-b border-neutral-700 flex justify-between items-center">
+                <h2 className="text-lg font-medium text-white">Comments</h2>
+                <IconButton onClick={() => setIsCommentsOpen(false)}>
+                  <CloseOutlined className="text-neutral-400 hover:text-white" />
+                </IconButton>
               </div>
               <div
                 ref={commentScrollRef}
                 onScroll={handleCommentScroll}
-                className="flex-grow overflow-y-auto"
+                className="flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-neutral-900"
               >
                 {comments.map((comment, index) => (
-                  <div
+                  <motion.div
                     key={index}
-                    className="p-2 border-b border-neutral-700 last:border-b-0"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                    className="p-4 border-b border-neutral-800 last:border-b-0"
                   >
                     <div className="flex items-start space-x-3">
                       <img
                         src={comment.creator.image || "/user.png"}
                         alt={comment.creator.username}
-                        className="w-8 h-8 rounded-full"
+                        className="w-10 h-10 rounded-full object-cover"
                       />
                       <div className="flex-1">
                         <div className="flex justify-between items-center mb-1">
@@ -572,36 +624,47 @@ export const Home = () => {
                             </span>
                           </div>
                           {currentUser === comment.creator.username && (
-                            <button
+                            <IconButton
                               onClick={() => {
                                 setDeleteState(true);
                                 setCommentDeleteId(comment.id);
                               }}
-                              className="text-neutral-400 hover:text-white"
+                              size="small"
                             >
-                              <MoreHorizIcon fontSize="small" />
-                            </button>
+                              <MoreHorizOutlined
+                                fontSize="small"
+                                className="text-neutral-400 hover:text-white"
+                              />
+                            </IconButton>
                           )}
                         </div>
-                        <p className="text-sm text-neutral-200">
+                        <p className="text-sm text-neutral-300">
                           {comment.comment}
                         </p>
                         <div className="flex items-center mt-2">
-                          <button
+                          <IconButton
                             onClick={() => handleLikeComment(comment.id)}
-                            className="flex items-center space-x-1 text-sm text-neutral-400 hover:text-white"
+                            size="small"
                           >
-                            <img
-                              src={comment.isLiked ? "/liked.png" : "/like.png"}
-                              alt="Like"
-                              className="h-3 w-3"
-                            />
-                            <span>{comment.likesCount} likes</span>
-                          </button>
+                            {comment.isLiked ? (
+                              <FavoriteOutlined
+                                fontSize="small"
+                                className="text-red-500"
+                              />
+                            ) : (
+                              <FavoriteBorderOutlined
+                                fontSize="small"
+                                className="text-neutral-400"
+                              />
+                            )}
+                          </IconButton>
+                          <span className="text-xs text-neutral-400 ml-1">
+                            {comment.likesCount} likes
+                          </span>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
                 {isLoadingComments && (
                   <div className="flex justify-center items-center mt-5">
@@ -624,30 +687,42 @@ export const Home = () => {
                       onChange={(e) => setCommentText(e.target.value)}
                       placeholder="Add a comment..."
                       maxLength={500}
-                      className="flex-1 outline-none  bg-neutral-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-neutral-700"
+                      className="flex-1 bg-neutral-800 text-white rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-600"
                       disabled={isPostingComment}
                     />
-                    <button
+                    <IconButton
                       type="submit"
                       disabled={!commentText.trim() || isPostingComment}
-                      className="bg-white text-black w-14 h-9 flex justify-center items-center rounded disabled:opacity-80"
+                      className="bg-blue-500 text-white p-2 rounded-full disabled:opacity-50"
                     >
                       {isPostingComment ? (
-                        <CircularProgress size={18} sx={{ color: "inherit" }} />
+                        <CircularProgress size={24} sx={{ color: "inherit" }} />
                       ) : (
-                        "Post"
+                        <SendOutlined className="text-white" />
                       )}
-                    </button>
+                    </IconButton>
                   </div>
                 </form>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+      </AnimatePresence>
 
+      <AnimatePresence>
         {deleteState && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
-            <div className="bg-neutral-800 rounded-lg overflow-hidden w-64">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-neutral-800 rounded-lg overflow-hidden w-64 shadow-xl"
+            >
               <button
                 onClick={() => {
                   if (commentDeleteId) {
@@ -656,9 +731,10 @@ export const Home = () => {
                   setDeleteState(false);
                   setCommentDeleteId(null);
                 }}
-                className="w-full py-3 text-red-500 hover:bg-neutral-700 border-b border-neutral-700"
+                className="w-full py-3 text-red-500 hover:bg-neutral-700 flex items-center justify-center space-x-2"
               >
-                Delete
+                <DeleteOutlined fontSize="small" />
+                <span>Delete Comment</span>
               </button>
               <button
                 onClick={() => {
@@ -669,10 +745,10 @@ export const Home = () => {
               >
                 Cancel
               </button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
-      </div>
-    </>
+      </AnimatePresence>
+    </motion.div>
   );
 };
