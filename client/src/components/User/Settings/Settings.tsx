@@ -22,7 +22,7 @@ interface DebouncedFunction<T extends (...args: any[]) => void> {
 }
 function debounce<T extends (...args: any[]) => void>(
   func: T,
-  delay: number
+  delay: number,
 ): DebouncedFunction<T> {
   let timeoutId: ReturnType<typeof setTimeout> | null;
 
@@ -161,7 +161,7 @@ export const Settings: React.FC = () => {
       setIsUsernameAvailable(false);
       const response = await axios.post(
         `${BACKEND_URL}/api/user/profile/check-username`,
-        { username }
+        { username },
       );
       if (response.data.status === 409) {
         setIsUsernameAvailable(false);
@@ -196,7 +196,7 @@ export const Settings: React.FC = () => {
         {
           token,
           username,
-        }
+        },
       );
       if (response.data.status === 200) {
         setPopup("Username updated successfully");
@@ -264,6 +264,7 @@ export const Settings: React.FC = () => {
               <input
                 type="text"
                 id="username"
+                maxLength={24}
                 value={username}
                 onChange={(e) => {
                   handleUserNameChange(e.target.value);
