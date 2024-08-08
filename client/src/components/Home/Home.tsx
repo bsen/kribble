@@ -64,7 +64,7 @@ export const Home = () => {
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [commentNextCursor, setCommentNextCursor] = useState<string | null>(
-    null,
+    null
   );
   const commentScrollRef = useRef<HTMLDivElement>(null);
   const { currentUser } = useContext(UserContext);
@@ -83,7 +83,7 @@ export const Home = () => {
         {
           token,
           cursor,
-        },
+        }
       );
       if (response.data.status === 200) {
         setPostData({
@@ -142,7 +142,7 @@ export const Home = () => {
                   ? parseInt(post.likesCount) - 1
                   : parseInt(post.likesCount) + 1,
               }
-            : post,
+            : post
         ) as Post[],
         nextCursor: prevData.nextCursor,
       }));
@@ -161,7 +161,7 @@ export const Home = () => {
                   ? parseInt(post.likesCount) + 1
                   : parseInt(post.likesCount) - 1,
               }
-            : post,
+            : post
         ) as Post[],
         nextCursor: prevData.nextCursor,
       }));
@@ -173,7 +173,7 @@ export const Home = () => {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/post/comment/all/comments`,
-        { token, postId, cursor },
+        { token, postId, cursor }
       );
       if (response.data.status === 200) {
         if (cursor) {
@@ -247,7 +247,7 @@ export const Home = () => {
       if (savedScrollPosition && scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = parseInt(
           savedScrollPosition,
-          10,
+          10
         );
       }
     };
@@ -265,7 +265,7 @@ export const Home = () => {
       if (savedScrollPosition && scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = parseInt(
           savedScrollPosition,
-          10,
+          10
         );
       }
     }
@@ -282,7 +282,7 @@ export const Home = () => {
           token,
           postId,
           comment: commentText,
-        },
+        }
       );
       console.log(response.data);
       if (response.data.status === 200) {
@@ -310,8 +310,8 @@ export const Home = () => {
                   ? comment.likesCount - 1
                   : comment.likesCount + 1,
               }
-            : comment,
-        ),
+            : comment
+        )
       );
 
       const response = await axios.post(
@@ -319,7 +319,7 @@ export const Home = () => {
         {
           token,
           commentId,
-        },
+        }
       );
 
       if (response.data.status !== 200) {
@@ -333,8 +333,8 @@ export const Home = () => {
                     ? comment.likesCount + 1
                     : comment.likesCount - 1,
                 }
-              : comment,
-          ),
+              : comment
+          )
         );
       }
     } catch (error) {
@@ -350,8 +350,8 @@ export const Home = () => {
                   ? comment.likesCount + 1
                   : comment.likesCount - 1,
               }
-            : comment,
-        ),
+            : comment
+        )
       );
     }
   };
@@ -362,7 +362,7 @@ export const Home = () => {
         {
           token,
           commentId,
-        },
+        }
       );
       if (response.data.status === 200) {
         setComments(comments.filter((comment) => comment.id !== commentId));
@@ -386,7 +386,7 @@ export const Home = () => {
           }
         });
       },
-      { threshold: 0.5 },
+      { threshold: 0.5 }
     );
 
     const videos = document.querySelectorAll("video");
@@ -404,7 +404,7 @@ export const Home = () => {
     const now = new Date();
     const commentDate = new Date(createdAt);
     const diffInSeconds = Math.floor(
-      (now.getTime() - commentDate.getTime()) / 1000,
+      (now.getTime() - commentDate.getTime()) / 1000
     );
 
     if (diffInSeconds < 60) return `${diffInSeconds}s`;
@@ -422,7 +422,7 @@ export const Home = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-gradient-to-br from-neutral-900 to-black min-h-screen text-white"
+      className="bg-dark min-h-screen text-white"
     >
       <MenuBar />
       <div

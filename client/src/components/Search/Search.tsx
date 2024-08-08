@@ -36,7 +36,7 @@ export const Search = () => {
 
   function debounce<T extends (...args: any[]) => void>(
     func: T,
-    delay: number,
+    delay: number
   ): T {
     let timeoutId: ReturnType<typeof setTimeout>;
     return ((...args: Parameters<T>) => {
@@ -66,7 +66,7 @@ export const Search = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col pb-16 h-screen bg-gradient-to-br from-neutral-900 to-black text-white"
+      className="flex flex-col pb-16 h-screen bg-dark text-white"
     >
       <MenuBar />
       <div className="flex-grow overflow-auto p-4 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
@@ -82,7 +82,7 @@ export const Search = () => {
               value={search}
               onChange={(e) => handleSearchingUsernameChange(e.target.value)}
               placeholder="Search users"
-              className="w-full px-4 py-2.5 bg-neutral-800 text-white border border-neutral-700 rounded-full focus:outline-none pl-12 transition-all duration-300"
+              className="w-full px-4 py-2.5 bg-semidark text-white border border-neutral-700 rounded-full focus:outline-none pl-12 transition-all duration-300"
             />
             <svg
               className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400"
@@ -113,7 +113,7 @@ export const Search = () => {
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
                   <Link to={`/${user.username}`} className="block">
-                    <div className="flex items-center p-2.5 rounded-lg hover:bg-neutral-800 transition-colors duration-300">
+                    <div className="flex items-center p-2.5 rounded-lg hover:bg-semidark transition-colors duration-300">
                       <img
                         src={user.image || "/user.png"}
                         alt={user.username}
@@ -124,9 +124,7 @@ export const Search = () => {
                       </span>
                     </div>
                   </Link>
-                  {index < users.length - 1 && (
-                    <div className="border-b border-neutral-700 mx-4"></div>
-                  )}
+                  {index < users.length - 1 && <div className="mx-4"></div>}
                 </motion.div>
               ))}
             </motion.div>

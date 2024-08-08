@@ -104,7 +104,7 @@ export const Profile: React.FC<ProfileProps> = () => {
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [commentNextCursor, setCommentNextCursor] = useState<string | null>(
-    null,
+    null
   );
   const [postData, setPostData] = useState<{
     posts: Post[];
@@ -127,7 +127,7 @@ export const Profile: React.FC<ProfileProps> = () => {
       setLoadingState(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/user/profile/data`,
-        { token, username },
+        { token, username }
       );
       if (!response.data.userdata) {
         setError(new Error("Sorry, this page isn't available."));
@@ -172,7 +172,7 @@ export const Profile: React.FC<ProfileProps> = () => {
         setIsLoading(false);
       }
     },
-    [token, username],
+    [token, username]
   );
 
   useEffect(() => {
@@ -191,7 +191,7 @@ export const Profile: React.FC<ProfileProps> = () => {
       const details = { username, token };
       await axios.post(
         `${BACKEND_URL}/api/user/follow/follow/unfollow`,
-        details,
+        details
       );
     } catch (error) {
       setError(error as Error);
@@ -210,7 +210,7 @@ export const Profile: React.FC<ProfileProps> = () => {
       setIsLoadingComments(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/post/comment/all/comments`,
-        { token, postId, cursor },
+        { token, postId, cursor }
       );
       if (cursor) {
         setComments((prevComments) => [...prevComments, ...response.data.data]);
@@ -253,7 +253,7 @@ export const Profile: React.FC<ProfileProps> = () => {
       setScrollPosition(newScrollPosition);
       localStorage.setItem(
         "profileScrollPosition",
-        newScrollPosition.toString(),
+        newScrollPosition.toString()
       );
     }
 
@@ -302,7 +302,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                     ? parseInt(post.likesCount) - 1
                     : parseInt(post.likesCount) + 1,
                 }
-              : post,
+              : post
           ) as Post[],
           nextCursor: prevData.nextCursor,
         }));
@@ -323,13 +323,13 @@ export const Profile: React.FC<ProfileProps> = () => {
                     ? parseInt(post.likesCount) + 1
                     : parseInt(post.likesCount) - 1,
                 }
-              : post,
+              : post
           ) as Post[],
           nextCursor: prevData.nextCursor,
         }));
       }
     },
-    [token],
+    [token]
   );
   const toggleFullscreen = useCallback(
     (post: Post) => {
@@ -342,7 +342,7 @@ export const Profile: React.FC<ProfileProps> = () => {
         },
       });
     },
-    [navigate, scrollPosition, postData, userData.username],
+    [navigate, scrollPosition, postData, userData.username]
   );
 
   useEffect(() => {
@@ -367,7 +367,7 @@ export const Profile: React.FC<ProfileProps> = () => {
       if (savedScrollPosition && scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = parseInt(
           savedScrollPosition,
-          10,
+          10
         );
       }
     };
@@ -387,7 +387,7 @@ export const Profile: React.FC<ProfileProps> = () => {
       if (savedScrollPosition && scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = parseInt(
           savedScrollPosition,
-          10,
+          10
         );
       }
     }
@@ -404,7 +404,7 @@ export const Profile: React.FC<ProfileProps> = () => {
           token,
           postId,
           comment: commentText,
-        },
+        }
       );
       console.log(response.data);
       if (response.data.status === 200) {
@@ -432,8 +432,8 @@ export const Profile: React.FC<ProfileProps> = () => {
                   ? comment.likesCount - 1
                   : comment.likesCount + 1,
               }
-            : comment,
-        ),
+            : comment
+        )
       );
 
       const response = await axios.post(
@@ -441,7 +441,7 @@ export const Profile: React.FC<ProfileProps> = () => {
         {
           token,
           commentId,
-        },
+        }
       );
 
       if (response.data.status !== 200) {
@@ -455,8 +455,8 @@ export const Profile: React.FC<ProfileProps> = () => {
                     ? comment.likesCount + 1
                     : comment.likesCount - 1,
                 }
-              : comment,
-          ),
+              : comment
+          )
         );
       }
     } catch (error) {
@@ -472,8 +472,8 @@ export const Profile: React.FC<ProfileProps> = () => {
                   ? comment.likesCount + 1
                   : comment.likesCount - 1,
               }
-            : comment,
-        ),
+            : comment
+        )
       );
     }
   };
@@ -485,7 +485,7 @@ export const Profile: React.FC<ProfileProps> = () => {
         {
           token,
           commentId,
-        },
+        }
       );
       if (response.data.status === 200) {
         setComments(comments.filter((comment) => comment.id !== commentId));
@@ -509,7 +509,7 @@ export const Profile: React.FC<ProfileProps> = () => {
           }
         });
       },
-      { threshold: 0.5 },
+      { threshold: 0.5 }
     );
 
     const videos = document.querySelectorAll("video");
@@ -527,7 +527,7 @@ export const Profile: React.FC<ProfileProps> = () => {
     const now = new Date();
     const commentDate = new Date(createdAt);
     const diffInSeconds = Math.floor(
-      (now.getTime() - commentDate.getTime()) / 1000,
+      (now.getTime() - commentDate.getTime()) / 1000
     );
 
     if (diffInSeconds < 60) return `${diffInSeconds}s`;
@@ -574,7 +574,7 @@ export const Profile: React.FC<ProfileProps> = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="bg-gradient-to-br from-neutral-900 to-black min-h-screen text-white"
+        className="bg-dark min-h-screen text-white"
       >
         <MenuBar />
         <div

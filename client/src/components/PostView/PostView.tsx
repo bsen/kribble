@@ -78,7 +78,7 @@ export const PostView = () => {
           <p className="text-white">Post not found</p>
         </div>
       ) : (
-        <div className="fixed inset-0 bg-black flex flex-col">
+        <div className="fixed inset-0 bg-dark flex flex-col">
           <div className="absolute top-4 left-4 z-10">
             <div className="flex gap-2 items-center">
               <Link to={`/${post.creator.username}`} className="no-underline">

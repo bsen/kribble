@@ -109,7 +109,7 @@ export const CreatePost = ({}) => {
   return (
     <div className="flex flex-col h-screen">
       <MenuBar />
-      <div className="flex-grow overflow-auto bg-black flex flex-col items-center p-4 pb-20 scrollbar-hide">
+      <div className="flex-grow overflow-auto bg-dark flex flex-col items-center p-4 pb-20 scrollbar-hide">
         <div className="w-full max-w-md flex flex-col items-center">
           {previewImage || previewVideo ? (
             <>
@@ -156,7 +156,7 @@ export const CreatePost = ({}) => {
                     {!isPlaying && (
                       <div
                         onClick={togglePlay}
-                        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"
+                        className="absolute inset-0 flex items-center justify-center cursor-pointer"
                       >
                         <svg
                           className="w-12 h-12 text-white"
@@ -175,7 +175,7 @@ export const CreatePost = ({}) => {
                 )}
                 <button
                   onClick={handleRemoveMedia}
-                  className="absolute top-2 right-2 p-1 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full"
+                  className="absolute top-2 right-2 p-1 bg-opacity-50 hover:bg-opacity-70 rounded-full"
                 >
                   <svg
                     className="w-6 h-6 text-white"
@@ -196,7 +196,7 @@ export const CreatePost = ({}) => {
           ) : (
             <label
               htmlFor="file-upload"
-              className="w-full h-[calc(100vh-56px-24px-56px)] flex flex-col items-center justify-center cursor-pointer bg-black"
+              className="w-full border-semidark border rounded-xl h-[calc(100vh-56px-24px-56px)] flex flex-col items-center justify-center cursor-pointer"
             >
               <svg
                 className="w-12 h-12 text-white mb-2"
