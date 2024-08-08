@@ -3,7 +3,7 @@ import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 export const Policies = () => {
   return (
     <>
-      <div className="pb-24 pt-4 h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-2">
+      <div className="pb-24 bg-dark pt-4 h-screen overflow-y-auto no-scrollbar w-full flex flex-col items-center justify-start p-2">
         <div className="w-full lg:w-[50%] p-2 mb-8">
           <div className="text-light mb-4 text-2xl font-semibold">
             Welcome to Kribble

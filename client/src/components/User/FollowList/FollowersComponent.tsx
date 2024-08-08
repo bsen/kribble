@@ -40,7 +40,7 @@ export const FollowersComponent: React.FC<FollowersComponentProps> = ({
       setIsLoading(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/user/follow/followers/list`,
-        { token, cursor, username },
+        { token, cursor, username }
       );
       setFollowersData({
         followers: [...followersData.followers, ...response.data.data],

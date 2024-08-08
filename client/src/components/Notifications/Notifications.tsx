@@ -5,7 +5,6 @@ import { BACKEND_URL } from "../../config";
 import { MenuBar } from "../Menu/MenuBar";
 import CircularProgress from "@mui/material/CircularProgress";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { motion } from "framer-motion";
 
 interface NotificationData {
   id: string;
@@ -41,7 +40,7 @@ export const Notifications: React.FC = () => {
       setIsLoading(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/user/notifications/all/notifications`,
-        { token, cursor },
+        { token, cursor }
       );
       setNotificationsData((prevData) => ({
         notifications: [...prevData.notifications, ...response.data.data],
@@ -93,37 +92,24 @@ export const Notifications: React.FC = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="bg-black min-h-screen text-white"
-    >
+    <div className="bg-dark h-screen text-white">
       <MenuBar />
-      <div className="max-w-3xl mx-auto px-4 py-6">
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center justify-center mb-6"
-        >
+      <div className="max-w-2xl mx-auto px-4 py-2">
+        <div className="flex items-center justify-center mb-2">
           <NotificationsIcon fontSize="large" className="text-white mr-2" />
-          <h1 className="text-2xl font-bold">Notifications</h1>
-        </motion.div>
+          <h1 className="text-xl">Notifications</h1>
+        </div>
         <div
           ref={scrollContainerRef}
           onScroll={handleScroll}
-          className="overflow-y-auto max-h-[calc(100vh-200px)] scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-neutral-900"
+          className="overflow-y-auto max-h-[calc(100vh-100px)] scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-neutral-900"
         >
           {notificationsData.notifications.length > 0 ? (
-            notificationsData.notifications.map((notification, index) => (
-              <motion.div
+            notificationsData.notifications.map((notification) => (
+              <div
                 key={notification.id}
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
                 onClick={() => handleNotificationClick(notification)}
-                className="mb-4 p-2.5 bg-neutral-700 rounded-lg cursor-pointer hover:bg-neutral-700 transition-colors"
+                className="mb-4 p-2.5 bg-semidark rounded-lg cursor-pointer hover:bg-neutral-700 transition-colors"
               >
                 {notification.sender && (
                   <div className="font-medium text-white mb-1">
@@ -136,32 +122,24 @@ export const Notifications: React.FC = () => {
                 <div className="text-xs text-neutral-500 mt-2">
                   {new Date(notification.createdAt).toLocaleString()}
                 </div>
-              </motion.div>
+              </div>
             ))
           ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex items-center justify-center h-64"
-            >
+            <div className="flex items-center justify-center">
               {isLoading ? (
                 <CircularProgress size={30} sx={{ color: "white" }} />
               ) : (
                 <p className="text-neutral-400 text-lg">No Notifications</p>
               )}
-            </motion.div>
+            </div>
           )}
         </div>
         {isLoading && notificationsData.notifications.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center mt-4"
-          >
+          <div className="text-center mt-4">
             <CircularProgress size={30} sx={{ color: "white" }} />
-          </motion.div>
+          </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
