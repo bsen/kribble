@@ -70,11 +70,14 @@ export const ProfileSection: React.FC<ProfileSectionProps> = () => {
     async (cursor: string | null | undefined, truncate: boolean) => {
       try {
         setIsLoading(true);
-        const response = await axios.post(`${BACKEND_URL}/api/post/all/posts`, {
-          token,
-          cursor,
-          username,
-        });
+        const response = await axios.post(
+          `${BACKEND_URL}/api/post/profile/all/posts`,
+          {
+            token,
+            cursor,
+            username,
+          }
+        );
         if (!response.data.posts) {
           setError(new Error("Sorry, this page isn't available."));
         } else {

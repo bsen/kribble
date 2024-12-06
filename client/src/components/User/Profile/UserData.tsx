@@ -6,7 +6,6 @@ import { BACKEND_URL } from "../../../config";
 import { UserContext } from "../Context/UserContext";
 import { FollowersComponent } from "../Follow/FollowersComponent";
 import { FollowingComponent } from "../Follow/FollowingComponent";
-import { CommunitiesComponent } from "../Communities/CommunitiesComponent";
 import LinearProgress from "@mui/material/LinearProgress";
 import { CircularProgress } from "@mui/material";
 
@@ -114,11 +113,6 @@ export const UserData: React.FC = () => {
       )}
       {showFollowing && (
         <FollowingComponent closeComponent={() => setShowFollowing(false)} />
-      )}
-      {showCommunities && (
-        <CommunitiesComponent
-          closeComponent={() => setShowCommunities(false)}
-        />
       )}
 
       <div className="mt-2 p-3 rounded-lg border border-semidark bg-dark">

@@ -50,9 +50,12 @@ userFeedRouter.post("/posts/home", async (req, res) => {
           image: true,
           video: true,
           likesCount: true,
+          anonymity: true, // Add this field
           creator: {
             select: {
+              id: true,
               username: true,
+              image: true,
             },
           },
           createdAt: true,
@@ -87,9 +90,12 @@ userFeedRouter.post("/posts/home", async (req, res) => {
             image: true,
             video: true,
             likesCount: true,
+            anonymity: true, // Add this field
             creator: {
               select: {
+                id: true,
                 username: true,
+                image: true,
               },
             },
             createdAt: true,
@@ -118,9 +124,12 @@ userFeedRouter.post("/posts/home", async (req, res) => {
           image: true,
           video: true,
           likesCount: true,
+          anonymity: true, // Add this field
           creator: {
             select: {
+              id: true,
               username: true,
+              image: true,
             },
           },
           createdAt: true,
@@ -149,6 +158,13 @@ userFeedRouter.post("/posts/home", async (req, res) => {
         });
         return {
           ...post,
+          creator: post.anonymity
+            ? {
+                id: "anonymous",
+                username: "Anonymous",
+                image: null,
+              }
+            : post.creator,
           isLiked: !!isLiked,
           createdAt: post.createdAt.toISOString(),
         };

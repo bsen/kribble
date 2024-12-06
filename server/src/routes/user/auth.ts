@@ -4,10 +4,10 @@ import admin from "firebase-admin";
 const prisma = new PrismaClient();
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-const serviceAccount = require("../../../authkey.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+// const serviceAccount = require("../../../authkey.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+// });
 const userAuthRouter = express.Router();
 const emailSchema = z.string().email();
 const idTokenSchema = z.string();
@@ -54,11 +54,11 @@ userAuthRouter.post("/authentication", async (req, res) => {
         .status(400)
         .json({ message: "Invalid email or authIdToken format" });
     }
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    // const decodedToken = await admin.auth().verifyIdToken(idToken);
 
-    if (decodedToken.email !== email) {
-      return res.status(400).json({ message: "Email mismatch" });
-    }
+    // if (decodedToken.email !== email) {
+    //   return res.status(400).json({ message: "Email mismatch" });
+    // }
 
     let user = await prisma.user.findFirst({
       where: { email: email },

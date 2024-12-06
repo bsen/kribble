@@ -4,17 +4,13 @@ import { Home } from "./pages/Home/Home";
 import { Profile } from "./pages/User/Profile/Profile";
 import { CreatePost } from "./pages/User/Create/CreatePost";
 import { Post } from "./pages/Post/Post";
-import { Communities } from "./pages/Community/Communities/Communities";
 import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
 import { Comments } from "./pages/User/Comments/Comments";
 import { Search } from "./pages/Search/Search";
 import { UpdateProfile } from "./pages/User/Profile/Update";
-import { UpdateCommunity } from "./pages/Community/Profile/Update";
 import { UserProvider } from "./components/User/Context/UserContext";
-import { IncognitoPosts } from "./pages/User/IncognitoPosts/IncognitoPosts";
 import { About } from "./pages/About/About";
-import { Community } from "./pages/Community/Profile/Community";
-import { Tv } from "./pages/Tv/Tv";
+import { AnonPosts } from "./pages/User/AnonPosts/AnonPosts";
 
 interface ProtectedRouteProps {
   element: React.ReactNode;
@@ -41,32 +37,13 @@ function App() {
               element={<ProtectedRoute element={<Profile />} />}
             />
             <Route path="/auth" element={<PublicRoute element={<Auth />} />} />
-
-            <Route path="/tv" element={<ProtectedRoute element={<Tv />} />} />
-
-            <Route
-              path="/community/:name"
-              element={<ProtectedRoute element={<Community />} />}
-            />
-            <Route
-              path="/communities"
-              element={<ProtectedRoute element={<Communities />} />}
-            />
             <Route
               path="/comments"
               element={<ProtectedRoute element={<Comments />} />}
             />
             <Route
               path="/hidden/posts"
-              element={<ProtectedRoute element={<IncognitoPosts />} />}
-            />
-            <Route
-              path="/edit/community/:name"
-              element={<ProtectedRoute element={<UpdateCommunity />} />}
-            />
-            <Route
-              path="/create/community"
-              element={<ProtectedRoute element={<CreateCommunity />} />}
+              element={<ProtectedRoute element={<AnonPosts />} />}
             />
             <Route
               path="/create"
@@ -93,10 +70,6 @@ function App() {
             <Route
               path="/edit/profile"
               element={<ProtectedRoute element={<UpdateProfile />} />}
-            />
-            <Route
-              path="/edit/community/:name"
-              element={<ProtectedRoute element={<UpdateCommunity />} />}
             />
             <Route
               path="/search"

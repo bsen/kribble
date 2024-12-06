@@ -1,25 +1,13 @@
-import axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { BACKEND_URL } from "../../config";
-import NotesIcon from "@mui/icons-material/Notes";
-import { BottomBar } from "../Bars/BottomBar";
-import { NavBar } from "../Bars/NavBar";
-import AddIcon from "@mui/icons-material/Add";
-import { CircularProgress } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { MessageSquare, Heart, Volume2, VolumeX, Plus } from "lucide-react";
 
 interface Post {
   id: string;
   creator: {
     username: string;
-    image: string | null;
-  };
-  community: {
-    name: string;
     image: string | null;
   };
   taggedUser: {
@@ -38,8 +26,8 @@ interface Post {
 }
 
 export const HomeComponent = () => {
-  const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [postData, setPostData] = useState<{
@@ -49,6 +37,9 @@ export const HomeComponent = () => {
     posts: [],
     nextCursor: null,
   });
+  const [mutedVideos, setMutedVideos] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
   async function getFeedPosts(cursor?: string) {
     try {
@@ -68,7 +59,6 @@ export const HomeComponent = () => {
       } else if (response.data.status === 901) {
         localStorage.clear();
       }
-
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -94,6 +84,11 @@ export const HomeComponent = () => {
   };
 
   const handleLike = async (postId: string) => {
+    if (!token) {
+      navigate("/auth");
+      return;
+    }
+
     try {
       setPostData((prevData) => ({
         ...prevData,
@@ -103,17 +98,21 @@ export const HomeComponent = () => {
                 ...post,
                 isLiked: !post.isLiked,
                 likesCount: post.isLiked
-                  ? parseInt(post.likesCount) - 1
-                  : parseInt(post.likesCount) + 1,
+                  ? String(parseInt(post.likesCount) - 1)
+                  : String(parseInt(post.likesCount) + 1),
               }
             : post
-        ) as Post[],
+        ),
         nextCursor: prevData.nextCursor,
       }));
-      const details = { postId, token };
-      await axios.post(`${BACKEND_URL}/api/post/like/like/unlike`, details);
+
+      await axios.post(`${BACKEND_URL}/api/post/like/like/unlike`, {
+        postId,
+        token,
+      });
     } catch (error) {
       console.log(error);
+      // Revert the optimistic update if the request fails
       setPostData((prevData) => ({
         ...prevData,
         posts: prevData.posts.map((post) =>
@@ -122,12 +121,11 @@ export const HomeComponent = () => {
                 ...post,
                 isLiked: !post.isLiked,
                 likesCount: post.isLiked
-                  ? parseInt(post.likesCount) + 1
-                  : parseInt(post.likesCount) - 1,
+                  ? String(parseInt(post.likesCount) - 1)
+                  : String(parseInt(post.likesCount) + 1),
               }
             : post
-        ) as Post[],
-        nextCursor: prevData.nextCursor,
+        ),
       }));
     }
   };
@@ -138,6 +136,7 @@ export const HomeComponent = () => {
     const timeDifference = currentDate.getTime() - postDate.getTime();
     const hoursDifference = Math.floor(timeDifference / (1000 * 3600));
     const daysDifference = Math.floor(hoursDifference / 24);
+
     if (daysDifference >= 30) {
       return postDate.toDateString();
     } else if (daysDifference >= 1) {
@@ -149,10 +148,6 @@ export const HomeComponent = () => {
       return `${minutesDifference}m ago`;
     }
   };
-
-  const [mutedVideos, setMutedVideos] = useState<{ [key: string]: boolean }>(
-    {}
-  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -196,240 +191,157 @@ export const HomeComponent = () => {
     }
   };
 
-  return (
-    <>
-      <div
-        className="h-screen overflow-y-auto no-scrollbar py-12"
-        onScroll={handleScroll}
-        ref={scrollContainerRef}
-      >
-        <NavBar />
-        {postData.posts.length > 0 ? (
-          postData.posts.map((post, index) => (
-            <div
-              key={index}
-              className="my-2 rounded-lg border border-semidark  bg-dark"
-            >
-              <div className="p-3 flex items-center justify-between">
-                <div className="flex gap-2 items-center">
-                  {post.community ? (
-                    <div>
-                      {post.community && (
-                        <div>
-                          {post.community && (
-                            <img
-                              src={post.community.image || "/group.png"}
-                              className="w-7 h-7 rounded-lg"
-                              alt="Community"
-                            />
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div>
-                      {post.anonymity ? (
-                        <img
-                          src="/mask.png"
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
-                      ) : (
-                        <img
-                          src={
-                            post.creator.image
-                              ? post.creator.image
-                              : "/user.png"
-                          }
-                          alt="Profile"
-                          className="w-7 h-7 rounded-lg"
-                        />
-                      )}
-                    </div>
-                  )}
-                  <div className="w-fit flex gap-2 items-center">
-                    {post.community ? (
-                      <div>
-                        <div className="flex gap-2 items-center">
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/community/${post.community.name}`);
-                            }}
-                          >
-                            {post.community && (
-                              <div className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal">
-                                c/ {post.community.name}
-                              </div>
-                            )}
-                          </div>
-                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                            · {getTimeDifference(post.createdAt)}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="flex gap-2 items-center">
-                          {post.anonymity ? (
-                            <div className="text-light text-sm lg:text-base font-normal">
-                              {post.creator.username}
-                            </div>
-                          ) : (
-                            <div
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                navigate(`/${post.creator.username}`);
-                              }}
-                              className="text-light text-sm lg:text-base hover:underline underline-offset-2 font-normal"
-                            >
-                              {post.creator.username}
-                            </div>
-                          )}
+  const toggleMute = (postId: string) => {
+    const videoElement = document.querySelector(
+      `video[data-post-id="${postId}"]`
+    ) as HTMLVideoElement;
+    if (videoElement) {
+      videoElement.muted = !videoElement.muted;
+      setMutedVideos((prev) => ({
+        ...prev,
+        [postId]: videoElement.muted,
+      }));
+    }
+  };
 
-                          <div className="text-semilight text-xs lg:text-sm font-ubuntu">
-                            · {getTimeDifference(post.createdAt)}
-                          </div>
-                        </div>
-                      </>
-                    )}
+  return (
+    <div
+      className="h-screen overflow-y-auto no-scrollbar py-12"
+      ref={scrollContainerRef}
+      onScroll={handleScroll}
+    >
+      <div className="max-w-2xl mx-auto px-4 space-y-6">
+        {postData.posts.length > 0
+          ? postData.posts.map((post, index) => (
+              <div
+                key={index}
+                className="bg-neutral-900 rounded-xl overflow-hidden shadow-lg"
+              >
+                {/* Post Header */}
+                <div className="p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={
+                        post.anonymity
+                          ? "/mask.png"
+                          : post.creator.image || "/user.png"
+                      }
+                      alt="Profile"
+                      className="w-10 h-10 rounded-xl object-cover"
+                    />
+                    <div>
+                      <h3
+                        onClick={() => navigate(`/${post.creator.username}`)}
+                        className="text-white font-medium hover:underline cursor-pointer"
+                      >
+                        {post.creator.username}
+                      </h3>
+                      <p className="text-neutral-400 text-sm">
+                        {getTimeDifference(post.createdAt)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                {post.taggedUser && (
-                  <div className="">
+
+                  {post.taggedUser && (
                     <div
-                      onClick={() => {
-                        navigate(`/${post.taggedUser.username}`);
-                      }}
-                      className="text-light bg-semidark w-fit flex items-center gap-2 px-2 py-1 rounded-lg font-ubuntu text-xs"
+                      onClick={() => navigate(`/${post.taggedUser.username}`)}
+                      className="px-3 py-2 bg-neutral-800 rounded-xl flex items-center gap-2 cursor-pointer"
                     >
                       <img
-                        className="h-4 w-4 rounded-lg"
-                        src={
-                          post.taggedUser.image
-                            ? post.taggedUser.image
-                            : "/user.png"
-                        }
+                        src={post.taggedUser.image || "/user.png"}
+                        className="w-6 h-6 rounded-lg"
+                        alt={post.taggedUser.username}
                       />
-                      {post.taggedUser.username}
+                      <span className="text-sm text-neutral-300">
+                        {post.taggedUser.username}
+                      </span>
                     </div>
-                  </div>
-                )}
-              </div>
-              {post.video ? (
-                <div className="relative w-full aspect-square overflow-hidden">
-                  <video
-                    data-post-id={post.id}
-                    src={post.video}
-                    loop
-                    playsInline
-                    muted
-                    className="absolute top-0 left-0 w-full h-full object-cover border border-semidark cursor-pointer"
-                    onClick={() => togglePlay(post.id)}
-                  />
-                  <button
-                    className="absolute bottom-2 right-2 bg-black/40 text-light h-7 w-7 flex justify-center items-center rounded-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const video = document.querySelector(
-                        `video[data-post-id="${post.id}"]`
-                      ) as HTMLVideoElement;
-                      if (video) {
-                        video.muted = !video.muted;
-                        setMutedVideos((prev) => ({
-                          ...prev,
-                          [post.id]: video.muted,
-                        }));
-                      }
-                    }}
-                  >
-                    {mutedVideos[post.id] ? (
-                      <VolumeOffIcon sx={{ fontSize: 20 }} />
-                    ) : (
-                      <VolumeUpIcon sx={{ fontSize: 20 }} />
-                    )}
-                  </button>
+                  )}
                 </div>
-              ) : post.image ? (
-                <img src={post.image} className="w-[100%]" />
-              ) : null}
 
-              {post.caption && (
-                <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                  {post.caption}
-                </div>
-              )}
-
-              <div className="p-3 flex items-center justify-between">
-                <div className="flex gap-2 items-center">
-                  <button
-                    className="bg-semidark  text-light px-2 rounded-lg flex justify-center items-center gap-2 cursor-pointer"
-                    onClick={(e) => {
-                      if (token) {
+                {/* Post Content */}
+                {post.video ? (
+                  <div className="relative aspect-video">
+                    <video
+                      data-post-id={post.id}
+                      src={post.video}
+                      loop
+                      playsInline
+                      muted={mutedVideos[post.id]}
+                      className="w-full h-full object-cover cursor-pointer"
+                      onClick={() => togglePlay(post.id)}
+                    />
+                    <button
+                      onClick={(e) => {
                         e.stopPropagation();
-                        handleLike(post.id);
-                      } else {
-                        navigate("/auth");
-                      }
-                    }}
+                        toggleMute(post.id);
+                      }}
+                      className="absolute bottom-4 right-4 p-2 bg-black/50 rounded-full text-white 
+                             hover:bg-black/70 transition-colors"
+                    >
+                      {mutedVideos[post.id] ? (
+                        <VolumeX size={20} />
+                      ) : (
+                        <Volume2 size={20} />
+                      )}
+                    </button>
+                  </div>
+                ) : post.image ? (
+                  <img src={post.image} className="w-full" alt="Post content" />
+                ) : null}
+
+                {post.caption && (
+                  <p className="p-4 text-neutral-100">{post.caption}</p>
+                )}
+
+                {/* Post Actions */}
+                <div className="p-4 flex items-center gap-4 border-t border-neutral-800">
+                  <button
+                    onClick={() => handleLike(post.id)}
+                    className="flex items-center gap-2 text-neutral-300 hover:text-pink-500 
+                           transition-colors"
                   >
-                    {post.isLiked ? (
-                      <div>
-                        <FavoriteIcon
-                          sx={{
-                            fontSize: 22,
-                          }}
-                          className="text-rosemain"
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <FavoriteBorderIcon
-                          sx={{
-                            fontSize: 22,
-                          }}
-                          className="text-light hover:text-rosemain"
-                        />
-                      </div>
-                    )}
-                    {post.likesCount}
+                    <Heart
+                      size={20}
+                      className={
+                        post.isLiked ? "fill-pink-500 text-pink-500" : ""
+                      }
+                    />
+                    <span>{post.likesCount}</span>
                   </button>
 
                   <button
                     onClick={() => navigate(`/post/${post.id}`)}
-                    className="bg-semidark text-light px-2   rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+                    className="flex items-center gap-2 text-neutral-300 hover:text-blue-500 
+                           transition-colors"
                   >
-                    <NotesIcon sx={{ fontSize: 24 }} />
-                    {post.commentsCount}
+                    <MessageSquare size={20} />
+                    <span>{post.commentsCount}</span>
                   </button>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <div>
-            {!isLoading && (
-              <div className="text-light my-5 font-light text-center text-xl">
+            ))
+          : !isLoading && (
+              <div className="text-center text-neutral-400">
                 Please refresh the page.
               </div>
             )}
-          </div>
-        )}
+
         {isLoading && (
-          <div className="w-full my-5 flex justify-center items-center">
-            <CircularProgress sx={{ color: "rgb(50 50 50);" }} />
+          <div className="flex justify-center py-4">
+            <div className="w-6 h-6 border-2 border-neutral-600 border-t-neutral-200 rounded-full animate-spin" />
           </div>
         )}
-        <div
-          onClick={() => {
-            navigate("/create");
-          }}
-          className="absolute bg-indigomain bottom-20 right-4 lg:hidden flex justify-center items-center w-11 h-11 rounded-full"
-        >
-          <AddIcon className="text-light" sx={{ fontSize: 28 }} />
-        </div>
-        <BottomBar />
       </div>
-    </>
+
+      {/* Mobile Create Post Button */}
+      <button
+        onClick={() => navigate("/create")}
+        className="fixed bottom-20 right-4 lg:hidden p-4 bg-indigo-600 rounded-full shadow-lg
+                 hover:bg-indigo-700 transition-colors"
+      >
+        <Plus size={24} className="text-white" />
+      </button>
+    </div>
   );
 };
