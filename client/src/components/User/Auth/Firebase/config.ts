@@ -2,12 +2,12 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAHyvMbkwd43d0o2bQ1swPjqIrzFI-4K5o",
-  authDomain: "kribble-net.firebaseapp.com",
-  projectId: "kribble-net",
-  storageBucket: "kribble-net.appspot.com",
-  messagingSenderId: "871548288920",
-  appId: "1:871548288920:web:438b3c012e272cd14df5ed",
+  apiKey: "AIzaSyCskmMrzpOrGMi9Bvyi2pCECM17FWRC0tI",
+  authDomain: "friendcity-in.firebaseapp.com",
+  projectId: "friendcity-in",
+  storageBucket: "friendcity-in.appspot.com",
+  messagingSenderId: "547226412943",
+  appId: "1:547226412943:web:f991e5d26a340c57f48dfa",
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();

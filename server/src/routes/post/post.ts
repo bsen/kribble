@@ -35,7 +35,7 @@ postRouter.post("/create", upload, async (req, res) => {
   try {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     const file = files.image?.[0] || files.file?.[0] || null;
-    const { token, caption } = req.body;
+    const { token, caption, anonymity } = req.body;
 
     if (typeof token !== "string") {
       return res.json({ status: 400, message: "Invalid post data or token" });
@@ -80,6 +80,7 @@ postRouter.post("/create", upload, async (req, res) => {
       data: {
         creator: { connect: { id: userId.id } },
         caption: caption,
+        anonymity: anonymity,
         image: file && file.mimetype.startsWith("image/") ? fileUrl : null,
         video: file && file.mimetype.startsWith("video/") ? fileUrl : null,
       },
@@ -176,6 +177,7 @@ postRouter.post("/all/posts", async (req, res) => {
         image: true,
         video: true,
         likesCount: true,
+        anonymity: true,
         creator: {
           select: {
             id: true,
@@ -209,9 +211,15 @@ postRouter.post("/all/posts", async (req, res) => {
         }
         return {
           ...post,
-          creator: post.creator,
+          creator: post.anonymity
+            ? {
+                id: "anonymous",
+                username: "Anonymous",
+                image: null,
+              }
+            : post.creator,
           isLiked,
-          createdAt: post.createdAt.toISOString(), // Convert to ISO string
+          createdAt: post.createdAt.toISOString(),
         };
       })
     );
@@ -233,6 +241,7 @@ postRouter.get("/:postId", async (req, res) => {
         id: true,
         image: true,
         video: true,
+        anonymity: true,
         creator: {
           select: {
             id: true,
@@ -248,7 +257,19 @@ postRouter.get("/:postId", async (req, res) => {
       return res.status(404).json({ status: 404, message: "Post not found" });
     }
 
-    return res.json({ status: 200, data: post });
+    // Modify the response to handle anonymous posts
+    const responseData = {
+      ...post,
+      creator: post.anonymity
+        ? {
+            id: "anonymous",
+            username: "Anonymous",
+            image: null,
+          }
+        : post.creator,
+    };
+
+    return res.json({ status: 200, data: responseData });
   } catch (error) {
     console.error("Error fetching post:", error);
     return res

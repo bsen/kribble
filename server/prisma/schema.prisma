@@ -10,6 +10,7 @@ datasource db {
 model User {
   id                 String         @id @default(uuid())
   username           String         @unique
+  birthdate          DateTime?      
   email              String         @unique
   image              String?
   bio                String?
@@ -46,14 +47,15 @@ model Following {
 
 model Post {
   id            String         @id @default(uuid())
-  caption       String?
+  caption       String
   image         String?
+  video         String?
   creatorId     String
+  anonymity     Boolean        @default(false)
   likesCount    Int            @default(0)
   commentsCount Int            @default(0)
   createdAt     DateTime       @default(now())
   status        Boolean        @default(true)
-  video         String?
   comments      Comment[]      @relation("PostComments")
   notifications Notification[] @relation("PostNotifications")
   creator       User           @relation("UserPosts", fields: [creatorId], references: [id])
@@ -64,6 +66,7 @@ model Post {
 model Comment {
   id            String         @id @default(uuid())
   creatorId     String
+  anonymity     Boolean        @default(false)
   postId        String
   createdAt     DateTime       @default(now())
   status        Boolean        @default(true)
