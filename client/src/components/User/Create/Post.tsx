@@ -3,14 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../../../config";
 import { UserContext } from "../Context/UserContext";
-import {
-  Eye,
-  EyeOff,
-  Image as ImageIcon,
-  X,
-  ArrowLeft,
-  Send,
-} from "lucide-react";
+import { Eye, EyeOff, Image as ImageIcon, ArrowLeft, Send } from "lucide-react";
 
 interface PostCreatorProps {
   isCommunityPost: boolean;
@@ -28,7 +21,6 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
   const [caption, setCaption] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [anonymity, setAnonymity] = useState(false);
-  const [error, setError] = useState("");
   const [previewVideo, setPreviewVideo] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -36,13 +28,11 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setError("");
     const file = event.target.files?.[0];
     if (!file) return;
 
     const maxFileSize = 15 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      setError("File size should be under 15 MB");
       return;
     }
 
@@ -56,7 +46,6 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
     } else if (allowedTypes.video.includes(file.type)) {
       await handleVideoUpload(file);
     } else {
-      setError("Only PNG, JPG, JPEG, GIF, and MP4 files are allowed");
     }
   };
 
@@ -69,7 +58,6 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
       reader.readAsDataURL(file);
     } catch (error) {
       console.error("Error processing image:", error);
-      setError("Error processing image");
     }
   };
 
@@ -81,7 +69,6 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
       video.onloadedmetadata = () => {
         URL.revokeObjectURL(video.src);
         if (video.duration > 90) {
-          setError("Video length should be under 90 seconds");
           return;
         }
         const reader = new FileReader();
@@ -94,7 +81,6 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
       video.src = URL.createObjectURL(file);
     } catch (error) {
       console.error("Error handling video upload:", error);
-      setError("Error uploading video");
     }
   };
 
@@ -110,9 +96,7 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
   };
 
   const createPost = async () => {
-    setError("");
     if (!previewImage && !previewVideo && !caption) {
-      setError("Please add an image, video, or caption");
       return;
     }
 
@@ -148,7 +132,6 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
       }
     } catch (error) {
       console.error("Error creating post:", error);
-      setError("Failed to create post. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -181,7 +164,6 @@ export const CreatePostComponent: React.FC<PostCreatorProps> = ({
 
         {/* Content Area */}
         <div className="p-4">
-          {/* Media Preview */}
           {previewImage || previewVideo ? (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
