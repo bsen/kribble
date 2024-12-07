@@ -1,5 +1,6 @@
 import { SideBar } from "../../../components/Bars/SideBar";
 import { AnonPostsComponent } from "../../../components/User/AnonPosts/AnonPostsComponent";
+
 export const AnonPosts = () => {
   return (
     <div className="flex justify-evenly">

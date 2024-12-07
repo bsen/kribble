@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
 import { MessageSquare, Heart, Volume2, VolumeX, Plus } from "lucide-react";
-import { NavBar } from "../Bars/NavBar";
+
 import { BottomBar } from "../Bars/BottomBar";
+import { NavBar } from "../Bars/NavBar";
 
 interface Post {
   id: string;
