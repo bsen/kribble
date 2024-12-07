@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
 import { BACKEND_URL } from "../../../config";
 import { UserContext } from "../Context/UserContext";
 import { FollowersComponent } from "../Follow/FollowersComponent";
@@ -26,7 +25,6 @@ export const UserData: React.FC = () => {
   const [loadingState, setLoadingState] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
-  const [showCommunities, setShowCommunities] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [isFollowUserLoading, setIsFollowUserLoading] = useState(false);
