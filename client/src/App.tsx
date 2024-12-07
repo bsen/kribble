@@ -4,7 +4,6 @@ import { Home } from "./pages/Home/Home";
 import { Profile } from "./pages/User/Profile/Profile";
 import { CreatePost } from "./pages/User/Create/CreatePost";
 import { Post } from "./pages/Post/Post";
-import { CreateCommunity } from "./pages/User/Create/CreateCommunity";
 import { Comments } from "./pages/User/Comments/Comments";
 import { Search } from "./pages/Search/Search";
 import { UpdateProfile } from "./pages/User/Profile/Update";
@@ -50,14 +49,6 @@ function App() {
               element={
                 <ProtectedRoute
                   element={<CreatePost isCommunityPost={false} />}
-                />
-              }
-            />
-            <Route
-              path="/create/:name"
-              element={
-                <ProtectedRoute
-                  element={<CreatePost isCommunityPost={true} />}
                 />
               }
             />
