@@ -13,7 +13,7 @@ interface UserData {
   username: string;
   image: string;
   bio: string;
-  instagramLink: string;
+  link: string;
   followersCount: string;
   followingCount: string;
 }
@@ -34,7 +34,7 @@ export const UserData: React.FC = () => {
     username: "",
     image: "",
     bio: "",
-    instagramLink: "",
+    link: "",
     followersCount: "",
     followingCount: "",
   });
@@ -125,9 +125,9 @@ export const UserData: React.FC = () => {
           <div className="w-full">
             <div className="flex items-center gap-2 justify-end">
               <div>
-                {userData.instagramLink && (
+                {userData.link && (
                   <a
-                    href={userData.instagramLink}
+                    href={userData.link}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -216,17 +216,6 @@ export const UserData: React.FC = () => {
           {currentUser === username && (
             <button
               onClick={() => {
-                setShowCommunities(true);
-              }}
-              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-            >
-              Communities
-            </button>
-          )}
-
-          {currentUser === username && (
-            <button
-              onClick={() => {
                 navigate("/hidden/posts");
               }}
               className="text-xs text-semilight font-light bg-indigomain px-3 py-1 rounded-lg"
@@ -234,7 +223,7 @@ export const UserData: React.FC = () => {
               Hidden&nbsp;posts
             </button>
           )}
-          {currentUser === username && (
+          {/* {currentUser === username && (
             <button
               onClick={() => {
                 navigate("/comments");
@@ -243,19 +232,7 @@ export const UserData: React.FC = () => {
             >
               Comments
             </button>
-          )}
-
-          {currentUser === username && (
-            <button
-              onClick={() => {
-                navigate("/create/community");
-              }}
-              className="text-xs text-semilight flex items-center gap-1 font-light bg-indigomain px-3 py-1 rounded-lg"
-            >
-              <AddIcon sx={{ fontSize: 18 }} />
-              <span>Community</span>
-            </button>
-          )}
+          )} */}
         </div>
       </div>
     </>

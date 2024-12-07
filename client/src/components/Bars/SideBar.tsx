@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../User/Context/UserContext";
-import { Home, Search, User, Plus } from "lucide-react";
+import { Home, Tv, Users, Search, User, Plus } from "lucide-react";
 
 export const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, isLoading } = useContext(UserContext);
 
   const NavButton = ({
     path,

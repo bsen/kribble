@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
 import { MessageSquare, Heart, Volume2, VolumeX, Plus } from "lucide-react";
+import { NavBar } from "../Bars/NavBar";
+import { BottomBar } from "../Bars/BottomBar";
 
 interface Post {
   id: string;
@@ -206,11 +208,12 @@ export const HomeComponent = () => {
 
   return (
     <div
-      className="h-screen overflow-y-auto no-scrollbar py-12"
+      className="h-screen overflow-y-auto scrollbar-hide py-12"
       ref={scrollContainerRef}
       onScroll={handleScroll}
     >
-      <div className="max-w-2xl mx-auto px-4 space-y-6">
+      <NavBar />
+      <div className="max-w-2xl mx-auto px-4 mt-4 space-y-6">
         {postData.posts.length > 0
           ? postData.posts.map((post, index) => (
               <div
@@ -241,22 +244,6 @@ export const HomeComponent = () => {
                       </p>
                     </div>
                   </div>
-
-                  {post.taggedUser && (
-                    <div
-                      onClick={() => navigate(`/${post.taggedUser.username}`)}
-                      className="px-3 py-2 bg-neutral-800 rounded-xl flex items-center gap-2 cursor-pointer"
-                    >
-                      <img
-                        src={post.taggedUser.image || "/user.png"}
-                        className="w-6 h-6 rounded-lg"
-                        alt={post.taggedUser.username}
-                      />
-                      <span className="text-sm text-neutral-300">
-                        {post.taggedUser.username}
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 {/* Post Content */}
@@ -342,6 +329,7 @@ export const HomeComponent = () => {
       >
         <Plus size={24} className="text-white" />
       </button>
+      <BottomBar />
     </div>
   );
 };

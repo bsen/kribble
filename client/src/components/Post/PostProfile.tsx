@@ -13,7 +13,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 interface Comment {
   id: string;
-  caption: string;
+  comment: string;
   createdAt: string;
   anonymity: boolean;
   likesCount: number;
@@ -99,7 +99,7 @@ export const PostProfile = () => {
   interface PostData {
     image: string;
     video: string;
-    caption: string;
+    comment: string;
     creatorId: string;
     createdAt: string;
     anonymity: boolean;
@@ -116,7 +116,7 @@ export const PostProfile = () => {
   const [postData, setPostData] = useState<PostData>({
     image: "",
     video: "",
-    caption: "",
+    comment: "",
     creatorId: "",
     createdAt: "",
     anonymity: false,
@@ -289,9 +289,9 @@ export const PostProfile = () => {
           ) : postData.image ? (
             <img src={postData.image} className="w-[100%]" />
           ) : null}
-          {postData.caption && (
+          {postData.comment && (
             <div className="text-light my-6 px-3 font-ubuntu font-light text-base">
-              {postData.caption}
+              {postData.comment}
             </div>
           )}
           <div className="border-t border-semidark py-4 flex flex-col gap-4">
@@ -445,9 +445,9 @@ export const PostProfile = () => {
                   </div>
                 </div>
               </div>
-              {comment.caption && (
+              {comment.comment && (
                 <div className="text-light my-2 px-3 font-ubuntu font-light text-base">
-                  {comment.caption}
+                  {comment.comment}
                 </div>
               )}
               <div className="p-3 flex items-center justify-between">

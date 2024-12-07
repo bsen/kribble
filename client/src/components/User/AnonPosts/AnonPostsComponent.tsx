@@ -62,7 +62,7 @@ export const AnonPostsComponent: React.FC<ProfileSectionProps> = () => {
       try {
         setIsLoading(true);
         const response = await axios.post(
-          `${BACKEND_URL}/api/post/all/hidden/posts`,
+          `${BACKEND_URL}/api/post/profile/all/hidden/posts`,
           { token, cursor }
         );
         setPostData((prevData) => ({
