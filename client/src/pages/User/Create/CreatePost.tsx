@@ -1,7 +1,7 @@
 import React from "react";
-import { SideBar } from "../../../components/Bars/SideBar";
-import { CreatePostComponent } from "../../../components/User/Create/Post";
 import { useParams } from "react-router-dom";
+import { SideBar } from "../../../components/Bars/SideBar";
+import CreatePostComponent from "../../../components/User/Create/Post";
 
 interface CreatePostProps {
   isCommunityPost?: boolean;
