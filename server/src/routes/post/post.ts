@@ -255,6 +255,74 @@ postRouter.post("/profile/all/posts", async (req, res) => {
   }
 });
 
+postRouter.post("/profile/all/hidden/posts", async (req, res) => {
+  try {
+    const { username, token } = req.body;
+    const cursor = req.body.cursor ? new Date(req.body.cursor) : null;
+    const take = 20;
+    console.log(username);
+
+    const posts = await prisma.post.findMany({
+      where: {
+        creator: { username: username },
+        status: true,
+        anonymity: true,
+        ...(cursor && { createdAt: { lt: cursor } }),
+      },
+      select: {
+        id: true,
+        caption: true,
+        image: true,
+        video: true,
+        likesCount: true,
+        anonymity: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
+        createdAt: true,
+        commentsCount: true,
+      },
+      orderBy: { createdAt: "desc" },
+      take: take + 1,
+    });
+
+    const hasMore = posts.length > take;
+    const returnPosts = hasMore ? posts.slice(0, take) : posts;
+    const nextCursor = hasMore ? posts[take - 1].createdAt.toISOString() : null;
+
+    const postsWithLikedState = await Promise.all(
+      returnPosts.map(async (post) => {
+        let isLiked = false;
+        if (token) {
+          const userId = jwt.verify(
+            token,
+            process.env.JWT_SECRET as string
+          ) as { id: string };
+          const like = await prisma.postLike.findUnique({
+            where: { userId_postId: { userId: userId.id, postId: post.id } },
+          });
+          isLiked = !!like;
+        }
+        return {
+          ...post,
+          creator: post.creator, // No need to check anonymity here since we're filtering them out
+          isLiked,
+          createdAt: post.createdAt.toISOString(),
+        };
+      })
+    );
+
+    return res.json({ status: 200, posts: postsWithLikedState, nextCursor });
+  } catch (error) {
+    console.error("Error in postRouter /all/posts:", error);
+    return res.json({ status: 500, message: "Try again later, Network error" });
+  }
+});
+
 postRouter.post("/data", async (req, res) => {
   try {
     const { postId } = req.body;
