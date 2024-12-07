@@ -35,11 +35,25 @@ postRouter.post("/create", upload, async (req, res) => {
   try {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     const file = files.image?.[0] || files.file?.[0] || null;
-    const { token, caption } = req.body;
+    const { token, caption, anonymity } = req.body;
+    console.log("Received data:", { token, caption, anonymity });
+
+    if (anonymity !== "false" && anonymity !== "true") {
+      return res.json({
+        status: 400,
+        message: "Invalid post anonymity status",
+      });
+    }
 
     if (typeof token !== "string") {
       return res.json({ status: 400, message: "Invalid post data or token" });
     }
+
+    if (!caption) {
+      return res.json({ status: 400, message: "Caption is required" });
+    }
+
+    const isAnonymous = anonymity === "true";
 
     const userId = jwt.verify(token, process.env.JWT_SECRET as string) as {
       id: string;
@@ -72,7 +86,12 @@ postRouter.post("/create", upload, async (req, res) => {
         await s3.send(command);
         fileUrl = `https://${process.env.CLOUDFRONT_DISTRIBUTION_DOMAIN}/${params.Key}`;
       } catch (error) {
-        return res.json({ status: 500, message: "Failed to upload file" });
+        console.error("File upload error:", error);
+        return res.json({
+          status: 500,
+          message: "Failed to upload file",
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
     }
 
@@ -80,6 +99,7 @@ postRouter.post("/create", upload, async (req, res) => {
       data: {
         creator: { connect: { id: userId.id } },
         caption: caption,
+        anonymity: isAnonymous,
         image: file && file.mimetype.startsWith("image/") ? fileUrl : null,
         video: file && file.mimetype.startsWith("video/") ? fileUrl : null,
       },
@@ -89,9 +109,18 @@ postRouter.post("/create", upload, async (req, res) => {
       return res.json({ status: 403, message: "Failed to create the post" });
     }
 
-    return res.json({ status: 200, message: "Post created successfully" });
+    return res.json({
+      status: 200,
+      message: "Post created successfully",
+      post: createPost,
+    });
   } catch (error) {
-    return res.json({ status: 500, message: "Try again later, Network error" });
+    console.error("Post creation error:", error);
+    return res.json({
+      status: 500,
+      message: "Try again later, Network error",
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 });
 
@@ -158,16 +187,18 @@ postRouter.post("/delete", async (req, res) => {
   }
 });
 
-postRouter.post("/all/posts", async (req, res) => {
+postRouter.post("/profile/all/posts", async (req, res) => {
   try {
     const { username, token } = req.body;
     const cursor = req.body.cursor ? new Date(req.body.cursor) : null;
     const take = 20;
+    console.log(username);
 
     const posts = await prisma.post.findMany({
       where: {
         creator: { username: username },
         status: true,
+        anonymity: false,
         ...(cursor && { createdAt: { lt: cursor } }),
       },
       select: {
@@ -176,6 +207,7 @@ postRouter.post("/all/posts", async (req, res) => {
         image: true,
         video: true,
         likesCount: true,
+        anonymity: true,
         creator: {
           select: {
             id: true,
@@ -209,9 +241,9 @@ postRouter.post("/all/posts", async (req, res) => {
         }
         return {
           ...post,
-          creator: post.creator,
+          creator: post.creator, // No need to check anonymity here since we're filtering them out
           isLiked,
-          createdAt: post.createdAt.toISOString(), // Convert to ISO string
+          createdAt: post.createdAt.toISOString(),
         };
       })
     );
@@ -223,16 +255,85 @@ postRouter.post("/all/posts", async (req, res) => {
   }
 });
 
-postRouter.get("/:postId", async (req, res) => {
+postRouter.post("/profile/all/hidden/posts", async (req, res) => {
   try {
-    const { postId } = req.params;
+    const { username, token } = req.body;
+    const cursor = req.body.cursor ? new Date(req.body.cursor) : null;
+    const take = 20;
+    console.log(username);
 
+    const posts = await prisma.post.findMany({
+      where: {
+        creator: { username: username },
+        status: true,
+        anonymity: true,
+        ...(cursor && { createdAt: { lt: cursor } }),
+      },
+      select: {
+        id: true,
+        caption: true,
+        image: true,
+        video: true,
+        likesCount: true,
+        anonymity: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
+        createdAt: true,
+        commentsCount: true,
+      },
+      orderBy: { createdAt: "desc" },
+      take: take + 1,
+    });
+
+    const hasMore = posts.length > take;
+    const returnPosts = hasMore ? posts.slice(0, take) : posts;
+    const nextCursor = hasMore ? posts[take - 1].createdAt.toISOString() : null;
+
+    const postsWithLikedState = await Promise.all(
+      returnPosts.map(async (post) => {
+        let isLiked = false;
+        if (token) {
+          const userId = jwt.verify(
+            token,
+            process.env.JWT_SECRET as string
+          ) as { id: string };
+          const like = await prisma.postLike.findUnique({
+            where: { userId_postId: { userId: userId.id, postId: post.id } },
+          });
+          isLiked = !!like;
+        }
+        return {
+          ...post,
+          creator: post.creator, // No need to check anonymity here since we're filtering them out
+          isLiked,
+          createdAt: post.createdAt.toISOString(),
+        };
+      })
+    );
+
+    return res.json({ status: 200, posts: postsWithLikedState, nextCursor });
+  } catch (error) {
+    console.error("Error in postRouter /all/posts:", error);
+    return res.json({ status: 500, message: "Try again later, Network error" });
+  }
+});
+
+postRouter.post("/data", async (req, res) => {
+  try {
+    const { postId } = req.body;
+    console.log(postId);
     const post = await prisma.post.findUnique({
       where: { id: postId, status: true },
       select: {
         id: true,
         image: true,
         video: true,
+        anonymity: true,
         creator: {
           select: {
             id: true,
@@ -248,7 +349,19 @@ postRouter.get("/:postId", async (req, res) => {
       return res.status(404).json({ status: 404, message: "Post not found" });
     }
 
-    return res.json({ status: 200, data: post });
+    // Modify the response to handle anonymous posts
+    const responseData = {
+      ...post,
+      creator: post.anonymity
+        ? {
+            id: "anonymous",
+            username: "Anonymous",
+            image: null,
+          }
+        : post.creator,
+    };
+
+    return res.json({ status: 200, data: responseData });
   } catch (error) {
     console.error("Error fetching post:", error);
     return res

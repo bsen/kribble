@@ -98,14 +98,7 @@ userProfileRouter.post("/data", async (req, res) => {
 userProfileRouter.post("/update", upload.single("image"), async (req, res) => {
   try {
     const file = req.file || null;
-    const { token, bio, link } = req.body;
-    if (
-      typeof token !== "string" ||
-      typeof bio !== "string" ||
-      typeof link !== "string"
-    ) {
-      return res.json({ status: 400, message: "Invalid data or token" });
-    }
+    const { token, bio, instagramLink } = req.body;
 
     const userId = jwt.verify(token, process.env.JWT_SECRET as string) as {
       id: string;
@@ -160,7 +153,7 @@ userProfileRouter.post("/update", upload.single("image"), async (req, res) => {
       where: { id: userId.id },
       data: {
         bio,
-        link,
+        link: instagramLink,
         image: imageUrl,
       },
     });
