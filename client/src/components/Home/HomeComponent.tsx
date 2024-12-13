@@ -234,12 +234,19 @@ export const HomeComponent = () => {
                       className="w-10 h-10 rounded-xl object-cover"
                     />
                     <div>
-                      <h3
-                        onClick={() => navigate(`/${post.creator.username}`)}
-                        className="text-white font-medium hover:underline cursor-pointer"
-                      >
-                        {post.creator.username}
-                      </h3>
+                      {post.creator.username == "Anonymous" ? (
+                        <h3 className="text-white font-medium cursor-pointer">
+                          {post.creator.username}
+                        </h3>
+                      ) : (
+                        <h3
+                          onClick={() => navigate(`/${post.creator.username}`)}
+                          className="text-white font-medium hover:underline cursor-pointer"
+                        >
+                          {post.creator.username}
+                        </h3>
+                      )}
+
                       <p className="text-neutral-400 text-sm">
                         {getTimeDifference(post.createdAt)}
                       </p>
