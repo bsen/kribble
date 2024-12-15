@@ -49,7 +49,7 @@ userAuthRouter.post("/authentication", async (req, res) => {
     const { email, photoURL, idToken } = req.body;
     const emailRes = emailSchema.safeParse(email);
     const idTokenRes = idTokenSchema.safeParse(idToken);
-    if (!emailRes.success || !idTokenRes.success) {
+    if (!emailRes.success) {
       return res
         .status(400)
         .json({ message: "Invalid email or authIdToken format" });

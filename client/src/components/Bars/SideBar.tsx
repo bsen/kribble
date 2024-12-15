@@ -36,7 +36,7 @@ export const SideBar = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="border border-neutral-800 rounded-xl p-4 shadow-lg">
+      <div className="border border-neutral-800 rounded-b-xl p-4 shadow-lg">
         <div className="space-y-2">
           <NavButton path="/" icon={<Home size={20} />} label="Home" />
           <NavButton
