@@ -45,26 +45,39 @@ userAuthRouter.post("/verify", async (req, res) => {
 });
 
 userAuthRouter.post("/authentication", async (req, res) => {
+  console.log("[AUTH] Starting authentication process");
   try {
     const { email, photoURL, idToken } = req.body;
+    console.log("[AUTH] Received authentication request for email:", email);
+
     const emailRes = emailSchema.safeParse(email);
-    const idTokenRes = idTokenSchema.safeParse(idToken);
+    // const idTokenRes = idTokenSchema.safeParse(idToken);
+
     if (!emailRes.success) {
+      console.warn("[AUTH] Invalid email format:", email);
       return res
         .status(400)
         .json({ message: "Invalid email or authIdToken format" });
     }
+
     // const decodedToken = await admin.auth().verifyIdToken(idToken);
+    // console.log("[AUTH] Token verification result:", decodedToken);
 
     // if (decodedToken.email !== email) {
+    //   console.warn("[AUTH] Email mismatch. Token email:", decodedToken.email, "Request email:", email);
     //   return res.status(400).json({ message: "Email mismatch" });
     // }
 
     let user = await prisma.user.findFirst({
       where: { email: email },
     });
+    console.log(
+      "[AUTH] User lookup result:",
+      user ? "User found" : "User not found"
+    );
 
     if (!user) {
+      console.log("[AUTH] Creating new user account for email:", email);
       const baseUsername = email.split("@")[0];
       let username = baseUsername;
       const generateRandomString = (length = 6) => {
@@ -77,15 +90,24 @@ userAuthRouter.post("/authentication", async (req, res) => {
 
       let attempts = 0;
       while (await prisma.user.findFirst({ where: { username: username } })) {
+        console.log(
+          "[AUTH] Username collision, attempt",
+          attempts + 1,
+          "- Generating new username"
+        );
         username = `${baseUsername}_${generateRandomString()}`;
         attempts++;
         if (attempts > 10) {
+          console.error(
+            "[AUTH] Failed to generate unique username after 10 attempts"
+          );
           return res.status(500).json({
             message: "Unable to generate unique username",
           });
         }
       }
 
+      console.log("[AUTH] Creating new user with username:", username);
       user = await prisma.user.create({
         data: {
           email: email,
@@ -95,11 +117,18 @@ userAuthRouter.post("/authentication", async (req, res) => {
       });
 
       if (!user) {
+        console.error("[AUTH] User creation failed");
         return res.status(500).json({ message: "Account creation failed" });
       }
+      console.log("[AUTH] New user account created successfully");
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string);
+    console.log(
+      "[AUTH] JWT token generated successfully for user:",
+      user.username
+    );
+
     return res.json({
       status: 200,
       username: user.username,
@@ -107,24 +136,29 @@ userAuthRouter.post("/authentication", async (req, res) => {
       message: "Authentication successful",
     });
   } catch (error) {
-    console.error("Authentication error:", error);
+    console.error("[AUTH] Authentication error:", error);
     if (error) {
       switch (error) {
         case "auth/id-token-expired":
+          console.error("[AUTH] Token expired");
           return res.status(401).json({ message: "Token expired" });
         case "auth/id-token-revoked":
+          console.error("[AUTH] Token revoked");
           return res.status(401).json({ message: "Token revoked" });
         case "auth/invalid-id-token":
+          console.error("[AUTH] Invalid token");
           return res.status(401).json({ message: "Invalid token" });
         default:
+          console.error("[AUTH] Authentication failed with unknown error");
           return res.status(401).json({ message: "Authentication failed" });
       }
     }
 
     if (error instanceof Error) {
-      console.error("Error message:", error.message);
+      console.error("[AUTH] Detailed error message:", error.message);
     }
 
+    console.error("[AUTH] Internal server error occurred");
     return res.status(500).json({ message: "Internal server error" });
   }
 });

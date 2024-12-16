@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 const prisma = new PrismaClient();
 import jwt from "jsonwebtoken";
 
@@ -10,112 +10,134 @@ postLikeRouter.post("/like/unlike", async (req, res) => {
     const token = req.body.token;
     const postId = req.body.postId;
 
-    const userId = jwt.verify(token, process.env.JWT_SECRET as string) as {
-      id: string;
-    };
-    const findUser = await prisma.user.findUnique({
-      where: {
-        id: userId.id,
-      },
-    });
-    if (!findUser) {
-      return res.json({ status: 401, message: "User not authenticated" });
+    if (!token || !postId) {
+      return res.status(400).json({
+        status: 400,
+        message: "Missing required fields",
+      });
     }
 
-    const findLike = await prisma.postLike.findUnique({
-      where: {
-        userId_postId: {
-          userId: findUser.id,
-          postId: postId,
-        },
-      },
-    });
-
-    const findPost = await prisma.post.findFirst({
-      where: {
-        id: postId,
-      },
-      select: {
-        creatorId: true,
-      },
-    });
-
-    if (!findLike) {
-      const createLike = await prisma.postLike.create({
-        data: {
-          userId: findUser.id,
-          postId: postId,
-        },
+    let userId;
+    try {
+      userId = jwt.verify(token, process.env.JWT_SECRET as string) as {
+        id: string;
+      };
+    } catch (jwtError) {
+      return res.status(401).json({
+        status: 401,
+        message: "Invalid token",
       });
+    }
 
-      const incLikes = await prisma.post.update({
-        where: {
-          id: postId,
-        },
-        data: {
-          likesCount: {
-            increment: 1,
-          },
-        },
+    const [findUser, findPost] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: userId.id },
+      }),
+      prisma.post.findUnique({
+        where: { id: postId },
+        select: { creatorId: true },
+      }),
+    ]);
+
+    if (!findUser) {
+      return res.status(401).json({
+        status: 401,
+        message: "User not authenticated",
       });
-      if (findPost) {
-        const createNotification = await prisma.notification.create({
-          data: {
-            receiverId: findPost.creatorId,
-            postId: postId,
-            message: "Your Post got a like.",
-          },
-        });
-        if (createNotification) {
-          await prisma.user.update({
+    }
+
+    if (!findPost) {
+      return res.status(404).json({
+        status: 404,
+        message: "Post not found",
+      });
+    }
+
+    try {
+      const result = await prisma.$transaction(async (tx) => {
+        try {
+          await tx.postLike.delete({
             where: {
-              id: findPost.creatorId,
+              userId_postId: {
+                userId: findUser.id,
+                postId: postId,
+              },
             },
-            data: {
-              unreadNotification: true,
-            },
+          });
+
+          await tx.post.update({
+            where: { id: postId },
+            data: { likesCount: { decrement: 1 } },
+          });
+
+          return { action: "unlike" };
+        } catch (deleteError) {
+          if (
+            deleteError instanceof Prisma.PrismaClientKnownRequestError &&
+            deleteError.code === "P2025"
+          ) {
+            await tx.postLike.create({
+              data: {
+                userId: findUser.id,
+                postId: postId,
+              },
+            });
+
+            await tx.post.update({
+              where: { id: postId },
+              data: { likesCount: { increment: 1 } },
+            });
+
+            if (findPost.creatorId !== findUser.id) {
+              const notification = await tx.notification.create({
+                data: {
+                  receiverId: findPost.creatorId,
+                  postId: postId,
+                  message: "Your Post got a like.",
+                },
+              });
+
+              if (notification) {
+                await tx.user.update({
+                  where: { id: findPost.creatorId },
+                  data: { unreadNotification: true },
+                });
+              }
+            }
+
+            return { action: "like" };
+          }
+          throw deleteError;
+        }
+      });
+
+      return res.json({
+        status: 200,
+        message:
+          result.action === "like"
+            ? "User liked the post successfully"
+            : "User unliked the post successfully",
+      });
+    } catch (txError) {
+      console.error("Transaction error:", txError);
+
+      if (txError instanceof Prisma.PrismaClientKnownRequestError) {
+        if (txError.code === "P2002") {
+          return res.status(409).json({
+            status: 409,
+            message: "Like operation failed due to concurrent request",
           });
         }
       }
-
-      if (!createLike || !incLikes) {
-        return res.json({ status: 400, message: "Liking post failed" });
-      }
-      return res.json({
-        status: 200,
-        message: "User liked the post successfully",
-      });
-    } else {
-      const deleteLike = await prisma.postLike.delete({
-        where: {
-          userId_postId: {
-            userId: findUser.id,
-            postId: postId,
-          },
-        },
-      });
-      const decLikes = await prisma.post.update({
-        where: {
-          id: postId,
-        },
-        data: {
-          likesCount: {
-            decrement: 1,
-          },
-        },
-      });
-
-      if (!deleteLike || decLikes) {
-        return res.json({ status: 400, message: "Liking post failed" });
-      }
-      return res.json({
-        status: 200,
-        message: "User unliked the post successfully",
-      });
+      throw txError;
     }
   } catch (error) {
-    console.log(error);
-    return res.json({ status: 500, error: "Something went wrong" });
+    console.error("Error in like/unlike route:", error);
+
+    return res.status(500).json({
+      status: 500,
+      message: "Something went wrong",
+    });
   }
 });
 
