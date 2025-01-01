@@ -1,11 +1,9 @@
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { useLocation, useNavigate } from "react-router-dom";
-import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { UserContext } from "../User/Context/UserContext";
 import { useContext } from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import LiveTvIcon from "@mui/icons-material/LiveTv";
 
 export const BottomBar = () => {
   const location = useLocation();
