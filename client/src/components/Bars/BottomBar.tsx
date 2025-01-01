@@ -27,30 +27,7 @@ export const BottomBar = () => {
         >
           <HomeOutlinedIcon sx={{ fontSize: 25 }} />
         </button>
-        <button
-          onClick={() => {
-            navigate("/tv");
-          }}
-          className={`py-1 px-2 rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
-            location.pathname === "/tv"
-              ? "text-light bg-semidark"
-              : "text-semilight"
-          }`}
-        >
-          <LiveTvIcon sx={{ fontSize: 25 }} />
-        </button>
-        <button
-          onClick={() => {
-            navigate("/communities");
-          }}
-          className={`py-1 px-2 rounded-lg flex items-center justify-start gap-2 text-base font-light  ${
-            location.pathname === "/communities"
-              ? "text-light bg-semidark"
-              : "text-semilight"
-          }`}
-        >
-          <GroupsOutlinedIcon sx={{ fontSize: 25 }} />
-        </button>
+
         <button
           onClick={() => {
             navigate("/search");
